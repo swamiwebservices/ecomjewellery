@@ -472,11 +472,7 @@ return $query->result_array() ;
     public function get_coolbox_list($user_id=0)
     {
         $result_array = array();
-        $sql = "SELECT * FROM coolbox_cust_master WHERE status in ('Active','Inactive') AND cust_id=".$user_id." order by id desc   ";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $result_array = $query->result_array();
-        }
+         
         return $result_array;
         die();
     }

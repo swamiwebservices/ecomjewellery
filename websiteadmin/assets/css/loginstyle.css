@@ -77,7 +77,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     bottom: 0;
     border-radius: 10px 0 0 10px;
     padding: 40px 30px /* 80px 30px */;
-    background:#2196f3 /* #0f3f6f */;
+    background:#ffcb4b /* #0f3f6f */;
     /*margin: 30px 0;*/
     left: -30px /* -60px */;
     z-index: 999;
@@ -271,12 +271,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     width: 800px; margin: 200px auto 0 auto; position: relative; background: #FFF; border: 2px solid #ccc;
     padding: 0; border: 5px solid #fff; border-radius: 5px; -webkit-box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.25);
      -moz-box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.25); -ms-box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.25); box-shadow: 0px 2px 14px 0px rgba(0, 0, 0, 0.25);}
-.login_l { float: left; width: 50%; padding:50px 50px 30px 30px; text-align:center; background: #FFF;
+.login_l { float: left; width: 50%; padding:10px 10px 10px 10px; text-align:center; background: #FFF;
     min-height: 235px /*305px*/; border-radius: 5px;}
 .login_txt { font-size: 15px; line-height: 22px; margin: 15px 0 0 0; color: #4D4D4D;}
 .login_txt span { font-weight: 700;}
-.login_r { float: right; border-radius: 5px; width: 50%; padding:50px; position: relative; position: absolute;
-    min-height: 320px ; right: 20px; background: #2196f3; top: -45px; text-align: center;}
+.login_r { float: right; border-radius: 5px; width: 52%; padding:50px; position: relative; position: absolute;
+    min-height: 320px ; right: 20px; background: #ffcb4b; top: -45px; text-align: center;}
 h2.login_head_one {width: 100%; float: left; /*padding-bottom: 15px; margin:0;*/ text-align: center; color: #FFF;
     font-size: 22px; margin: 0px; padding: 0px; font-family: 'Poppins', sans-serif; font-weight: 500;}
 .loginBox {width: 100%; float: left;}
@@ -288,7 +288,7 @@ font-weight: bold; -webkit-border-radius: 5px; -moz-border-radius: 5px; -o-borde
 -moz-transition: all ease 0.5s; -o-transition: all ease 0.5s; -ms-transition: all ease 0.5s;
 transition: all ease 0.5s;}
 .buttonlogin{background:#fff;text-align:center; margin:0px; padding:8px 15px;cursor:pointer;border:2px solid #fff;
-color:#2196f3; font-size:16px; width:100%; line-height:20px; font-weight:bold; -webkit-border-radius:5px;-moz-border-radius:5px;
+color:#ffcb4b; font-size:16px; width:100%; line-height:20px; font-weight:bold; -webkit-border-radius:5px;-moz-border-radius:5px;
 -o-border-radius:5px;-ms-border-radius:5px;border-radius:5px;-webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
 .buttonlogin:hover{background:#343690;color:#FFF; border:2px solid #343690;-webkit-transition: all ease 0.5s;-moz-transition: all ease 0.5s;-o-transition: all ease 0.5s;-ms-transition: all ease 0.5s;transition: all ease 0.5s;}
 .clr{clear: both;}
@@ -301,13 +301,30 @@ height:100vh;}
 
 .welcome_title{color: #5caf2d; font-size: 26px; font-weight: 600; letter-spacing: 0.5px;
 margin: 20px 0 0 0; font-family: 'Poppins', sans-serif;}
-.form-control{color: #2196f3; font-family: 'Muli', sans-serif; font-size: 16px;}
-.form-control::placeholder{color: #2196f3;}
-.text-muted {color: #2196f3 !important;}
+.form-control{color: #ffffff; font-family: 'Muli', sans-serif; font-size: 16px;}
+.form-control::placeholder{color: #ffffff;}
+.text-muted {color: #ffffff !important;}
 
 .signin_btn{background: #FFF; border-radius: 5px; font-size: 18px; width: 100%;
 border: 0; cursor: pointer; padding: 10px; font-weight: 500; font-family: 'Poppins', sans-serif;}
 .signin_btn:hover{border: none; background: #7dd04e; color: #FFF;}
+
+.loginbtn{
+    background: #594107!important; border-radius: 5px; font-size: 18px; width: 100%;
+    border: 0; cursor: pointer; padding: 10px; font-weight: 500; 
+}
+.loginbtn:hover {
+    color: #fff;
+    background-color: #000!important;
+}
+
+.alert-danger {
+    color: #ffffff!important;
+    background-color: #f55246!important;
+    border-color: #f55246!important;
+}
+
+ 
 
 /** MEDIA **/
 @media (max-width: 1200px) {

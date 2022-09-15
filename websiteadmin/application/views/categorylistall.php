@@ -89,8 +89,7 @@
                                     <tr class="bg-blue ">
                                         <th  >#</th>
                                         <th>Name (ENG)</th>
-                                        <th>Name (LAO)</th>
-
+                                         
 
                                         <th>Image</th>
                                         <th>Status</th>
@@ -109,14 +108,14 @@
 								?>
                                     <tr class="  border-left-3  <?php echo ($status == "Active") ? 'border-left-success' : 'border-left-danger' ?>  tr<?php echo $this->common->getDbValue($value['status']); ?>">
                                         <td valign="top"><?php echo $i?></td>
-                                        <td valign="top"><strong><?php echo $this->common->getDbValue($value['name_en']); ?></strong></td>
                                         <td valign="top"><strong><?php echo $this->common->getDbValue($value['name']); ?></strong></td>
+                                        
                                         <td valign="top">
                                             <?php 
 										if($value['main_image']!=''){
 											$photo = back_path.'uploads/category/'.stripslashes($value['main_image']);
 										} else {
-											$photo = 'http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image';	
+											$photo = 'https://via.placeholder.com/150x100';	
 										}
 									?>
                                             <img src="<?php echo $photo?>" height="50">
@@ -145,14 +144,14 @@ $status = $this->common->getDbValue($value_sub['status']);
 ?>
                                                     <tr class="  border-left-2  <?php echo ($status == "Active") ? 'border-left-success' : 'border-left-danger' ?>  tr<?php echo $this->common->getDbValue($value_sub['status']); ?>">
                                                         <td valign="top" class="  border-left-2" >--</td>
-                                                        <td valign="top"><strong><?php echo $this->common->getDbValue($value['name_en']); ?></strong></td>
-                                                        <td valign="top"><strong><?php echo $this->common->getDbValue($value_sub['name']); ?></strong></td>
+                                                        <td valign="top"><strong><?php echo $this->common->getDbValue($value['name']); ?></strong></td>
+                                                        
                                                         <td valign="top">
                                                             <?php 
 										if($value['main_image']!=''){
 											$photo = back_path.'uploads/category/'.stripslashes($value_sub['main_image']);
 										} else {
-											$photo = 'http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image';	
+											$photo = 'https://via.placeholder.com/150x100';	
 										}
 									?>
                                                             <img src="<?php echo $photo?>" height="50">

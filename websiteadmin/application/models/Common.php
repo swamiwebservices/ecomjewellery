@@ -1545,4 +1545,29 @@ class Common extends CI_Model
     
      
  }
+ public function randomuuid($bits = '128')
+ {
+     $timestamp = time();
+     $q = -3;
+     //The epoch time stamp is truncated by $q chars,
+     //making the algorthim to change evry 1000 seconds
+     //using q=-4; will give 10000 seconds= 2 hours 46 minutes usable time
+
+     $TimeReduced = substr($timestamp, 0, $q) - 1;
+
+     //the $seed is a constant string added to the string before hashing.
+     $string = "abcdefgh" . $TimeReduced;
+     $return = hash('sha1', $string, false);
+     return $return;
+ }
+ function generateSalt(){
+    $salt_length = 12;
+    $salt = substr(md5(uniqid()), 0, $salt_length);
+    return $salt;
+}
+
+function encryptPassword($pwd, $salt){
+    $hashed_password = md5($salt . $pwd);
+    return $hashed_password;
+}
 }

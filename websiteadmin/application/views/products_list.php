@@ -86,14 +86,11 @@
                             <thead>
                                 <tr class="bg-blue ">
 		                            <th width="4%">#</th>
-		                            <th  >Name (ENG)</th>
-                                    <th  >Name (LAO)</th>
-                                    
+		                            <th  >Name</th>
+                                     
 		                            <th width="20%">Category</th>
 		                            <th width="27%">Sale Price</th>
-                                    <th width="27%">KG</th>
-                                    <th width="27%">Unit Bag</th>
-                                    <th width="27%">Unit</th>
+                                    
 		                            <th width="18%">Image</th>
 		                            <th width="8%">Status</th>
 		                            <th width="8%">Actions</th>
@@ -111,19 +108,18 @@
 								?>                            
 		                         <tr class="  border-left-3  <?php echo ($status == "Active") ? 'border-left-success' : 'border-left-danger' ?>  tr<?php echo $this->common->getDbValue($value['status']); ?>">
                                     <td valign="top"><?php echo $i?></td>
-                                    <td valign="top"><strong><?php echo $this->common->getDbValue($value['name_en']); ?></strong></td>
-		                            <td valign="top"><strong><?php echo $this->common->getDbValue($value['name']); ?></strong></td>
+                                    <td valign="top"><strong><?php echo $this->common->getDbValue($value['name']); ?></strong></td>
+		                             
                                     <td><?php echo isset($main_cat['name'])?$this->common->getDbValue($main_cat['name']):''; ?> - <?php echo isset($sub_cat['name'])?$this->common->getDbValue($sub_cat['name']):''; ?></td>
 		                            <td valign="top"><?php echo $this->currencymodal->format($value['sale_price'], currency_code, 1);?></td>
-                                    <td valign="top"><?php echo $this->common->getDbValue($value['kg_bag']); ?></td>
-                                    <td valign="top"><?php echo $this->common->getDbValue($value['unit_bag']); ?></td>
-                                    <td valign="top"><?php echo $this->common->getDbValue($value['unit']); ?></td>
+                                    
+                                     
 		                            <td valign="top">
                                     <?php 
 										if($value['main_image']!=''){
 											$photo = back_path.'uploads/prod_images/'.stripslashes($value['main_image']);
 										} else {
-											$photo = 'http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image';	
+											$photo = 'https://via.placeholder.com/140x100';	
 										}
 									?>
                                    <img src="<?php echo $photo?>" width="150">

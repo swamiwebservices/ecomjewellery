@@ -228,7 +228,7 @@ if($user_data['access_ids']!=''){
                 <div class="content">
                     <!-- Quick stats boxes -->
                     <div class="row tileswti">
-                        <div class="col-lg-3">
+                    <div class="col">
                             <!-- Members online -->
                             <a href="<?php echo site_url("orders/new_orders?getdate=".$today_dateymd);?>">
                             <div class="card bg-teal-400">
@@ -246,7 +246,7 @@ if($user_data['access_ids']!=''){
                             </a>
                             <!-- /members online -->
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col">
                             <!-- Members online -->
                             <div class="card bg-teal-400">
                                 <div class="totalorder card-body">
@@ -261,7 +261,7 @@ if($user_data['access_ids']!=''){
                             <!-- /members online -->
                         </div>
                         
-                        <div class="col-lg-3">
+                        <div class="col">
                            
                             <div class="card bg-pink-400">
                                 <div class="revenue card-body">
@@ -277,7 +277,7 @@ if($user_data['access_ids']!=''){
                             </div>
                              
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col">
                         <a href="<?php echo site_url("customers");?>">
                             <div class="card bg-blue-400">
                                 <div class="customers card-body">
@@ -294,9 +294,6 @@ if($user_data['access_ids']!=''){
                             </div>
                             </a>
                         </div>
-                    </div>
-                    <div class="row tileswti">
-                       
                         <div class="col">
                         <a href="<?php echo site_url("products");?>">
                             <div class="card bg-blue-400">
@@ -314,80 +311,18 @@ if($user_data['access_ids']!=''){
                             </div>
                             </a>
                         </div>
+                    </div>
+                    <div class="row tileswti">
                        
-                        <div class="col">
-                        <a href="<?php echo site_url("drivers");?>">
-                            <div class="card bg-danger-400">
-                                <div class="driver card-body">
-                                <div class="d-flex align-items-center float-right">
-                                   
-                                   
-                                        <div class="mg-l-20">
-                                            <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10 text-right">Manage driver</p>
-                                            <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1 text-right"><?php echo $driv_cnt?></p>
-                                        </div>
-                                    
-                                    </div>
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                        <div class="col">
-                        <a href="<?php echo site_url("carry_boy");?>">
-                            <div class="card bg-danger-400">
-                                <div class="carryboy card-body">
-                                <div class="d-flex align-items-center float-right">
-                                    
-                                   
-                                        <div class="mg-l-20">
-                                            <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10 text-right">Manage carryboy</p>
-                                            <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1 text-right"><?php echo $carry_cnt?></p>
-                                        </div>
-                                    
-                                    </div>
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                        <div class="col">
-                        <a href="<?php echo site_url("security/inventory");?>">
-                            <div class="card bg-blue-400">
-                                <div class="bag2 card-body">
-                                <div class="d-flex align-items-center float-right">
-                                    
-                                   
-                                        <div class="mg-l-20">
-                                            <p class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10 text-right">Manage Inventory</p>
-                                            <p class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1 text-right"><?php echo date("d M");?> </p>
-                                        </div>
-                                    
-                                    </div>
-                                </div>
-                            </div>
-                            </a>
-                        </div>
-                        <div class="col">
-                        <a href="<?php echo site_url("drivers/driverlocation");?>">
-                        <div class="card bg-danger-400">
-                                <div class="location card-body">
-                                <div class="d-flex align-items-center float-right">
-                                    
-                                   
-                                        <div class="mg-l-20">
-                                            <div class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10 text-right">Locate Drivers</div>
-                                            <div class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1 text-right"><?php echo $driv_cnt?> </div>
-                                        </div>
-                                   
-                                    </div>
-                                </div>
-                            </div>
-                            </a>
-                        </div>
+              
+                       
+   
+
                           
                     </div>
                     <!-- /quick stats boxes -->
                     <!-- Main charts -->
-                    <div class="row">
+                    <div class="row d-none">
                         <div class="col-xl-12">
                             <!-- Support tickets -->
                             <!-- Pies -->
@@ -443,7 +378,7 @@ if($user_data['access_ids']!=''){
                             </div>
                             <!-- /pies -->
                             <div class="row">
-                                <div class="col-xl-6">
+                                <div class="col-xl-12">
                                     <div class="card">
                                         <div class="card-header header-elements-inline">
                                             <h5 class="card-title">New Order</h5>
@@ -487,52 +422,7 @@ $i = 0;
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-6">
-                                    <div class="card">
-                                        <div class="card-header header-elements-inline">
-                                            <h5 class="card-title">Credit due customers</h5>
-                                            <div class="header-elements">
-                                            </div>
-                                        </div>
-                                        <div class="table-responsive">
-                                            <?php
-if (isset($oderlistinprogress) && sizeof($oderlistinprogress) > 0) {
-    ?>
-                                            <table class="table dashboarddatatable" width="100%">
-                                                <thead>
-                                                    <tr class="bg-blue ">
-                                                        <th>#</th>
-                                                        <th>Customer</th>
-                                                        <th>Total</th>
-                                                        <th>Order Date</th>
-                                                        <th>Pay Date</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-$i = 0;
-    foreach ($oderlistinprogress as $key => $value) {
-        $i++;
-        ?>
-                                                    <tr>
-                                                        <td><a href="<?php echo site_url($controller_order . '/orderdetail/' . $value['oorder_uid']."?l_s_act=".$l_s_act."&page=".$page) ?>"><?php echo stripslashes($value['invoice_no']) ?></a></td>
-                                                        <td><?php echo stripslashes($value['payment_firstname']) ?> <?php echo stripslashes($value['payment_lastname']) ?></td>
-                                                        <td><?php echo $this->currencymodal->format($value['total'], currency_code, 1);
-        ?></td>
-                                                         <td>
-                                                            <?php echo $this->common->getDateFormat($value['date_added'], 'd-m-Y'); ?>
-                                                        </td>
-                                                        <td>
-                                                            <?php echo $this->common->getDateFormat($value['credit_pay_date'], 'd-m-Y'); ?>
-                                                        </td>
-                                                    </tr>
-                                                    <?php }?>
-                                                </tbody>
-                                            </table>
-                                            <?php }?>
-                                        </div>
-                                    </div>
-                                </div>
+                   
                             </div>
                             <!-- /support tickets -->
                             <!-- Latest posts -->

@@ -94,7 +94,7 @@
                                         <th width="34%">Address</th>
                                         <th width="7%">Business Type</th>
                                         <th width="7%">No. Of Order</th>
-                                        <th width="7%">Cool Box</th>
+                                      
                                         <th width="8%">Status</th>
                                         <th width="8%">Actions</th>
                                     </tr>
@@ -106,7 +106,7 @@
                                 $status = $this->common->getDbValue($value['status']);
                                 $sql = " and (parent_id = '".$value['user_id']."')";
                                 $total_order =  $this->ecommercemodal->getOderlist_custom('1,2,3,4',0,0,'numrows',$sql);
-                                $total_coolbox =  $this->ecommercemodal->get_coolbox_list($value['user_id']);
+                               
 								?>
                                     <tr class="  border-left-3  <?php echo ($status == "Active") ? 'border-left-success' : 'border-left-danger' ?>  tr<?php echo $this->common->getDbValue($value['status']); ?>">
                                         <td valign="top"><?php echo $i?></td>
@@ -130,9 +130,7 @@
                                         <td valign="top"><?php
                                     echo $total_order;
                                     ?></td>
-                                        <td valign="top"><?php
-                                    echo sizeof($total_coolbox);
-                                    ?></td>
+                                       
                                         <td valign="top">
                                             <?php
                                         if($status=="Active"){echo '<span class="badge badge-success">Active</span>';}

@@ -86,32 +86,21 @@
                                 </div>
                                 
                                 <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Name (LAO):<span class="text-danger">*</span></label>
+                                    <label class="col-form-label col-lg-2" for="name_title">Name :<span class="text-danger">*</span></label>
                                     <div class="col-lg-9"><input type="text" class="form-control  alhanumeric" id="name" name="name" placeholder="Name" value="">
                                         <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
                                     </div>
                                 </div>
                                 
-                                <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Name (ENG):<span class="text-danger">*</span></label>
-                                    <div class="col-lg-9"><input type="text" class="form-control  alhanumeric" id="name_en" name="name_en" placeholder="Name" value="">
-                                        <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
-                                    </div>
-                                </div>                                
-
+                              
 								<div class="form-group row">
-									<label class="col-form-label col-lg-2">Description (LAO):<span class="text-danger">*</span></label>
+									<label class="col-form-label col-lg-2">Description :<span class="text-danger">*</span></label>
 									<div class="col-lg-9">
 										<textarea rows="3" cols="3" class="form-control" placeholder="Description" id="description" name="description"></textarea>
 									</div>
 								</div>
                                 
-								<div class="form-group row">
-									<label class="col-form-label col-lg-2">Description (ENG):<span class="text-danger">*</span></label>
-									<div class="col-lg-9">
-										<textarea rows="3" cols="3" class="form-control" placeholder="Description" id="description_en" name="description_en"></textarea>
-									</div>
-								</div>                                
+								                         
 							   
 								<div class="form-group row">
                                     <label class="col-md-2 control-label">  Image</label>
@@ -202,6 +191,12 @@
                     isError = true;
                     //$("#error_first_name").show()
                     $("#name").addClass("border-danger");
+
+                }
+                if (!$("#description").val()) {
+                    isError = true;
+                    //$("#error_first_name").show()
+                    $("#description").addClass("border-danger");
 
                 }
 				

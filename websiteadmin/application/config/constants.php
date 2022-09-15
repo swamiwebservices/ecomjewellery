@@ -33,7 +33,7 @@ defined('DIR_WRITE_MODE')  OR define('DIR_WRITE_MODE', 0755);
 
 //define('dev_where', ' delete_status=0');
 define('dev_where', " status in ('Active','Inactive') ");
-define('currency_code', 'LAK');
+define('currency_code', 'INR');
 
 //define('back_path', 'http://127.0.0.1/doice/');
 //define('back_path', 'http://ice.shreewebs.com/');
@@ -97,7 +97,7 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 define('setting', 2);
 if(setting==1){
-    define('back_path', 'http://127.0.0.1/bo-ice/bo-ice-api/');
+    define('back_path', 'http://127.0.0.1:8074/ecomjewellery/');
     define('FIREBASE_CREDENTIALS_PATH', 'firebase/bo-ice-2f1ce71da14c_local.json');
     define('FIREBASE_DATABASE_PATH', 'https://bo-ice.firebaseio.com');
     

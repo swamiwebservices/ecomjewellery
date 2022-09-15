@@ -117,18 +117,13 @@
                                 </div>
                                 
                                 <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Name (LAO):<span class="text-danger">*</span></label>
+                                    <label class="col-form-label col-lg-2" for="name_title">Name:<span class="text-danger">*</span></label>
                                     <div class="col-lg-9"><input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>">
                                         <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
                                     </div>
                                 </div>
                                 
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Name (ENG):<span class="text-danger">*</span></label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="name_en" name="name_en" placeholder="Name" value="<?php echo isset($records['name_en'])?$this->common->getDbValue($records['name_en']):''; ?>">
-                                        <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
-                                    </div>
-                                </div>
+								 
 
 								<div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="name_title">Price: <span class="text-danger">*</span></label>
@@ -142,48 +137,7 @@
                                     </div>
                                 </div>
                                 
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Unit: </label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="unit" name="unit" placeholder="Unit" value="<?php echo isset($records['unit'])?$this->common->getDbValue($records['unit']):''; ?>">
-                                    </div>
-                                </div>                                
-
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Unit Bag: </label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="unit_bag" name="unit_bag" placeholder="Unit" value="<?php echo isset($records['unit_bag'])?$this->common->getDbValue($records['unit_bag']):''; ?>">
-                                    </div>
-                                </div>                                
-
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Kg/Bag: </label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="kg_bag" name="kg_bag" placeholder="Kg/Bag" value="<?php echo isset($records['kg_bag'])?$this->common->getDbValue($records['kg_bag']):''; ?>">
-                                    </div>
-                                </div>                                
-
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Driver's Bonus/Bag: </label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="driver_bonus" name="driver_bonus" placeholder="Driver's Bonus/Bag" value="<?php echo isset($records['driver_bonus'])?$this->common->getDbValue($records['driver_bonus']):''; ?>">
-                                    </div>
-                                </div>                                
-
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Carry boy's Bonus/Bag: </label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="carry_boy_bonus" name="carry_boy_bonus" placeholder="Carry Boy's Bonus/Bag" value="<?php echo isset($records['carry_boy_bonus'])?$this->common->getDbValue($records['carry_boy_bonus']):''; ?>">
-                                    </div>
-                                </div>                                
-
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Stock Location: </label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="stock_location" name="stock_location" placeholder="Stock Location" value="<?php echo isset($records['stock_location'])?$this->common->getDbValue($records['stock_location']):''; ?>">
-                                    </div>
-                                </div>                                
-
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">ReOrder Point: </label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="re_order_point" name="re_order_point" placeholder="ReOrder Point" value="<?php echo isset($records['re_order_point'])?$this->common->getDbValue($records['re_order_point']):''; ?>">
-                                    </div>
-                                </div>            
-
+								 
                                 <div class="form-group row">
                                     <label class="col-md-2 control-label"> Product Image</label>
                                     <div class="col-md-10">

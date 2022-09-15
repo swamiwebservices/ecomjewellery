@@ -291,12 +291,7 @@ class Customers extends CI_Controller
 
 
 
-		$sSql = "SELECT cbc.*,box_name,box_name_en,box_size  FROM `coolbox_cust_master` cbc
-        inner join coolbox_master cb on cbc.box_id = cb.id  where cbc.cust_id='".$id."'";
-
-        $query = $this->db->query($sSql);
-		$data['coolbox_cust_master'] =  $query->result_array(); 
-
+	 
 
         $this->load->view('view_customer', $data);
         $this->session->unset_userdata('success');

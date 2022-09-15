@@ -31,7 +31,7 @@ class Home extends CI_Controller
     {
 
         $session_user_data = $this->session->userdata('user_data');
-        if ($session_user_data['logged_in']) {
+        if (!empty($session_user_data['logged_in'])) {
 
             redirect('dashboard', 'refresh');
             exit;

@@ -87,40 +87,26 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Name (LAO):<span class="text-danger">*</span></label>
+                                    <label class="col-form-label col-lg-2" for="name_title">Name:<span class="text-danger">*</span></label>
                                     <div class="col-lg-9"><input type="text" class="form-control  " id="name" name="name" placeholder="Name" value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>">
                                         <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Name (ENG):<span class="text-danger">*</span></label>
-                                    <div class="col-lg-9"><input type="text" class="form-control  " id="name_en" name="name_en" placeholder="Name" value="<?php echo isset($records['name_en'])?$this->common->getDbValue($records['name_en']):''; ?>">
-                                        <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
-                                    </div>
-                                </div>
-
+                                
 								<div class="form-group row">
-									<label class="col-form-label col-lg-2">Description (LAO):<span class="text-danger">*</span></label>
+									<label class="col-form-label col-lg-2">Description:<span class="text-danger">*</span></label>
 									<div class="col-lg-9">
 										<textarea rows="3" cols="3" class="form-control" placeholder="Description" id="description" name="description"><?php echo isset($records['description'])?$this->common->getDbValue($records['description']):''; ?></textarea>
 									</div>
 								</div>
                                 
-								<div class="form-group row">
-									<label class="col-form-label col-lg-2">Description (ENG):<span class="text-danger">*</span></label>
-									<div class="col-lg-9">
-										<textarea rows="3" cols="3" class="form-control" placeholder="Description" id="description_en" name="description_en"><?php echo isset($records['description_en'])?$this->common->getDbValue($records['description_en']):''; ?></textarea>
-									</div>
-								</div>                                
-							 
-								  
 
                                     <?php 
 										if($records['main_image']!=''){
 											$photo =  back_path.'uploads/category/'.stripslashes($records['main_image']);
 										} else {
-											$photo = 'http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image';	
+											$photo = 'https://via.placeholder.com/140x100';	
 										}
 									?>                                
 								<div class="form-group row">
