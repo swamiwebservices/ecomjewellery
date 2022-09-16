@@ -1,0 +1,4 @@
+Database:	satish_ecomjewellery
+Host:	localhost
+Username:	satish_ecomjewellery
+Password:	India@1947.com
