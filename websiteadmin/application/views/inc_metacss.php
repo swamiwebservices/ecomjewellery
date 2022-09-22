@@ -1,5 +1,5 @@
 <?php
-$session_user_data = $this->session->userdata('user_data');
+$session_user_data = $this->session->userdata('admin_user_data');
 $trandomuuid = $this->common->randomuuid();
 ?>
 <meta charset="utf-8">
@@ -24,7 +24,7 @@ $trandomuuid = $this->common->randomuuid();
 <link href="<?php echo base_url() ?>assets/css/colors.min.css" rel="stylesheet" type="text/css">
 <link href="<?php echo base_url() ?>assets/css/custom.css" rel="stylesheet" type="text/css">
 
- 	 
+ 
 <link href="<?php echo base_url() ?>assets/css/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css">
 <!-- /global stylesheets -->
  

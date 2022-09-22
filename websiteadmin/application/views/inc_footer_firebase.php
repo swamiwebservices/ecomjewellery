@@ -1,5 +1,4 @@
  
-<audio id="tone" src="<?php echo base_urL()?>firebase/for-sure.mp3"> </audio>
 <input type="hidden" id="isload" name="isload" value="0" />
 <input type="hidden" id="isload2" name="isload2" value="0" />
 <input type="hidden" id="fcmtokenid" name="fcmtokenid" value="" />

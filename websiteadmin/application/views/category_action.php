@@ -3,35 +3,16 @@
 
     <head>
         <?php $this->load->view('inc_metacss');?>
-        <script src="<?php echo base_url()?>global_assets/js/plugins/forms/selects/select2.min.js"></script>
-        <script src="<?php echo base_url()?>global_assets/js/plugins/forms/styling/uniform.min.js"></script>
-        <script src="<?php echo base_url()?>global_assets/js/demo_pages/form_layouts.js"></script>
-        <script src="<?php echo base_url()?>global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
-        <style>
-                    
-                    .image-preview-input {
-                        position: relative;
-                        overflow: hidden;
-                        margin: 0px;    
-                        color: #333;
-                        background-color: #fff;
-                        border-color: #ccc;    
-                    }
-                    .image-preview-input input[type=file] {
-                        position: absolute;
-                        top: 0;
-                        right: 0;
-                        margin: 0;
-                        padding: 0;
-                        font-size: 20px;
-                        cursor: pointer;
-                        opacity: 0;
-                        filter: alpha(opacity=0);
-                    }
-                    .image-preview-input-title {
-                        margin-left:2px;
-                    }
-                </style>
+        <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_floating_labels.js"></script>
+        <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
+         <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_controls_extended.js"></script>
+        <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_layouts.js"></script>
+
+      <style>
+    .btn-group-vertical>.btn, .btn-group>.btn {
+            z-index: 1;
+        }
+        </style>
     </head>
 
     <body>
@@ -96,53 +77,50 @@
                             <h6 class="card-title"><?php echo (isset($sub_heading))?$sub_heading:''?> </h6>
                         </div>
                         <div class="card-body">
-                            <form name="frm-edit" id="frm-edit" action="<?php echo site_url($this->ctrl_name.'/add_product') ?>" method="post" enctype="multipart/form-data">
+                        <form class="form-horizontal" id="blogform1" name="blogform1" method="post" action="<?php echo site_url($controller.'/'.$fun_name)?>" enctype="multipart/form-data">
                                 <input type="hidden" name="mode" id="mode" value="submitform">
-
-                                
-                                <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="category_id">Category :<span class="text-danger">*</span></label>
+                                <input type="hidden" name="name_old" id="name_old" value="<?php echo isset($records['name']) ? $records['name'] : ''; ?>">
+								<?php $sel_cat =  isset($records['name'])?$this->common->getDbValue($records['parent_id']):''; ?>
+								<div class="form-group row">
+ 
+                                <label class="col-md-2 control-label" for="parent_id"> Parent category:</label>
                                     <div class="col-lg-9">
-                                        <select class="form-control" name="category_id" id="category_id" required1>
-                                            <?php  $this->common->get_categorylist_parent_sub((isset($records['category_id']))?$records['category_id']:'0')?>
+                                        <select class="form-control" name="parent_id" id="parent_id" required>
+                                            <?php   $this->common->get_categorylist_parent($sel_cat)?>
                                         </select>
+                                        <?php  ?>
                                     </div>
                                 </div>
 
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Item Code:<span class="text-danger">*</span></label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="item_id" name="item_id" placeholder="Item Code" value="<?php echo isset($records['item_id'])?$this->common->getDbValue($records['item_id']):''; ?>">
-                                        <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
-                                    </div>
-                                </div>
-                                
                                 <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Name:<span class="text-danger">*</span></label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="name" name="name" placeholder="Name" value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>">
+                                    
+                                    <label class="col-md-2 control-label" for="name"> Name:<span class="text-danger">*</span></label>
+                                    <div class="col-lg-9"><input type="text" class="form-control maxlength-textarea " id="name" name="name" placeholder="Name" value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>"  maxlength="256">
                                         <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
                                     </div>
                                 </div>
-                                
-								 
 
-								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Price: <span class="text-danger">*</span></label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="price" name="price" placeholder="Price" value="<?php echo isset($records['price'])?$this->common->getDbValue($records['price']):''; ?>">
-                                    </div>
-                                </div>
                                 
 								<div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="name_title">Sale Price: <span class="text-danger">*</span></label>
-                                    <div class="col-lg-9"><input type="text" class="form-control" id="sale_price" name="sale_price" placeholder="Price" value="<?php echo isset($records['sale_price'])?$this->common->getDbValue($records['sale_price']):''; ?>">
-                                    </div>
-                                </div>
+                                <label class="col-md-2 control-label" for="description"> Description:</label>
+									<div class="col-lg-9">
+										<textarea rows="3" cols="3" class="form-control" placeholder="Description" id="description" name="description"><?php echo isset($records['description'])?$this->common->getDbValue($records['description']):''; ?></textarea>
+									</div>
+								</div>
                                 
-								 
-                                <div class="form-group row">
-                                    <label class="col-md-2 control-label"> Product Image</label>
+
+                                    <?php 
+										if(!empty($records['main_image'])){
+											$photo =  back_path.'uploads/category/'.stripslashes($records['main_image']);
+										} else {
+											$photo = 'https://via.placeholder.com/140x100';	
+										}
+									?>                                
+								<div class="form-group row">
+                                    <label class="col-md-2 control-label"> Image</label>
                                     <div class="col-md-10">
                                         <div class="row col-md-5">
-                                            <img src="" id="temppreviewimageki1" class="temppreviewimageki1" style="width:200px; height:auto;display:none"> </div>
+                                            <img src="<?php echo $photo?>" id="temppreviewimageki1" class="temppreviewimageki1" style="width:200px; height:auto;display:none1"> </div>
                                         <div class="row col-md-10">
 
                                             <div class="input-group image-preview1">
@@ -166,37 +144,40 @@
 
                                         </div>
                                     </div>
-                                </div>
-
-
+                                </div>								                                
+                                                                                 
                                 <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="status">Status :<span class="text-danger">*</span></label>
+                                
+                                    <label class="control-label col-lg-2" for="status">Status :<span class="text-danger">*</span></label>
                                     <div class="col-lg-9">
+                                        <?php  //print_r($records);?>
                                         <div class="form-check form-check-inline">
                                             <label class="form-check-label">
-                                                <input type="radio" class="form-check-input-styled-success" value="Active" name="status" id="status1" checked>
+                                                <input type="radio" class="form-check-input-styled-success" value="Active" name="status_flag" id="status_flag1" <?php if ((isset($records['status_flag']) && $records['status_flag'] == 'Active') || empty($records['status_flag']))  {  echo 'checked'; } ?>>
                                                 Active
                                             </label>
                                         </div>
 
                                         <div class="form-check form-check-inline">
                                             <label class="form-check-label">
-                                                <input type="radio" class="form-check-input-styled-danger" value="Inactive" name="status" id="status2">
+                                                 <input type="radio" class="form-check-input-styled-danger" value="Inactive" name="status_flag" id="status_flag2" <?php if (isset($records['status_flag']) && $records['status_flag'] == 'Inactive')  {  echo 'checked'; } ?>>
                                                 In-Active
                                             </label>
                                         </div>
                                         <div class="hidedefault validation-invalid-label mt-2" id="error_phonenumber">Please select status</div>
                                     </div>
                                 </div>
-                                <!--  <div class="form-group">
-                                        <label>Address:</label>
-                                        <textarea rows="3" cols="3" class="form-control" placeholder="Enter address"></textarea>
-                                    </div> -->
                                 <div class="form-group row">
-                                    <label class="col-form-label col-lg-2"></label>
+                                    <label class="control-label col-lg-2" for="sort_order">Sort order :<span class="text-danger">*</span></label>
+                                    <div class="col-lg-9"><input type="number" class="form-control  numbersOnly" id="sort_order" name="sort_order" placeholder="sort order" value="<?php echo isset($records['sort_order'])?$this->common->getDbValue($records['sort_order']):''; ?>">
+                                        
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label col-lg-2"></label>
                                     <div class="col-lg-9">
                                         <button type="submit" class="btn bg-blue">Submit <i class="icon-paperplane ml-2"></i></button>
-                                        <a href="<?php echo site_url($this->ctrl_name);?>"><button type="button" class="btn btn-light  ml-2">Cancel</button></a>
+                                        <a href="<?php echo site_url($this->ctrl_name."/categorylistall");?>"><button type="button" class="btn btn-light  ml-2">Cancel</button></a>
                                     </div>
                                 </div>
                             </form>
@@ -221,12 +202,7 @@
                 var errMsg_alert = "";
                 $(".form-control").removeClass("border-danger");
 
-                if (!$("#category_id").val()) {
-                    isError = true;
-                    //$("#error_first_category_id").show()
-                    $("#category_id").addClass("border-danger");
 
-                }
                 if (!$("#name").val()) {
                     isError = true;
                     //$("#error_first_name").show()
@@ -234,36 +210,15 @@
 
                 }
 				
-                if (!$("#name_en").val()) {
+                 			
+                if (!$("#sort_order").val()) {
                     isError = true;
                     //$("#error_first_name").show()
-                    $("#name_en").addClass("border-danger");
-
-                }				
-               
-			    /*if (!$("#short_description").val()) {
-                    isError = true;
-                    //$("#error_first_name").show()
-                    $("#short_description").addClass("border-danger");
-                }		
-                if (!$("#description").val()) {
-                    isError = true;
-                    //$("#error_first_name").show()
-                    $("#description").addClass("border-danger");
-                }*/			
-
-                if (!$("#price").val()) {
-                    isError = true;
-                    //$("#error_first_name").show()
-                    $("#price").addClass("border-danger");
-                }				
-
-                if (!$("#sale_price").val()) {
-                    isError = true;
-                    //$("#error_first_name").show()
-                    $("#sale_price").addClass("border-danger");
+                    $("#sort_order").addClass("border-danger");
                 }	
-
+                			
+				
+				
 
                 //frd_email
                 if (isError) {
@@ -278,8 +233,8 @@
 
         });
         </script>
-
-        <script type="text/javascript">
+        
+ <script type="text/javascript">
         jQuery(document).ready(function($) {
 
 
@@ -350,7 +305,7 @@
         });
 
         // TableManageButtons.init();
-        </script>
+        </script>        
     </body>
 
 </html>

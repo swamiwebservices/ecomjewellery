@@ -38,15 +38,13 @@ class Dashboard extends CI_Controller
         $data['maxm'] = $maxm = 50;
         $data['sub_heading'] = 'List';
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         $uid = $session_user_data['user_id'];
         $data['user_id'] = $uid;
 
 		$data['cust_cnt'] = $cust_cnt = $this->common->numRow('user_master_front'," WHERE user_type='CUST' and parent_id=0  ORDER BY user_id");
-		$data['driv_cnt'] = $driv_cnt = $this->common->numRow('user_master_front'," WHERE user_type='DRI' ORDER BY user_id");
-		$data['carry_cnt'] = $carry_cnt = $this->common->numRow('user_master_front'," WHERE user_type='CMAN' ORDER BY user_id");
 
-	 	$data['prod_cnt'] = $prod_cnt = $this->common->numRow('product_master'," WHERE status in ('Active','Inactive') ORDER BY product_id");
+	 	$data['prod_cnt'] = $prod_cnt = $this->common->numRow('product_master'," WHERE status_flag in ('Active','Inactive') ORDER BY product_id");
 	//	$data['mobile_cnt'] = $mobile_cnt = $this->common->numRow('master_mobile_phones'," WHERE status in ('Active','Inactive') ORDER BY id");
 	//	$data['zone_cnt'] = $zone_cnt = $this->common->numRow('master_zone'," WHERE status in ('Active','Inactive') ORDER BY id");
      //today total cod order

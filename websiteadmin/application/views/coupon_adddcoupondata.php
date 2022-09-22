@@ -9,7 +9,6 @@
         <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/bootstrap-datepicker.css" type="text/css" />
 
-        <script type="text/javascript" src="<?php echo base_url() ?>assets/js/bootstrap-datepicker.js"></script>
     </head>
 
     <body>
@@ -124,10 +123,10 @@ if ($error_warning) {
                                     <label class="col-form-label col-lg-2" for="discount">Discount :<span class="text-danger">*</span></label>
                                     <div class="col-lg-9"><input type="text" class="form-control" id="discount" name="discount" placeholder="" value="<?php echo isset($_POST['discount']) ? $this->common->getDbValue($_POST['discount']) : ''; ?>" required1> </div>
                                 </div>
-                                <div class="form-group row">
+                              <!--   <div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="total" data-popup="tooltip" title="" data-original-title="The total amount that must be reached before the coupon is valid.">Total Amount :</label>
                                     <div class="col-lg-9"><input type="text" class="form-control numbersOnly" id="total" name="total" placeholder="" value="<?php echo isset($_POST['total']) ? $this->common->getDbValue($_POST['total']) : ''; ?>" required1> </div>
-                                </div>  
+                                </div>   -->
                                 <div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="date_start">Date Start : </label>
                                     <div class="col-lg-9"><input type="text" class="form-control numbersOnly" id="date_start" name="date_start" placeholder="" value="<?php echo isset($_POST['date_start']) ? $this->common->getDbValue($_POST['date_start']) : ''; ?>" required1> </div>

@@ -1,5 +1,5 @@
 <?php
-$session_user_data = $this->session->userdata('user_data');
+$session_user_data = $this->session->userdata('admin_user_data');
 //print_r($session_user_data);
 ?>
 <div class="navbar navbar-expand-md navbar-dark bg-primary1 navbar-static topemenuwti" >

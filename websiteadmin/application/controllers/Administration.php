@@ -53,7 +53,7 @@ class Administration extends CI_Controller
             echo 'mysqldump-php error: ' . $e->getMessage();
         } */
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
 
         $data['activaation_id'] = 101;
         $data['sub_activaation_id'] = '101_2';
@@ -100,7 +100,7 @@ class Administration extends CI_Controller
     public function editdata($uuid = 0)
     {
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         $uuid = filter_var($uuid, FILTER_SANITIZE_STRING);
 
         $data['activaation_id'] = 101;
@@ -201,7 +201,7 @@ class Administration extends CI_Controller
 	public function profile()
     {
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         $id = filter_var($session_user_data['uuid'], FILTER_SANITIZE_STRING);
 
         $data['activaation_id'] = 1011;
@@ -274,7 +274,7 @@ class Administration extends CI_Controller
 				$this->db->where('uuid', $id);
 				$this->db->update('user_master', $add_in);
 
-                $session_data = $this->session->userdata('user_data');
+                $session_data = $this->session->userdata('admin_user_data');
                
                  $session_data['first_name'] = $add_in['first_name'];
                  $session_data['last_name'] = $add_in['last_name'];
@@ -312,7 +312,7 @@ class Administration extends CI_Controller
     public function adddata()
     {
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         
 
         $data['activaation_id'] = 101;

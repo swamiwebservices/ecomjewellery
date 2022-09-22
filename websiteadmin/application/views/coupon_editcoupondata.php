@@ -8,8 +8,6 @@
         <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_layouts.js"></script>
         <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
         <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/bootstrap-datepicker.css" type="text/css" />
-
-<script type="text/javascript" src="<?php echo base_url() ?>assets/js/bootstrap-datepicker.js"></script>
     </head>
 
     <body>
@@ -126,17 +124,17 @@ if ($error_warning) {
                                     <label class="col-form-label col-lg-2" for="discount">Discount :<span class="text-danger">*</span></label>
                                     <div class="col-lg-9"><input type="text" class="form-control" id="discount" name="discount" placeholder="" value="<?php echo isset($records['discount']) ? $this->common->getDbValue($records['discount']) : ''; ?>" required1> </div>
                                 </div>
-                              <div class="form-group row">
+                             <!--  <div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="total"  data-popup="tooltip" title="" data-original-title="The total amount that must be reached before the coupon is valid.">Total Amount :</label>
                                     <div class="col-lg-9"><input type="text" class="form-control numbersOnly" id="total" name="total" placeholder="" value="<?php echo isset($records['total']) ? $this->common->getDbValue($records['total']) : ''; ?>" required1> </div>
-                                </div> 
+                                </div>  -->
                                 <div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="date_start"  >Date Start : </label>
-                                    <div class="col-lg-9"><input type="text" class="form-control numbersOnly" id="date_start" name="date_start" placeholder="" value="<?php echo (isset($records['date_end']) && $records['date_end']!='0000-00-00') ? $this->common->getDbValue($records['date_end']) : ''; ?>" required1> </div>
+                                    <div class="col-lg-9"><input type="text" class="form-control " id="date_start" name="date_start" placeholder="" value="<?php echo (isset($records['date_end']) && $records['date_end']!='0000-00-00') ? $this->common->getDbValue($records['date_end']) : ''; ?>" required1> </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="date_end"   >Date End : </label>
-                                    <div class="col-lg-9"><input type="text" class="form-control numbersOnly" id="date_end" name="date_end" placeholder="" value="<?php echo (isset($records['date_end']) && $records['date_end']!='0000-00-00') ? $this->common->getDbValue($records['date_end']) : ''; ?>" required1> </div>
+                                    <div class="col-lg-9"><input type="text" class="form-control " id="date_end" name="date_end" placeholder="" value="<?php echo (isset($records['date_end']) && $records['date_end']!='0000-00-00') ? $this->common->getDbValue($records['date_end']) : ''; ?>" required1> </div>
                                 </div>
                                 <div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="total"  data-popup="tooltip" title="" data-original-title="The maximum number of times the coupon can be used by any customer. Leave blank for unlimited">Uses Per Coupon : </label>

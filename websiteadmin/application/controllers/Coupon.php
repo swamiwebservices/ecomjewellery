@@ -69,7 +69,7 @@ class Coupon extends CI_Controller
         $data['sub_heading'] = 'Add Promo Code';
 
         $data['controller'] = $this->ctrl_name;
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         $error = '';
 
         if (isset($_POST['mode']) && $_POST['mode'] == 'edit_content_add' && $this->validateForm(0)) {
@@ -208,7 +208,7 @@ class Coupon extends CI_Controller
         $data['sub_heading'] = 'Edit Promo Code';
 
         $data['controller'] = $this->ctrl_name;
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         $uuid = filter_var($uuid, FILTER_SANITIZE_STRING);
         $data['uuid'] = $uuid;
         $error = "";
@@ -275,7 +275,7 @@ class Coupon extends CI_Controller
     public function delete_data($uuid = 0)
     {
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
 
         $uuid = filter_var($uuid, FILTER_SANITIZE_STRING);
 

@@ -95,7 +95,12 @@ defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automat
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
 
 
-define('setting', 2);
+defined('META_DESCIPTION')      OR define('META_DESCIPTION', 160 ); // highest automatically-assigned error code
+defined('META_TITLE')      OR define('META_TITLE', 60  ); // highest automatically-assigned error code
+ 
+defined('IMAGE_AUTO_RESIZE')      OR define('IMAGE_AUTO_RESIZE', 0  ); // highest automatically-assigned error code
+
+define('setting', 1);
 if(setting==1){
     define('back_path', 'http://127.0.0.1:8074/ecomjewellery/');
     define('FIREBASE_CREDENTIALS_PATH', 'firebase/bo-ice-2f1ce71da14c_local.json');
@@ -111,14 +116,14 @@ if(setting==1){
     
     define('FIREBASE_API_KEY_USER', 'AAAA09fPpjE:APA91bHD7jIlW2bLYYbrobcGJowMy5Fnh47gau44mhCji2YVODYAedxc1SRRs3aJ_8lilawfNjVZWfv1PmipMr2tFX6t4ZnjyPR4RHFz0Iwe-Kk_MT1Ce8-Ua8YMIbK8sBsKusNtBE3D');
 } else {
-    define('back_path', 'https://thaobo.com/');
+    define('back_path', 'http://127.0.0.1:8074/ecomjewellery/');
     define('FIREBASE_CREDENTIALS_PATH', 'firebase/bo-ice-2f1ce71da14c.json');
     define('FIREBASE_DATABASE_PATH', 'https://thao-bo-ice.firebaseio.com');
     
-    define('FIREBASE_NOTIFICATION_ADMIN_ORDER_DETAIL_URL', 'https://thaobo.com/secu_doice/index.php/orders/orderdetail/');
-    define('FIREBASE_NOTIFICATION_MP3', 'https://thaobo.com/firebase/for-sure.mp3');
-    define('FIREBASE_NOTIFICATION_ICON', 'https://thaobo.com/firebase/logoforfirebase.png');
-    define('FIREBASE_NOTIFICATION_IMAGE', 'https://thaobo.com/firebase/logoforfirebase.png');
+    define('FIREBASE_NOTIFICATION_ADMIN_ORDER_DETAIL_URL', 'http://127.0.0.1:8074/ecomjewellery/secu_doice/index.php/orders/orderdetail/');
+    define('FIREBASE_NOTIFICATION_MP3', 'http://127.0.0.1:8074/ecomjewellery/firebase/for-sure.mp3');
+    define('FIREBASE_NOTIFICATION_ICON', 'http://127.0.0.1:8074/ecomjewellery/firebase/logoforfirebase.png');
+    define('FIREBASE_NOTIFICATION_IMAGE', 'http://127.0.0.1:8074/ecomjewellery/firebase/logoforfirebase.png');
     define('FIREBASE_NOTIFICATION_URL', 'https://fcm.googleapis.com/fcm/send');
     define('FIREBASE_API_KEY', 'AAAA-VhoMwI:APA91bH_Y5oSrhzQgrYBjp2xwL128V46ywKysND8isL86hAAd67MHgd2u07EorcDNXfmaY2HfMGuKI2zynL2hBfpu1wk9O7zSqT8xZ1BuB12ZyTSEPoOQr7PTSu6q-ZFjrT5oJYxhc8I');
     define('FIREBASE_PUBLIC_KEY', 'BFco0ok32I-a4H6eTHnX2hswn0mDmftmoauUZKRbryivOQ4Lk6lEWn0vcfg0A6RcR0_zv5RX8B_Q8ljjBdABA44');

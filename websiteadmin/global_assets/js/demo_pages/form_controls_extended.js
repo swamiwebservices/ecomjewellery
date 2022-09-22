@@ -335,7 +335,7 @@ var ExtendedFormControls = function() {
         });
 
         // Initialize engine
-        states.initialize();
+        //states.initialize();
 
         // Initialize
         $('.typeahead-bloodhound').typeahead(
@@ -360,37 +360,37 @@ var ExtendedFormControls = function() {
         //
 
         // Constructs the suggestion engine
-        var countries = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            limit: 10,
-            prefetch: {
+        // var countries = new Bloodhound({
+        //     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
+        //     queryTokenizer: Bloodhound.tokenizers.whitespace,
+        //     limit: 10,
+        //     prefetch: {
 
-                // url points to a json file that contains an array of country names, see
-                // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
-                url: '../../../../global_assets/demo_data/typeahead/countries.json',
+        //         // url points to a json file that contains an array of country names, see
+        //         // https://github.com/twitter/typeahead.js/blob/gh-pages/data/countries.json
+        //         url: '../../../../global_assets/demo_data/typeahead/countries.json',
 
-                // the json file contains an array of strings, but the Bloodhound
-                // suggestion engine expects JavaScript objects so this converts all of
-                // those strings
-                filter: function(list) {
-                    return $.map(list, function(country) { return { name: country }; });
-                }
-            }
-        });
+        //         // the json file contains an array of strings, but the Bloodhound
+        //         // suggestion engine expects JavaScript objects so this converts all of
+        //         // those strings
+        //         filter: function(list) {
+        //             return $.map(list, function(country) { return { name: country }; });
+        //         }
+        //     }
+        // });
 
         // Initialize engine
-        countries.initialize();
+        //countries.initialize();
 
         // Passing in `null` for the `options` arguments will result in the default options being used
-        $('.typeahead-prefetched').typeahead(null, {
-            name: 'countries',
-            displayKey: 'name',
+        // $('.typeahead-prefetched').typeahead(null, {
+        //     name: 'countries',
+        //     displayKey: 'name',
 
-            // `ttAdapter` wraps the suggestion engine in an adapter that
-            // is compatible with the typeahead jQuery plugin
-            source: countries.ttAdapter()
-        });
+        //     // `ttAdapter` wraps the suggestion engine in an adapter that
+        //     // is compatible with the typeahead jQuery plugin
+        //     source: countries.ttAdapter()
+        // });
 
 
         //
@@ -401,12 +401,12 @@ var ExtendedFormControls = function() {
         var bestPictures = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: '../../../../global_assets/demo_data/typeahead/movies.json',
-            remote: '../../../../global_assets/json/queries/%QUERY.json'
+            prefetch: '',
+            remote: ''
         });
 
         // Initialize engine
-        bestPictures.initialize();
+        //bestPictures.initialize();
 
         // Initialize
         $('.typeahead-remote').typeahead(null, {
@@ -444,19 +444,19 @@ var ExtendedFormControls = function() {
         var nbaTeams = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: '../../../../global_assets/demo_data/typeahead/nba.json'
+            prefetch: ''
         });
 
         // Constructs the suggestion engine for 2nd dataset
         var nhlTeams = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.obj.whitespace('team'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: '../../../../global_assets/demo_data/typeahead/nhl.json'
+            prefetch: ''
         });
 
         // Initialize engines
-        nbaTeams.initialize();
-        nhlTeams.initialize();
+      //  nbaTeams.initialize();
+       // nhlTeams.initialize();
 
         // Initialize 1st dataset
         $('.typeahead-multiple-datasets').typeahead(
@@ -487,11 +487,11 @@ var ExtendedFormControls = function() {
         //
 
         // Initialize with options
-        $('.typeahead-scrollable-menu').typeahead(null, {
-            name: 'countries',
-            displayKey: 'name',
-            source: countries.ttAdapter()
-        });
+        // $('.typeahead-scrollable-menu').typeahead(null, {
+        //     name: 'countries',
+        //     displayKey: 'name',
+        //     source: countries.ttAdapter()
+        // });
 
 
         //
@@ -512,7 +512,7 @@ var ExtendedFormControls = function() {
         });
 
         // Initialize engine
-        arabicPhrases.initialize();
+        //arabicPhrases.initialize();
 
         // Initialize
         $('.typeahead-rtl-support').typeahead(

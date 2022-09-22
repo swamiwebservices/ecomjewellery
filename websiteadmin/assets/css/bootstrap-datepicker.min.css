@@ -6,7 +6,7 @@
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
-.datepicker {
+ .datepicker {
     padding: 4px;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
@@ -198,6 +198,7 @@
 .datepicker table tr td.today.disabled[disabled],
 .datepicker table tr td.today.disabled:hover[disabled] {
     background-color: #c2085f
+    color: #ffffff;
 }
 
 .datepicker table tr td.today:active,
@@ -499,7 +500,7 @@
 
 .calendar-time-block-main .datepicker .day{height: 50px; font-size: 14px;}
 
-.datepicker .today.day{background: #c2085f;}
+.datepicker .today.day{background: #c2085f; color: #ffffff;}
 
 .datepicker thead tr:first-child th,
 .datepicker tfoot tr th {

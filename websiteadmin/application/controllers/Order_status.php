@@ -58,7 +58,7 @@ class Order_status extends CI_Controller
     public function editdata($order_status_id = 0)
     {
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         $order_status_id = filter_var($order_status_id, FILTER_SANITIZE_STRING);
         $data['l_s_act'] = 3;
 

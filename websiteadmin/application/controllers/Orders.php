@@ -267,7 +267,7 @@ class Orders extends CI_Controller
     {
         date_default_timezone_set('Asia/Bangkok');
         $current_date_time = date("Y-m-d h:i:s");
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
 
         $data['title'] = 'Order';
 

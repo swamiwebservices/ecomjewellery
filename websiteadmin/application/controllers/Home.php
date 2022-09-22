@@ -30,7 +30,7 @@ class Home extends CI_Controller
     public function index()
     {
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         if (!empty($session_user_data['logged_in'])) {
 
             redirect('dashboard', 'refresh');
@@ -77,11 +77,11 @@ class Home extends CI_Controller
                     //    $this->session->sess_destroy();
                     $this->session->sess_regenerate(true);
 
-                    $this->session->set_userdata(array('user_data' => array()));
+                    $this->session->set_userdata(array('admin_user_data' => array()));
 
-                    $ar_session_data['user_data'] = $result;
-                    $ar_session_data['user_data']['logged_in'] = true;
-                    $ar_session_data['user_data']['passphrase'] = "";
+                    $ar_session_data['admin_user_data'] = $result;
+                    $ar_session_data['admin_user_data']['logged_in'] = true;
+                    $ar_session_data['admin_user_data']['passphrase'] = "";
                     $this->session->set_userdata($ar_session_data);
 
                     redirect(site_url("dashboard"), 'refresh');

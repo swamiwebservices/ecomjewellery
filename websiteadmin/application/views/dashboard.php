@@ -1,5 +1,5 @@
 <?php
-$session_user_data = $this->session->userdata('user_data');
+$session_user_data = $this->session->userdata('admin_user_data');
 $where="where user_id='".$session_user_data['user_id']."'  ";	
 $user_data = $this->common->getOneRow("user_master",$where);
  //print_r($user_data);
@@ -442,7 +442,7 @@ $i = 0;
         </div>
         <!-- /page content -->
         
-        <?php //this->load->view('inc_footer_firebase');?>
+         
     </body>
     <script>
     // Datatable with saving state

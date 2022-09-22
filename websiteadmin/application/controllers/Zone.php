@@ -67,7 +67,7 @@ public $m_act = 3;
 	
 	public function addProvince(){
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         $data['l_s_act'] = 4;
 		 
         $data['title'] = 'Province';
@@ -127,7 +127,7 @@ public $m_act = 3;
 	public function editprovince($duid = 0)
     {
 
-		$session_user_data = $this->session->userdata('user_data');
+		$session_user_data = $this->session->userdata('admin_user_data');
         $duid = filter_var($duid, FILTER_SANITIZE_STRING);
 
         $data['l_s_act'] = 4;
@@ -222,7 +222,7 @@ public function district(){
 public function addDistrict($stateid=0){
 
     $stateid = filter_var($stateid, FILTER_SANITIZE_STRING);
-    $session_user_data = $this->session->userdata('user_data');
+    $session_user_data = $this->session->userdata('admin_user_data');
     $stateInfo = $this->common->getSingleInfoBy('master_province', 'id', $stateid);
 
     if (sizeof($stateInfo) <= 0) {
@@ -302,7 +302,7 @@ public function addDistrict($stateid=0){
 public function editdistrict($stateid = 0,$azid=0)
 {
 
-    $session_user_data = $this->session->userdata('user_data');
+    $session_user_data = $this->session->userdata('admin_user_data');
     $stateid = filter_var($stateid, FILTER_SANITIZE_STRING);
     $azid = filter_var($azid, FILTER_SANITIZE_STRING);
 
@@ -390,7 +390,7 @@ public function editdistrict($stateid = 0,$azid=0)
 
 public function deletedistrict($stateid = 0,$zaid=0)
 {
-    $session_user_data = $this->session->userdata('user_data');
+    $session_user_data = $this->session->userdata('admin_user_data');
 
     $zaid = filter_var($zaid, FILTER_SANITIZE_STRING);
     $stateid = filter_var($stateid, FILTER_SANITIZE_STRING);
@@ -417,7 +417,7 @@ public function deletedistrict($stateid = 0,$zaid=0)
 	/* public function addCity()
     {
 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
 
         $data['l_s_act'] = 1;
 		 
@@ -476,7 +476,7 @@ public function deletedistrict($stateid = 0,$zaid=0)
 	public function editcity($duid = 0)
     {
 
-		$session_user_data = $this->session->userdata('user_data');
+		$session_user_data = $this->session->userdata('admin_user_data');
         $duid = filter_var($duid, FILTER_SANITIZE_STRING);
 
         $data['l_s_act'] = 1;
@@ -545,7 +545,7 @@ public function deletedistrict($stateid = 0,$zaid=0)
     }
     public function deletecity($duid = 0)
     {
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
 
         $duid = filter_var($duid, FILTER_SANITIZE_STRING);
 
@@ -569,7 +569,7 @@ public function deletedistrict($stateid = 0,$zaid=0)
 	public function addzonearea($cityid=0)
     {
 		$cityid = filter_var($cityid, FILTER_SANITIZE_STRING);
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
 		$cityInfo = $this->common->getSingleInfoBy($this->tbl_name, 'id', $cityid);
 
         if (sizeof($cityInfo) <= 0) {
@@ -641,7 +641,7 @@ public function deletedistrict($stateid = 0,$zaid=0)
 	public function editzonearea($cityid = 0,$azid=0)
     {
 
-		$session_user_data = $this->session->userdata('user_data');
+		$session_user_data = $this->session->userdata('admin_user_data');
 		$cityid = filter_var($cityid, FILTER_SANITIZE_STRING);
 		$azid = filter_var($azid, FILTER_SANITIZE_STRING);
 
@@ -715,7 +715,7 @@ public function deletedistrict($stateid = 0,$zaid=0)
     }
     public function deletezonearea($cityid = 0,$zaid=0)
     {
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
 
 		$zaid = filter_var($zaid, FILTER_SANITIZE_STRING);
 		$cityid = filter_var($cityid, FILTER_SANITIZE_STRING);
@@ -741,7 +741,7 @@ public function deletedistrict($stateid = 0,$zaid=0)
 	public function zonearea()
     {
 	 
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         $data['l_s_act'] = 2;
 		 
         $data['title'] = 'City-Zone area';

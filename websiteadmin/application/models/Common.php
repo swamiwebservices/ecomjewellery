@@ -199,22 +199,23 @@ class Common extends CI_Model
 
     public function getUniqueSlug($table = '', $field = '', $value = '', $columns = '*')
     {
-        $value = isset($slug_name) ? filter_var($value, FILTER_SANITIZE_STRING) : '';
+       // $value = isset($value) ? filter_var($value, FILTER_SANITIZE_STRING) : '';
 
         // $data_info = array();
         $query = $this->db->query("select $columns from $table where $field like '" . $value . "%'");
-
+         
         if ($query->num_rows() > 0) {
             //->row_array()
             // $data_info = $query->result_array();
             $value = $value . "-" . $query->num_rows();
         }
+         
         return $value;
     }
     public function getSessionValue()
     {
 
-        return $this->session->userdata('user_data');
+        return $this->session->userdata('admin_user_data');
 
     }
 
@@ -986,7 +987,7 @@ class Common extends CI_Model
     }
     public function session_name()
     {
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         return $session_user_data['first_name'] . " " . $session_user_data['last_name'];
     }
 
@@ -1022,7 +1023,7 @@ class Common extends CI_Model
     public function check_user_session($current_site_url = '')
     {
         $current_site_url = $current_site_url;
-        $session_user_data = $this->session->userdata('user_data');
+        $session_user_data = $this->session->userdata('admin_user_data');
         if (!isset($session_user_data['user_id'])) {
             //redirect( $this->config->item('site_url'));
             redirect(site_url());
@@ -1228,6 +1229,28 @@ class Common extends CI_Model
 
     }  
     
+    public function showImageAdmin($path = '', $img = '')
+    {
+
+        if ($img == "") {
+
+            return base_url() . "assets/images/noimageproduct.png";
+
+        }
+
+        if (file_exists($path . $img)) {
+
+            return $path . $img;
+
+        } else {
+
+            //   return base_url() . $path . $img;
+            return base_url() . "assets/images/noimageproduct.png";
+            // return "uploads/grey-no-image.jpg";
+
+        }
+
+    }
     public function get_categorylist($category_id = 0)
     {
         $category_id = $this->common->mysql_safe_string($category_id);
@@ -1252,14 +1275,14 @@ class Common extends CI_Model
     }
 	
     public function get_categorylist_parent_sub($category_id=0){
-        echo $sql = "select * from product_category where  parent_id=0 AND status!='Delete' order by name asc   ";
+         $sql = "select * from product_category where  parent_id=0 AND status_flag!='Deleted' order by name asc   ";
         $query_result = $this->db->query($sql);
         $results = $query_result->result_array();
 
         $combo = "<option value='' >Select Category</option>";
         foreach ($results as $key => $value) {
 
-			$sql = "select * from product_category where  parent_id=".$value['category_id']." AND status!='Delete' order by name asc   ";
+			$sql = "select * from product_category where  parent_id=".$value['category_id']." AND status_flag!='Deleted' order by name asc   ";
 			$query_result = $this->db->query($sql);
 			$results_sub = $query_result->result_array();
 			$sel_flag = '';
@@ -1269,13 +1292,13 @@ class Common extends CI_Model
 			if ($value['category_id'] == $category_id) { $sel_flag = 'selected';}
 			if ($results_sub) { $dis_flag = 'disabled';}
 
-            $combo .= "<option value='" . $fld_val . "' ".$sel_flag." ".$dis_flag.">" . $value['name']. ' ('.$value['status'].')' . "</option>";
+            $combo .= "<option value='" . $fld_val . "' ".$sel_flag." ".$dis_flag.">" . $value['name']. ' ('.$value['status_flag'].')' . "</option>";
 			
 			foreach ($results_sub as $key => $value_sub) {
 				$sel_sub_flag = '';
 				$fld_val = $value['category_id'].'|'.$value_sub['category_id'];
 				if ($value['category_id'] == $category_id) { $sel_sub_flag = 'selected';}
-				$combo .= "<option value='" . $fld_val . "' ".$sel_sub_flag.">&nbsp;&nbsp;" . $value_sub['name']. ' ('.$value_sub['status'].')' . "</option>";
+				$combo .= "<option value='" . $fld_val . "' ".$sel_sub_flag.">&nbsp;&nbsp;" . $value_sub['name']. ' ('.$value_sub['status_flag'].')' . "</option>";
 			}
 
         }
@@ -1285,7 +1308,7 @@ class Common extends CI_Model
     }
 	
     public function get_categorylist_parent($category_id=0){
-         $sql = "select * from product_category where  parent_id=0 AND status!='Delete' order by name asc   ";
+         $sql = "select * from product_category where  parent_id=0 AND status_flag !='Deleted' order by name asc   ";
         $query_result = $this->db->query($sql);
         $results = $query_result->result_array();
 
@@ -1293,35 +1316,13 @@ class Common extends CI_Model
         foreach ($results as $key => $value) {
 			$sel_flag = '';
 			if ($value['category_id'] == $category_id) { $sel_flag = 'selected';}
-            $combo .= "<option value='" . $value['category_id'] . "' ".$sel_flag.">" . $value['name']. ' ('.$value['status'].')' . "</option>";
+            $combo .= "<option value='" . $value['category_id'] . "' ".$sel_flag.">" . $value['name']. ' ('.$value['status_flag'].')' . "</option>";
         }
 
         echo $combo;
 
     }			
-
-    public function get_driverlist($user_id = 0)
-    {
-        $user_id = $this->common->mysql_safe_string($user_id);
-      
-        $sql = "select uuid, user_id,first_name,middle_name,last_name,status, user_type,concat(first_name,' ',middle_name,' ',last_name) as name from 	user_master_front where user_type in ('DRI','SEC') and  status!='Delete' order by user_type , name asc   ";
-        $query_result = $this->db->query($sql);
-        $results = $query_result->result_array();
-
-        $combo = "<option value='' >Select user</option>";
-        foreach ($results as $key => $value) {
-
-            if ($value['user_id'] == $user_id) {
-                $combo .= "<option value='" . $value['user_id'] . "' selected>" . $value['name'].' ('.$value['user_type']. ') ('.$value['status'].')' . "</option>";
-            } else {
-                $combo .= "<option value='" . $value['user_id'] . "' >" . $value['name'].' ('.$value['user_type']. ') ('.$value['status'].')' .  "</option>";
-            }
-
-        }
-
-        echo $combo;
-
-    }
+ 
 
     function ajaxpagingnation_lux_new($page,$num_rows,$per_page,$links=7,$fun_name='',$other_para=''){
 			
@@ -1569,5 +1570,85 @@ class Common extends CI_Model
 function encryptPassword($pwd, $salt){
     $hashed_password = md5($salt . $pwd);
     return $hashed_password;
+}
+public function createjson($tablename = "", $folder = "", $sql_qyery = "", $rowsdata = "multiple",$homejosn='self')
+{
+    $response = array();
+    $home = array();
+     
+    if ($tablename != "") {
+        if ($sql_qyery != "") {
+            $sql = $sql_qyery;
+        } else {
+            $sql = "select * from  $tablename c      where     delete_status=0 and status_flag=1 order by sort_no";
+        }
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+
+            if ($rowsdata == "multiple") {
+                $resultdata = $query->result_array();
+                foreach ($resultdata as $key => $row) {
+                    if (isset($row['main_image']) && $row['main_image'] != "") {
+                        $row['main_image'] =   "/uploads/" . $folder . "/" . $row['main_image'];
+                    }
+                    if (isset($row['featured_image']) && $row['featured_image'] != "") {
+                        $row['featured_image'] =   "/uploads/" . $folder . "/" . $row['featured_image'];
+                    }
+                    if (isset($row['slider_image']) && $row['slider_image'] != "") {
+                        $row['slider_image'] =  "/uploads/" . $folder . "/" . $row['slider_image'];
+                    }
+
+                    if (isset($row['pdf_file']) && $row['pdf_file'] != "") {
+                        $row['pdf_file'] =   "/uploads/" . $folder . "/" . $row['pdf_file'];
+                    }
+
+                    if (isset($row['id'])) {
+                        $response[$row['id']] = $row;
+                    } else {
+                        $response[] = $row;
+                    }
+
+                }
+            } else {
+                $resultdata = $query->row_array();
+                if (isset($resultdata['main_image']) && $resultdata['main_image'] != "") {
+                    $resultdata['main_image'] =  "/uploads/" . $folder . "/" . $resultdata['main_image'];
+                }
+                $response[] = $resultdata;
+            }
+
+
+            if($homejosn=="self"){
+                $filename_temp = '../uploads/jsondata/' . $tablename . '.json';
+                $fp = fopen($filename_temp, 'w');
+                fwrite($fp, json_encode($response));
+                fclose($fp);
+            } else {
+
+
+                // read json file
+                $jsondata = file_get_contents('../uploads/jsondata/homejosn.json');
+                // decode json
+                if($jsondata!=""){
+                    $json_arr = json_decode($jsondata, true);
+                    $json_arr[$tablename] = $response;
+                } else {
+                    $json_arr[$tablename] = $response;
+                }
+                
+                // add data
+                file_put_contents('../uploads/jsondata/homejosn.json', json_encode($json_arr));
+                
+                // $filename_temp = 'uploads/jsondata/homejosn.json';
+                // $fp = fopen($filename_temp, 'w');
+                // fwrite($fp, json_encode($home));
+                // fclose($fp);
+            }
+          
+        }
+    }
+
+    
+    
 }
 }

@@ -1,5 +1,5 @@
 <?php
-$session_user_data = $this->session->userdata('user_data');
+$session_user_data = $this->session->userdata('admin_user_data');
 ?>
 <!DOCTYPE html>
 <html lang="en">

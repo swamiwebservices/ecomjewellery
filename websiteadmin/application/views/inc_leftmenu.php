@@ -1,5 +1,5 @@
 <?php
-$session_user_data = $this->session->userdata('user_data');
+$session_user_data = $this->session->userdata('admin_user_data');
 $where="where user_id='".$session_user_data['user_id']."'  ";	
 $user_data = $this->common->getOneRow("user_master",$where);
  //print_r($user_data);
@@ -127,10 +127,10 @@ if($user_data['access_ids']!=''){
                         <li class="nav-item"><a href="<?php echo site_url('products/categorylistall') ?>" class="nav-link <?php if(isset($l_s_act) && $l_s_act==3){ echo 'active';}?>">Category</a></li>
                         <?php }?>
                         <?php if (in_array("35", $permission)){?> 
-                        <li class="nav-item"><a href="<?php //echo site_url('products') ?>" class="nav-link <?php if(isset($l_s_act) && $l_s_act==1){ echo 'active';}?>">Products</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('products') ?>" class="nav-link <?php if(isset($l_s_act) && $l_s_act==1){ echo 'active';}?>">Products</a></li>
                         <?php }?>
                         <?php if (in_array("36", $permission)){?> 
-                        <li class="nav-item"><a href="<?php //echo site_url('coupon') ?>" class="nav-link <?php if(isset($l_s_act) && $l_s_act==2){ echo 'active';}?>">Coupon</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('coupon') ?>" class="nav-link <?php if(isset($l_s_act) && $l_s_act==2){ echo 'active';}?>">Coupon</a></li>
                         <?php }?>
                         
                     </ul>
@@ -139,30 +139,19 @@ if($user_data['access_ids']!=''){
 
            
 
-                <?php if (in_array("39", $permission)){?>
-                <li class="nav-item nav-item-submenu <?php if(isset($this->m_act) && $this->m_act==9){ echo ' nav-item-expanded nav-item-open';}?>">
-                    <a href="#" class="nav-link"><i class="icon-images2 "></i> <span>Media</span></a>
-                    <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                        <li class="nav-item"><a href="<?php //echo site_url('media') ?>" class="nav-link <?php if(isset($l_s_act) && $l_s_act==1){ echo 'active';}?>">Media List</a></li>
-                    </ul>
-                </li>
-                <?php }?>
+                
 
-                <?php if (in_array("40", $permission) || in_array("41", $permission)){?>
-                <li class="nav-item nav-item-submenu <?php if(isset($this->m_act) && $this->m_act==11){ echo ' nav-item-expanded nav-item-open';}?>">
+                <li class="nav-item nav-item-submenu <?php if ($this->m_act == "101") {echo " nav-item-expanded nav-item-open";}?>">
                     <a href="#" class="nav-link"><i class="icon-file-text2"></i> <span>CMS</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                       
-                    <?php if (in_array("40", $permission)){?>
-                        <li class="nav-item"><a href="<?php //echo site_url('cms/faq') ?>" class="nav-link <?php if(isset($l_s_act) && $l_s_act==4){ echo 'active';}?>">FAQ</a></li>
-                        <?php }?>
-                        <?php if (in_array("41", $permission)){?>
-
-                        <li class="nav-item"><a href="<?php //echo site_url('cms/aboutus') ?>" class="nav-link <?php if(isset($l_s_act) && $l_s_act==5){ echo 'active';}?>">About US</a></li>
-                        <?php }?>
+                        <li class="nav-item"><a href="<?php echo site_url('cms/banner') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_8"){ echo 'active';}?>">Home Slider</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('cms/aboutus') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_1"){ echo 'active';}?>">About-us</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('cms/termscondtion') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_2"){ echo 'active';}?>">Terms Condtion</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('cms/privacy') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_3"){ echo 'active';}?>">Privacy</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('cms/address') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_4"){ echo 'active';}?>">Address</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('cms/metatags') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_5"){ echo 'active';}?>">Meta Tags</a></li>
                     </ul>
                 </li>
-                <?php }?>
 
 
                 <li class="nav-item">
