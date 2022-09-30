@@ -5,8 +5,8 @@ $session_user_data = $this->session->userdata('admin_user_data');
 <div class="navbar navbar-expand-md navbar-dark bg-primary1 navbar-static topemenuwti" >
 		<div class="navbar-brand logoheader" >
 			<a href="<?php echo site_url('dashboard')?>" class="d-inline-block">
-            <img src="<?php echo base_url()?>global_assets/images/dash_logo_new.png" alt=""
-                style="border-radius:.1875rem;height: 50px; height: 50px;!important">
+            <img src="<?php echo base_url()?>global_assets/images/logo-circle.png" alt=""
+                style="border-radius:50%; height: 50px; height: 50px;!important">
 			</a>
 		</div>
 
@@ -29,7 +29,7 @@ $session_user_data = $this->session->userdata('admin_user_data');
  
 			</ul>
 
-			<span class="badge1   ml-md-3 mr-md-auto text-primary font-weight-semibold" ><?php echo date("d-M-Y")?> <span id="clock" class="   text-primary font-weight-semibold"></span></span>
+			<span class="badge1   ml-md-3 mr-md-auto  font-weight-semibold" ><?php echo date("d-M-Y")?> <span id="clock" class="    font-weight-semibold"></span></span>
 
 			<ul class="navbar-nav">
 				  

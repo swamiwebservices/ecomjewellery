@@ -6,10 +6,16 @@
 		var st_url = "<?php echo site_url()?>/";
 		</script>  
         <?php $this->load->view('inc_metacss');?>
-        <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
-        
-    
-    
+        <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_floating_labels.js"></script>
+    <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
+    <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_controls_extended.js"></script>
+    <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_layouts.js"></script>
+    <style>
+    .btn-group-vertical>.btn,
+    .btn-group>.btn {
+        z-index: 1;
+    }
+    </style>
     </head>
 
     <body>
@@ -45,12 +51,14 @@
                             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
                         </div>
                         <div class="header-elements d-none">
-                            <div class="breadcrumb justify-content-center">
-                            <a href="<?php echo site_url($controller . "/".$listfun); ?>" class="breadcrumb-elements-item">
-                                    <button type="button" class="btn btn-light btn-sm"><i class="icon-arrow-left7"></i> Back</button>
-                                </a>
-                            </div>
+                        <div class="breadcrumb justify-content-center">
+                            <a href="<?php echo site_url($back_link ); ?>" class="breadcrumb-elements-item">
+                                <button type="button" class="btn btn-light btn-sm"><i class="icon-arrow-left7"></i>
+                                    Back</button>
+                            </a>
+
                         </div>
+                    </div>
 
                     </div>
                 </div>
@@ -120,7 +128,7 @@ if ($warning) {
                                         <input type="text" class="form-control alhanumeric1 maxlength-textarea" maxlength="200" name="banner_name" id="banner_name" value="<?php echo isset($records['banner_name']) ? $records['banner_name'] : ''; ?>" placeholder="Name">
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                               <!--  <div class="form-group row">
                                     <label class="col-lg-2 col-form-label" for="banner_text">Text 1 </label>
                                     <div class="col-lg-10">
                                         <input type="text" class="form-control alhanumeric1 maxlength-textarea" maxlength="200" name="banner_text" id="banner_text" value="<?php echo isset($records['banner_text']) ? $records['banner_text'] : ''; ?>" placeholder="Text 1">
@@ -131,14 +139,14 @@ if ($warning) {
                                     <div class="col-lg-10">
                                         <input type="text" class="form-control alhanumeric1 maxlength-textarea" maxlength="200" name="banner_text2" id="banner_text2" value="<?php echo isset($records['banner_text2']) ? $records['banner_text2'] : ''; ?>" placeholder="Text 2">
                                     </div>
-                                </div> 
+                                </div>  -->
 
                                 
                                 
                                 <div class="form-group row">
                                 <?php
                                 
-                                      $main_image = (isset($records['main_image']) && $records['main_image']!="") ? base_url()."../uploads/banner/".$records['main_image'] : 'http://www.placehold.it/20x20/EFEFEF/AAAAAA&amp;text=no+image'; ;
+                                      $main_image = (!empty($records['main_image'])) ? base_url()."../uploads/banner/".$records['main_image'] : 'https://via.placeholder.com/140x100'; ;
                                     ?>
                                     <label class="col-md-2 control-label">Image</label>
                                     <div class="col-md-10">
@@ -170,6 +178,31 @@ if ($warning) {
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-2 col-form-label"  for="sort_no">For Domain </label>
+                                    <div class="col-lg-10">
+                                         <?php
+                                         
+                                         $domains_array = isset($records['domains']) ? explode(",",$records['domains']) : [1,2,3];
+                                           $domain_list = $this->config->item("DOMAINs");
+                                           foreach($domain_list as $key => $domain){
+                                            $domain_org = $domain;
+                                            $domain = str_replace(".","_",$domain);
+                                            
+                                         ?>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input-styled-success" value="<?php echo $key?>"
+                                                    name="domains[]" id="domains<?php echo $key?>"
+                                                    <?php if (in_array($key,$domains_array))  {  echo 'checked'; } ?>>
+                                                    <?php echo $domain_org?>
+                                            </label>
+                                        </div>
+                                        <?php }?>
+                                         
+                                    </div>
+                                </div>
+
                                 <div class="form-group row">
                                     <label class="col-lg-2 col-form-label"  for="sort_no">Sort Order <span class="text-danger">*</span></label>
                                     <div class="col-lg-10">
@@ -208,7 +241,9 @@ if ($warning) {
                                     <label class="col-form-label col-lg-2"></label>
                                     <div class="col-lg-9">
                                         <button type="submit" class="btn bg-blue">Submit <i class="icon-paperplane ml-2"></i></button>
-                                        
+                                        <a href="<?php echo site_url($back_link);?>" <button type="button" class="btn btn-light ml-2"><i
+                                                class="icon-arrow-left7"></i>
+                                            Back</button></a> 
                                     </div>
                                 </div>
                             </form>

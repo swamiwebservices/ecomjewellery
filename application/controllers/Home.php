@@ -50,7 +50,10 @@ class Home extends CI_Controller
             $param_page = "home";
         }
         $data['classhome'] = 'active';
-         
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
        // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
 
       //  print_r($data['home']);

@@ -192,7 +192,7 @@
                                         <div class="list-icons">
 
 
-                                            <a href="<?php echo site_url($edit_link.'/'.$value['uuid'])?>"
+                                            <a href="<?php echo site_url($edit_link.'/'.$value_sub['uuid'])?>"
                                                 class="list-icons-item text-primary-600" data-popup="tooltip" title=""
                                                 data-original-title="Edit"><i class="icon-pencil7"></i></a>
                                             <a href="#" class="list-icons-item text-danger-600 bootbox_custom"

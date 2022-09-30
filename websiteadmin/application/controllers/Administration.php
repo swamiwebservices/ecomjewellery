@@ -55,8 +55,8 @@ class Administration extends CI_Controller
 
         $session_user_data = $this->session->userdata('admin_user_data');
 
-        $data['activaation_id'] = 101;
-        $data['sub_activaation_id'] = '101_2';
+        $data['activaation_id'] = 10;
+        $data['sub_activaation_id'] = '10_2';
         $data['title'] = 'Staff';
 
         $data['sub_heading'] = 'List';
@@ -103,8 +103,8 @@ class Administration extends CI_Controller
         $session_user_data = $this->session->userdata('admin_user_data');
         $uuid = filter_var($uuid, FILTER_SANITIZE_STRING);
 
-        $data['activaation_id'] = 101;
-        $data['sub_activaation_id'] = '101_2';
+        $data['activaation_id'] = 10;
+        $data['sub_activaation_id'] = '10_2';
         $data['title'] = 'Staff';
         $data['sub_heading'] = 'Edit';
 		$data['id'] = $uuid;
@@ -315,8 +315,8 @@ class Administration extends CI_Controller
         $session_user_data = $this->session->userdata('admin_user_data');
         
 
-        $data['activaation_id'] = 101;
-        $data['sub_activaation_id'] = '101_2';
+        $data['activaation_id'] = 10;
+        $data['sub_activaation_id'] = '10_2';
         $data['title'] = 'Staff';
 		$data['sub_heading'] = 'Add New';
 		$data['controller'] = $this->controller;

@@ -21,7 +21,7 @@ class Coupon extends CI_Controller
     public $ctrl_name = 'coupon';
     public $tbl_name = 'coupon';
     public $pg_title = 'Promo Code';
-    public $m_act = 2;
+
     private $error = array();
     public function __construct()
     {
@@ -45,8 +45,9 @@ class Coupon extends CI_Controller
 
     public function listall()
     {
+        $data['activaation_id'] = 1011;
+        $data['sub_activaation_id'] = '1011_3';
         $data['title'] = 'Promo Code';
-        $data['l_s_act'] = 2;
         $data['sub_heading'] = 'Promo Code List';
 
         $search_qry = " WHERE  status in ('Active','Inactive')   order by added_date desc  ";
@@ -65,9 +66,10 @@ class Coupon extends CI_Controller
     public function adddcoupondata()
     {
         $data['title'] = 'Promo Code';
-        $data['l_s_act'] = 2;
+        $data['activaation_id'] = 1011;
+        $data['sub_activaation_id'] = '1011_3';
         $data['sub_heading'] = 'Add Promo Code';
-
+        $data['back_link'] = $this->ctrl_name . '/listall';
         $data['controller'] = $this->ctrl_name;
         $session_user_data = $this->session->userdata('admin_user_data');
         $error = '';
@@ -192,7 +194,7 @@ class Coupon extends CI_Controller
         //print_r($data);*/
 		
         $data['title'] = 'Promo Code';
-        $data['l_s_act'] = 2;
+        
         $data['sub_heading'] = 'Add Promo Code';		
 
         $this->load->view('coupon_adddcoupondata', $data);
@@ -204,7 +206,9 @@ class Coupon extends CI_Controller
     {
         $data['sub_heading'] = 'Edit  Promo Code';
         $data['title'] = 'Promo Code';
-        $data['l_s_act'] = 2;
+        $data['activaation_id'] = 1011;
+        $data['sub_activaation_id'] = '1011_3';
+        $data['back_link'] = $this->ctrl_name . '/listall';
         $data['sub_heading'] = 'Edit Promo Code';
 
         $data['controller'] = $this->ctrl_name;

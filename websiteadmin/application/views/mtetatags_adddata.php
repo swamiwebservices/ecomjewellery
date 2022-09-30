@@ -117,7 +117,7 @@ if ($error) {
                                 
                            
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-primary mr-3">Submit <i class="icon-paperplane "></i></button>
+                                    <button type="submit" class="btn bg-blue mr-3">Submit <i class="icon-paperplane "></i></button>
                                     <a href="<?php echo site_url($controller."/metatags");?>"><button type="button" class="btn btn-light" id="reset"><i class="icon-arrow-left7"></i> Back</button></a>
 
                                 </div>

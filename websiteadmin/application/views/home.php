@@ -19,13 +19,10 @@
         <!-- Core JS files -->
         <style>
 .login_bg {
-	background-color: #e4d9ba!important;
+   
+    background-image: linear-gradient( to right, #005534 0, #005534 0%, #615c31 45%, #c6c7c7 650%, #c6c7c7 55%, #cccdcd 100%, #005534 100% );
 	 
-	background-repeat: no-repeat;
-	background-size: cover;
-	position: relative;
-	height: 100vh;
-    background-image: url("<?php echo base_url() ?>global_assets/login_bg.webp");
+    /* background-image: url("<?php echo base_url() ?>global_assets/login_bg.webp"); */
 }
 
     body {
@@ -57,7 +54,7 @@
             <div class="loginInner" id="pass_form1">
 
                 <div class="login_l">
-                    <a href="#"><img src="<?php echo base_url() ?>global_assets/images/ecom-jewelry-logo3.png" alt="" style="width:auto; heigh:200px"></a>
+                    <a href="#"><img src="<?php echo base_url() ?>global_assets/images/logo-sq.png" alt="" style=" width:200px; heigh:auto"></a>
 
                     <!-- <h1 class="welcome_title"> BMN Admin</h1> --> </span>
 

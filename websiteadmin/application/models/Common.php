@@ -714,6 +714,7 @@ class Common extends CI_Model
 
     public function UploadImage($fileField, $path, $isResize = 0, $height = '', $width = '', $image_name = '', $tempDir = 'temp')
     {
+      
         $errors = 0;
         if (!is_dir($path)) {
             return array("uploaded" => "false", "uploadMsg" => "Destination Directory Does Not Found", "imageFile" => "");
@@ -742,19 +743,13 @@ class Common extends CI_Model
                 if ($image_name == '') {
                     $image_name = time() . '.' . $extension;
                 } else {
-                    $image_name .= '.' . $extension;
+                    // Extracting only filename using constants
+                     $filename_temp = pathinfo($image_name, PATHINFO_FILENAME);
+                
+                    $image_name = $filename_temp .'.' . $extension;
                 }
 
-                if ($isResize == 0) {
-                    $newname = $path . '/' . $image_name;
-                } else {
-                    if ($tempDir == 'temp') {
-                        $newname = $path . '/' . $tempDir . '/' . $image_name;
-                    } else {
-                        $newname = $tempDir . '/' . $image_name;
-                    }
-
-                }
+                $newname = $path . '/' . $image_name;
 
                 $copied = copy($_FILES[$fileField]['tmp_name'], $newname);
                 if (!$copied && $errors == 1) {
@@ -770,12 +765,7 @@ class Common extends CI_Model
             return $returnArray;
         }
 
-        if ($isResize == 1) {
-            if (file_exists($newname)) {
-                unlink($newname);
-            }
-
-        }
+        
         if ($errors != 1) {
             $returnArray = array("uploaded" => "true", "uploadMsg" => "Image is uploadded successfully....", "imageFile" => $image_name);
         }
@@ -931,7 +921,7 @@ class Common extends CI_Model
     {
         $string = str_replace(" ", "-", $string);
 
-        $pattern = "/[^a-z0-9- ]/i";
+        $pattern = "/[^a-z0-9-. ]/i";
 
         $string = preg_replace('/((&#39))/', '-', strtolower($string)); //remove apostrophe - not caught by above
 
@@ -1308,7 +1298,7 @@ class Common extends CI_Model
     }
 	
     public function get_categorylist_parent($category_id=0){
-         $sql = "select * from product_category where  parent_id=0 AND status_flag !='Deleted' order by name asc   ";
+         $sql = "select * from product_category where  parent_id=0 AND status_flag !='Deleted' order by sort_order asc , name asc   ";
         $query_result = $this->db->query($sql);
         $results = $query_result->result_array();
 

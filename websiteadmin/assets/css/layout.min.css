@@ -26,8 +26,7 @@
     border-left: 1px dashed rgba(156,161,169,0.5);}
 
  
-    .nav-tabs{background:#2196f3 /* #4caf50 */; padding: 0 20px; border-radius:5px;}
-
+     
     .nav-tabs-highlight .nav-link {/* text-transform: uppercase; */ font-size: 16px; letter-spacing: 0.5px; color: #FFF;}
 
     .card-header .card-title{font-size: 16px;}

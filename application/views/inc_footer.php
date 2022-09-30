@@ -1,88 +1,129 @@
+<footer class="footer_widgets">
+        <div class="container">
+            <div class="footer_top">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-sm-8">
+                        <div class="widgets_container contact_us">
+                            <h3>About Monsta</h3>
+                            <div class="footer_contact">
+                                <p>Address: Your address goes here.</p>
+                                <p>Phone: <a href="tel:0123456789">0123456789</a></p>
+                                <p>Email: demo@example.com</p>
+                                <ul>
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="ion-social-rss"></i></a></li>
+                                    <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
 
-<!--footer start here-->    
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-3">
-                <div class="map">
-                    <iframe src="<?php echo base_url();?>assets/https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3771.799596805155!2d72.85765081430644!3d19.0285504584084!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7cf2f051bdd6f%3A0xf26f202e33ba0e2b!2sDr.%20BMN%20College%20of%20Home%20Science!5e0!3m2!1sen!2sin!4v1640724225657!5m2!1sen!2sin" width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                    <li><a href="#"><i class="ion-social-youtube"></i></a></li>
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-4 col-6">
+                        <div class="widgets_container widget_menu">
+                            <h3>Information</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="blog.html">blog</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="services.html">Services</a></li>
+                                    <li><a href="#">Sample Page</a></li>
+                                    <li><a href="portfolio.html">Portfolio</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-6 col-sm-5 col-6">
+                        <div class="widgets_container widget_menu">
+                            <h3>My Account</h3>
+                            <div class="footer_menu">
+                                <ul>
+                                    <li><a href="my-account.html">My Account</a></li>
+                                    <li><a href="contact.html">Contact</a></li>
+                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                    <li><a href="portfolio.html">Portfolio</a></li>
+                                    <li><a href="checkout.html">Checkout</a></li>
+                                    <li><a href="faq.html">Frequently Questions</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 col-sm-7">
+                        <div class="widgets_container product_widget">
+                            <h3>Top Rated Products</h3>
+                            <div class="simple_product">
+                                <div class="simple_product_items">
+                                    <div class="simple_product_thumb">
+                                        <a href="#"><img src="<?php echo base_url();?>assets/img/s-product/product5.jpg"
+                                                alt=""></a>
+                                    </div>
+                                    <div class="simple_product_content">
+                                        <div class="tag_cate">
+                                            <a href="#">Clothing,</a>
+                                            <a href="#">Potato chips</a>
+                                        </div>
+                                        <div class="product_name">
+                                            <h3><a href="#">Donec eu animal</a></h3>
+                                        </div>
+                                        <div class="product_price">
+                                            <span class="old_price">$86.00</span>
+                                            <span class="current_price">$70.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="simple_product_items">
+                                    <div class="simple_product_thumb">
+                                        <a href="#"><img src="<?php echo base_url();?>assets/img/s-product/product6.jpg"
+                                                alt=""></a>
+                                    </div>
+                                    <div class="simple_product_content">
+                                        <div class="tag_cate">
+                                            <a href="#">Women</a>
+                                        </div>
+                                        <div class="product_name">
+                                            <h3><a href="#">Dummy animal</a></h3>
+                                        </div>
+                                        <div class="product_price">
+                                            <span class="old_price">$74.00</span>
+                                            <span class="current_price">$69.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-4">
-                <div class="connect_bx">
-                    <h3 class="footer_title">Connect With Us</h3>
-                    <ul class="footer_address">
-                        <li><i class="fa fa-map-marker" aria-hidden="true"></i> 338, Rafi Ahmed Kidwai Road,Matunga, <br>Mumbai -400019 </li>
-                        <li><i class="fa fa-phone" aria-hidden="true"></i> Phone: <a href="callto:02224095792">022 2409 5792</a> / <a href="callto:02224035296">022 2403 5296</a> </li>
-                        <li><i class="fa fa-envelope" aria-hidden="true"></i> Email: <a href="mailto:smesedu@gmail.com">smesedu@gmail.com</a> </li>
-                    </ul>
+            <div class="footer_middel">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="footer_middel_menu">
+                            <ul>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Online Store</a></li>
+                                <li><a href="#">Promotion</a></li>
+                                <li><a href="#">Privacu Policy</a></li>
+                                <li><a href="#">Terms Of Use</a></li>
+                                <li><a href="#">Sitemap</a></li>
+                                <li><a href="#">Support</a></li>
+                                <li><a href="#">Contacts</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                
-                <div>
-                    <h3 class="footer_title social">Follow Us On</h3>
-                    <ul class="social_icn">
-                        <li><a href="https://www.instagram.com/accounts/login/?next=/bmn_college/" target="_blank"><img src="<?php echo base_url();?>assets/images/social_insta.png" alt=""></a></li>
-                        <li><a href="https://www.facebook.com/Dr-BMN-College-of-Home-Science-208633133133272/" target="_blank"><img src="<?php echo base_url();?>assets/images/social_fb.png" alt=""></a></li>
-                        <!--<li><a href="#"><img src="<?php echo base_url();?>assets/images/social_twt.png" alt=""></a></li>-->
-                        <li><a href="https://www.youtube.com/channel/UCksh44oXAYahaIpYz6cciQw" target="_blank"><img src="<?php echo base_url();?>assets/images/social_yt.png" alt=""></a></li>
-                        <li><a href="https://www.linkedin.com/school/dr-bmn-college-of-home-science/" target="_blank"><img src="<?php echo base_url();?>assets/images/social_in.png" alt=""></a></li>
-                    </ul>
+            </div>
+            <div class="footer_bottom">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="copyright_area">
+                            <img src="<?php echo base_url();?>assets/img/icon/papyel2.png" alt="">
+                        </div>
+                    </div>
                 </div>
-                
             </div>
-            
-            <div class="col-sm-2">
-                <h3 class="footer_title">Quick Links</h3>
-                <ul class="footer_menu">
-                    <li><a href="<?php echo site_url('home')?>"><i class="fa fa-check" aria-hidden="true"></i> Home </a></li>
-                    <li><a href="about-us"><i class="fa fa-check" aria-hidden="true"></i> About Us </a></li>
-                    <li><a href="HD-programm"><i class="fa fa-check" aria-hidden="true"></i> Programme </a></li>
-                    <li><a href="library"><i class="fa fa-check" aria-hidden="true"></i> Library </a></li>
-                    <li><a href="contact-us"><i class="fa fa-check" aria-hidden="true"></i> Contact Us </a></li>
-                </ul>
-            </div>
-            
-            
-            
-            <div class="col-sm-3">
-                <h3 class="footer_title">Important Links</h3>
-                <ul class="footer_menu">
-                    <li><a href="https://www.maharashtra.gov.in/1125/Home" target="_blank">
-                        <i class="fa fa-check" aria-hidden="true"></i> Government of Maharashtra 
-                    </a></li>
-                    <li><a href="https://sndt.ac.in/" target="_blank">
-                        <i class="fa fa-check" aria-hidden="true"></i> SNDT UNIV 
-                    </a></li>
-                    <li><a href="https://www.education.gov.in/en" target="_blank">
-                        <i class="fa fa-check" aria-hidden="true"></i> Ministry of Education 
-                    </a></li>
-                    <li><a href="https://scholarships.gov.in/" target="_blank">
-                        <i class="fa fa-check" aria-hidden="true"></i> National Scholarship Portal 
-                    </a></li>
-                    <li><a href="https://www.academicdepository.com/NAD/uidStudentReg.action?activePage=regactuidStudentReg" target="_blank">
-                        <i class="fa fa-check" aria-hidden="true"></i> National Academic Depository
-                    </a></li>
-                    <li><a href="http://rusa.nic.in/" target="_blank">
-                        <i class="fa fa-check" aria-hidden="true"></i> Rashtriya Uchchatar Shiksha Abhiyan</a> </li>
-                </ul>
-            </div>
-        </div> 
-        
-        <div class="copyright_row">
-            <div class="copyright_l">
-                Copyright © 2021-22 BMN College of Home Science &nbsp;  | &nbsp;  All Rights Reserved.  
-            </div>
-            <div class="copyright_r">
-                <span>Visitor Counter :</span>
-                <div class="incremental-counter" data-value="0999"></div>
-            </div>
-            <div class="clr"></div>
         </div>
-        
-         <!--<div class="copyright">
-            Copyright © 2021-22 BMN College of Home Science &nbsp;  | &nbsp;  All Rights Reserved.             
-         </div>-->
-    </div>
-   
-</footer>
-<!--footer close here-->
+    </footer>

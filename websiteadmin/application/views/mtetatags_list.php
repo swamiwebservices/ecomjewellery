@@ -40,12 +40,7 @@
                             <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
                         </div>
                         <div class="header-elements d-none">
-                            <div class="breadcrumb justify-content-center">
-                                <a href="<?php echo site_url($controller . "/adddata"); ?>" class="breadcrumb-elements-item">
-                                    <button type="button" class="btn btn-success btn-sm"><i class="icon-plus2 mr-2"></i> Add New</button>
-                                </a>
-
-                            </div>
+                             
                         </div>
 
                     </div>

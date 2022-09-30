@@ -20,8 +20,7 @@ class Cms extends CI_Controller
     public $controller = 'cms';
     public $tbl_name = 'master_driver';
     public $pg_title = 'Cms';
-    public $m_act = 11;
-
+ 
     public function __construct()
     {
         parent::__construct();
@@ -199,6 +198,8 @@ class Cms extends CI_Controller
         $data['sub_heading'] = 'Banner';
         $fun_name = $this->controller . '/banner';
         
+        $domain_list = $this->config->item("DOMAINs");
+        //print_r($domain_list);
         $data['controller'] = $this->controller;
         $data['fun_name'] = "banner";
         $resultdata = array();
@@ -220,6 +221,9 @@ class Cms extends CI_Controller
 
         
         $session_user_data = $this->session->userdata('user_data');
+        $data['back_link'] = $this->controller . '/banner';
+        
+        
         $data['listfun'] = 'banner';
         $data['activaation_id'] = 101;
         $data['sub_activaation_id'] = '101_8';
@@ -235,9 +239,12 @@ class Cms extends CI_Controller
 		$error = '';
 
         $data_info = array();
+       // print_r($_POST);exit;
 
         if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
        
+            $add_in_m['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
+
             $add_in_m['banner_name'] = $banner_name = (isset($_POST['banner_name'])) ? $this->common->mysql_safe_string($_POST['banner_name']) : ''; 
             $add_in_m['banner_text'] = $banner_text = (isset($_POST['banner_text'])) ? $this->common->mysql_safe_string($_POST['banner_text']) : ''; 
             $add_in_m['banner_text2'] = $banner_text2 = (isset($_POST['banner_text2'])) ? $this->common->mysql_safe_string($_POST['banner_text2']) : ''; 
@@ -247,9 +254,10 @@ class Cms extends CI_Controller
 			$add_in_m['status_flag'] = $status_flag = (isset($_POST['status_flag'])) ? $this->common->mysql_safe_string($_POST['status_flag']) : '0'; 
         	 
          
-              
+              //print_r($add_in_m);
            
             if ($banner_name == '') {$error .= "Please enter name  <br>";}
+            if ($domains == '') {$error .= "Please select atleast 1 domain  <br>";}
              
             if($error==""){
                 
@@ -784,7 +792,8 @@ class Cms extends CI_Controller
 
             $add_in = array();
           
-          
+            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '0';
+
            $add_in['address'] = $address = (isset($_POST['address'])) ? $this->common->mysql_safe_string($_POST['address']) : '';
            $add_in['address2'] = $address2 = (isset($_POST['address2'])) ? $this->common->mysql_safe_string($_POST['address2']) : '';
            $add_in['email1'] = $email1 = (isset($_POST['email1'])) ? $this->common->mysql_safe_string($_POST['email1']) : '';
@@ -798,12 +807,11 @@ class Cms extends CI_Controller
             
            
             if ($error == '') {
-               
-                $this->db->where('id', $id);
+                $this->db->where('domains', $domains);
                 $this->db->update('wti_m_address', $add_in);
 
                  
-                $this->common->createjson('wti_m_address','',"select * from  wti_m_address c      where     id=1 ",'single');
+                $this->common->createjson('wti_m_address','',"select * from  wti_m_address c      where  domains='{$domains}'     ",'single');
 
                 $this->session->set_flashdata('success', 'Information updated succssfully!');
                 redirect($this->controller . '/address');
@@ -814,17 +822,23 @@ class Cms extends CI_Controller
             $data_info = $_POST;
         } else {
 
-            $data_info = $this->common->getSingleInfoBy('wti_m_address', 'id', $id, '*');
+            $data_info = $this->common->getRecordsLimit('wti_m_address', '', 0, 0);
+            $data_info_temp = [];
+            foreach($data_info as $key => $dataAddress){
+                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+
+            }
+            $data_info = $data_info_temp;
         }
 
         //print_r($data_info);
-        if (sizeof($data_info) == 0) {
-            $newdata = array('warning' => 'Please select data!');
-            $this->session->set_flashdata($newdata);
-            redirect($this->controller);
-        }
+        // if (sizeof($data_info) == 0) {
+        //     $newdata = array('warning' => 'Please select data!');
+        //     $this->session->set_flashdata($newdata);
+        //     redirect($this->controller);
+        // }
         $data['records'] = $data_info;
-        $this->load->view('cms_address', $data);
+        $this->load->view('cms_address_tabs', $data);
 
         $this->session->unset_userdata('success');
         $this->session->unset_userdata('warning');

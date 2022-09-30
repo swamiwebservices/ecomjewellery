@@ -1,46 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <?php $this->load->view('inc_metacss');?>
-        <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_floating_labels.js"></script>
-        <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
-         <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_controls_extended.js"></script>
-        <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_layouts.js"></script>
+<head>
+    <?php $this->load->view('inc_metacss');?>
+    <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_floating_labels.js"></script>
+    <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
+    <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_controls_extended.js"></script>
+    <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_layouts.js"></script>
 
-      <style>
-    .btn-group-vertical>.btn, .btn-group>.btn {
-            z-index: 1;
-        }
-        </style>
-    </head>
-    
     <style>
-    .image-preview-input {
-        position: relative;
-        overflow: hidden;
-        margin: 0px;
-        color: #333;
-        background-color: #fff;
-        border-color: #ccc;
-    }
-
-    .image-preview-input input[type=file] {
-        position: absolute;
-        top: 0;
-        right: 0;
-        margin: 0;
-        padding: 0;
-        font-size: 20px;
-        cursor: pointer;
-        opacity: 0;
-        filter: alpha(opacity=0);
-    }
-
-    .image-preview-input-title {
-        margin-left: 2px;
+    .btn-group-vertical>.btn,
+    .btn-group>.btn {
+        z-index: 1;
     }
     </style>
+</head>
+
+<style>
+.image-preview-input {
+    position: relative;
+    overflow: hidden;
+    margin: 0px;
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+
+.image-preview-input input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+
+.image-preview-input-title {
+    margin-left: 2px;
+}
+</style>
 </head>
 
 <body>
@@ -119,7 +120,8 @@
                         <h6 class="card-title"><?php echo (isset($sub_heading))?$sub_heading:''?> </h6>
                     </div>
                     <div class="card-body">
-                    <form class="form-horizontal" id="blogform1" name="blogform1" method="post" action="<?php echo site_url($controller.'/'.$fun_name)?>" enctype="multipart/form-data">
+                        <form class="form-horizontal" id="blogform1" name="blogform1" method="post"
+                            action="<?php echo site_url($controller.'/'.$fun_name)?>" enctype="multipart/form-data">
                             <input type="hidden" name="mode" id="mode" value="submitform">
                             <input type="hidden" name="uuid" id="uuid"
                                 value="<?php echo isset($records['uuid']) ? $records['uuid'] : ''; ?>">
@@ -145,8 +147,8 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-2" for="name">Name:<span
                                         class="text-danger">*</span></label>
-                                <div class="col-lg-9"><input type="text" class="form-control maxlength-textarea "  maxlength="256" id="name" name="name"
-                                        placeholder="Name"
+                                <div class="col-lg-9"><input type="text" class="form-control maxlength-textarea "
+                                        maxlength="256" id="name" name="name" placeholder="Name"
                                         value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>"
                                         required>
                                     <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
@@ -155,15 +157,15 @@
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-2" for="item_code">Item Code:</label>
-                                <div class="col-md-4"><input type="text" class="form-control maxlength-textarea "  maxlength="150"  id="item_code"
-                                        name="item_code" placeholder="Item Code"
+                                <div class="col-md-4"><input type="text" class="form-control maxlength-textarea "
+                                        maxlength="150" id="item_code" name="item_code" placeholder="Item Code"
                                         value="<?php echo isset($records['item_code'])?$this->common->getDbValue($records['item_code']):''; ?>"
                                         required>
 
                                 </div>
 
                             </div>
-                           
+
 
                             <div class="form-group row    ">
                                 <label class="col-lg-2 col-form-label" for="description">Desctiption:</label>
@@ -180,13 +182,14 @@
 										} else {
 											$photo = 'https://via.placeholder.com/140x100';	
 										}
-									?>   
+									?>
 
                             <div class="form-group row">
                                 <label class="col-md-2 control-label"> Product Image:</label>
                                 <div class="col-md-10">
                                     <div class="row col-md-5">
-                                    <img src="<?php echo $photo?>" id="temppreviewimageki1" class="temppreviewimageki1" style="width:200px; height:auto;display:none1">
+                                        <img src="<?php echo $photo?>" id="temppreviewimageki1"
+                                            class="temppreviewimageki1" style="width:200px; height:auto;display:none1">
                                     </div>
                                     <div class="row col-md-4">
 
@@ -238,36 +241,43 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                
-                                    <label class="control-label col-lg-2" for="status">Status:<span class="text-danger">*</span></label>
-                                    <div class="col-lg-4">
-                                        <?php  //print_r($records);?>
-                                        <div class="form-check form-check-inline">
-                                            <label class="form-check-label">
-                                                <input type="radio" class="form-check-input-styled-success" value="Active" name="status_flag" id="status_flag1" <?php if ((isset($records['status_flag']) && $records['status_flag'] == 'Active') || empty($records['status_flag']))  {  echo 'checked'; } ?>>
-                                                Active
-                                            </label>
-                                        </div>
 
-                                        <div class="form-check form-check-inline">
-                                            <label class="form-check-label">
-                                                 <input type="radio" class="form-check-input-styled-danger" value="Inactive" name="status_flag" id="status_flag2" <?php if (isset($records['status_flag']) && $records['status_flag'] == 'Inactive')  {  echo 'checked'; } ?>>
-                                                In-Active
-                                            </label>
-                                        </div>
-                                        <div class="hidedefault validation-invalid-label mt-2" id="error_phonenumber">Please select status</div>
+                                <label class="control-label col-lg-2" for="status">Status:<span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-4">
+                                    <?php  //print_r($records);?>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input-styled-success" value="Active"
+                                                name="status_flag" id="status_flag1"
+                                                <?php if ((isset($records['status_flag']) && $records['status_flag'] == 'Active') || empty($records['status_flag']))  {  echo 'checked'; } ?>>
+                                            Active
+                                        </label>
                                     </div>
-                                    <div class="col-md-4">
-                                <div class="form-check form-check-inline">
+
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input-styled-danger" value="Inactive"
+                                                name="status_flag" id="status_flag2"
+                                                <?php if (isset($records['status_flag']) && $records['status_flag'] == 'Inactive')  {  echo 'checked'; } ?>>
+                                            In-Active
+                                        </label>
+                                    </div>
+                                    <div class="hidedefault validation-invalid-label mt-2" id="error_phonenumber">Please
+                                        select status</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check form-check-inline">
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input-styled-success" value="1"
-                                                name="featured" id="featured" <?php if (isset($records['featured']) && $records['featured'] == 1)  {  echo 'checked'; } ?>>
+                                                name="featured" id="featured"
+                                                <?php if (isset($records['featured']) && $records['featured'] == 1)  {  echo 'checked'; } ?>>
                                             Featured (Show In home Page)
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <?php
                             $price_json = (isset($records['price_json'])) ? json_decode($records['price_json'],true) : [];
                             //print_r($price_json);
@@ -281,7 +291,7 @@
                             <fieldset>
                                 <legend class="font-weight-bold"><?php echo $domain_org?></legend>
                                 <div class="form-group row">
-                                   <!--  <label class="col-form-label  col-lg-2" for="quantity<?php echo $domain?>">Item Qty:</label>
+                                    <!--  <label class="col-form-label  col-lg-2" for="quantity<?php echo $domain?>">Item Qty:</label>
                                     <div class="col-lg-2"><input type="text" class="form-control numbersOnly" id="quantity<?php echo $domain?>"
                                             name="<?php echo $domain?>[quantity]" placeholder="Item Qty"
                                             value="<?php echo isset($records_temp['quantity'])?$this->common->getDbValue($records_temp['quantity']):''; ?>"
@@ -291,15 +301,17 @@
 
                                     <label class="col-form-label col-lg-2 " for="price<?php echo $domain?>">Price: <span
                                             class="text-danger">*</span></label>
-                                    <div class="col-lg-2"><input type="text" class="form-control numbersOnly" id="price<?php echo $domain?>"
-                                            name="<?php echo $domain?>[price]" placeholder="Price"
+                                    <div class="col-lg-2"><input type="text" class="form-control numbersOnly"
+                                            id="price<?php echo $domain?>" name="<?php echo $domain?>[price]"
+                                            placeholder="Price"
                                             value="<?php echo isset($records_temp['price'])?$this->common->getDbValue($records_temp['price']):''; ?>"
                                             required>
                                     </div>
-                                    <label class="col-form-label col-lg-2 " for="sale_price<?php echo $domain?>">Sale Price: <span
-                                            class="text-danger">*</span></label>
-                                    <div class="col-lg-2"><input type="text" class="form-control numbersOnly" id="sale_price<?php echo $domain?>"
-                                            name="<?php echo $domain?>[sale_price]" placeholder="Price"
+                                    <label class="col-form-label col-lg-2 " for="sale_price<?php echo $domain?>">Sale
+                                        Price: <span class="text-danger">*</span></label>
+                                    <div class="col-lg-2"><input type="text" class="form-control numbersOnly"
+                                            id="sale_price<?php echo $domain?>" name="<?php echo $domain?>[sale_price]"
+                                            placeholder="Price"
                                             value="<?php echo isset($records_temp['sale_price'])?$this->common->getDbValue($records_temp['sale_price']):''; ?>"
                                             required>
                                     </div>
@@ -316,8 +328,9 @@
                                 <div class="col-lg-9">
                                     <button type="submit" class="btn bg-blue">Submit <i
                                             class="icon-paperplane ml-2"></i></button>
-                                    <a href="<?php echo site_url($back_link);?>"><button type="button"
-                                            class="btn btn-light  ml-2">Back</button></a>
+                                    <a href="<?php echo site_url($back_link);?>" <button type="button"
+                                        class="btn btn-light ml-2"><i class="icon-arrow-left7"></i>
+                                        Back</button></a>
                                 </div>
                             </div>
                         </form>
@@ -355,8 +368,8 @@
 
             }
 
- 
- 
+
+
 
 
             //frd_email
@@ -442,10 +455,10 @@
             //end  
         });
     });
-  // Primary
-  $('.form-check-input-styled-primary').uniform({
-            wrapperClass: 'border-primary-600 text-primary-800'
-        });
+    // Primary
+    $('.form-check-input-styled-primary').uniform({
+        wrapperClass: 'border-primary-600 text-primary-800'
+    });
     // TableManageButtons.init();
     </script>
 </body>
