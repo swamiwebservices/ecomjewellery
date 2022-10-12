@@ -90,8 +90,13 @@ class Products extends CI_Controller
         $data['controller'] = $this->controller;
 
         $error = '';
-
+        
+         
+       
+        
         if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
+
+            $add_in_m['specification'] = $specification = (isset($_POST['specification'])) ? json_encode($_POST['specification']) : '';
 
             $name_old = (isset($_POST['name_old'])) ? $this->common->mysql_safe_string($_POST['name_old']) : '';
 
@@ -114,21 +119,17 @@ class Products extends CI_Controller
             $add_in_m['featured'] = $featured = (isset($_POST['featured'])) ? $this->common->mysql_safe_string($_POST['featured']) : '0';
 		 
             $add_in_m['quantity'] = $quantity = (isset($_POST['quantity'])) ? $this->common->mysql_safe_string($_POST['quantity']) : '0';
-            $add_in_m['price'] = $price = (isset($_POST['price'])) ? $this->common->mysql_safe_string($_POST['price']) : '0';
-            $add_in_m['sale_price'] = $sale_price = (isset($_POST['sale_price'])) ? $this->common->mysql_safe_string($_POST['sale_price']) : '0';
+            $add_in_m['mrp'] = $price = (isset($_POST['mrp'])) ? $this->common->mysql_safe_string($_POST['mrp']) : '0';
+            $add_in_m['sellprice'] = $sale_price = (isset($_POST['sellprice'])) ? $this->common->mysql_safe_string($_POST['sellprice']) : '0';
             
             $add_in_m['sort_order'] = $sort_order = (isset($_POST['sort_order'])) ? $this->common->mysql_safe_string($_POST['sort_order']) : '1';
 		 
             $add_in_m['status_flag'] = $status_flag = (isset($_POST['status_flag'])) ? $this->common->mysql_safe_string($_POST['status_flag']) : 'Active';
 		 
            
-            $domain_list = $this->config->item("DOMAINs");
-            foreach($domain_list as $key => $domain){
-                $domain = str_replace(".","_",$domain);
-                $price_json[$domain] =  (isset($_POST[$domain])) ? $this->input->post($domain) : [];
-            }
+           
     
-            $add_in_m['price_json'] = json_encode($price_json);
+           
 
             if ($id == "") {
                 $chkUserInfo = $this->common->getSingleInfoBy('product_master', 'item_code', $item_code);
@@ -159,7 +160,7 @@ class Products extends CI_Controller
     
                         if(IMAGE_AUTO_RESIZE==1){
                             $this->load->library('Kishoreimagelib');
-                           
+                        error_reporting(0);   
                         $this->kishoreimagelib->load($image_old_path_only . $add_in_m['main_image'])->set_background_colour("#dfdfdf")->resize(350, 350, true)->save($image_old_path_only . "350". $add_in_m['main_image']);
     
                           //$this->kishoreimagelib->load('../uploads/category/' . $add_in_m['main_image'])->set_background_colour("#dfdfdf")->resize(600, 600, true)->save($image_old_path_only .  $add_in_m['main_image'])->resize(350, 350, true)->save($image_old_path_only . "360" . $add_in_m['main_image'])->resize(81, 75, true)->save($image_old_path_only . "81" . $add_in_m['main_image']);
@@ -194,15 +195,28 @@ class Products extends CI_Controller
 			}
 
             if ($error == '') {
-                $domain_list = $this->config->item("DOMAINs");
-                $domain_main = $domain_list[0];
-                $domain_main = str_replace(".","_",$domain);
-                $domain_main = $price_json[$domain_main];
-                //print_r($price_json);
-                $add_in_m['price'] = $domain_main['price'];
-                $add_in_m['sale_price'] = $domain_main['sale_price'];
-                //$add_in_m['quantity'] = $domain_main['quantity'];
 
+                $price_json['quantity'] = $_POST['quantity'];
+                $price_json['mrp'] = $_POST['mrp'];
+                $price_json['sellprice'] = $_POST['sellprice'];
+                $add_in_m['price_json'] = json_encode($price_json);
+                
+                
+                //print_r($price_json);
+                //default domain key id =1
+                $add_in_m['mrp'] = (isset($_POST['mrp'][1])) ? $_POST['mrp'][1] : 0;
+                $add_in_m['sellprice'] = (isset($_POST['sellprice'][1])) ? $_POST['sellprice'][1] : 0;
+                $add_in_m['quantity'] = (isset($_POST['quantity'][1])) ? $_POST['quantity'][1] : 0;
+
+                $add_in_m['domain2_mrp'] = (isset($_POST['mrp'][2])) ? $_POST['mrp'][2] : 0;
+                $add_in_m['domain2_sellprice'] = (isset($_POST['sellprice'][2])) ? $_POST['sellprice'][2] : 0;
+                $add_in_m['domain2_qty'] = (isset($_POST['quantity'][2])) ? $_POST['quantity'][2] : 0;
+
+                $add_in_m['domain3_mrp'] = (isset($_POST['mrp'][3])) ? $_POST['mrp'][3] : 0;
+                $add_in_m['domain3_sellprice'] = (isset($_POST['sellprice'][3])) ? $_POST['sellprice'][3] : 0;
+                $add_in_m['domain3_qty'] = (isset($_POST['quantity'][3])) ? $_POST['quantity'][3] : 0;
+
+               
                  
                 if ($id != "") {
                     if ($name_old != $name) {
@@ -214,9 +228,25 @@ class Products extends CI_Controller
                     $update_status = $this->common->updateRecord('product_master', $add_in_m, $where);
                     $this->session->set_flashdata('success', 'Information updated successfully.');
 
+                    $product_id = $this->common->getSinlgeColumn('product_id','product_master',$where);
+                   // print_r($product_id);exit;
+                    foreach($_POST['quantity'] as $domain_id => $valqty){
+                        
+                        $where_price = "product_id='{$product_id}' and domain_id='{$domain_id}' ";
+                        $add_in_m_price['product_id'] = $product_id;
+                        $add_in_m_price['domain_id'] = $domain_id;
+                        $add_in_m_price['mrp'] = $_POST['mrp'][$domain_id];
+                        $add_in_m_price['sellprice'] = $_POST['sellprice'][$domain_id];
+                        $add_in_m_price['quantity'] = $_POST['quantity'][$domain_id];
+                      //  $add_in_m_price['featured_flag'] = $_POST['featured_flag'][$domain_id];
+                     //   $add_in_m_price['home_flag'] = $_POST['home_flag'][$domain_id];
+                        $this->common->updateRecord('product_master_price', $add_in_m_price,$where_price);
+                       
+
+                    }
+
                     $this->common->createjson('product_master', 'category',"select *    from   product_master   	where    status_flag='Active' order by sort_order asc, name asc ",'multiple','home');
 
-                    
                     redirect($data['back_link']);
 
                 } else {
@@ -234,9 +264,21 @@ class Products extends CI_Controller
                    // echo "aa".$name;
                     $add_in_m['slug_name'] = $this->common->getUniqueSlug('product_master', 'slug_name', $this->common->tep_short_name_list($name), 'slug_name');
                      
-                    $blogs_id = $this->common->insertRecord('product_master', $add_in_m);
+                    $product_id = $this->common->insertRecord('product_master', $add_in_m);
 
                    
+                    foreach($_POST['quantity'] as $domain_id => $valqty){
+
+                        $add_in_m_price['product_id'] = $product_id;
+                        $add_in_m_price['domain_id'] = $domain_id;
+                        $add_in_m_price['mrp'] = $_POST['mrp'][$domain_id];
+                        $add_in_m_price['sellprice'] = $_POST['sellprice'][$domain_id];
+                        $add_in_m_price['quantity'] = $_POST['quantity'][$domain_id];
+                        $add_in_m_price['featured_flag'] = $_POST['featured_flag'][$domain_id];
+                        $add_in_m_price['home_flag'] = $_POST['home_flag'][$domain_id];
+                        $this->common->insertRecord('product_master_price', $add_in_m_price);
+
+                    }
 
                     $this->session->set_flashdata('success', 'Information added successfully.');
 
@@ -363,6 +405,9 @@ class Products extends CI_Controller
         // print_r($_POST);exit;
         if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
 
+            $add_in_m['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
+
+
             
             $name_old = (isset($_POST['name_old'])) ? $this->common->mysql_safe_string($_POST['name_old']) : '';
             $add_in_m['name'] = $name = (isset($_POST['name'])) ? $this->common->mysql_safe_string($_POST['name']) : '';
@@ -423,6 +468,7 @@ class Products extends CI_Controller
             }
 
             if ($name == '') {$error .= "Please enter Name/Title  <br>";}
+            if ($domains == '') {$error .= "Please select atleast 1 domain  <br>";}
 
             if ($error == '') {
 
@@ -465,6 +511,8 @@ class Products extends CI_Controller
                 }
 
                 $this->common->createjson('product_category', 'category',"select *    from   product_category   	where    status_flag='Active' order by sort_order asc, name asc ",'multiple','home');
+                
+                $this->common->createjson('product_category', 'category',"select *    from   product_category   	where    status_flag='Active' order by sort_order asc, name asc ",'multiple','self');
 
 
                 redirect($this->controller . '/categorylistall');

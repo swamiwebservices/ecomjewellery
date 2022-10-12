@@ -76,6 +76,11 @@ class Coupon extends CI_Controller
 
         if (isset($_POST['mode']) && $_POST['mode'] == 'edit_content_add' && $this->validateForm(0)) {
             $add_in = array();
+
+            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
+
+
+
             $add_in['name'] = $name = (isset($_POST['name'])) ? $this->common->mysql_safe_string($_POST['name']) : '';
             $add_in['code'] = $code = (isset($_POST['code'])) ? $this->common->mysql_safe_string($_POST['code']) : '';
             $add_in['type'] = $type = (isset($_POST['type'])) ? $this->common->mysql_safe_string($_POST['type']) : 'F';
@@ -111,8 +116,8 @@ class Coupon extends CI_Controller
 
             $add_in['uuid'] = $uuid;
 
-            $add_in['added_date'] = date("Y-m-d");
-            $add_in['edit_date'] = date("Y-m-d");
+            $add_in['added_date'] = date("Y-m-d H:i:s");
+            $add_in['edit_date'] = NULL;
             $add_in['added_by_userid'] = $session_user_data['user_id'];
             $add_in['edit_by_userid'] = $session_user_data['user_id'];
 			
@@ -221,6 +226,10 @@ class Coupon extends CI_Controller
          
             
             $add_in = array();
+            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
+
+
+
             $add_in['name'] = $name = (isset($_POST['name'])) ? $this->common->mysql_safe_string($_POST['name']) : '';
             $add_in['code'] = $code = (isset($_POST['code'])) ? $this->common->mysql_safe_string($_POST['code']) : '';
             $add_in['type'] = $type = (isset($_POST['type'])) ? $this->common->mysql_safe_string($_POST['type']) : 'F';
@@ -242,9 +251,9 @@ class Coupon extends CI_Controller
             }
             if ($error == '') {
                 
-                $add_in['edit_date'] = date("Y-m-d");
+                $add_in['edit_date'] =  date("Y-m-d H:i:s");
                 $add_in['edit_by_userid'] = $session_user_data['user_id'];
-
+              
                 $this->db->where('uuid', $uuid);
                 $this->db->update($this->tbl_name, $add_in); 
               
@@ -289,7 +298,7 @@ class Coupon extends CI_Controller
 
             $add_in['edit_date'] = date("Y-m-d h:i:s");
             $add_in['edit_by_userid'] = $session_user_data['user_id'];
-            $add_in['status'] = 'Delete';
+            $add_in['status'] = 'Deleted';
             $this->db->where('uuid', $uuid);
             $this->db->update($this->tbl_name, $add_in);
 

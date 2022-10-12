@@ -132,12 +132,22 @@
 
 
                             <div class="form-group row">
-                                <label class="col-form-label col-lg-2" for="category_id">Category :<span
+                                <label class="col-form-label col-lg-2" for="category_id">Category:<span
+                                        class="text-danger">*</span><span
                                         class="text-danger">*</span></label>
-                                <div class="col-lg-9">
+                                <div class="col-lg-4">
                                     <select class="form-control" name="category_id" id="category_id" required>
                                         <?php  $this->common->get_categorylist_parent_sub((isset($records['category_id']))?$records['category_id']:'0')?>
                                     </select>
+
+                                </div>
+                                <label class="col-form-label col-lg-2 text-right" for="item_code">Item Code:<span
+                                        class="text-danger">*</span></label>
+                                <div class="col-lg-4">
+                                <input type="text" class="form-control maxlength-textarea "
+                                        maxlength="150" id="item_code" name="item_code" placeholder="Item Code"
+                                        value="<?php echo isset($records['item_code'])?$this->common->getDbValue($records['item_code']):''; ?>"
+                                        required>
 
                                 </div>
                             </div>
@@ -149,23 +159,12 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-9"><input type="text" class="form-control maxlength-textarea "
                                         maxlength="256" id="name" name="name" placeholder="Name"
-                                        value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>"
-                                        required>
+                                        value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>"  required>
                                     <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
                                 </div>
                             </div>
 
-                            <div class="form-group row">
-                                <label class="col-form-label col-lg-2" for="item_code">Item Code:</label>
-                                <div class="col-md-4"><input type="text" class="form-control maxlength-textarea "
-                                        maxlength="150" id="item_code" name="item_code" placeholder="Item Code"
-                                        value="<?php echo isset($records['item_code'])?$this->common->getDbValue($records['item_code']):''; ?>"
-                                        required>
-
-                                </div>
-
-                            </div>
-
+                         
 
                             <div class="form-group row    ">
                                 <label class="col-lg-2 col-form-label" for="description">Desctiption:</label>
@@ -223,27 +222,37 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="control-label col-lg-2" for="sort_order">Sort order:<span
-                                        class="text-danger">*</span></label>
-                                <div class="col-lg-2"><input type="number" class="form-control  numbersOnly"
-                                        id="sort_order" name="sort_order" placeholder="sort order"
-                                        value="<?php echo isset($records['sort_order'])?$this->common->getDbValue($records['sort_order']):''; ?>">
 
-                                </div>
                             </div>
                             <div class="form-group row">
-                                <label class="control-label col-lg-2" for="sort_order">Item Qty:<span
-                                        class="text-danger">*</span></label>
-                                <div class="col-lg-2"><input type="number" class="form-control  numbersOnly"
-                                        id="quantity" name="quantity" placeholder="sort order"
-                                        value="<?php echo isset($records['quantity'])?$this->common->getDbValue($records['quantity']):''; ?>">
+                                <label class="control-label col-lg-2" for="sort_order">Specification:</label>
+                                <div class="col-lg-10">
+                                        <?php
+                                        $specification = (isset($records['specification'])) ? json_decode($records['specification'],true) : [];
+                                        //print_r($specification);
+                                        for($p=1;$p<8;$p++){
+                                        ?>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control"
+                                        id="specification_title<?php echo $p?>" name="specification[title][<?php echo $p?>]" placeholder="Title <?php echo $p?>"  value="<?php echo (isset($specification['title'][$p])) ? $specification['title'][$p] : '' ?>"   >
+                                            </div>    
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control"
+                                        id="specification_value<?php echo $p?>" name="specification[value][<?php echo $p?>]" placeholder="Value <?php echo $p?>"  value="<?php echo (isset($specification['value'][$p])) ? $specification['value'][$p] : '' ?>"   >
+                                            </div> 
 
+                                        </div>
+
+                                        <?php    
+                                        }
+                                        ?>
                                 </div>
                             </div>
+                            
                             <div class="form-group row">
 
-                                <label class="control-label col-lg-2" for="status">Status:<span
-                                        class="text-danger">*</span></label>
+                                <label class="control-label col-lg-2" for="status">Status:<span  class="text-danger">*</span></label>
                                 <div class="col-lg-4">
                                     <?php  //print_r($records);?>
                                     <div class="form-check form-check-inline">
@@ -279,43 +288,57 @@
                             </div>
 
                             <?php
-                            $price_json = (isset($records['price_json'])) ? json_decode($records['price_json'],true) : [];
-                            //print_r($price_json);
+                            $price_json = (isset($records['price_json'])) ? json_decode($records['price_json'],true) : ['quantity'=>[],'mrp'=>[],'sellprice'=>[]];
+                            $mrp = $price_json['mrp'];
+                            $sellprice = $price_json['sellprice'];
+                            $quantity = $price_json['quantity'];
+                           // print_r($price_json);
                             $domain_list = $this->config->item("DOMAINs");
-                            foreach($domain_list as $key => $domain){
+                            foreach($domain_list as $domain_id => $domain){
                                 $domain_org = $domain;
                                 $domain = str_replace(".","_",$domain);
                                 $records_temp = (isset($price_json[$domain])) ?  $price_json[$domain] : [];
                                 //print_r($records_temp);
+                                
                             ?>
                             <fieldset>
-                                <legend class="font-weight-bold"><?php echo $domain_org?></legend>
+                                <legend class="font-weight-bold"
+                                    style="font-size:16px;background-color:<?php echo $this->common->rand_color()?>; color:#ffffff; padding-left:10px">
+                                    <?php echo $domain_org?></legend>
                                 <div class="form-group row">
-                                    <!--  <label class="col-form-label  col-lg-2" for="quantity<?php echo $domain?>">Item Qty:</label>
-                                    <div class="col-lg-2"><input type="text" class="form-control numbersOnly" id="quantity<?php echo $domain?>"
-                                            name="<?php echo $domain?>[quantity]" placeholder="Item Qty"
-                                            value="<?php echo isset($records_temp['quantity'])?$this->common->getDbValue($records_temp['quantity']):''; ?>"
+                                    <label class="col-form-label  col-lg-1" for="quantity_<?php echo $domain_id?>">Item
+                                        Qty:</label>
+                                    <div class="col-lg-1"><input type="number" min=0 class="form-control numbersOnly"
+                                            id="quantity_<?php echo $domain_id?>"
+                                            name="quantity[<?php echo $domain_id?>]" placeholder="Item Qty"
+                                            value="<?php echo isset($quantity[$domain_id])?$this->common->getDbValue($quantity[$domain_id]):'1'; ?>"
                                             required>
 
-                                    </div> -->
+                                    </div>
 
-                                    <label class="col-form-label col-lg-2 " for="price<?php echo $domain?>">Price: <span
+                                    <label class="col-form-label col-lg-1 text-right "
+                                        for="mrp_<?php echo $domain_id?>">MRP Price: <span
                                             class="text-danger">*</span></label>
-                                    <div class="col-lg-2"><input type="text" class="form-control numbersOnly"
-                                            id="price<?php echo $domain?>" name="<?php echo $domain?>[price]"
-                                            placeholder="Price"
-                                            value="<?php echo isset($records_temp['price'])?$this->common->getDbValue($records_temp['price']):''; ?>"
+                                    <div class="col-lg-1"><input type="number" min=0
+                                            class="form-control cost mrp mrp_<?php echo $domain_id?>  auto_mrp_<?php echo $domain_id?> numbersOnly"
+                                            id="mrp<?php echo $domain_id?>" data-domain="<?php echo $domain_id?>"
+                                            name="mrp[<?php echo $domain_id?>]" placeholder="MRP"
+                                            value="<?php echo isset($mrp[$domain_id])?$this->common->getDbValue($mrp[$domain_id]):''; ?>"
                                             required>
                                     </div>
-                                    <label class="col-form-label col-lg-2 " for="sale_price<?php echo $domain?>">Sale
+                                    <label class="col-form-label col-lg-1 " for="sellprice_<?php echo $domain?>">Sell
                                         Price: <span class="text-danger">*</span></label>
-                                    <div class="col-lg-2"><input type="text" class="form-control numbersOnly"
-                                            id="sale_price<?php echo $domain?>" name="<?php echo $domain?>[sale_price]"
-                                            placeholder="Price"
-                                            value="<?php echo isset($records_temp['sale_price'])?$this->common->getDbValue($records_temp['sale_price']):''; ?>"
+                                    <div class="col-lg-1"><input type="number" min=0
+                                            class="form-control cost sellprice sellprice_<?php echo $domain_id?> auto_sellprice_<?php echo $domain_id?> numbersOnly"
+                                            id="sellprice_<?php echo $domain?>" data-domain="<?php echo $domain_id?>"
+                                            name="sellprice[<?php echo $domain_id?>]" placeholder="Sell Price"
+                                            value="<?php echo isset($sellprice[$domain_id])?$this->common->getDbValue($sellprice[$domain_id]):''; ?>"
                                             required>
                                     </div>
-
+                                    <label class="col-form-label col-lg-1 text-right text-success ">Dicount: </label>
+                                    <label
+                                        class="col-form-label col-lg-1 text-success discount  discount_<?php echo $domain_id?> ">0
+                                    </label>
                                 </div>
                             </fieldset>
                             <?php }?>
@@ -347,7 +370,65 @@
     </div>
     <!-- /page content -->
     <script>
+    var default_domain_flag = 0;
+    <?php
+        $sql = "select * from wti_process_cost order by percentage ";
+        $query = $this->db->query($sql);
+        $process_costrs = $query->result_array();
+        $domain_wise = [];
+        $default_domain_flag =0;
+        foreach($process_costrs as $key => $process_cost){
+            $domain_wise[$process_cost['domain']] = $process_cost['percentage'];
+            if($process_cost['default_flag']){
+                $default_domain_flag = 1;
+            }
+        }
+    
+        ?>
+    var domain_wise = <?php echo json_encode($domain_wise)?>;
+    default_domain_flag = <?php echo $default_domain_flag?>;
+
+    console.log(domain_wise);
     $(document).ready(function() {
+        $(".mrp").keyup(function() {
+            const mrp_id = $(this).attr('id');
+            const domain = $(this).data('domain');
+            let mrp = parseInt(this.value);
+            $(".sellprice_" + domain).val(mrp);
+            console.log(domain);
+
+            if (domain == default_domain_flag) {
+                $.each(domain_wise, function(key1, val1) {
+                    val1 = parseInt(val1);
+                    if (key1 != default_domain_flag) {
+                        let other_mrp = parseInt(mrp + (mrp * val1 / 100))
+                        $(".auto_mrp_" + key1).val(other_mrp);
+                        $(".auto_sellprice_" + key1).val(other_mrp);
+
+                    }
+                });
+            }
+
+
+        });
+
+
+        $(".sellprice").keyup(function() {
+            const mrp_id = $(this).attr('id');
+            const domain = $(this).data('domain');
+            let mrp = parseInt($(".mrp_" + domain).val());
+            let value = parseInt(this.value);
+            if (value >= mrp) {
+                this.value = mrp;
+                value = mrp;
+            }
+            let value_disc = Math.round(((mrp - value) / mrp) * 100);
+
+            $(".discount_" + domain).html(value_disc + " %");
+            // console.log(mrp,value,value_disc);
+
+        });
+
         $(".form-control").removeClass("border-danger");
         $("#frm-edit").submit(function(e) {
             var isError = false;
@@ -367,8 +448,6 @@
                 $("#name").addClass("border-danger");
 
             }
-
-
 
 
 

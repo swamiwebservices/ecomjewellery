@@ -535,6 +535,9 @@ class Cms extends CI_Controller
         if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
 
             $add_in = array();
+
+            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '';
+          
             $add_in['section'] = $section = (isset($_POST['section'])) ? $this->common->mysql_safe_string($_POST['section']) : '';
           
             $add_in['heading'] = $heading = (isset($_POST['heading'])) ? $this->common->mysql_safe_string($_POST['heading']) : '';
@@ -565,10 +568,20 @@ class Cms extends CI_Controller
 
             if ($error == '') {
                
-                $this->db->where('id', $id);
-                $this->db->update('wti_cms_pages', $add_in);
+                $add_in['date_added'] = date("Y-m-d H:i:s");
 
-                $this->common->createjson('privacy','cms',"select * from  wti_cms_pages c      where     id=2 ",'single');
+                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $query = $this->db->query($sql);
+                if($query->num_rows()>0){
+                    $this->db->where('domains', $domains);
+                    $this->db->where('section', $section);
+                    $this->db->update('wti_cms_pages', $add_in);
+                } else {
+                    $this->db->insert('wti_cms_pages', $add_in);
+                   
+                }
+
+             //   $this->common->createjson('privacy','cms',"select * from  wti_cms_pages c      where     id=2 ",'single');
 
             
 
@@ -582,7 +595,13 @@ class Cms extends CI_Controller
             $data_info = $_POST;
         } else {
 
-            $data_info = $this->common->getSingleInfoBy('wti_cms_pages', 'id', $id, '*');
+            $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='privacy' ", 0, 0);
+            $data_info_temp = [];
+            foreach($data_info as $key => $dataAddress){
+                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+
+            }
+            $data_info = $data_info_temp;
         }
 
         //print_r($data_info);
@@ -617,6 +636,7 @@ class Cms extends CI_Controller
         if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
 
             $add_in = array();
+            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '';
             $add_in['section'] = $section = (isset($_POST['section'])) ? $this->common->mysql_safe_string($_POST['section']) : '';
           
             $add_in['heading'] = $heading = (isset($_POST['heading'])) ? $this->common->mysql_safe_string($_POST['heading']) : '';
@@ -647,18 +667,26 @@ class Cms extends CI_Controller
             }
 
             if ($error == '') {
-               
-                $this->db->where('id', $id);
-                $this->db->update('wti_cms_pages', $add_in);
+                $add_in['date_added'] = date("Y-m-d H:i:s");
 
-
+                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $query = $this->db->query($sql);
+                if($query->num_rows()>0){
+                    $this->db->where('domains', $domains);
+                    $this->db->where('section', $section);
+                    $this->db->update('wti_cms_pages', $add_in);
+  
+                }    else {
+                    $this->db->insert('wti_cms_pages', $add_in);
+                   
+                }
                 
-                $this->common->createjson('termscondtion','cms',"select * from  wti_cms_pages c      where     id=3 ",'single');
+              //  $this->common->createjson('termscondtion','cms',"select * from  wti_cms_pages c      where     id=3 ",'single');
 
 
 
-                $this->session->set_flashdata('success', 'Information updated succssfully!');
-                redirect($this->controller . '/termscondtion');
+               $this->session->set_flashdata('success', 'Information updated succssfully!');
+               redirect($this->controller . '/termscondtion');
             } else {
                 $this->session->set_flashdata('error', $error);
             }
@@ -666,7 +694,13 @@ class Cms extends CI_Controller
             $data_info = $_POST;
         } else {
 
-            $data_info = $this->common->getSingleInfoBy('wti_cms_pages', 'id', $id, '*');
+            $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='termscondtion' ", 0, 0);
+            $data_info_temp = [];
+            foreach($data_info as $key => $dataAddress){
+                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+
+            }
+            $data_info = $data_info_temp;
         }
 
         //print_r($data_info);
@@ -743,7 +777,7 @@ class Cms extends CI_Controller
                
                 $this->db->where('id', $id);
                 $this->db->update('wti_cms_pages', $add_in);
-                $this->common->createjson('aboutus','cms',"select * from  wti_cms_pages c      where     id=1 ",'single');
+            //    $this->common->createjson('aboutus','cms',"select * from  wti_cms_pages c      where     id=1 ",'single');
 
                 $this->session->set_flashdata('success', 'Information updated succssfully!');
                 redirect($this->controller . '/aboutus');
@@ -811,7 +845,7 @@ class Cms extends CI_Controller
                 $this->db->update('wti_m_address', $add_in);
 
                  
-                $this->common->createjson('wti_m_address','',"select * from  wti_m_address c      where  domains='{$domains}'     ",'single');
+             //   $this->common->createjson('wti_m_address','',"select * from  wti_m_address c      where  domains='{$domains}'     ",'single');
 
                 $this->session->set_flashdata('success', 'Information updated succssfully!');
                 redirect($this->controller . '/address');
@@ -874,7 +908,7 @@ class Cms extends CI_Controller
         //     $resultdata = $query->row_array();
 
         //$data['num_row'] = $resultdata['numrows'] ;//= $this->common->numRow($this->tablename,$where_cond);
-        $this->common->createjson('wti_meta_tags','',"select * from  wti_meta_tags c order by id ");
+        //$this->common->createjson('wti_meta_tags','',"select * from  wti_meta_tags c order by id ");
 
         $this->load->view('mtetatags_list', $data);
         $this->session->unset_userdata('success');

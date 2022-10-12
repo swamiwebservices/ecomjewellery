@@ -43,6 +43,7 @@ class Sitecontrol extends CI_Controller {
 				//$this->db->query("DELETE FROM `wti_m_setting` WHERE  `group_name` = '" . $this->common->getDbValue($code) . "'");
 				
  				foreach ($_POST as $key => $value) {
+					$store_id = $_POST['store_id'];
 					//
 						/* 	if (!is_array($value)) {
 								$this->db->query("INSERT INTO `wti_m_setting` SET  `group_name` = '" . $this->common->getDbValue($code) . "', `key` = '" . $this->common->getDbValue($key) . "', `value` = '" . $this->common->getDbValue($value) . "'");
@@ -50,8 +51,21 @@ class Sitecontrol extends CI_Controller {
 								$this->db->query("INSERT INTO `wti_m_setting` SET   `group_name` = '" . $this->common->getDbValue($code) . "', `key` = '" . $this->common->getDbValue($key) . "', `value` = '" . $this->common->getDbValue(json_encode($value, true)) . "', serialized = '1'");
 							}
 						*/
-				 	$sql = "update wti_m_setting set `value` = '" . $this->common->getDbValue($value) . "' where  `group_name` = '" . $this->common->getDbValue($code) . "' and  `key_name` = '" . $this->common->getDbValue($key) . "'";		
-					$this->db->query($sql);
+				 	
+						$sql = "select * from wti_m_setting where `group_name` = '" . $this->common->getDbValue($code) . "' and  `key_name` = '" . $this->common->getDbValue($key) . "' and store_id='{$store_id}' ";
+						$query_tesmp = $this->db->query($sql);
+						if($query_tesmp->num_rows()>0){
+							$sql = "update wti_m_setting set `value` = '" . $this->common->getDbValue($value) . "' where  `group_name` = '" . $this->common->getDbValue($code) . "' and  `key_name` = '" . $this->common->getDbValue($key) . "' and store_id='{$store_id}'";		
+							$this->db->query($sql);
+						} else {
+							// if (!is_array($value)) {
+							// 	$this->db->query("INSERT INTO `wti_m_setting` SET  `group_name` = '" . $this->common->getDbValue($code) . "', `key_name` = '" . $this->common->getDbValue($key) . "', `value` = '" . $this->common->getDbValue($value) . "' , store_id = '{$store_id}' ");
+							// } else {
+							// 	$this->db->query("INSERT INTO `wti_m_setting` SET   `group_name` = '" . $this->common->getDbValue($code) . "', `key_name` = '" . $this->common->getDbValue($key) . "', `value` = '" . $this->common->getDbValue(json_encode($value, true)) . "' , store_id = '{$store_id}' , serialized = '1'");
+							// }
+						}
+						
+
 				} 
 			
 		 
@@ -73,6 +87,14 @@ class Sitecontrol extends CI_Controller {
 		 if ($query->num_rows()>0) {
 			$resultdata =    $query->result_array();
 		}
+	
+		$data_info_temp = [];
+		foreach($resultdata as $key => $dataAddress){
+			$data_info_temp[$dataAddress['store_id']][] = $dataAddress;
+
+		}
+		$resultdata = $data_info_temp;
+		//print_r($resultdata);
 		$data['records'] = $resultdata;
 		//print_r($records);
 	 /* 	foreach($resultdata as $key => $value){
@@ -250,7 +272,7 @@ class Sitecontrol extends CI_Controller {
 		}
 		 
 		
-		$this->load->view(  'sitecontrol_maintenancemode_view', $data);
+		$this->load->view(  'sitecontrol_maintenancemode_view_tab', $data);
 	} 
 
 	public function list_all(){

@@ -1858,5 +1858,7 @@ class Common extends CI_Model
 	    $hashed_password = md5($salt . $pwd);
 	    return $hashed_password;
 	}
-    
+    function pdesc($data){
+	   return substr(strip_tags($data),0,100);
+	}
 }

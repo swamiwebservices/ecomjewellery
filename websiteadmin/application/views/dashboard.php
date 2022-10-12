@@ -25,6 +25,16 @@ if($user_data['access_ids']!=''){
         <script src="<?php echo base_url() ?>global_assets/js/plugins/visualization/d3/d3.min.js"></script>
         <script src="<?php echo base_url() ?>global_assets/js/plugins/visualization/c3/c3.min.js"></script>
         <style>
+
+        .bg-bg1-400 {
+            background-color: #005534;
+        }
+        .bg-bg2-400{
+            background-color: #efd406;
+        }
+        .bg-bg3-400{
+            background-color: #c4c5c5;
+        }
         .row-sm>div {
             padding-left: 10px;
             padding-right: 10px;
@@ -231,7 +241,7 @@ if($user_data['access_ids']!=''){
                     <div class="col">
                             <!-- Members online -->
                             <a href="<?php echo site_url("orders/new_orders?getdate=".$today_dateymd);?>">
-                            <div class="card bg-teal-400">
+                            <div class="card bg-bg1-400">
                                 <div class="neworder card-body">
                                     <div class="d-flex align-items-center float-right">
                                        
@@ -263,7 +273,7 @@ if($user_data['access_ids']!=''){
                         
                         <div class="col">
                            
-                            <div class="card bg-pink-400">
+                            <div class="card bg-bg2-400">
                                 <div class="revenue card-body">
                                 <div class="d-flex align-items-center float-right">
                                         
@@ -279,7 +289,7 @@ if($user_data['access_ids']!=''){
                         </div>
                         <div class="col">
                         <a href="<?php echo site_url("customers");?>">
-                            <div class="card bg-blue-400">
+                            <div class="card bg-bg3-400">
                                 <div class="customers card-body">
                                 <div class="d-flex align-items-center float-right">
                                     

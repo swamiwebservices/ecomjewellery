@@ -120,20 +120,17 @@
                                         <strong><?php echo $this->common->getDbValue($value['name']); ?></strong></td>
 
                                     <td><?php echo isset($main_cat['name'])?$this->common->getDbValue($main_cat['name']):''; ?>
-                                        -
+                                        ->
                                         <?php echo isset($sub_cat['name'])?$this->common->getDbValue($sub_cat['name']):''; ?>
                                     </td>
                                     <td valign="top">
-                                        <?php 
-                                        $price_json = json_decode($value['price_json'],true);
-                                      //  print_r($price_json);
-                                        foreach($price_json as $key => $pdata){
-                                            $key_org = $key;
-                                            $key = str_replace("_",".",$key);
-                                            echo "<span class='font-weight-bold'>{$key}</span> <span>Price:{$pdata['price']}</span> <span>Sale Price:{$pdata['sale_price']}</span></br>";
-                                            //echo $this->currencymodal->format($value['sale_price'], currency_code, 1);
-                                        }
+                                        <?php
+                                         $domain_list = $this->config->item("DOMAINs");
+                                         foreach($domain_list as $domain_id => $domain){
                                         ?>
+                                    <?php echo $this->common->getDbValue($domain); ?> : <?php echo isset($value['domain'.$domain_id.'_mrp'])?$this->common->getDbValue($value['domain'.$domain_id.'_mrp']) : $value['mrp']; ?> - <?php echo isset($value['domain'.$domain_id.'_sellprice'])?$this->common->getDbValue($value['domain'.$domain_id.'_sellprice']):$value['sellprice']; ?></br>
+                                    <?php }?>
+                                    
                                     </td>
 
 

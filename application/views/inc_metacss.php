@@ -4,7 +4,7 @@ $trandomuuid = $this->common->randomuuid();
 ?>
  <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Monsta - Jewelry eCommerce Bootstrap 5 Template</title>
+    <title>Monsta</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Favicon -->
@@ -37,5 +37,11 @@ var st_url = "<?php echo site_url() ?>/";
         url("<?php echo base_url() ?>websiteadmin/global_assets/images/header1.jpg");
     background-repeat: no-repeat;
    color: #ffffff!important; */
+}
+
+.header_two .header_middel {
+    padding: 20px 0px 10px 0px!important;
+    /* background-color: #2e7254;
+    color: #ffffff!important; */
 }
 </style>

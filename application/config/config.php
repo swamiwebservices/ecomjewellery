@@ -529,9 +529,5 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
-$config['bsc-result'] = array('FYBSC','SYBSC','TYBSC');
-$config['bca-result'] = array('FYBCA','SYBCA','TYBCA');
-$config['pg-result'] = array('MSC CND','MSC RM(THM)','MSC CS','PGDSSFN','PGDECE');
-
-
+ 
   

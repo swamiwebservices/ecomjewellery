@@ -27,6 +27,12 @@ class Common extends CI_Model
         $query = $this->db->query("select $id from $table $where limit 0,1");
         return $query->row_array();
     }
+    public function getSinlgeColumn($id, $table, $where)
+    {
+        $query = $this->db->query("select $id from $table where $where limit 0,1");
+        $rs = $query->row_array();
+        return $rs[$id];
+    }
     public function getAllRec($select, $table, $where)
     {
         //echo "select $select from $table $where";
@@ -125,8 +131,6 @@ class Common extends CI_Model
 
     }
 
-  
-
     public function getSingleInfoBy($table = '', $field = '', $value = '', $columns = '*')
     {
 
@@ -199,17 +203,17 @@ class Common extends CI_Model
 
     public function getUniqueSlug($table = '', $field = '', $value = '', $columns = '*')
     {
-       // $value = isset($value) ? filter_var($value, FILTER_SANITIZE_STRING) : '';
+        // $value = isset($value) ? filter_var($value, FILTER_SANITIZE_STRING) : '';
 
         // $data_info = array();
         $query = $this->db->query("select $columns from $table where $field like '" . $value . "%'");
-         
+
         if ($query->num_rows() > 0) {
             //->row_array()
             // $data_info = $query->result_array();
             $value = $value . "-" . $query->num_rows();
         }
-         
+
         return $value;
     }
     public function getSessionValue()
@@ -349,6 +353,9 @@ class Common extends CI_Model
     /* -------------------------------------------------------------------------- */
     public function mysql_safe_string($value)
     {
+        if (is_array($value)) {
+            return $value;
+        }
         /*error_reporting(E_ALL);
         if (function_exists('mysql_real_escape_string')) {
         echo "Function is available.<br />\n";
@@ -714,7 +721,7 @@ class Common extends CI_Model
 
     public function UploadImage($fileField, $path, $isResize = 0, $height = '', $width = '', $image_name = '', $tempDir = 'temp')
     {
-      
+
         $errors = 0;
         if (!is_dir($path)) {
             return array("uploaded" => "false", "uploadMsg" => "Destination Directory Does Not Found", "imageFile" => "");
@@ -744,9 +751,9 @@ class Common extends CI_Model
                     $image_name = time() . '.' . $extension;
                 } else {
                     // Extracting only filename using constants
-                     $filename_temp = pathinfo($image_name, PATHINFO_FILENAME);
-                
-                    $image_name = $filename_temp .'.' . $extension;
+                    $filename_temp = pathinfo($image_name, PATHINFO_FILENAME);
+
+                    $image_name = $filename_temp . '.' . $extension;
                 }
 
                 $newname = $path . '/' . $image_name;
@@ -765,7 +772,6 @@ class Common extends CI_Model
             return $returnArray;
         }
 
-        
         if ($errors != 1) {
             $returnArray = array("uploaded" => "true", "uploadMsg" => "Image is uploadded successfully....", "imageFile" => $image_name);
         }
@@ -1133,7 +1139,7 @@ class Common extends CI_Model
     public function get_mobiledevice($mobile_device_id = 0)
     {
         $mobile_device_id = $this->common->mysql_safe_string($mobile_device_id);
-      
+
         $sql = "select * from master_mobile_phones where    status='Active' order by name asc   ";
         $query_result = $this->db->query($sql);
         $results = $query_result->result_array();
@@ -1142,9 +1148,9 @@ class Common extends CI_Model
         foreach ($results as $key => $value) {
 
             if ($value['id'] == $mobile_device_id) {
-                $combo .= "<option value='" . $value['id'] . "' selected>" . $value['name']. ' ('.$value['mobile_number1'].')' . "</option>";
+                $combo .= "<option value='" . $value['id'] . "' selected>" . $value['name'] . ' (' . $value['mobile_number1'] . ')' . "</option>";
             } else {
-                $combo .= "<option value='" . $value['id'] . "' >" . $value['name'] . ' ('.$value['mobile_number1'].')' .  "</option>";
+                $combo .= "<option value='" . $value['id'] . "' >" . $value['name'] . ' (' . $value['mobile_number1'] . ')' . "</option>";
             }
 
         }
@@ -1158,7 +1164,7 @@ class Common extends CI_Model
 
         $where = "where  status='Active' order by name asc";
         $results = $this->getAllRow('master_province', $where);
-      
+
         $combo = "<option value='' >Select province</option>";
         foreach ($results as $key => $value) {
 
@@ -1211,14 +1217,14 @@ class Common extends CI_Model
 
         } else {
 
-            return base_url() ."image/" . $img;
+            return base_url() . "image/" . $img;
 
             // return "uploads/grey-no-image.jpg";
 
         }
 
-    }  
-    
+    }
+
     public function showImageAdmin($path = '', $img = '')
     {
 
@@ -1244,7 +1250,7 @@ class Common extends CI_Model
     public function get_categorylist($category_id = 0)
     {
         $category_id = $this->common->mysql_safe_string($category_id);
-      
+
         $sql = "select * from product_category where    status!='Delete' order by name asc   ";
         $query_result = $this->db->query($sql);
         $results = $query_result->result_array();
@@ -1253,9 +1259,9 @@ class Common extends CI_Model
         foreach ($results as $key => $value) {
 
             if ($value['category_id'] == $category_id) {
-                $combo .= "<option value='" . $value['category_id'] . "' selected>" . $value['name']. ' ('.$value['status'].')' . "</option>";
+                $combo .= "<option value='" . $value['category_id'] . "' selected>" . $value['name'] . ' (' . $value['status'] . ')' . "</option>";
             } else {
-                $combo .= "<option value='" . $value['category_id'] . "' >" . $value['name'] . ' ('.$value['status'].')' .  "</option>";
+                $combo .= "<option value='" . $value['category_id'] . "' >" . $value['name'] . ' (' . $value['status'] . ')' . "</option>";
             }
 
         }
@@ -1263,269 +1269,245 @@ class Common extends CI_Model
         echo $combo;
 
     }
-	
-    public function get_categorylist_parent_sub($category_id=0){
-         $sql = "select * from product_category where  parent_id=0 AND status_flag!='Deleted' order by name asc   ";
+
+    public function get_categorylist_parent_sub($category_id = 0)
+    {
+        $sql = "select * from product_category where  parent_id=0 AND status_flag!='Deleted' order by name asc   ";
         $query_result = $this->db->query($sql);
         $results = $query_result->result_array();
 
         $combo = "<option value='' >Select Category</option>";
         foreach ($results as $key => $value) {
 
-			$sql = "select * from product_category where  parent_id=".$value['category_id']." AND status_flag!='Deleted' order by name asc   ";
-			$query_result = $this->db->query($sql);
-			$results_sub = $query_result->result_array();
-			$sel_flag = '';
-			$dis_flag = '';
-			$fld_val = $value['category_id'].'|0';
-			
-			if ($value['category_id'] == $category_id) { $sel_flag = 'selected';}
-			if ($results_sub) { $dis_flag = 'disabled';}
+            $sql = "select * from product_category where  parent_id=" . $value['category_id'] . " AND status_flag!='Deleted' order by name asc   ";
+            $query_result = $this->db->query($sql);
+            $results_sub = $query_result->result_array();
+            $sel_flag = '';
+            $dis_flag = '';
+            $fld_val = $value['category_id'] . '|0';
 
-            $combo .= "<option value='" . $fld_val . "' ".$sel_flag." ".$dis_flag.">" . $value['name']. ' ('.$value['status_flag'].')' . "</option>";
-			
-			foreach ($results_sub as $key => $value_sub) {
-				$sel_sub_flag = '';
-				$fld_val = $value['category_id'].'|'.$value_sub['category_id'];
-				if ($value['category_id'] == $category_id) { $sel_sub_flag = 'selected';}
-				$combo .= "<option value='" . $fld_val . "' ".$sel_sub_flag.">&nbsp;&nbsp;" . $value_sub['name']. ' ('.$value_sub['status_flag'].')' . "</option>";
-			}
+            if ($value['category_id'] == $category_id) {$sel_flag = 'selected';}
+            if ($results_sub) {$dis_flag = 'disabled';}
+
+            $combo .= "<option value='" . $fld_val . "' " . $sel_flag . " " . $dis_flag . ">" . $value['name'] . ' (' . $value['status_flag'] . ')' . "</option>";
+
+            foreach ($results_sub as $key => $value_sub) {
+                $sel_sub_flag = '';
+                $fld_val = $value['category_id'] . '|' . $value_sub['category_id'];
+                if ($value['category_id'] == $category_id) {$sel_sub_flag = 'selected';}
+                $combo .= "<option value='" . $fld_val . "' " . $sel_sub_flag . ">&nbsp;&nbsp;" . $value_sub['name'] . ' (' . $value_sub['status_flag'] . ')' . "</option>";
+            }
 
         }
 
         echo $combo;
 
     }
-	
-    public function get_categorylist_parent($category_id=0){
-         $sql = "select * from product_category where  parent_id=0 AND status_flag !='Deleted' order by sort_order asc , name asc   ";
+
+    public function get_categorylist_parent($category_id = 0)
+    {
+        $sql = "select * from product_category where  parent_id=0 AND status_flag !='Deleted' order by sort_order asc , name asc   ";
         $query_result = $this->db->query($sql);
         $results = $query_result->result_array();
 
-		$combo = "<option value='0'>PARENT CATEGORY</option>";
+        $combo = "<option value='0'>PARENT CATEGORY</option>";
         foreach ($results as $key => $value) {
-			$sel_flag = '';
-			if ($value['category_id'] == $category_id) { $sel_flag = 'selected';}
-            $combo .= "<option value='" . $value['category_id'] . "' ".$sel_flag.">" . $value['name']. ' ('.$value['status_flag'].')' . "</option>";
+            $sel_flag = '';
+            if ($value['category_id'] == $category_id) {$sel_flag = 'selected';}
+            $combo .= "<option value='" . $value['category_id'] . "' " . $sel_flag . ">" . $value['name'] . ' (' . $value['status_flag'] . ')' . "</option>";
         }
 
         echo $combo;
 
-    }			
- 
+    }
 
-    function ajaxpagingnation_lux_new($page,$num_rows,$per_page,$links=7,$fun_name='',$other_para=''){
-			
-		$page_url="?";
-      
+    public function ajaxpagingnation_lux_new($page, $num_rows, $per_page, $links = 7, $fun_name = '', $other_para = '')
+    {
+
+        $page_url = "?";
+
         $total = $num_rows;
-        $adjacents = "2"; 
+        $adjacents = "2";
 
-        $page = ($page == 0 ? 1 : $page);  
-        $start = ($page - 1) * $per_page;                                
-        
-        $prev = $page - 1;                            
+        $page = ($page == 0 ? 1 : $page);
+        $start = ($page - 1) * $per_page;
+
+        $prev = $page - 1;
         $next = $page + 1;
-        $setLastpage = ceil($total/$per_page);
+        $setLastpage = ceil($total / $per_page);
         $lpm1 = $setLastpage - 1;
-        
+
         $paging = "";
-        if ($setLastpage > 1)
-        {    
+        if ($setLastpage > 1) {
             $paging .= "";
-                   // $paging .= "<li class='active'>Page $page of $setLastpage</li>";
-			if($page>1)
-			{
-                
-				$paging .= "<li class='page-item '><a class='page-link'  href='".site_url($fun_name.'&page='.($page-1))."' >&larr;</a></li>";
-			} 
-			else
-			{
-				$paging .= '<li class="page-item disabled "><a class="page-link">&larr;</a></li>';
-			}		   
-            if ($setLastpage < 7 + ($adjacents * 2))
-             {   
-                for ($counter = 1; $counter <= $setLastpage; $counter++)
-                {
-                    if ($counter == $page)
-                        $paging.= "<li  class='page-item  active '><a class='page-link'>$counter</a></li>";
-                    else
-                        $paging.= "<li class='page-item '><a class='page-link' href='".site_url($fun_name.'&page='.($counter))."'>$counter</a></li>";                    
-                }
+            // $paging .= "<li class='active'>Page $page of $setLastpage</li>";
+            if ($page > 1) {
+
+                $paging .= "<li class='page-item '><a class='page-link'  href='" . site_url($fun_name . '&page=' . ($page - 1)) . "' >&larr;</a></li>";
+            } else {
+                $paging .= '<li class="page-item disabled "><a class="page-link">&larr;</a></li>';
             }
-            elseif($setLastpage > 5 + ($adjacents * 2))
-              {
-                if($page < 1 + ($adjacents * 2))        
-                 {
-                    for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++)
-                     {
-                        if ($counter == $page)
-                            $paging.= "<li  class='page-item  active '><a class='page-link'>$counter</a></li>";
-                        else
-                            $paging.= "<li  class='page-item '><a  class=' page-link'  href='".site_url($fun_name.'&page='.($counter))."'>$counter</a></li>";                    
+            if ($setLastpage < 7 + ($adjacents * 2)) {
+                for ($counter = 1; $counter <= $setLastpage; $counter++) {
+                    if ($counter == $page) {
+                        $paging .= "<li  class='page-item  active '><a class='page-link'>$counter</a></li>";
+                    } else {
+                        $paging .= "<li class='page-item '><a class='page-link' href='" . site_url($fun_name . '&page=' . ($counter)) . "'>$counter</a></li>";
                     }
-                    $paging.= "<li class='page-item '><a>...</a></li>";
-                    $paging.= "<li  class='page-item '><a class=' page-link'  href='".site_url($fun_name.'&page='.($lpm1))."'>$lpm1</a></li>";
-                    $paging.= "<li class='page-item '><a  class=' page-link' href='".site_url($fun_name.'&page='.($setLastpage))."'>$setLastpage</a></li>";        
+
                 }
-                elseif($setLastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2))
-                 {
-                    $paging.= "<li class='page-item '><a  class=' page-link'  href='".site_url($fun_name.'&page=1')."'>1</a></li>";
-                    $paging.= "<li class='page-item '><a  class=' page-link' href='".site_url($fun_name.'&page=2')."'>2</a></li>";
-                    $paging.= "<li class='page-item '><a>...</a></li>";
-                    for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++)
-                     {
-                        if ($counter == $page)
-                            $paging.= "<li  class='page-item  active '><a class='page-link'>$counter</a></li>";
-                        else
-                            $paging.= "<li class='page-item '><a  class=' page-link'  href='".site_url($fun_name.'&page='.$counter)."'>$counter</a></li>";                    
+            } elseif ($setLastpage > 5 + ($adjacents * 2)) {
+                if ($page < 1 + ($adjacents * 2)) {
+                    for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
+                        if ($counter == $page) {
+                            $paging .= "<li  class='page-item  active '><a class='page-link'>$counter</a></li>";
+                        } else {
+                            $paging .= "<li  class='page-item '><a  class=' page-link'  href='" . site_url($fun_name . '&page=' . ($counter)) . "'>$counter</a></li>";
+                        }
+
                     }
-                    $paging.= "<li class='page-item '><a>..</a></li>";
-                    $paging.= "<li class=' page-item'><a  class=' page-link' href='".site_url($fun_name.'&page='.$lpm1)."'>$lpm1</a></li>";
-                    $paging.= "<li class='page-item '><a  class=' page-link'  href='".site_url($fun_name.'&page='.$setLastpage)."'>$setLastpage</a></li>";        
-                }
-                else
-                 {
-                    $paging.= "<li class='page-item '><a  class=' page-link' href='".site_url($fun_name.'&page=1')."'>1</a></li>";
-                    $paging.= "<li class='page-item '><a  class=' page-link' href='".site_url($fun_name.'&page=2')."'>2</a></li>";
-                    $paging.= "<li class='page-item '><a>..</a></li>";
-                    for ($counter = $setLastpage - (2 + ($adjacents * 2)); $counter <= $setLastpage; $counter++)
-                     {
-                        if ($counter == $page)
-                            $paging.= "<li  class='page-item  active'><a class='page-link'>$counter</a></li>";
-                        else
-                            $paging.= "<li class='page-item '><a class=' page-link' href='".site_url($fun_name.'&page='.$counter)."'>$counter</a></li>";                    
+                    $paging .= "<li class='page-item '><a>...</a></li>";
+                    $paging .= "<li  class='page-item '><a class=' page-link'  href='" . site_url($fun_name . '&page=' . ($lpm1)) . "'>$lpm1</a></li>";
+                    $paging .= "<li class='page-item '><a  class=' page-link' href='" . site_url($fun_name . '&page=' . ($setLastpage)) . "'>$setLastpage</a></li>";
+                } elseif ($setLastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
+                    $paging .= "<li class='page-item '><a  class=' page-link'  href='" . site_url($fun_name . '&page=1') . "'>1</a></li>";
+                    $paging .= "<li class='page-item '><a  class=' page-link' href='" . site_url($fun_name . '&page=2') . "'>2</a></li>";
+                    $paging .= "<li class='page-item '><a>...</a></li>";
+                    for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++) {
+                        if ($counter == $page) {
+                            $paging .= "<li  class='page-item  active '><a class='page-link'>$counter</a></li>";
+                        } else {
+                            $paging .= "<li class='page-item '><a  class=' page-link'  href='" . site_url($fun_name . '&page=' . $counter) . "'>$counter</a></li>";
+                        }
+
+                    }
+                    $paging .= "<li class='page-item '><a>..</a></li>";
+                    $paging .= "<li class=' page-item'><a  class=' page-link' href='" . site_url($fun_name . '&page=' . $lpm1) . "'>$lpm1</a></li>";
+                    $paging .= "<li class='page-item '><a  class=' page-link'  href='" . site_url($fun_name . '&page=' . $setLastpage) . "'>$setLastpage</a></li>";
+                } else {
+                    $paging .= "<li class='page-item '><a  class=' page-link' href='" . site_url($fun_name . '&page=1') . "'>1</a></li>";
+                    $paging .= "<li class='page-item '><a  class=' page-link' href='" . site_url($fun_name . '&page=2') . "'>2</a></li>";
+                    $paging .= "<li class='page-item '><a>..</a></li>";
+                    for ($counter = $setLastpage - (2 + ($adjacents * 2)); $counter <= $setLastpage; $counter++) {
+                        if ($counter == $page) {
+                            $paging .= "<li  class='page-item  active'><a class='page-link'>$counter</a></li>";
+                        } else {
+                            $paging .= "<li class='page-item '><a class=' page-link' href='" . site_url($fun_name . '&page=' . $counter) . "'>$counter</a></li>";
+                        }
+
                     }
                 }
             }
-            
-            if ($page < $counter - 1){ 
-                $paging.= "<li class='page-item '><a class=' page-link' href='".site_url($fun_name.'&page='.$next)."'>&rarr;</a></li>";
-              //  $paging.= "<li><a href='{$page_url}page=$setLastpage'>Last</a></li>";
-            } else  {
-              //  $paging.= "<li><a class='current_page'>Next</a></li>";
+
+            if ($page < $counter - 1) {
+                $paging .= "<li class='page-item '><a class=' page-link' href='" . site_url($fun_name . '&page=' . $next) . "'>&rarr;</a></li>";
+                //  $paging.= "<li><a href='{$page_url}page=$setLastpage'>Last</a></li>";
+            } else {
+                //  $paging.= "<li><a class='current_page'>Next</a></li>";
                 //$paging.= "<li><a class='current_page'>Last</a></li>";
             }
 
-            $paging.= "\n";        
+            $paging .= "\n";
         }
-    
+
         return $paging;
-		 
-     }	
-     function ajaxpagingnation_admin_new($start,$num_rows,$maxm,$srch_res='',$fun_name='',$other_para=''){
-		 
+
+    }
+    public function ajaxpagingnation_admin_new($start, $num_rows, $maxm, $srch_res = '', $fun_name = '', $other_para = '')
+    {
+
         $paging = "";
-        if($start!=0)
-        {
-            $curr_page =($start/$maxm)+1;
-        }	
-        else
-            $curr_page =1;
-    
-        $max_pages = ceil($num_rows/$maxm);
-        
-        if($max_pages >7)
-        {
-            if($curr_page-3 >=0)
-            {
-                $initial = $curr_page-3;
-            }
-            elseif($curr_page-2 >=0)
-            {
-                $initial = $curr_page-2;
-            }
-            elseif($curr_page-1 >=0)
-            {
-                $initial = $curr_page-1;	
-            }
-            else
-                $initial = 0;	
-            
-            if(($initial+7)<=$max_pages)
-            {	
-                if($curr_page<7)
-                {
-                    $max_cnt_limit = 7;
-                    $initial = 0;	
-                }
-                else
-                 $max_cnt_limit = $initial+5;
-            }
-            else
-            $max_cnt_limit = $max_pages;
+        if ($start != 0) {
+            $curr_page = ($start / $maxm) + 1;
+        } else {
+            $curr_page = 1;
         }
-        else
-        {
+
+        $max_pages = ceil($num_rows / $maxm);
+
+        if ($max_pages > 7) {
+            if ($curr_page - 3 >= 0) {
+                $initial = $curr_page - 3;
+            } elseif ($curr_page - 2 >= 0) {
+                $initial = $curr_page - 2;
+            } elseif ($curr_page - 1 >= 0) {
+                $initial = $curr_page - 1;
+            } else {
+                $initial = 0;
+            }
+
+            if (($initial + 7) <= $max_pages) {
+                if ($curr_page < 7) {
+                    $max_cnt_limit = 7;
+                    $initial = 0;
+                } else {
+                    $max_cnt_limit = $initial + 5;
+                }
+
+            } else {
+                $max_cnt_limit = $max_pages;
+            }
+
+        } else {
             $max_cnt_limit = $max_pages;
             $initial = 0;
         }
-        if($curr_page!=1)
-        {
-            $pages_page = ($curr_page-2)*$maxm;
+        if ($curr_page != 1) {
+            $pages_page = ($curr_page - 2) * $maxm;
             //$paging .= '<a href="'.site_url($fun_name.'/'.$pages_page."".$other_para).'" class="activelink">&larr; Previous</a>';
             $paging .= '<li class="page-item">
-                                                        <a   class="page-link" href="'.site_url($fun_name.'/'.$pages_page."".$other_para).'" aria-label="Next">
+                                                        <a   class="page-link" href="' . site_url($fun_name . '/' . $pages_page . "" . $other_para) . '" aria-label="Next">
                                                            &laquo;
-                                                           
+
                                                         </a>
                                                     </li>';
-        } 
-        else
-        {
+        } else {
             $paging .= '<li class="page-item">
                                                         <a   class="page-link" href="javascript:void(0)" aria-label="Previous">
                                                             &laquo;
                                                         </a>
                                                     </li>';
         }
-        if($curr_page>=7)
-        {
-            $pages_page = ($curr_page-6)*$maxm;
-            $paging .= '<li class="page-item" ><a   class="page-link"href="'.site_url($fun_name.'/0'."".$other_para).'" >1</a></li>
-            <li ><a href="'.site_url($fun_name.'/'.$pages_page."".$other_para).'"  >...</a></li>';
+        if ($curr_page >= 7) {
+            $pages_page = ($curr_page - 6) * $maxm;
+            $paging .= '<li class="page-item" ><a   class="page-link"href="' . site_url($fun_name . '/0' . "" . $other_para) . '" >1</a></li>
+            <li ><a href="' . site_url($fun_name . '/' . $pages_page . "" . $other_para) . '"  >...</a></li>';
         }
-        
-        for($i=$initial;$i<$max_cnt_limit;$i++)
-        {  
-            $nxt_start = $i*$maxm;
-            if($start==$nxt_start)
-            { 
-                $pages_page = $i+1;
+
+        for ($i = $initial; $i < $max_cnt_limit; $i++) {
+            $nxt_start = $i * $maxm;
+            if ($start == $nxt_start) {
+                $pages_page = $i + 1;
                 //$paging .= ' <a href="javascript:void(0)" class="activelink"><strong>'.$pages_page .'</strong></a>';
-                 $paging.= '<li class="page-item active"><a    href="javascript:void(0)" class="page-link">'.$pages_page.'</a></li>';
-            }
-            else
-            {
-                $pages_page = $i+1;
+                $paging .= '<li class="page-item active"><a    href="javascript:void(0)" class="page-link">' . $pages_page . '</a></li>';
+            } else {
+                $pages_page = $i + 1;
                 //$paging .= '<a href="'.site_url($fun_name.'/'.$nxt_start."".$other_para).'" class="inactive">'.$pages_page.'</a>';
-                 $paging.= '<li  class="page-item"  ><a  class="page-link" href="'.site_url($fun_name.'/'.$nxt_start."".$other_para).'">'.$pages_page.'</a></li>';
-                 
+                $paging .= '<li  class="page-item"  ><a  class="page-link" href="' . site_url($fun_name . '/' . $nxt_start . "" . $other_para) . '">' . $pages_page . '</a></li>';
+
             }
         }
-        if(($curr_page<$max_pages)&&(($curr_page+5)<=$max_pages))
-        {
-           if($curr_page<=5)
-            $next_pages = 9*$maxm;
-           else
-            $next_pages = ($curr_page+4)*$maxm;
-           //$paging .= '<a href="'.site_url($fun_name.'/'.$next_pages."".$other_para).'" class="activelink">...</a>';
-           $paging.= '<li class="page-item" ><a   class="page-link" href="'.site_url($fun_name.'/'.$next_pages."".$other_para).'">...</a></li>';
-           $paging.= '<li  class="page-item"  ><a  class="page-link"  href="'.site_url($fun_name.'/'.($max_pages-1)."".$other_para).'">'.$max_pages.'</a></li>';
-       } 
-        if($curr_page<$max_pages)
-        {
-            $pages_page = $curr_page*$maxm;
+        if (($curr_page < $max_pages) && (($curr_page + 5) <= $max_pages)) {
+            if ($curr_page <= 5) {
+                $next_pages = 9 * $maxm;
+            } else {
+                $next_pages = ($curr_page + 4) * $maxm;
+            }
+
+            //$paging .= '<a href="'.site_url($fun_name.'/'.$next_pages."".$other_para).'" class="activelink">...</a>';
+            $paging .= '<li class="page-item" ><a   class="page-link" href="' . site_url($fun_name . '/' . $next_pages . "" . $other_para) . '">...</a></li>';
+            $paging .= '<li  class="page-item"  ><a  class="page-link"  href="' . site_url($fun_name . '/' . ($max_pages - 1) . "" . $other_para) . '">' . $max_pages . '</a></li>';
+        }
+        if ($curr_page < $max_pages) {
+            $pages_page = $curr_page * $maxm;
             //$paging .= '<a href="'.site_url($fun_name.'/'.$pages_page."".$other_para).'" class="activelink">Next &rarr;</a>';
             $paging .= '<li  class="page-item">
-                                                        <a  class="page-link"  href="'.site_url($fun_name.'/'.$pages_page."".$other_para).'" aria-label="Next">
+                                                        <a  class="page-link"  href="' . site_url($fun_name . '/' . $pages_page . "" . $other_para) . '" aria-label="Next">
                                                             &raquo;
                                                         </a>
                                                     </li>';
             //$paging.= '<li class="page-item"><a class="page-link" href="'.site_url($fun_name.'/'.$pages_page."".$other_para).'">1</a></li>';
-         } 
-        else
-        {
+        } else {
             $paging .= '<li class="page-item" >
                                                         <a   class="page-link"  href="javascript:void(0)" aria-label="Next">
                                                           &raquo;
@@ -1533,112 +1515,122 @@ class Common extends CI_Model
                                                     </li>';
         }
         return $paging;
-    
-     
- }
- public function randomuuid($bits = '128')
- {
-     $timestamp = time();
-     $q = -3;
-     //The epoch time stamp is truncated by $q chars,
-     //making the algorthim to change evry 1000 seconds
-     //using q=-4; will give 10000 seconds= 2 hours 46 minutes usable time
 
-     $TimeReduced = substr($timestamp, 0, $q) - 1;
+    }
+    public function randomuuid($bits = '128')
+    {
+        $timestamp = time();
+        $q = -3;
+        //The epoch time stamp is truncated by $q chars,
+        //making the algorthim to change evry 1000 seconds
+        //using q=-4; will give 10000 seconds= 2 hours 46 minutes usable time
 
-     //the $seed is a constant string added to the string before hashing.
-     $string = "abcdefgh" . $TimeReduced;
-     $return = hash('sha1', $string, false);
-     return $return;
- }
- function generateSalt(){
-    $salt_length = 12;
-    $salt = substr(md5(uniqid()), 0, $salt_length);
-    return $salt;
-}
+        $TimeReduced = substr($timestamp, 0, $q) - 1;
 
-function encryptPassword($pwd, $salt){
-    $hashed_password = md5($salt . $pwd);
-    return $hashed_password;
-}
-public function createjson($tablename = "", $folder = "", $sql_qyery = "", $rowsdata = "multiple",$homejosn='self')
-{
-    $response = array();
-    $home = array();
-     
-    if ($tablename != "") {
-        if ($sql_qyery != "") {
-            $sql = $sql_qyery;
-        } else {
-            $sql = "select * from  $tablename c      where     delete_status=0 and status_flag=1 order by sort_no";
-        }
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-
-            if ($rowsdata == "multiple") {
-                $resultdata = $query->result_array();
-                foreach ($resultdata as $key => $row) {
-                    if (isset($row['main_image']) && $row['main_image'] != "") {
-                        $row['main_image'] =   "/uploads/" . $folder . "/" . $row['main_image'];
-                    }
-                    if (isset($row['featured_image']) && $row['featured_image'] != "") {
-                        $row['featured_image'] =   "/uploads/" . $folder . "/" . $row['featured_image'];
-                    }
-                    if (isset($row['slider_image']) && $row['slider_image'] != "") {
-                        $row['slider_image'] =  "/uploads/" . $folder . "/" . $row['slider_image'];
-                    }
-
-                    if (isset($row['pdf_file']) && $row['pdf_file'] != "") {
-                        $row['pdf_file'] =   "/uploads/" . $folder . "/" . $row['pdf_file'];
-                    }
-
-                    if (isset($row['id'])) {
-                        $response[$row['id']] = $row;
-                    } else {
-                        $response[] = $row;
-                    }
-
-                }
-            } else {
-                $resultdata = $query->row_array();
-                if (isset($resultdata['main_image']) && $resultdata['main_image'] != "") {
-                    $resultdata['main_image'] =  "/uploads/" . $folder . "/" . $resultdata['main_image'];
-                }
-                $response[] = $resultdata;
-            }
-
-
-            if($homejosn=="self"){
-                $filename_temp = '../uploads/jsondata/' . $tablename . '.json';
-                $fp = fopen($filename_temp, 'w');
-                fwrite($fp, json_encode($response));
-                fclose($fp);
-            } else {
-
-
-                // read json file
-                $jsondata = file_get_contents('../uploads/jsondata/homejosn.json');
-                // decode json
-                if($jsondata!=""){
-                    $json_arr = json_decode($jsondata, true);
-                    $json_arr[$tablename] = $response;
-                } else {
-                    $json_arr[$tablename] = $response;
-                }
-                
-                // add data
-                file_put_contents('../uploads/jsondata/homejosn.json', json_encode($json_arr));
-                
-                // $filename_temp = 'uploads/jsondata/homejosn.json';
-                // $fp = fopen($filename_temp, 'w');
-                // fwrite($fp, json_encode($home));
-                // fclose($fp);
-            }
-          
-        }
+        //the $seed is a constant string added to the string before hashing.
+        $string = "abcdefgh" . $TimeReduced;
+        $return = hash('sha1', $string, false);
+        return $return;
+    }
+    public function generateSalt()
+    {
+        $salt_length = 12;
+        $salt = substr(md5(uniqid()), 0, $salt_length);
+        return $salt;
     }
 
-    
-    
-}
+    public function encryptPassword($pwd, $salt)
+    {
+        $hashed_password = md5($salt . $pwd);
+        return $hashed_password;
+    }
+    public function createjson($tablename = "", $folder = "", $sql_qyery = "", $rowsdata = "multiple", $homejosn = 'self')
+    {
+        $response = array();
+        $home = array();
+
+        if ($tablename != "") {
+            if ($sql_qyery != "") {
+                $sql = $sql_qyery;
+            } else {
+                $sql = "select * from  $tablename c      where     delete_status=0 and status_flag=1 order by sort_no";
+            }
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+
+                if ($rowsdata == "multiple") {
+                    $resultdata = $query->result_array();
+                    foreach ($resultdata as $key => $row) {
+                        if (isset($row['main_image']) && $row['main_image'] != "") {
+                            $row['main_image'] = "/uploads/" . $folder . "/" . $row['main_image'];
+                        }
+                        if (isset($row['featured_image']) && $row['featured_image'] != "") {
+                            $row['featured_image'] = "/uploads/" . $folder . "/" . $row['featured_image'];
+                        }
+                        if (isset($row['slider_image']) && $row['slider_image'] != "") {
+                            $row['slider_image'] = "/uploads/" . $folder . "/" . $row['slider_image'];
+                        }
+
+                        if (isset($row['pdf_file']) && $row['pdf_file'] != "") {
+                            $row['pdf_file'] = "/uploads/" . $folder . "/" . $row['pdf_file'];
+                        }
+
+                        if (isset($row['id'])) {
+                            $response[$row['id']] = $row;
+                        } else {
+                            $response[] = $row;
+                        }
+
+                    }
+                } else {
+                    $resultdata = $query->row_array();
+                    if (isset($resultdata['main_image']) && $resultdata['main_image'] != "") {
+                        $resultdata['main_image'] = "/uploads/" . $folder . "/" . $resultdata['main_image'];
+                    }
+                    $response[] = $resultdata;
+                }
+
+                if ($homejosn == "self") {
+                    $filename_temp = '../uploads/jsondata/' . $tablename . '.json';
+                    $fp = fopen($filename_temp, 'w');
+                    fwrite($fp, json_encode($response));
+                    fclose($fp);
+                } else {
+
+                    // read json file
+                    $jsondata = file_get_contents('../uploads/jsondata/homejosn.json');
+                    // decode json
+                    if ($jsondata != "") {
+                        $json_arr = json_decode($jsondata, true);
+                        $json_arr[$tablename] = $response;
+                    } else {
+                        $json_arr[$tablename] = $response;
+                    }
+
+                    // add data
+                    file_put_contents('../uploads/jsondata/homejosn.json', json_encode($json_arr));
+
+                    // $filename_temp = 'uploads/jsondata/homejosn.json';
+                    // $fp = fopen($filename_temp, 'w');
+                    // fwrite($fp, json_encode($home));
+                    // fclose($fp);
+                }
+
+            }
+        }
+
+    }
+    public function rand_color()
+    {
+        $chars = 'ABCDEF0123456789';
+        $color = '#';
+        for ($i = 0; $i < 6; $i++) {
+            $color .= $chars[rand(0, strlen($chars) - 1)];
+        }
+        $color = '';
+        for ($o = 1; $o <= 3; $o++) {
+            $color .= str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
+        }
+        return "#" . $color;
+    }
 }

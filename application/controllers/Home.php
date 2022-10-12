@@ -26,6 +26,7 @@ class Home extends CI_Controller
 			$this->load->library('session');
             
 			$this->load->model('common');
+            $this->load->model('services');
           
 			$this->load->helper('security');
 			$this->load->library('email');
@@ -37,9 +38,68 @@ class Home extends CI_Controller
 			// 	 redirect("maintenance");
 			// 	  exit;
 			// }
+            if(empty($this->session->userdata('domain_id'))){
+                $this->session->set_userdata('domain_id', '1');
+
+            }
+           
+
 
     }
     public function index()
+    {
+        
+      
+        // $sourceUrl = parse_url('http://127.0.0.1:8074/ecomjewellery/');
+
+        // print_r($sourceUrl);
+        // $sourceUrl = $sourceUrl['host'];
+
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+        $params['type'] = "latestProduct";
+      
+        $data['latestProduct'] =  $latestProduct = $this->services->getProductList($params);
+      //  print_r($latestProduct);
+        $this->load->view("home", $data);
+
+    }
+
+    public function home2()
+    {
+        
+      
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+       //print_r($data['wti_banners']);exit;
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+
+        $this->load->view("home2", $data);
+
+    }
+    public function home3()
     {
         
       
@@ -58,8 +118,183 @@ class Home extends CI_Controller
 
       //  print_r($data['home']);
 
-        $this->load->view("home", $data);
+        $this->load->view("home3", $data);
 
     }
-    
+    public function home4()
+    {
+        
+      
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+
+        $this->load->view("home4", $data);
+
+    }
+    public function home5()
+    {
+        
+      
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+
+        $this->load->view("home5", $data);
+
+    }
+    public function home6()
+    {
+        
+      
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+
+        $this->load->view("home6", $data);
+
+    }
+    public function home6white()
+    {
+        
+      
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+
+        $this->load->view("home6white", $data);
+
+    }
+    public function home7()
+    {
+        
+      
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+
+        $this->load->view("home7", $data);
+
+    }
+    public function home8()
+    {
+        
+      
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+
+        $this->load->view("home8", $data);
+
+    }
+    public function home9()
+    {
+        
+      
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+
+        $this->load->view("home9", $data);
+
+    }
+    public function home10()
+    {
+        
+      
+        $data['page_header'] = "home";
+         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+       
+        if($param_page=="" ){
+            $param_page = "home";
+        }
+        $data['classhome'] = 'active';
+        $data['wti_banners'] = json_decode(file_get_contents('uploads/jsondata/wti_banners.json'), true);
+
+        //print_r($data['wti_banners']);
+        
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+
+      //  print_r($data['home']);
+
+        $this->load->view("home10", $data);
+
+    }
 }

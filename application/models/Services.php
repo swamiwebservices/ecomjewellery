@@ -6,40 +6,38 @@ class Services extends CI_Model
 
     public function __construct()
     {
+        // if(empty($this->session->userdata('domain_id'))){
+        //     $this->session->set_userdata('domain_id', '1');
+
+        // }
     }
 
-    public function get_categorylist_parent_sub($id=0){
-          $sql = "select * from m_newsblog_cat where  parent_id=0 AND status_flag='1' order by cate_name asc   ";
-        $query_result = $this->db->query($sql);
-        $results = $query_result->result_array();
+    public function getProductList($params=array()){
 
-        $combo = "<option value='' >Select Category</option>";
-        foreach ($results as $key => $value) {
-
-			$sql = "select * from m_newsblog_cat where  parent_id=".$value['id']." AND status_flag='1' order by cate_name asc   ";
-			$query_result = $this->db->query($sql);
-			$results_sub = $query_result->result_array();
-			$sel_flag = '';
-			$dis_flag = '';
-			$fld_val = $value['id'];
-			
-			if ($value['id'] == $id) { $sel_flag = 'selected';}
-			if ($results_sub) { $dis_flag = 'disabled';}
-
-            $combo .= "<option value='" . $fld_val . "' ".$sel_flag." ".$dis_flag.">" . $value['cate_name']    . "</option>";
-			
-			foreach ($results_sub as $key => $value_sub) {
-				$sel_sub_flag = '';
-				$fld_val = $value['id'].'|'.$value_sub['id'];
-				if ($value['id'] == $id) { $sel_sub_flag = 'selected';}
-				$combo .= "<option value='" . $fld_val . "' ".$sel_sub_flag.">&nbsp;&nbsp;" . $value_sub['cate_name']  . "</option>";
-			}
-
+        $domain_id = 1;
+        if(empty($this->session->userdata('domain_id'))){
+            $domain_id = $this->session->userdata('domain_id');
         }
 
-        echo $combo;
+        $result_array=[];
 
-	}
+            if($params['type']=="latestProduct"){
+                $sql = "select * from product_master where status_flag='Active' and featured=1 order by sort_order asc, name asc ";
+                if(ZEROQTYALLOW==1){
+                    $sql = "select * from product_master where status_flag='Active'  and featured=1 order by sort_order asc, name asc ";
+                }else {
+                    $sql = "select * from product_master where status_flag='Active'  and featured=1 and quantity > 0 order by sort_order asc, name asc ";
+                }
+                $query  = $this->db->query($sql);
+                if($query->num_rows()>0){
+                    $result_array = $query->result_array();
+
+                }
+                return $result_array;
+            }
+    }
+
+    
 	public function sendotp($user_info=array()){
 
 
@@ -64,18 +62,5 @@ class Services extends CI_Model
         $add_in_cust['session_id'] = 91;
         $this->common->insertRecord('wti_sms_register_log', $add_in_cust);
     }
-    public function getComments($topic_id=0,$comment_id=0){
-
-        $topic_id = isset($topic_id) ? $this->common->mysql_safe_string($topic_id) : '';
-        $comment_id = isset($comment_id) ? $this->common->mysql_safe_string($comment_id) : '';
-
-        $wti_m_blogs_recipes_t_comment = [];
-        $sql = "select bc.*,first_name, last_name,profile_pic from wti_m_blogs_recipes_t_comment bc inner join wti_user_master_front um on bc.user_id=um.user_id  where bc.topic_id='".$topic_id."' and bc.comt_id_parent='".$comment_id."' and bc.status_flag='1'   order by bc.comt_id desc ";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $wti_m_blogs_recipes_t_comment = $query->result_array();
-        }
-        return $wti_m_blogs_recipes_t_comment;
-        
-    }
+ 
 }

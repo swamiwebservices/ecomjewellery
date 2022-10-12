@@ -186,6 +186,31 @@ if ($error_warning) {
                                         required1> </div>
                             </div>
                             <div class="form-group row">
+                                <label class="col-lg-2 col-form-label" for="sort_no">For Domain </label>
+                                <div class="col-lg-10">
+                                    <?php
+                                         
+                                         $domains_array = isset($records['domains']) ? explode(",",$records['domains']) : [1,2,3];
+                                           $domain_list = $this->config->item("DOMAINs");
+                                           foreach($domain_list as $key => $domain){
+                                            $domain_org = $domain;
+                                            $domain = str_replace(".","_",$domain);
+                                            
+                                         ?>
+                                    <div class="form-check form-check-inline">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input-styled-success"
+                                                value="<?php echo $key?>" name="domains[]" id="domains<?php echo $key?>"
+                                                <?php if (in_array($key,$domains_array))  {  echo 'checked'; } ?>>
+                                            <?php echo $domain_org?>
+                                        </label>
+                                    </div>
+                                    <?php }?>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
                                 <label class="col-form-label col-lg-2" for="status">Status : </label>
                                 <div class="col-lg-9">
                                     <div class="form-check form-check-inline">
