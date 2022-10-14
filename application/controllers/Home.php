@@ -19,6 +19,7 @@ class Home extends CI_Controller
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
     public $controller = "home";
+    public $domain_id = 1;
     public function __construct()
     {
             parent::__construct();
@@ -42,7 +43,7 @@ class Home extends CI_Controller
                 $this->session->set_userdata('domain_id', '1');
 
             }
-           
+            $this->domain_id = $this->services->getDomainId();
 
 
     }

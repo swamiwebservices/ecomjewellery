@@ -1620,6 +1620,35 @@ class Common extends CI_Model
         }
 
     }
+    public function createmenujson()
+    {
+       $response = array();
+       $domain_id =1;
+
+        $sql = "select * from   product_category where    status_flag='Active' and parent_id=0 order by sort_order asc, name asc  ";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->result_array();
+            foreach($resultdata as $key => $value){
+                $response[$value['category_id']] = $value;
+               
+                $sql = "select * from product_category where status_flag=1 and  parent_id='{$value['category_id']}' ";
+                $query2 = $this->db->query($sql);
+                if ($query2->num_rows() > 0) {
+                    $resultdata2 = $query2->result_array();
+                    foreach($resultdata2 as $key2 => $value2){
+                        $response[$value['category_id']]['sub_category'][] = $value2;
+                    }
+                }
+                
+            }
+        }
+        //print_r($response);
+        $filename_temp = '../uploads/jsondata/product_category.json';
+        $fp = fopen($filename_temp, 'w');
+        fwrite($fp, json_encode($response));
+        fclose($fp);
+    }
     public function rand_color()
     {
         $chars = 'ABCDEF0123456789';

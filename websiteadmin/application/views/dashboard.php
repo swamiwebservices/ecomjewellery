@@ -292,8 +292,6 @@ if($user_data['access_ids']!=''){
                             <div class="card bg-bg3-400">
                                 <div class="customers card-body">
                                 <div class="d-flex align-items-center float-right">
-                                    
-                                    
                                         <div class="mg-l-20">
                                             <div class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10 text-right">Total customers</div>
                                             <div class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1 text-right"><?php echo $cust_cnt?></div>

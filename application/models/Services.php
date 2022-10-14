@@ -11,7 +11,11 @@ class Services extends CI_Model
 
         // }
     }
+    public function getCategoryId($slugnam = ''){
+        $result  = $this->common->getOneRow('product_category',"where slug_name='{$slugnam}'");
 
+        return $result;
+    }
     public function getProductList($params=array()){
 
         $domain_id = 1;
@@ -22,12 +26,25 @@ class Services extends CI_Model
         $result_array=[];
 
             if($params['type']=="latestProduct"){
-                $sql = "select * from product_master where status_flag='Active' and featured=1 order by sort_order asc, name asc ";
+                $limit = (isset($params['limit'])) ? $params['limit'] : 10000000000;
+                $order_limit = " limit 0,".$limit;
+                $sql = "select * from product_master where status_flag='Active' and featured=1 order by sort_order asc, name asc ".$order_limit;
                 if(ZEROQTYALLOW==1){
-                    $sql = "select * from product_master where status_flag='Active'  and featured=1 order by sort_order asc, name asc ";
+                    $sql = "select * from product_master where status_flag='Active'  and featured=1 order by sort_order asc, name asc ".$order_limit;
                 }else {
-                    $sql = "select * from product_master where status_flag='Active'  and featured=1 and quantity > 0 order by sort_order asc, name asc ";
+                    $sql = "select * from product_master where status_flag='Active'  and featured=1 and quantity > 0 order by sort_order asc, name asc ".$order_limit;
                 }
+                $query  = $this->db->query($sql);
+                if($query->num_rows()>0){
+                    $result_array = $query->result_array();
+
+                }
+                return $result_array;
+            }
+            if($params['type']=="category"){
+                //where status_flag=1 and  FIND_IN_SET ({$value['category_id']},category_id) > 0
+               $sql = "select * from product_master where status_flag='Active' and  sub_category_id='{$params['category_id']}'  order by sort_order asc, name asc ";
+                 
                 $query  = $this->db->query($sql);
                 if($query->num_rows()>0){
                     $result_array = $query->result_array();
@@ -63,4 +80,14 @@ class Services extends CI_Model
         $this->common->insertRecord('wti_sms_register_log', $add_in_cust);
     }
  
+    public function getDomainId(){
+        $domain_name =  $_SERVER['HTTP_HOST'];
+                        
+        $domain_list = $this->config->item("DOMAINs");
+        $domain_id = array_search($domain_name, $domain_list);
+        if(!$domain_id){
+            $domain_id = 1;
+        }
+        return $domain_id;
+    }
 }

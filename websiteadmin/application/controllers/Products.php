@@ -296,17 +296,24 @@ class Products extends CI_Controller
             }
         }
   		
-        
+        $data['consignmentimage_temp'] = [];
         $data_info = array();
         $data['records'] = $data_info;
+
         if ($id != "") {
             $sql = "select *  from  product_master b where     (status_flag!='Deleted')  and b.uuid='" . $id . "'  ";
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
                 $data_info = $query->row_array();
                 $data['records'] = $data_info;
-                
             }
+
+            $sql = "select * from product_images where   product_id='{$data_info['product_id']}' ";
+            $request_query = $this->db->query($sql);
+            if ($request_query->num_rows() > 0) {
+                $data['consignmentimage_temp'] = $request_query->result_array();
+            } 
+
         } else {
             if (isset($add_in_m) && sizeof($add_in_m) > 0) {
                 $data_info = (isset($_POST)) ? $_POST : '';
@@ -318,8 +325,16 @@ class Products extends CI_Controller
                 $resultdata = $query->row_array();
                 $data['records']['sort_order'] = $resultdata['numrows'] + 1;
             }
+
+             $sql = "select * from product_images_temp where   session_id='".session_id()."' ";
+            $request_query = $this->db->query($sql);
+            if ($request_query->num_rows() > 0) {
+                $data['consignmentimage_temp'] = $request_query->result_array();
+            }  
         }
 
+       
+       
 
         $this->load->view('product_action', $data);
         $this->session->unset_userdata('success');
@@ -510,9 +525,9 @@ class Products extends CI_Controller
 
                 }
 
-                $this->common->createjson('product_category', 'category',"select *    from   product_category   	where    status_flag='Active' order by sort_order asc, name asc ",'multiple','home');
+               // $this->common->createjson('product_category', 'category',"select *    from   product_category   	where    status_flag='Active' and parent_id=0 order by sort_order asc, name asc ",'multiple','home');
                 
-                $this->common->createjson('product_category', 'category',"select *    from   product_category   	where    status_flag='Active' order by sort_order asc, name asc ",'multiple','self');
+                $this->common->createmenujson();
 
 
                 redirect($this->controller . '/categorylistall');
@@ -548,7 +563,7 @@ class Products extends CI_Controller
                 $data['records']['sort_order'] = $resultdata['numrows'] + 1;
             }
         }
-
+        $this->common->createmenujson();
         $this->load->view('category_action', $data);
         $this->session->unset_userdata('success');
         $this->session->unset_userdata('warning');
@@ -563,8 +578,83 @@ class Products extends CI_Controller
         $add_in['updated_at'] =  date("Y-m-d H:i:s");
         $update_status = $this->common->updateRecord('product_category', $add_in, $where_edt);
         $this->session->set_flashdata('success', 'Product deleted succssfully!');
+        $this->common->createmenujson();
         redirect($this->ctrl_name . "/categorylistall");
     }
  
     //end of category
+
+    public function save_base64_image($base64_image_string, $output_file_without_extension, $path_with_end_slash = "")
+    {
+        //usage:  if( substr( $img_src, 0, 5 ) === "data:" ) {  $filename=save_base64_image($base64_image_string, $output_file_without_extentnion, getcwd() . "/application/assets/pins/$user_id/"); }
+        //
+        //data is like:    data:image/png;base64,asdfasdfasdf
+        $splited = explode(',', substr($base64_image_string, 5), 2);
+        $mime = $splited[0];
+        $data = $splited[1];
+
+        $mime_split_without_base64 = explode(';', $mime, 2);
+        $mime_split = explode('/', $mime_split_without_base64[0], 2);
+        if (count($mime_split) == 2) {
+            $extension = $mime_split[1];
+            if ($extension == 'jpeg') {
+                $extension = 'jpg';
+            }
+
+            //if($extension=='javascript')$extension='js';
+            //if($extension=='text')$extension='txt';
+            $output_file_with_extension = $output_file_without_extension . '.' . $extension;
+        }
+        file_put_contents($path_with_end_slash . $output_file_with_extension, base64_decode($data));
+        return $output_file_with_extension;
+    }
+    public function doAddimage()
+    {
+        // print_r($_POST);
+        $session_user_data = $this->session->userdata('admin_user_data');
+
+        $user_id = $session_user_data['user_id'];
+        $product_id = (isset($_POST['product_id'])) ? $this->common->mysql_safe_string($_POST['product_id']) : '0';
+
+        $img_src = $_POST['img_src'];
+        $img_id = $_POST['img_id'];
+        $image_name_temp = $user_id . "-" . $img_id;
+        if ($product_id > 0) {
+            $image_name = $this->save_base64_image($img_src, $image_name_temp, '../uploads/prod_images/');
+            $sql_add['image_name'] = $image_name;
+            $sql_add['product_id'] = $product_id;
+            $sql_add['date_added'] = date("Y-m-d H:i:s");
+            $sql_add['img_id'] = $img_id;
+
+            $this->common->insertRecord('product_images', $sql_add);
+
+        } else {
+            $image_name = $this->save_base64_image($img_src, $image_name_temp, '../uploads/product_images_temp/');
+            $sql_add['image_name'] = $image_name;
+            $sql_add['session_id'] = session_id();
+            $sql_add['date_added'] = date("Y-m-d H:i:s");
+            $sql_add['img_id'] = $img_id;
+            $this->common->insertRecord('product_images_temp', $sql_add);
+
+        }
+
+    }
+    public function doDeletImage()
+    {
+        // print_r($_POST);
+
+        $img_id = $_POST['img_id'];
+
+        $sql = "select * from product_images where   img_id='{$img_id}' ";
+        $request_query = $this->db->query($sql)->row_array();
+        @unlink("../uploads/prod_images/" . $request_query['image_name']);
+        $sql = "delete from product_images where  img_id = '" . $img_id . "' ";
+        $this->db->query($sql);
+
+        $sql = "select * from product_images_temp where   img_id='{$img_id}' ";
+        $request_query = $this->db->query($sql)->row_array();
+        @unlink("../uploads/product_images_temp/" . $request_query['image_name']);
+        $sql = "delete from product_images_temp where  img_id = '" . $img_id . "' ";
+        $this->db->query($sql);
+    }
 }

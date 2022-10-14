@@ -385,7 +385,7 @@ $config['encryption_key'] = '';
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'ci_session_upabhog';
+$config['sess_cookie_name'] = 'ci_session_ecommultidomain';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = FALSE;
@@ -529,5 +529,8 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+
+$DOMAINs = array(1=>'ecome.in',2=>'ecome.com',3=>'ecome.ae');
+$config['DOMAINs'] = $DOMAINs;
  
   

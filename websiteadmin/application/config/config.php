@@ -388,7 +388,7 @@ $config['sess_use_database'] = false;
 $config['sess_table_name'] = 'ci_sessions';
 
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'ci_session_admin';
+$config['sess_cookie_name'] = 'ci_session_ecom_admin';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = null;
 $config['sess_save_path'] = sys_get_temp_dir(); //'ci_sessions';//

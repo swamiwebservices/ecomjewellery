@@ -17,6 +17,96 @@
 </head>
 
 <style>
+/*multiple img upload css end*/
+
+.trans-list-para-postcode.add-photos-main-section span {
+    position: relative;
+    right: auto;
+}
+
+.upload-photo {
+    float: left;
+    margin: 0 20px 20px 0;
+    overflow: hidden;
+    position: relative;
+    width: 225px;
+    height: 187px;
+}
+
+.upload-photo>img {
+    border: 1px solid #c6d1d5;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+}
+
+.upload-photo:hover {
+    background-color: #f8f8f8;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    transition: all 0.4s ease-in-out 0s;
+}
+
+.upload-photo:hover .upload-close {
+    opacity: 1;
+    filter: alpha(opacity=100);
+    cursor: pointer;
+    transition: all 0.4s ease-in-out 0s;
+}
+
+.upload_pic_btn {
+    cursor: pointer;
+    font-size: 14px;
+    left: 0;
+    margin: 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100% !important;
+    width: 100%;
+}
+
+.trans-list-para-postcode.add-photos-main-section .upload-close {
+    text-align: center;
+    color: #e05e14;
+    font-size: 14px;
+    opacity: 0;
+    position: absolute;
+    z-index: 9999;
+    top: 0;
+}
+
+.upload-photo:hover .upload-close {
+    padding: 77px 0;
+    cursor: pointer;
+    opacity: 1;
+    transition: all 0.4s ease-in-out 0s;
+    background: rgba(38, 43, 104, 0.6);
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.upload-close>a {
+    background: #fff;
+    border-radius: 50%;
+    color: #e05e14;
+    display: block;
+    font-size: 19px;
+    height: 38px;
+    margin: 0 auto;
+    padding-top: 6px;
+    width: 38px;
+}
+
+.fa.fa-times-circle {
+    color: #e05e14;
+    font-size: 18px;
+}
+
+/*multiple img upload css end*/
 .image-preview-input {
     position: relative;
     overflow: hidden;
@@ -126,6 +216,9 @@
                             <input type="hidden" name="uuid" id="uuid"
                                 value="<?php echo isset($records['uuid']) ? $records['uuid'] : ''; ?>">
 
+                                <input type="hidden" name="product_id" id="product_id"
+                value="<?php echo (isset($records['product_id'])) ? $records['product_id'] : ''?>">
+
 
                             <input type="hidden" name="name_title_old" id="name_title_old"
                                 value="<?php echo isset($records['name_title']) ? $records['name_title'] : ''; ?>">
@@ -133,8 +226,7 @@
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-2" for="category_id">Category:<span
-                                        class="text-danger">*</span><span
-                                        class="text-danger">*</span></label>
+                                        class="text-danger">*</span><span class="text-danger">*</span></label>
                                 <div class="col-lg-4">
                                     <select class="form-control" name="category_id" id="category_id" required>
                                         <?php  $this->common->get_categorylist_parent_sub((isset($records['category_id']))?$records['category_id']:'0')?>
@@ -144,8 +236,8 @@
                                 <label class="col-form-label col-lg-2 text-right" for="item_code">Item Code:<span
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-4">
-                                <input type="text" class="form-control maxlength-textarea "
-                                        maxlength="150" id="item_code" name="item_code" placeholder="Item Code"
+                                    <input type="text" class="form-control maxlength-textarea " maxlength="150"
+                                        id="item_code" name="item_code" placeholder="Item Code"
                                         value="<?php echo isset($records['item_code'])?$this->common->getDbValue($records['item_code']):''; ?>"
                                         required>
 
@@ -159,12 +251,13 @@
                                         class="text-danger">*</span></label>
                                 <div class="col-lg-9"><input type="text" class="form-control maxlength-textarea "
                                         maxlength="256" id="name" name="name" placeholder="Name"
-                                        value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>"  required>
+                                        value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>"
+                                        required>
                                     <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
                                 </div>
                             </div>
 
-                         
+
 
                             <div class="form-group row    ">
                                 <label class="col-lg-2 col-form-label" for="description">Desctiption:</label>
@@ -184,7 +277,7 @@
 									?>
 
                             <div class="form-group row">
-                                <label class="col-md-2 control-label"> Product Image:</label>
+                                <label class="col-md-2 control-label"> Main Image:</label>
                                 <div class="col-md-10">
                                     <div class="row col-md-5">
                                         <img src="<?php echo $photo?>" id="temppreviewimageki1"
@@ -222,37 +315,85 @@
                                 </div>
                             </div>
                             <div class="form-group row">
+                            <label class="col-md-2 control-label"> Other Image(s):</label>
+                                <div class="col-md-10">
+                                <div class="form-group trans-list-para-postcode add-photos-main-section">
+                                    <label><?php echo $this->lang->line('Add Photos');?></label>
+                                    <div class="add-photos-main-section-images">
+                                        <span data-multiupload="1">
+                                            <span data-multiupload-holder></span>
+                                            <?php
+                            //  print_r($consignmentimage_temp);
+                                if(isset($consignmentimage_temp) && sizeof($consignmentimage_temp) > 0) { 
+                                    foreach($consignmentimage_temp as $key => $val){
+                                        if(isset($val['product_id'])){
+                                            $folder_path = "../uploads/prod_images/";
+                                        } else {
+                                            $folder_path = "../uploads/product_images_temp/";
+                                        }
+                                ?>
+                                            <div class="upload-photo"
+                                                id="multiupload_img_1_<?php echo $val['img_id']?>"><span
+                                                    class="upload-close"><a href="javascript:void(0)"
+                                                        onclick="bindRemoveMultiUpload_new('<?php echo $val['img_id']?>')"
+                                                        id="multiupload_img_remove1_<?php echo $val['img_id']?>"><i
+                                                            class="icon-trash "></i></a></span><img
+                                                    src="<?php echo base_url();?><?php echo $folder_path?><?php echo $val['image_name']?>">
+                                            </div>
+                                            <?php    }
+                                    }
+                                ?>
+                                            <span class="upload-photo">
+                                                <img src="<?php echo base_url();?>global_assets/images/multi-images-main-img.jpg"
+                                                    alt="plus img">
+                                                <input data-multiupload-src class="upload_pic_btn" type="file"
+                                                    multiple="">
+                                                <span data-multiupload-fileinputs></span>
+                                            </span>
 
+                                        </span>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                </div>
+                                
                             </div>
                             <div class="form-group row">
                                 <label class="control-label col-lg-2" for="sort_order">Specification:</label>
                                 <div class="col-lg-10">
-                                        <?php
+                                    <?php
                                         $specification = (isset($records['specification'])) ? json_decode($records['specification'],true) : [];
                                         //print_r($specification);
                                         for($p=1;$p<8;$p++){
                                         ?>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control"
-                                        id="specification_title<?php echo $p?>" name="specification[title][<?php echo $p?>]" placeholder="Title <?php echo $p?>"  value="<?php echo (isset($specification['title'][$p])) ? $specification['title'][$p] : '' ?>"   >
-                                            </div>    
-                                            <div class="col-md-4">
-                                                <input type="text" class="form-control"
-                                        id="specification_value<?php echo $p?>" name="specification[value][<?php echo $p?>]" placeholder="Value <?php echo $p?>"  value="<?php echo (isset($specification['value'][$p])) ? $specification['value'][$p] : '' ?>"   >
-                                            </div> 
-
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control"
+                                                id="specification_title<?php echo $p?>"
+                                                name="specification[title][<?php echo $p?>]"
+                                                placeholder="Title <?php echo $p?>"
+                                                value="<?php echo (isset($specification['title'][$p])) ? $specification['title'][$p] : '' ?>">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input type="text" class="form-control"
+                                                id="specification_value<?php echo $p?>"
+                                                name="specification[value][<?php echo $p?>]"
+                                                placeholder="Value <?php echo $p?>"
+                                                value="<?php echo (isset($specification['value'][$p])) ? $specification['value'][$p] : '' ?>">
                                         </div>
 
-                                        <?php    
+                                    </div>
+
+                                    <?php    
                                         }
                                         ?>
                                 </div>
                             </div>
-                            
+
                             <div class="form-group row">
 
-                                <label class="control-label col-lg-2" for="status">Status:<span  class="text-danger">*</span></label>
+                                <label class="control-label col-lg-2" for="status">Status:<span
+                                        class="text-danger">*</span></label>
                                 <div class="col-lg-4">
                                     <?php  //print_r($records);?>
                                     <div class="form-check form-check-inline">
@@ -539,6 +680,110 @@
         wrapperClass: 'border-primary-600 text-primary-800'
     });
     // TableManageButtons.init();
+
+    //dropzone script with multiple files
+    (function($) {
+        function readMultiUploadURL(input, callback) {
+            if (input.files) {
+                $.each(input.files, function(index, file) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        callback(false, e.target.result);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+            callback(true, false);
+        }
+        var arr_multiupload = $("span[data-multiupload]");
+        if (arr_multiupload.length > 0) {
+            $.each(arr_multiupload, function(index, elem) {
+                var container_id = $(elem).attr("data-multiupload");
+                var id_multiupload_img = "multiupload_img_" + container_id + "_";
+                var id_multiupload_img_remove = "multiupload_img_remove" + container_id + "_";
+                var id_multiupload_file = id_multiupload_img + "_file";
+                var block_multiupload_src = "data-multiupload-src-" + container_id;
+                var block_multiupload_holder = "data-multiupload-holder-" + container_id;
+                var block_multiupload_fileinputs = "data-multiupload-fileinputs-" + container_id;
+                var input_src = $(elem).find("input[data-multiupload-src]");
+                $(input_src).removeAttr('data-multiupload-src')
+                    .attr(block_multiupload_src, "");
+                var block_img_holder = $(elem).find("span[data-multiupload-holder]");
+                $(block_img_holder).removeAttr('data-multiupload-holder')
+                    .attr(block_multiupload_holder, "");
+                var block_fileinputs = $(elem).find("span[data-multiupload-fileinputs]");
+                $(block_fileinputs).removeAttr('data-multiupload-fileinputs')
+                    .attr(block_multiupload_fileinputs, "");
+                $(input_src).on('change', function(event) {
+                    readMultiUploadURL(event.target, function(has_error, img_src) {
+                        if (has_error == false) {
+                            addImgToMultiUpload(img_src);
+                        }
+                    })
+                });
+
+                function addImgToMultiUpload(img_src) {
+
+                    var id = Math.random().toString(36).substring(2, 10);
+                    var product_id = $("#product_id").val();
+
+                    console.log(product_id);
+                    $.post('<?php echo site_url("products/doAddimage");?>', {
+                            img_src: img_src,
+                            img_id: id,
+                            product_id: product_id
+                        },
+                        function(data) {
+                            console.log(data);
+                        });
+
+
+
+                    var html = '<div class="upload-photo" id="' + id_multiupload_img + id + '">' +
+                        '<span class="upload-close">' +
+                        '<a href="javascript:void(0)" id="' + id_multiupload_img_remove + id +
+                        '" ><i class="icon-trash"></i></a>' +
+                        '</span>' +
+                        '<img src="' + img_src + '" >' +
+                        '</div>';
+                    var file_input = '<input type="file" name="file[]" id="' + id_multiupload_file + id +
+                        '" style="display:none" />';
+                    $(block_img_holder).append(html);
+                    $(block_fileinputs).append(file_input);
+                    bindRemoveMultiUpload(id);
+                }
+
+                function bindRemoveMultiUpload(id) {
+                    $("#" + id_multiupload_img_remove + id).on('click', function() {
+                        $("#" + id_multiupload_img + id).remove();
+                        $("#" + id_multiupload_file + id).remove();
+                        var product_id = $("#product_id").val();
+                        $.post('<?php echo site_url("products/doDeletImage");?>', {
+                                product_id: product_id,
+                                img_id: id
+                            },
+                            function(data) {
+                                console.log(data);
+                            });
+                    });
+                }
+            });
+        }
+    })(jQuery);
+
+    function bindRemoveMultiUpload_new(id) {
+
+        $("#multiupload_img_1_" + id).remove();
+        var product_id = $("#product_id").val();
+
+        $.post('<?php echo site_url("products/doDeletImage");?>', {
+                product_id: product_id,
+                img_id: id
+            },
+            function(data) {
+                console.log(data);
+            });
+    }
     </script>
 </body>
 

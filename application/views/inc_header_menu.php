@@ -1,7 +1,7 @@
 <?php
 //print_r($home);
-$home_data  = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
-$product_category = $home_data['product_category'];
+$product_category  = json_decode(file_get_contents('uploads/jsondata/product_category.json'), true);
+ 
 //print_r($product_category);
 // $popupdata = [];
 // foreach($home_data['config_home'] as $key => $value){
@@ -37,7 +37,7 @@ $page_url = $this->uri->segment(1);
                                     </li>
                                     <?php
                                     foreach($product_category as $key => $menuCategory){
-                                        if($menuCategory['parent_id']==0){
+                                        if(1){
                                         ?>
                                          <li class="menu-item-has-children ">
                                         <a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>" class="text-uppercase"><?php echo $menuCategory['name']?></a>
@@ -191,21 +191,27 @@ $page_url = $this->uri->segment(1);
                                 <div class="main_menu">
                                     <nav>
                                         <ul>
-                                            <li  class="active "><a href="index" class="text-uppercase">Home</a>
+                                            <li  class="active "><a href="home" class="text-uppercase">Home</a>
                                             </li>
                                             <?php
                                     foreach($product_category as $key => $menuCategory){
-                                        if($menuCategory['parent_id']==0){
-
-                                         
+                                        //print_r($menuCategory);
                                         ?>
-                                         <li class="menu-item-has-children ">
-                                        <a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>" class="text-uppercase"><?php echo $menuCategory['name']?></a>
-                                    </li>
+                                         <li >
+                                            <a href="#" class="text-uppercase"><?php echo $menuCategory['name']?></a>
+                                                <ul class="sub_menu">
+                                                <?php
+                                        foreach($menuCategory['sub_category'] as $key2 => $menuCategory2){
+                                        ?>
+                                                    <li><a href="<?php echo site_url('category/'.$menuCategory2['slug_name'].'/'.$menuCategory['category_id'].'-'.$menuCategory2['category_id'])?>"><?php echo $menuCategory2['name']?></a></li>
+                                                    <?php
+                                        }
+                                        ?>
+                                                </ul>
+                                        </li>
                                         <?php
-                                    }
-                                    }
-                                    ?>
+                                        }
+                                        ?>
                                             <li class="text-uppercase"><a href="index" class="text-uppercase">About</a>
                                             </li>
                                             
