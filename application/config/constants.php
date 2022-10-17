@@ -87,16 +87,16 @@ defined('NEXT_DAY')       OR define('NEXT_DAY', '6');
 
 defined('DATE_FORMAT_PHP') or define('DATE_FORMAT_PHP', 'd-m-Y');
 defined('DATE_FORMAT_PHP_SHORT') or define('DATE_FORMAT_PHP_SHORT', 'mm-d-Y');
-defined('BASE_PATH') or define('BASE_PATH', 'http://127.0.0.1:8074/bmn');
+defined('BASE_PATH') or define('BASE_PATH', 'http://127.0.0.1:8074/ecomjewellery');
 
 defined('ZEROQTYALLOW') or define('ZEROQTYALLOW', '0');
 
 
 if($_SERVER['HTTP_HOST'] == "127.0.0.1:8074") {
     define("DIR_WS_UPLOAD", 'D:\xampp74\htdocs\bmn');
-    define("SITE_BASE_URL", 'http://127.0.0.1:8074/bmn');
+    define("SITE_BASE_URL", 'http://127.0.0.1:8074/ecomjewellery');
     } else {
     define('DIR_WS_UPLOAD', "D:\xampp74\htdocs\bmn'");
-    define("SITE_BASE_URL", 'http://127.0.0.1:8074/bmn');	
+    define("SITE_BASE_URL", 'http://kindmobiel.com/ecomjewellery');	
     }
  

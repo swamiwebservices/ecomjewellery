@@ -19,6 +19,7 @@ class Category extends CI_Controller
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
     public $controller = "category";
+    public $domain_id = 1;
     public function __construct()
     {
             parent::__construct();
@@ -43,7 +44,11 @@ class Category extends CI_Controller
 
             }
            
+            if(empty($this->session->userdata('domain_id'))){
+                $this->session->set_userdata('domain_id', '1');
 
+            }
+            $this->domain_id = $this->services->getDomainId();
 
     }
     public function index()
@@ -62,22 +67,68 @@ class Category extends CI_Controller
         $params['type'] = "category";
 
         if($categoryids==""){
-            $categoryids = $this->services->getCategoryId($categoryname);
-            $params['parent_id'] = $categoryids['parent_id'];
-            $params['category_id'] = $categoryids['category_id'];
+            $categoryids_arra = $this->services->getCategoryId($categoryname);
+            $params['parent_id'] = $categoryids_arra['parent_id'];
+            $params['category_id'] = $categoryids_arra['category_id'];
         } else {
             $categoryids_exp = explode("-",$categoryids) ;
             $params['parent_id'] = $categoryids_exp[0];
             $params['category_id'] = $categoryids_exp[1];
         }
+        $data['categoryProduct_total'] =  $categoryProduct_total = $this->services->getProductList($params);
+
+        
+        $data['controller'] = $this->controller;
+        $data['maxm'] = $maxm = 9;
+        $fun_name = $funname.'/'.$categoryname.'/'.$categoryids;
+         $data['start'] = 0;
+ 
+        if (isset($_GET['page']) && $_GET['page'] != '') {
+            $page = filter_var($_GET['page'], FILTER_SANITIZE_STRING);
+
+            $data['page'] = $page;
+
+        } //isset( $_GET['page'] ) && $_GET['page'] != ''
+        else {
+            $page = 0;
+            $data['page'] = 0;
+
+        }
+        $start_temp = (($page == 0) ? 0 : $page - 1);
+        $start = $start_temp * $maxm;
+
+        if ($start < 0) {
+            $start = 0;
+        }
+
+        $sort = (isset($_GET['sort'])) ? $this->common->mysql_safe_string($_GET['sort']) : 'sort_order';
+        $order = (isset($_GET['order'])) ? $this->common->mysql_safe_string($_GET['order']) : 'asc';
+       
+        $params['sort'] = $sort;
+        $params['order'] = $order;
+
+        $data['start'] = $page;
+        $params['start'] = $start;
+        $params['limit'] = $maxm;
+        $data['other_para'] = "sort=".$sort."&order=".$order;
+
+        $data['fun_name'] = $fun_name . "?" . $data['other_para'];
+
         $data['categoryProduct'] =  $categoryProduct = $this->services->getProductList($params);
+        $data['num_row'] = sizeof($categoryProduct_total);
+        
 
         $params['type'] = "latestProduct";
         $params['limit'] = 5;
         $data['latestProduct'] =  $latestProduct = $this->services->getProductList($params);
-        $data['categoryProduct'] = $latestProduct;
+       // $data['categoryProduct'] = $latestProduct;
        // print_r($categoryProduct);
         $data['categoryname'] = $categoryname;
+
+        $data['sort'] = $sort;
+        $data['order'] = $order;
+
+
         $this->load->view("product_list", $data);
 
     }

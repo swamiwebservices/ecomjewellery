@@ -1,3 +1,6 @@
+<?php
+$domain_id = $this->domain_id;
+?>
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -23,7 +26,7 @@
     border-radius: 20px;
 }
     .home_black_version {
-        background: #05555c;
+        
         /* background-image: url("<?php echo base_url();?>assets/img/logo/bg_breadcrum.jpg"); */
     }
     .whitebg {
@@ -31,7 +34,10 @@
         /* background-image: url("<?php echo base_url();?>assets/img/logo/bg_breadcrum.jpg"); */
     }
 
- 
+    .dark {
+        background: #05555c;
+        /* background-image: url("<?php echo base_url();?>assets/img/logo/bg_breadcrum.jpg"); */
+    }
     </style>
 </head>
 
@@ -50,7 +56,7 @@
                         <ul>
                             <li><a href="index.html">home</a></li>
                             <li>></li>
-                            <li>shop</li>
+                            <li><?php echo $this->uri->segment('2')?></li>
                         </ul>
                     </div>
                 </div>
@@ -86,10 +92,16 @@
         
                             foreach($latestProduct as $key => $value){
                                 $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                $price_json = json_decode($value['price_json'],true);
+                                //   print_r($price_json);
+                                  $quantity = $price_json['quantity'][$domain_id];
+                                  $mrp = $price_json['mrp'][$domain_id];
+                                  $sellprice = $price_json['sellprice'][$domain_id];  
+                                  
                             ?>
                                 <div class="Featured_item bottom1">
                                    <div class="Featured_img">
-                                       <a href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
+                                       <a href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
                                    </div>
                                     <div class="Featured_info">
                                         <h3><a href="#"><?php echo $value['name']?></a></h3>   
@@ -103,8 +115,21 @@
                                             </ul>
                                         </div>
                                         <div class="price_box">
-                                            <span class="old_price">$65.00</span>
-                                            <span class="current_price">$60.00</span>
+                                        <?php
+                                        if($sellprice<$mrp){
+                                        ?>
+                                            <span
+                                                class="old_price"><?php echo $this->services->format($mrp)?></span>
+                                            <span
+                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                            <?php    
+                                        }else {
+                                        ?>
+                                            <span
+                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                            <?php    
+                                        }
+                                        ?>
                                         </div>               
                                     </div>
                                 </div>
@@ -136,23 +161,21 @@
                                 <h3>Sort By : </h3>
                                 <div class=" niceselect_option">
 
-                                    <form class="select_option" action="#">
-
-                                        <select name="orderby" id="short">
-                                            <option selected value="1">Sort by popularity</option>
-                                            <option  value="2">Sort by popularity</option>
-                                            <option value="3">Sort by newness</option>
-                                            <option value="4">Sort by price: low to high</option>
-                                            <option value="5">Sort by price: high to low</option>
-                                            <option value="6">Product Name: Z</option>
+                                     
+                                        <select name="orderby"  id="orderby" class="form-select"  onchange="document.location.href=this.value">
+                                        <option value="<?php echo site_url($fun_name)?>"  <?php if($sort==""){ echo " selected";}?>>Default</option>
+                                        <option value="<?php echo site_url($fun_name)?>&amp;sort=name&amp;order=ASC"  <?php if($sort=="name"  && $order=="ASC"){ echo " selected";}?>>Name (A - Z)</option>
+                                        <option value="<?php echo site_url($fun_name)?>&amp;sort=name&amp;order=DESC"  <?php if($sort=="name" && $order=="DESC"){ echo " selected";}?>>Name (Z - A)</option>
+                                        <option value="<?php echo site_url($fun_name)?>&amp;sort=price&amp;order=ASC"  <?php if($sort=="price" && $order=="ASC"){ echo " selected";}?>>Price (Low &gt; High)</option>
+                                        <option value="<?php echo site_url($fun_name)?>&amp;sort=price&amp;order=DESC"  <?php if($sort=="price" && $order=="DESC"){ echo " selected";}?>>Price (High &gt; Low)</option>
+                                        <!-- <option value="<?php echo site_url($fun_name)?>&amp;sort=rating&amp;order=DESC">Rating (Highest)</option>
+                                        <option value="<?php echo site_url($fun_name)?>&amp;sort=rating&amp;order=ASC">Rating (Lowest)</option>
+                                         -->
                                         </select>
-                                    </form>
-
+                                    
 
                                 </div>
-                                <div class="page_amount">
-                                    <p>Showing 1–9 of 21 results</p>
-                                </div>
+                                
                             </div>
                         </div>
                         <!--shop toolbar end-->
@@ -164,17 +187,25 @@
                                 <?php
                                 foreach($categoryProduct as $key => $value){
                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                     //   print_r($price_json);
+                                     $price_json = json_decode($value['price_json'],true);
+                                     //   print_r($price_json);
+                                       $quantity = $price_json['quantity'][$domain_id];
+                                       $mrp = $price_json['mrp'][$domain_id];
+                                       $sellprice = $price_json['sellprice'][$domain_id];  
+                                       
+                                     
                                 ?>
                                    <div class="col-lg-4 col-md-4 col-sm-6">
                                         <div class="single_product">
                                             <div class="product_thumb">
                                              
-                                                <a class="primary_img" href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
-                                                <a class="secondary_img" href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
+                                                <a class="primary_img" href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
+                                                <a class="secondary_img" href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
                                                 <div class="quick_button">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box"
+                                                    <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box"
                                                         data-placement="top" data-uuid="<?php echo $value['uuid']; ?>"
-                                                        data-pdata="<?php echo json_encode($value); ?>" data-original-title="quick view"> quick view</a>
+                                                        data-pdata="<?php echo json_encode($value); ?>" data-original-title="quick view"> quick view</a> -->
                                                 </div>
                                             </div>
                                             <div class="product_content">
@@ -182,10 +213,20 @@
                                                     <a href="#">Clothing,</a>
                                                     <a href="#">Potato chips</a>
                                                 </div> -->
-                                                <h3><a href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><?php echo $value['name']?></a></h3>
+                                                <h3><a href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a></h3>
                                                 <div class="price_box">
-                                                    <span class="old_price">$89.00</span>
-                                                    <span class="current_price">$75.00</span>
+                                                <?php
+                                                        if($sellprice<$mrp){
+                                                        ?>
+                                                        <span class="old_price"><?php echo $this->services->format($mrp)?></span>
+                                                        <span class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                        <?php    
+                                                        }else {
+                                                        ?>
+                                                        <span class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                        <?php    
+                                                        }
+                                                        ?>
                                                 </div>
                                                 <div class="product_hover">
                                                     <div class="product_ratings">
@@ -203,7 +244,7 @@
                                                     <div class="action_links">
                                                         <ul>
                                                             <li><a href="wishlist.html" data-placement="top" title="Add to Wishlist" data-bs-toggle="tooltip"><span class="icon icon-Heart"></span></a></li>
-                                                            <li class="add_to_cart"><a href="cart.html" title="add to cart">add to cart</a></li>
+                                                            <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCrt" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
                                                            <!--  <li><a href="compare.html" title="compare"><i class="ion-ios-settings-strong"></i></a></li> -->
                                                         </ul>
                                                     </div>
@@ -218,22 +259,27 @@
                             <?php
                                 foreach($categoryProduct as $key => $value){
                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                     //   print_r($price_json);
+                                     $quantity = $price_json['quantity'][$domain_id];
+                                     $mrp = $price_json['mrp'][$domain_id];
+                                     $sellprice = $price_json['sellprice'][$domain_id];  
+                                     
                                 ?>
                                 <div class="single_product product_list_item">
                                    <div class="row">
                                        <div class="col-lg-4 col-md-5">
                                            <div class="product_thumb">
-                                                <a class="primary_img" href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
-                                                <a class="secondary_img" href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
+                                                <a class="primary_img" href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
+                                                <a class="secondary_img" href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
                                                 <div class="quick_button">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box"  data-original-title="quick view" data-uuid="<?php echo $value['uuid']; ?>"
-                                                        data-pdata="<?php echo json_encode($value); ?>"> quick view</a>
+                                                    <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box"  data-original-title="quick view" data-uuid="<?php echo $value['uuid']; ?>"
+                                                        data-pdata="<?php echo json_encode($value); ?>"> quick view</a> -->
                                                 </div>
                                             </div>
                                        </div>
                                        <div class="col-lg-8 col-md-7">
                                             <div class="product_content">               
-                                              <h3><a href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><?php echo $value['name']?></a></h3>
+                                              <h3><a href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a></h3>
                                               <div class="product_ratings">
                                                     <ul>
                                                         <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
@@ -247,12 +293,26 @@
                                                     <p><?php echo $this->common->pdesc($value['description'])?> </p>
                                                 </div>
                                                <div class="price_box">
-                                                    <span class="current_price">$65.00</span>
+                                               <?php
+                                                        if($sellprice<$mrp){
+                                                        ?>
+                                                            <span
+                                                                class="old_price"><?php echo $this->services->format($mrp)?></span>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                        }else {
+                                                        ?>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                        }
+                                                        ?>
                                                 </div>
                                                 
                                                 <div class="action_links">
                                                     <ul>
-                                                        <li class="add_to_cart"><a href="cart.html" title="add to cart">add to cart</a></li>
+                                                        <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCrt" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
                                                         <li><a href="wishlist.html" title="Wishlist"><span class="icon icon-Heart"></span></a></li>
                                                         
                                                         <!-- <li><a href="compare.html" title="compare"><i class="ion-ios-settings-strong"></i></a></li> -->
@@ -268,17 +328,17 @@
                         </div>
                         <!--shop tab product end-->
                         <!--shop toolbar start-->
-                        <div class="shop_toolbar t_bottom">
-                            <div class="pagination">
-                                <ul>
-                                    <li class="current">1</li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li class="next"><a href="#">next</a></li>
-                                    <li><a href="#">>></a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <?php if($num_row>=$maxm){ ?>
+            <div class="shop_toolbar t_bottom">
+                <div class="pagination ">
+                    <ul class="pagination ">
+                        <?php //echo $this->common->ajaxpagingnation_lux_new($start,$num_row,$maxm,'',$fun_name,$other_para); ?>
+                        <?php echo $this->common->ajaxpagingnation_lux_new($page,$num_row,$maxm,'7',$fun_name,$other_para); ?>
+                    </ul>
+                </div>
+            </div>
+            <?php } ?>
+                      
                         <!--shop toolbar end-->
                         <!--shop wrapper end-->
                         <?php }?>

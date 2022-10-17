@@ -101,7 +101,7 @@ defined('META_TITLE')      OR define('META_TITLE', 60  ); // highest automatical
 defined('IMAGE_AUTO_RESIZE')      OR define('IMAGE_AUTO_RESIZE', 1  ); // highest automatically-assigned error code
 
 define('setting', 1);
-if(setting==1){
+if(setting==2){
     define('back_path', 'http://127.0.0.1:8074/ecomjewellery/');
     define('FIREBASE_CREDENTIALS_PATH', 'firebase/bo-ice-2f1ce71da14c_local.json');
     define('FIREBASE_DATABASE_PATH', 'https://bo-ice.firebaseio.com');

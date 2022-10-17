@@ -1,6 +1,7 @@
 (function ($) {
     "use strict";
 
+    
     new WOW().init();  
 
     /*---background image---*/
@@ -311,7 +312,7 @@
     });
  
     /*--- niceSelect---*/
-     $('.select_option').niceSelect();
+     //$('.select_option').niceSelect();
      
 
     /*--- counterup activation ---*/
@@ -374,7 +375,7 @@
        " - $" + $( "#slider-range" ).slider( "values", 1 ) );
     
     /*niceSelect*/
-     $('.niceselect_option').niceSelect();
+     //$('.niceselect_option').niceSelect();
     
     /*---elevateZoom---*/
     $("#zoom1").elevateZoom({
@@ -534,4 +535,62 @@
 		perturbance: 0.04
 	});
     
+    $(".btnAddCrt").click(function(){
+    let product_id =  $(this).data('product_id'); 
+    let qty =  1;         
+    let qty_detail =  $("#quantity").val();
+       //  console.log(qty_detail);
+         if(qty_detail!=undefined){
+            qty = qty_detail;
+         }
+       //  console.log(this);
+         $.ajax({
+            url: SITE_URL + 'cart/add',
+           type: 'post',
+           data: 'product_id=' + product_id + '&cart_qty=' + qty,
+           dataType: 'json',
+           beforeSend: function() {
+                $(this).html('loading...');
+           },
+           complete: function() {
+                $(this).html('add to cart');
+           },
+           success: function(json) {
+              
+            //if product has attributes/options like color etc than redirect to detail page
+               if (json['redirect']) {
+                   location = json['redirect'];
+               }
+               console.log(json['cartItems']);
+               
+               if (json['success']) {
+                    
+                  
+                  //  $('body').before('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+                   // Need to set timeout otherwise it wont update the total
+                   
+                //        setTimeout(function () {
+                //         var myarr = [];
+                //         var myarr = json['total'].split(" ");
+                //        $('#cart .cart_count').text(myarr['0'] + " " + $('#cart-txt-heading').attr('value') +' / '+myarr['3']);
+
+
+                //    }, 100);
+
+                 //  $('html, body').animate({ scrollTop: 0 }, 'slow');
+
+                    $("#top_cart_quantity").html(json['cartItems']);
+                    //$('#cart > ul').load(st_url+'cart/cartinfo ul li');
+
+                    //$('.mini_cart,.off_canvars_overlay').addClass('active');
+               }
+           },
+           error: function(xhr, ajaxOptions, thrownError) {
+            console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+           }
+       });
+    });
+
 })(jQuery);	
+

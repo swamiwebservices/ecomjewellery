@@ -54,5 +54,6 @@ $route['404_override'] = 'nopage';
 
 $route['^category/([a-zA-Z0-9._-]+)'] = "category/index/$1";
 $route['^category/([a-zA-Z0-9._-]+)/([a-zA-Z0-9._-]+)'] = "category/index/$1/$2";
+$route['^product-detail/([a-zA-Z0-9._-]+)'] = "product/index/$1";
 
 $route['translate_uri_dashes'] = FALSE;

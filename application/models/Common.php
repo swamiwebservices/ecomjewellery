@@ -1337,6 +1337,7 @@ class Common extends CI_Model
         return $return;
     }
 
+    
     public function ajaxpagingnation_admin_new($start, $num_rows, $maxm, $srch_res = '', $fun_name = '', $other_para = '')
     {
 
@@ -1376,6 +1377,7 @@ class Common extends CI_Model
             $max_cnt_limit = $max_pages;
             $initial = 0;
         }
+            
         if ($curr_page != 1) {
             $pages_page = ($curr_page - 2) * $maxm;
             //$paging .= '<a href="'.site_url($fun_name.'/'.$pages_page."".$other_para).'" class="activelink">&larr; Previous</a>';
@@ -1673,16 +1675,16 @@ class Common extends CI_Model
             // $paging .= "<li class='active'>Page $page of $setLastpage</li>";
             if ($page > 1) {
 
-                $paging .= "<li class='page-item '><a class='page-link'  href='" . site_url($fun_name . '&page=' . ($page - 1)) . "' >&larr;</a></li>";
+                $paging .= "<li class='page-item1 '><a class='page-link2'  href='" . site_url($fun_name . '&page=' . ($page - 1)) . "' >&larr;</a></li>";
             } else {
-                $paging .= '<li class="page-item disabled "><a class="page-link">&larr;</a></li>';
+                $paging .= '<li class="page-item1 disabled "><a class="page-link2">&larr;</a></li>';
             }
             if ($setLastpage < 7 + ($adjacents * 2)) {
                 for ($counter = 1; $counter <= $setLastpage; $counter++) {
                     if ($counter == $page) {
-                        $paging .= "<li  class='page-item  active '><a class='page-link'>$counter</a></li>";
+                        $paging .= "<li  class='page-item1  active current '><a class='page-link21 current'>$counter</a></li>";
                     } else {
-                        $paging .= "<li class='page-item '><a class='page-link' href='" . site_url($fun_name . '&page=' . ($counter)) . "'>$counter</a></li>";
+                        $paging .= "<li class='page-item1 '><a class='page-link2' href='" . site_url($fun_name . '&page=' . ($counter)) . "'>$counter</a></li>";
                     }
 
                 }
@@ -1690,39 +1692,39 @@ class Common extends CI_Model
                 if ($page < 1 + ($adjacents * 2)) {
                     for ($counter = 1; $counter < 4 + ($adjacents * 2); $counter++) {
                         if ($counter == $page) {
-                            $paging .= "<li  class='page-item  active '><a class='page-link'>$counter</a></li>";
+                            $paging .= "<li  class='page-item1   active current'><a class='page-link2'>$counter</a></li>";
                         } else {
-                            $paging .= "<li  class='page-item '><a  class=' page-link'  href='" . site_url($fun_name . '&page=' . ($counter)) . "'>$counter</a></li>";
+                            $paging .= "<li  class='page-item1 '><a  class=' page-link2'  href='" . site_url($fun_name . '&page=' . ($counter)) . "'>$counter</a></li>";
                         }
 
                     }
-                    $paging .= "<li class='page-item '><a>...</a></li>";
-                    $paging .= "<li  class='page-item '><a class=' page-link'  href='" . site_url($fun_name . '&page=' . ($lpm1)) . "'>$lpm1</a></li>";
-                    $paging .= "<li class='page-item '><a  class=' page-link' href='" . site_url($fun_name . '&page=' . ($setLastpage)) . "'>$setLastpage</a></li>";
+                    $paging .= "<li class='page-item1 '><a>...</a></li>";
+                    $paging .= "<li  class='page-item1 '><a class=' page-link2'  href='" . site_url($fun_name . '&page=' . ($lpm1)) . "'>$lpm1</a></li>";
+                    $paging .= "<li class='page-item1 '><a  class=' page-link2' href='" . site_url($fun_name . '&page=' . ($setLastpage)) . "'>$setLastpage</a></li>";
                 } elseif ($setLastpage - ($adjacents * 2) > $page && $page > ($adjacents * 2)) {
-                    $paging .= "<li class='page-item '><a  class=' page-link'  href='" . site_url($fun_name . '&page=1') . "'>1</a></li>";
-                    $paging .= "<li class='page-item '><a  class=' page-link' href='" . site_url($fun_name . '&page=2') . "'>2</a></li>";
-                    $paging .= "<li class='page-item '><a>...</a></li>";
+                    $paging .= "<li class='page-item1 '><a  class=' page-link2'  href='" . site_url($fun_name . '&page=1') . "'>1</a></li>";
+                    $paging .= "<li class='page-item1 '><a  class=' page-link2' href='" . site_url($fun_name . '&page=2') . "'>2</a></li>";
+                    $paging .= "<li class='page-item1 '><a>...</a></li>";
                     for ($counter = $page - $adjacents; $counter <= $page + $adjacents; $counter++) {
                         if ($counter == $page) {
-                            $paging .= "<li  class='page-item  active '><a class='page-link'>$counter</a></li>";
+                            $paging .= "<li  class='page-item1  active current'><a class='page-link2'>$counter</a></li>";
                         } else {
-                            $paging .= "<li class='page-item '><a  class=' page-link'  href='" . site_url($fun_name . '&page=' . $counter) . "'>$counter</a></li>";
+                            $paging .= "<li class='page-item1 '><a  class=' page-link2'  href='" . site_url($fun_name . '&page=' . $counter) . "'>$counter</a></li>";
                         }
 
                     }
-                    $paging .= "<li class='page-item '><a>..</a></li>";
-                    $paging .= "<li class=' page-item'><a  class=' page-link' href='" . site_url($fun_name . '&page=' . $lpm1) . "'>$lpm1</a></li>";
-                    $paging .= "<li class='page-item '><a  class=' page-link'  href='" . site_url($fun_name . '&page=' . $setLastpage) . "'>$setLastpage</a></li>";
+                    $paging .= "<li class='page-item1 '><a>..</a></li>";
+                    $paging .= "<li class=' page-item1'><a  class=' page-link2' href='" . site_url($fun_name . '&page=' . $lpm1) . "'>$lpm1</a></li>";
+                    $paging .= "<li class='page-item1 '><a  class=' page-link2'  href='" . site_url($fun_name . '&page=' . $setLastpage) . "'>$setLastpage</a></li>";
                 } else {
-                    $paging .= "<li class='page-item '><a  class=' page-link' href='" . site_url($fun_name . '&page=1') . "'>1</a></li>";
-                    $paging .= "<li class='page-item '><a  class=' page-link' href='" . site_url($fun_name . '&page=2') . "'>2</a></li>";
-                    $paging .= "<li class='page-item '><a>..</a></li>";
+                    $paging .= "<li class='page-item1 '><a  class=' page-link2' href='" . site_url($fun_name . '&page=1') . "'>1</a></li>";
+                    $paging .= "<li class='page-item1 '><a  class=' page-link2' href='" . site_url($fun_name . '&page=2') . "'>2</a></li>";
+                    $paging .= "<li class='page-item1 '><a>..</a></li>";
                     for ($counter = $setLastpage - (2 + ($adjacents * 2)); $counter <= $setLastpage; $counter++) {
                         if ($counter == $page) {
-                            $paging .= "<li  class='page-item  active'><a class='page-link'>$counter</a></li>";
+                            $paging .= "<li  class='page-item1  active current'><a class='page-link2'>$counter</a></li>";
                         } else {
-                            $paging .= "<li class='page-item '><a class=' page-link' href='" . site_url($fun_name . '&page=' . $counter) . "'>$counter</a></li>";
+                            $paging .= "<li class='page-item1 '><a class=' page-link2' href='" . site_url($fun_name . '&page=' . $counter) . "'>$counter</a></li>";
                         }
 
                     }
@@ -1730,7 +1732,7 @@ class Common extends CI_Model
             }
 
             if ($page < $counter - 1) {
-                $paging .= "<li class='page-item '><a class=' page-link' href='" . site_url($fun_name . '&page=' . $next) . "'>&rarr;</a></li>";
+                $paging .= "<li class='page-item1 '><a class=' page-link2' href='" . site_url($fun_name . '&page=' . $next) . "'>&rarr;</a></li>";
                 //  $paging.= "<li><a href='{$page_url}page=$setLastpage'>Last</a></li>";
             } else {
                 //  $paging.= "<li><a class='current_page'>Next</a></li>";

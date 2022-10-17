@@ -1,6 +1,6 @@
 
         <!--footer area start-->
-        <footer class="footer_widgets footer_black">
+        <footer class="footer_widgets footer_black dark">
             <div class="container">
                 <div class="footer_top">
                     <div class="row">

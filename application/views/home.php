@@ -1,98 +1,38 @@
+<?php
+$domain_id = $this->domain_id;
+?>
 <!doctype html>
 <html class="no-js" lang="en">
 
 <head>
     <?php $this->load->view('inc_metacss'); ?>
     <style>
+    .product_black_section .product_content h3 a {
+        color: #fec210 !important;
+    }
+
     .home_black_version {
-        background: #05555c;
-        /* background-image: url("<?php echo base_url();?>assets/img/logo/bg_breadcrum.jpg"); */
-    }
 
-    .header_black .sticky-header.sticky {
-        background: #fff;
-        box-shadow: 0 1px 3px rgb(0 0 0 / 11%);
-        padding: 7px;
-    }
+/* background-image: url("<?php echo base_url();?>assets/img/logo/bg_breadcrum.jpg"); */
+}
 
-    .product_black_section .section_title h2 {
-        color: #eed306;
+.whitebg {
+background: #ffffff;
+/* background-image: url("<?php echo base_url();?>assets/img/logo/bg_breadcrum.jpg"); */
+}
 
-        background: #05555c;
-        font-weight: 700;
-    }
-
-    .header_black .main_menu nav>ul>li.active>a {
-        color: #e4c800;
-    }
-
-    .product_black_section .product_container.bottom button {
-        color: #eed306;
-        background: #05555c;
-        top: -66px;
-    }
-
-    .product_black_section .section_title::before {
-        background: #eed306;
-    }
-
-    .product_black_section .product_content h3 a:hover {
-        color: #eed306;
-    }
-
-    .product_black_section .product_tab_button ul.nav li a.active {
-        color: #eed306;
-    }
-
-    .blog_black .section_title h2 {
-        color: #eed306;
-
-        background: #05555c;
-        font-weight: 700;
-    }
-
-    .blog_black .blog_wrapper .owl-nav {
-        background: #05555c;
-        color: #eed306;
-    }
-
-    .blog_black .blog_wrapper .owl-nav div {
-        color: #cfc10b;
-    }
-
-    .blog_black .section_title::before {
-        background: #c8bc0c;
-    }
-
-    .shipping_black .single-shipping {
-        background: #cdac28;
-    }
-
-    .shipping_black .single-shipping h3 {
-        color: #05555c;
-        font-family: "Prata", serif;
-        font-weight: 400;
-    }
-
-    .shipping_black .single-shipping p {
-        color: #ffffff;
-    }
-
-    .price_box>span.old_price {
-        color: #f8f9fa;
-
-    }
-
-    .product_black_section .price_box span.current_price {
-        color: #eed309;
-    }
+.dark {
+/* background: #05555c; */
+/* background-image: url("<?php echo base_url();?>assets/img/logo/bg_breadcrum.jpg"); */
+}
     </style>
 </head>
 
 <body>
+    <!-- Main Wrapper Start -->
     <div class="home_black_version">
 
-    <?php $this->load->view('inc_header_menu'); ?>
+        <?php $this->load->view('inc_header_menu'); ?>
 
         <!--slider area start-->
         <?php
@@ -117,12 +57,12 @@
         <?php }?>
         <!--slider area end-->
 
-
+      
         <!--product section area start-->
         <?php
         if(isset($latestProduct)  && sizeof($latestProduct) > 0 ){
         ?>
-        <section class="product_section p_section1 product_black_section">
+        <section class="product_section p_section1 product_black_section1 whitebg">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -137,13 +77,13 @@
                                     <?php
                        
                                  //  echo $this->domain_id; exit;
-                                 $domain_id = $this->domain_id;
+                                 
                                 foreach($latestProduct as $key => $value){
                                     //print_r($price_json);
                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
 
                                     $price_json = json_decode($value['price_json'],true);
-                                   // print_r($price_json);
+                                  //   print_r($price_json);
                                     $quantity = $price_json['quantity'][$domain_id];
                                     $mrp = $price_json['mrp'][$domain_id];
                                     $sellprice = $price_json['sellprice'][$domain_id];  
@@ -153,14 +93,14 @@
                                         <div class="single_product">
                                             <div class="product_thumb">
                                                 <a class="primary_img"
-                                                    href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img
+                                                    href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                                                         src="<?php echo $main_image?>" alt=""></a>
                                                 <a class="secondary_img"
-                                                    href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img
+                                                    href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                                                         src="<?php echo $main_image?>" alt=""></a>
                                                 <div class="quick_button">
-                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box" data-placement="top"  data-original-title="quick view" data-uuid="<?php echo $value['uuid']; ?>"
-                                                        data-pdata="<?php echo json_encode($value); ?>"> quick view</a>
+                                                    <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box" data-placement="top"  data-original-title="quick view" data-uuid="<?php echo $value['uuid']; ?>"
+                                                        data-pdata="<?php echo json_encode($value); ?>"> quick view</a> -->
                                                 </div>
                                             </div>
                                             <div class="product_content">
@@ -169,25 +109,35 @@
                                                     <a href="#">Potato chips</a>
                                                 </div> -->
                                                 <h3><a
-                                                        href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
+                                                        href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
                                                 </h3>
                                                 <div class="price_box">
-                                                    <span class="old_price">$89.00</span>
-                                                    <span class="current_price">$75.00</span>
+                                                    <?php
+                                                    if($sellprice<$mrp){
+                                                    ?>
+                                                    <span
+                                                        class="old_price"><?php echo $this->services->format($mrp)?></span>
+                                                    <span
+                                                        class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                    <?php    
+                                                    }else {
+                                                    ?>
+                                                    <span
+                                                        class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                    <?php    
+                                                    }
+                                                    ?>
+
+
                                                 </div>
                                                 <div class="product_hover">
                                                     <div class="product_ratings">
                                                         <ul>
-                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
-                                                            </li>
-                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
-                                                            </li>
-                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
-                                                            </li>
-                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
-                                                            </li>
-                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
-                                                            </li>
+                                                        <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
+                                                        <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
+                                                        <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
+                                                        <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
+                                                        <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                                         </ul>
                                                     </div>
                                                     <div class="product_desc">
@@ -199,8 +149,7 @@
                                                                     title="Add to Wishlist"
                                                                     data-bs-toggle="tooltip"><span
                                                                         class="icon icon-Heart"></span></a></li>
-                                                            <li class="add_to_cart"><a href="cart.html"
-                                                                    title="add to cart">add to cart</a></li>
+                                                            <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCrt" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'    title="add to cart">add to cart</a></li>
                                                             <!-- <li><a href="compare.html" title="compare"><i
                                                                         class="ion-ios-settings-strong"></i></a></li> -->
                                                         </ul>
@@ -221,7 +170,7 @@
         <!--product section area end-->
 
         <!--shipping area start-->
-        <div class="shipping_area shipping_black">
+        <div class="shipping_area shipping_black whitebg">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
@@ -242,7 +191,7 @@
         <!--shipping area end-->
 
         <!--product section area start-->
-        <section class="product_section p_section1 product_black_section bottom_two">
+        <section class="product_section p_section1 product_black_section bottom_two whitebg">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -272,22 +221,28 @@
         
                                                 foreach($latestProduct as $key => $value){
                                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                                    $price_json = json_decode($value['price_json'],true);
+                                                    //   print_r($price_json);
+                                                      $quantity = $price_json['quantity'][$domain_id];
+                                                      $mrp = $price_json['mrp'][$domain_id];
+                                                      $sellprice = $price_json['sellprice'][$domain_id];  
+                                                      
                                                 ?>
                                             <div class="custom-col-5">
                                                 <div class="single_product">
                                                     <div class="product_thumb">
                                                         <a class="primary_img"
-                                                            href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img
+                                                            href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                                                                 src="<?php echo $main_image?>" alt=""></a>
                                                         <a class="secondary_img"
-                                                            href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img
+                                                            href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                                                                 src="<?php echo $main_image?>" alt=""></a>
                                                         <div class="quick_button">
-                                                            <a href="#" data-bs-toggle="modal"
+                                                            <!-- <a href="#" data-bs-toggle="modal"
                                                                 data-bs-target="#modal_box" data-placement="top"
                                                                 data-uuid="<?php echo $value['uuid']; ?>"
                                                                 data-pdata="<?php echo json_encode($value); ?>"
-                                                                data-original-title="quick view"> quick view</a>
+                                                                data-original-title="quick view"> quick view</a> -->
                                                         </div>
                                                     </div>
                                                     <div class="product_content">
@@ -296,11 +251,24 @@
                                                     <a href="#">Potato chips</a>
                                                 </div> -->
                                                         <h3><a
-                                                                href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
+                                                                href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
                                                         </h3>
                                                         <div class="price_box">
-                                                            <span class="old_price">$89.00</span>
-                                                            <span class="current_price">$75.00</span>
+                                                            <?php
+                                                            if($sellprice<$mrp){
+                                                            ?>
+                                                            <span
+                                                                class="old_price"><?php echo $this->services->format($mrp)?></span>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                            }else {
+                                                            ?>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                            }
+                                                            ?>
                                                         </div>
                                                         <div class="product_hover">
                                                             <div class="product_ratings">
@@ -332,10 +300,9 @@
                                                                             title="Add to Wishlist"
                                                                             data-bs-toggle="tooltip"><span
                                                                                 class="icon icon-Heart"></span></a></li>
-                                                                    <li class="add_to_cart"><a href="cart.html"
-                                                                            title="add to cart">add to cart</a></li>
-                                                                    <li><a href="compare.html" title="compare"><i
-                                                                                class="ion-ios-settings-strong"></i></a>
+                                                                    <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCrt" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'   title="add to cart">add to cart</a></li>
+                                                                    <!-- <li><a href="compare.html" title="compare"><i
+                                                                                class="ion-ios-settings-strong"></i></a> -->
                                                                     </li>
                                                                 </ul>
                                                             </div>
@@ -352,27 +319,33 @@
                                 </div>
                                 <div class="tab-pane fade" id="arrivals" role="tabpanel">
                                     <div class="product_container">
-                                    <div class="custom-row product_column3">
+                                        <div class="custom-row product_column3">
                                             <?php
         
                                                 foreach($latestProduct as $key => $value){
                                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                                    $price_json = json_decode($value['price_json'],true);
+                                                    //   print_r($price_json);
+                                                      $quantity = $price_json['quantity'][$domain_id];
+                                                      $mrp = $price_json['mrp'][$domain_id];
+                                                      $sellprice = $price_json['sellprice'][$domain_id];  
+                                                      
                                                 ?>
                                             <div class="custom-col-5">
                                                 <div class="single_product">
                                                     <div class="product_thumb">
                                                         <a class="primary_img"
-                                                            href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img
+                                                            href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                                                                 src="<?php echo $main_image?>" alt=""></a>
                                                         <a class="secondary_img"
-                                                            href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img
+                                                            href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                                                                 src="<?php echo $main_image?>" alt=""></a>
                                                         <div class="quick_button">
-                                                            <a href="#" data-bs-toggle="modal"
+                                                            <!-- <a href="#" data-bs-toggle="modal"
                                                                 data-bs-target="#modal_box" data-placement="top"
                                                                 data-uuid="<?php echo $value['uuid']; ?>"
                                                                 data-pdata="<?php echo json_encode($value); ?>"
-                                                                data-original-title="quick view"> quick view</a>
+                                                                data-original-title="quick view"> quick view</a> -->
                                                         </div>
                                                     </div>
                                                     <div class="product_content">
@@ -381,11 +354,24 @@
                                                     <a href="#">Potato chips</a>
                                                 </div> -->
                                                         <h3><a
-                                                                href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
+                                                                href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
                                                         </h3>
                                                         <div class="price_box">
-                                                            <span class="old_price">$89.00</span>
-                                                            <span class="current_price">$75.00</span>
+                                                            <?php
+                                                        if($sellprice<$mrp){
+                                                        ?>
+                                                            <span
+                                                                class="old_price"><?php echo $this->services->format($mrp)?></span>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                        }else {
+                                                        ?>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                        }
+                                                        ?>
                                                         </div>
                                                         <div class="product_hover">
                                                             <div class="product_ratings">
@@ -417,10 +403,9 @@
                                                                             title="Add to Wishlist"
                                                                             data-bs-toggle="tooltip"><span
                                                                                 class="icon icon-Heart"></span></a></li>
-                                                                    <li class="add_to_cart"><a href="cart.html"
-                                                                            title="add to cart">add to cart</a></li>
-                                                                    <li><a href="compare.html" title="compare"><i
-                                                                                class="ion-ios-settings-strong"></i></a>
+                                                                    <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCrt" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'   title="add to cart">add to cart</a></li>
+                                                                    <!-- <li><a href="compare.html" title="compare"><i
+                                                                                class="ion-ios-settings-strong"></i></a> -->
                                                                     </li>
                                                                 </ul>
                                                             </div>
@@ -438,27 +423,33 @@
                                 </div>
                                 <div class="tab-pane fade" id="onsale" role="tabpanel">
                                     <div class="product_container">
-                                    <div class="custom-row product_column3">
+                                        <div class="custom-row product_column3">
                                             <?php
         
                                                 foreach($latestProduct as $key => $value){
                                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                                    $price_json = json_decode($value['price_json'],true);
+                                                    //   print_r($price_json);
+                                                      $quantity = $price_json['quantity'][$domain_id];
+                                                      $mrp = $price_json['mrp'][$domain_id];
+                                                      $sellprice = $price_json['sellprice'][$domain_id];  
+                                                      
                                                 ?>
                                             <div class="custom-col-5">
                                                 <div class="single_product">
                                                     <div class="product_thumb">
                                                         <a class="primary_img"
-                                                            href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img
+                                                            href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                                                                 src="<?php echo $main_image?>" alt=""></a>
                                                         <a class="secondary_img"
-                                                            href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><img
+                                                            href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                                                                 src="<?php echo $main_image?>" alt=""></a>
                                                         <div class="quick_button">
-                                                            <a href="#" data-bs-toggle="modal"
+                                                            <!-- <a href="#" data-bs-toggle="modal"
                                                                 data-bs-target="#modal_box" data-placement="top"
                                                                 data-uuid="<?php echo $value['uuid']; ?>"
                                                                 data-pdata="<?php echo json_encode($value); ?>"
-                                                                data-original-title="quick view"> quick view</a>
+                                                                data-original-title="quick view"> quick view</a> -->
                                                         </div>
                                                     </div>
                                                     <div class="product_content">
@@ -467,11 +458,24 @@
                                                     <a href="#">Potato chips</a>
                                                 </div> -->
                                                         <h3><a
-                                                                href="<?php echo site_url('product-details/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
+                                                                href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
                                                         </h3>
                                                         <div class="price_box">
-                                                            <span class="old_price">$89.00</span>
-                                                            <span class="current_price">$75.00</span>
+                                                            <?php
+                                                        if($sellprice<$mrp){
+                                                        ?>
+                                                            <span
+                                                                class="old_price"><?php echo $this->services->format($mrp)?></span>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                        }else {
+                                                        ?>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                        }
+                                                        ?>
                                                         </div>
                                                         <div class="product_hover">
                                                             <div class="product_ratings">
@@ -503,10 +507,9 @@
                                                                             title="Add to Wishlist"
                                                                             data-bs-toggle="tooltip"><span
                                                                                 class="icon icon-Heart"></span></a></li>
-                                                                    <li class="add_to_cart"><a href="cart.html"
-                                                                            title="add to cart">add to cart</a></li>
-                                                                    <li><a href="compare.html" title="compare"><i
-                                                                                class="ion-ios-settings-strong"></i></a>
+                                                                    <li class="add_to_cart"><a  href="javascript:void(0);" class="btnAddCrt" data-product_id='<?php echo $value['product_id']?>' data-qty='1'    title="add to cart">add to cart</a></li>
+                                                                    <!-- <li><a href="compare.html" title="compare"><i
+                                                                                class="ion-ios-settings-strong"></i></a> -->
                                                                     </li>
                                                                 </ul>
                                                             </div>
@@ -531,7 +534,7 @@
         <!--product section area end-->
 
         <!--blog section area start-->
-        <section class="blog_section blog_black">
+        <section class="blog_section blog_black1 whitebg">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -654,7 +657,7 @@
         <!--blog section area end-->
 
         <!--indtagram area start-->
-        <div class="instagram_area">
+        <div class="instagram_area whitebg">
             <div class="container">
                 <div class="row">
                     <div class="col-12">

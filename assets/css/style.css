@@ -62,14 +62,14 @@ body {
   font-style: normal;
   font-weight: 400;
   visibility: visible;
-  font-family: "Rubik", sans-serif;
+  font-family: 'ibm_plex_sansregular';
   color: #5a5a5a;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-weight: 400;
   margin-top: 0;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 
 h1 {
@@ -155,6 +155,47 @@ ul {
 /*-- 
     - Common Classes
 -----------------------------------------*/
+
+.header_black .main_menu nav > ul > li > a{font-family: 'ibm_plex_sansregular' !important;}
+.header_black .main_menu nav > ul > li ul.sub_menu li a{font-family: 'ibm_plex_sansregular' !important;}
+.header_black .main_menu nav > ul > li ul.mega_menu > li > a{font-family: 'ibm_plex_sansregular' !important;}
+.header_black .main_menu nav > ul > li.active > a{color:#FEC210 !important;}
+.header_top{display: none;}
+.main_menu_inner{
+    text-align: center;
+    float: left !important;
+    width: 70% !important;
+}
+.main_menu nav > ul > li > a{padding: 10px 20px !important;}
+.header_black .header_middel {
+    border-bottom: 5px solid #939598  !important;
+}
+.header_black .header_bottom{border-bottom: none !important;}
+.header_area{background-color: #05535A !important;position: sticky;
+  z-index: 99;
+  width: 100%;
+  top: 0;}
+.header_black .search_btn a{border:1px solid #FEC210 !important;}
+.header_black .box_setting > a{border:1px solid #FEC210 !important;}
+.header_black .cart_link > a{border:1px solid #FEC210 !important;}
+.header_black .cart_link span.cart_quantity{ background: #FEC210 !important;}
+.header_black .cart_link > a i.ion-android-cart{border-right: 0px solid #FEC210 !important;}
+.header_black .main_menu nav > ul > li:hover > a {color: #FEC210 !important;}
+
+.header_black .main_menu nav > ul > li ul.mega_menu > li > a:hover {color: #FEC210 !important;}
+.header_black .main_menu nav > ul > li ul.mega_menu > li ul li a:hover {color: #FEC210 !important;}
+.header_black .header_middel{
+    background-image: url(../img/bg/header_bg.png) !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+}
+
+.logo img{width:70% !important;}
+
+
+
+
 .fix {
   overflow: hidden;
 }
@@ -440,10 +481,10 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 /* 2. Home 1 Header css here */
 /* 01. header css here*/
 .sticky-header.sticky {
-  position: fixed;
+  /* position: fixed;
   z-index: 99;
   width: 100%;
-  top: 0;
+  top: 0; */
   background: rgba(255, 255, 255, 0.9);
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.11);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.11);
@@ -489,7 +530,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   width: 100%;
   height: 100%;
   position: fixed;
-  z-index: 999;
+  z-index: 99;
   opacity: 0;
   visibility: hidden;
   cursor: crosshair;
@@ -1375,7 +1416,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border-right: 1px solid #ebebeb;
   position: relative;
   top: 3px;
-  padding-right: 10px;
+  padding-right: 0px;
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .cart_link > a i.ion-android-cart {
@@ -1448,7 +1489,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 .mini_cart_footer {
   padding: 20px 18px;
-  background: #242424;
+  background: #06242c;
 }
 
 .cart_img {
@@ -1464,7 +1505,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #242424;
   text-transform: capitalize;
   font-size: 14px;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .cart_info a:hover {
   color: #c09578;
@@ -1512,7 +1553,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   border-radius: 5px;
   font-weight: 400;
   color: #ffffff;
-  background: #2e2e2e;
+  background: #777879;
   display: block;
   text-align: center;
   line-height: 20px;
@@ -2473,7 +2514,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 /*home five css here*/
 .home_black_version {
-  background: #242424;
+  background: #fff;
 }
 
 .header_black .sticky-header.sticky {
@@ -2636,7 +2677,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #a8741a;
 }
 .header_black .cart_link > a i.ion-android-cart {
-  border-right: 1px solid #2d2d2d;
+  border-right: 0px solid #2d2d2d;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .header_black .cart_link > a i.ion-android-cart {
@@ -2670,8 +2711,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #a8741a;
 }
 .header_black .mini_cart {
-  background: #242424;
-  border: 1px solid #2d2d2d;
+  background: #06242c;
+  border: 1px solid #777879;
 }
 @media only screen and (max-width: 767px) {
   .header_black .mini_cart {
@@ -2680,7 +2721,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .header_black .cart_info a {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .header_black .cart_info a:hover {
   color: #a8741a;
@@ -2708,7 +2749,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .header_black .main_menu nav > ul > li > a {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
   text-transform: capitalize;
   font-size: 18px;
@@ -2719,7 +2760,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .header_black .main_menu nav > ul > li ul.sub_menu li a {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .header_black .main_menu nav > ul > li ul.sub_menu li a:hover {
   color: #a8741a;
@@ -2730,7 +2771,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .header_black .main_menu nav > ul > li ul.mega_menu > li > a {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .header_black .main_menu nav > ul > li ul.mega_menu > li > a:hover {
   color: #a8741a;
@@ -2846,7 +2887,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   }
 }
 .header_black.black_two .header_middel {
-  padding: 20px 0;
+  padding: 10px 0;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .header_black.black_two .header_middel {
@@ -2937,14 +2978,14 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .sidebar_black_version .main_menu nav > ul > li ul.sub_menu li a {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .sidebar_black_version .main_menu nav > ul > li ul.sub_menu li a:hover {
   color: #a8741a;
 }
 .sidebar_black_version .main_menu nav > ul > li ul.sub_menu li a {
   color: #ffffff;
-  font-family: "Prata", serif;
+ font-family: 'ibm_plex_sansregular';
 }
 .sidebar_black_version .main_menu nav > ul > li ul.mega_menu {
   background: #242424;
@@ -2952,7 +2993,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .sidebar_black_version .main_menu nav > ul > li ul.mega_menu > li > a {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   text-transform: capitalize;
 }
 .sidebar_black_version .main_menu nav > ul > li ul.mega_menu > li > a:hover {
@@ -2969,7 +3010,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .sidebar_black_version .main_menu nav > ul > li > a {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   text-transform: capitalize;
   font-size: 18px;
 }
@@ -2978,7 +3019,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .sidebar_black_version .sidebar_newsletter h3 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   text-transform: capitalize;
   font-size: 18px;
   font-weight: 400;
@@ -4248,7 +4289,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .slider_black .slider_content h1 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
   margin-bottom: 10px;
 }
@@ -4786,7 +4827,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .banner_black .banner_content h2 {
   color: #a8741a;
   font-weight: 400;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
   .banner_black .banner_content h2 {
@@ -4862,7 +4903,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .black_fullwidth .banner_text h2 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
 }
 .black_fullwidth .banner_text span {
@@ -4933,7 +4974,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .banner_section_five .banner_text h2 {
   font-size: 30px;
   color: #a8741a;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
   line-height: 44px;
 }
@@ -5032,7 +5073,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .banner_fullwidth.black_two .banner_text h2 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-size: 48px;
   font-weight: 400;
 }
@@ -5199,7 +5240,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   text-transform: capitalize;
   font-weight: 700;
   display: inline-block;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
   border-left: 2px solid #ebebeb;
   padding: 0 30px;
   border-radius: 2px;
@@ -5387,7 +5428,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .action_links ul li.add_to_cart a {
   line-height: 35px;
   padding: 0 18px;
-  font-family: "Playfair Display", serif;
+ font-family: 'ibm_plex_sansregular';
   width: 100%;
   text-transform: capitalize;
   font-size: 12px;
@@ -5458,7 +5499,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   position: absolute;
   top: -63px;
   right: 30px;
-  z-index: 99;
+  z-index: 1;
   border: 0;
   background: inherit;
   font-size: 23px;
@@ -5593,7 +5634,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .product_black_section .product_tab_button ul.nav li a {
   border-left: 2px solid #2d2d2d;
   color: #ffffff;
-  font-family: "Prata", serif;
+ font-family: 'ibm_plex_sansregular';
 }
 @media only screen and (max-width: 767px) {
   .product_black_section .product_tab_button ul.nav li a {
@@ -5628,7 +5669,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   padding-right: 5px !important;
 }
 .product_black_section .quick_button a {
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-size: 14px;
 }
 .product_black_section .quick_button a:hover {
@@ -5641,7 +5682,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #a8741a;
 }
 .product_black_section .product_content h3 {
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
   font-size: 16px;
 }
@@ -5674,14 +5715,14 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   background: #a8741a;
 }
 .product_black_section .action_links ul li.add_to_cart a {
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .product_black_section .section_title::before {
   background: #2d2d2d;
 }
 .product_black_section .section_title h2 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   background: #242424;
   font-weight: 400;
 }
@@ -5710,7 +5751,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   }
 }
 .product_black_section.bottom_two {
-  background: #212121;
+  background: #06242c;
   padding-bottom: 31px;
   margin-bottom: 75px;
   padding-top: 64px;
@@ -5903,7 +5944,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .blog_black .section_title h2 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   background: #242424;
   font-weight: 400;
 }
@@ -5920,7 +5961,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   text-align: left;
 }
 .blog_black .blog_content h3 {
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-size: 18px;
   font-weight: 400;
 }
@@ -6061,7 +6102,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .newsletter_black h2 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
 }
 @media only screen and (max-width: 767px) {
@@ -6100,7 +6141,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   margin-left: 20px;
   height: 48px;
   background: #2e2e2e;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
 }
 .newsletter_black .newsletter_content form button:hover {
@@ -6212,7 +6253,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .shipping_black .single-shipping h3 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
 }
 .shipping_black .single-shipping p {
@@ -6238,7 +6279,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .shipping_two.s_black2 .shipping_content h3 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
   font-size: 15px;
   margin-bottom: 10px;
@@ -6476,6 +6517,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 
 /*home five footer css here*/
 .footer_black {
+  background: #06242c;
   border-top: 1px solid #2d2d2d;
   padding-top: 67px;
 }
@@ -6486,14 +6528,14 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .footer_black .widgets_container > h3 {
   color: #ffffff;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 400;
 }
 .footer_black .footer_contact p {
   color: #a0a0a0;
 }
 .footer_black .footer_contact ul li a {
-  background: #2f2f2f;
+  background: #9c9c9c;
   color: #ffffff;
   border: 0;
 }
@@ -6513,7 +6555,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #a8741a;
 }
 .footer_black .product_name h3 {
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
   text-transform: capitalize;
 }
 .footer_black .product_name h3 a {
@@ -6534,7 +6576,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .footer_black .footer_middel_menu ul li a {
   color: #a0a0a0;
-  font-family: "Prata", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .footer_black .footer_middel_menu ul li a:hover {
   color: #a8741a;
@@ -7418,7 +7460,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   }
 }
 .shop_area .quick_button a {
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 
 .shop_fullwidth {
@@ -7813,7 +7855,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #242424;
   font-weight: 700;
   text-transform: capitalize;
-  font-family: "Rubik", sans-serif;
+ font-family: 'ibm_plex_sansregular';
 }
 .reviews_wrapper .product_ratting {
   margin-bottom: 20px;
@@ -7823,7 +7865,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   color: #242424;
   font-weight: 700;
   text-transform: capitalize;
-  font-family: "Rubik", sans-serif;
+  font-family: 'ibm_plex_sansregular';
 }
 
 .comment_title {
@@ -8329,7 +8371,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   text-transform: capitalize;
   padding: 10px;
   text-align: center;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .table_desc .cart_page table tbody tr td {
   border-bottom: 1px solid #ebebeb;
@@ -8373,7 +8415,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .table_desc .cart_page table tbody tr td.product_quantity label {
   color: #242424;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 700;
   margin-right: 5px;
 }
@@ -8751,7 +8793,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .checkout_form label {
   color: #242424;
-  font-family: "Playfair Display", serif;
+ font-family: 'ibm_plex_sansregular';
   font-weight: 700;
   margin-bottom: 7px;
 }
@@ -8847,7 +8889,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .order_table table thead tr th {
   color: #242424;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
   min-width: 50%;
   text-align: center;
   padding: 15px 0;
@@ -8861,7 +8903,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 .order_table table tfoot tr th {
   color: #242424;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
   min-width: 50%;
   text-align: center;
   padding: 15px 0;
@@ -9231,7 +9273,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   text-align: left;
   color: #c09578;
   font-size: 14px;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
   font-weight: 700;
 }
 .card-header.card_accor button.btn-link.collapsed {
@@ -9339,7 +9381,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .table-responsive table thead tr th {
   text-align: center;
   color: #242424;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .table-responsive table tbody tr td {
   border-right: 1px solid #ebebeb;
@@ -9696,7 +9738,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   font-weight: 700;
   color: #242424;
   text-transform: uppercase;
-  font-family: "Playfair Display", serif;
+  font-family: 'ibm_plex_sansregular';
 }
 
 /*about page css end*/
@@ -10787,7 +10829,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   font-weight: 500;
   text-transform: uppercase;
   margin-bottom: 5px;
-  font-family: "Rubik", sans-serif;
+  font-family: 'ibm_plex_sansregular';
 }
 .comment_list .comment_content h5 a {
   color: #c09578;
