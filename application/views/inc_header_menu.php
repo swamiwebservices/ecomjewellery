@@ -136,7 +136,7 @@ $page_url = $this->uri->segment(1);
                             <a href="#"><i class="ion-android-cart"></i></a>
                             <span class="cart_quantity" id="top_cart_quantity">0</span>
                             <!--mini cart-->
-                            <div class="mini_cart">
+                            <div class="mini_cart" id="mini_cart">
                                 <div class="cart_close">
                                     <div class="cart_text">
                                         <h3>cart</h3>
@@ -145,7 +145,12 @@ $page_url = $this->uri->segment(1);
                                         <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
                                     </div>
                                 </div>
-                                <div class="cart_item">
+                                <div class="row">
+                                    <div class="col-md-12" id="cartitems">
+
+                                    </div>
+                                </div>
+                                <!-- <div class="cart_item">
                                     <div class="cart_img">
                                         <a href="#"><img src="<?php echo base_url();?>assets/img/s-product/product.jpg" alt=""></a>
                                     </div>
@@ -182,7 +187,7 @@ $page_url = $this->uri->segment(1);
                                     <div class="cart_button checkout">
                                         <a class="active" href="checkout.html">Checkout</a>
                                     </div>
-                                </div>
+                                </div>   -->
                             </div>
                             <!--mini cart end-->
                         </div>

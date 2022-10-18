@@ -581,7 +581,7 @@
                  //  $('html, body').animate({ scrollTop: 0 }, 'slow');
 
                     $("#top_cart_quantity").html(json['cartItems']);
-                    //$('#cart > ul').load(st_url+'cart/cartinfo ul li');
+                    $('#cartitems').load(st_url+'cart/cartinfo');
 
                     //$('.mini_cart,.off_canvars_overlay').addClass('active');
                }

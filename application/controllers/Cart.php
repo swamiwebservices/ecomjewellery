@@ -106,5 +106,11 @@ class Cart extends CI_Controller
     }
     public function cartinfo(){
         
+        $domain_id = $this->services->getDomainId();
+        $cartinfo = $this->services->getCartinfo();
+
+        $data['cartinfo'] = $cartinfo;
+        $this->load->view('cartinfo', $data);
+       // print_r($cartinfo);
     }
 }

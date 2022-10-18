@@ -216,14 +216,15 @@ class Services extends CI_Model
     function getCartinfo(){
 	    $get_user_session_id = (!empty($this->getId())) ? $this->getId() : '' ;
         if((int)$this->session->userdata('fron_user_id') >0 ) {
-            $sql = "select cm.*,pm.name from cart_master cm , product_master pm  where cm.product_id=pm.product_id and user_id = '" . (int) $this->getId() . "'";
+            $sql = "select cm.* , pm.name , pm.price_json from cart_master cm , product_master pm  where cm.product_id=pm.product_id and user_id = '" . (int) $this->getId() . "'";
         } else {
-            $sql = "select * from cart_master where shopping_session = '" . (int) $this->get_shopping_session() . "'";
+            $sql = "select  cm.*,pm.name ,pm.price_json from  cart_master cm , product_master pm  where cm.product_id=pm.product_id and  shopping_session = '" . $this->get_shopping_session() . "'";
         }
-        $query = $this->db->query($sql);
-        $query_row = $query->row_array();
-         
       
+        $query = $this->db->query($sql);
+        $query_row = $query->result_array();
+         
+        return $query_row;
    }
 
     function get_shopping_session() {
