@@ -10,6 +10,7 @@ $carttotal = (int)$this->services->addtocart();
 //print_r($popupdata);
 $page_url = $this->uri->segment(1);
 $session_user_data = $this->session->userdata('front_user_detail');
+//print_r($session_user_data);
 
 ?>
  <!--Offcanvas menu area start-->
@@ -56,7 +57,7 @@ $session_user_data = $this->session->userdata('front_user_detail');
                             ?>
                             <li class="menu-item-has-children">
                             <?php
-                                    if (isset($session_user_data['user_id'])) {
+                                    if (isset($session_user_data['customer_id'])) {
                                     ?>
                                 <a href="<?php echo site_url("account")?>" class="text-uppercase">My Account</a>
                                 <?php    
@@ -178,7 +179,7 @@ $session_user_data = $this->session->userdata('front_user_detail');
                             <div class="dropdown_setting">
                                 <ul>
                                     <?php
-                                    if (isset($session_user_data['user_id'])) {
+                                    if (isset($session_user_data['customer_id'])) {
                                     ?>
                                     <li><a href="<?php echo site_url("account")?>">My Account </a></li>
                                     <li><a href="<?php echo site_url("account/logout")?>">Logout</a></li>

@@ -219,8 +219,15 @@ class Services extends CI_Model
         return $this->getCartQty();
     }
     function getCartQty(){
+        $session_user_data = $this->session->userdata('front_user_detail');
         
-        $query = $this->db->query("SELECT sum(cart_qty) AS total FROM cart_master WHERE user_id = '" . (int) $this->getId() . "' AND shopping_session = '" . $this->get_shopping_session() . "'");
+        if (isset($session_user_data['customer_id'])) {
+            $sql =  "SELECT sum(cart_qty) AS total FROM cart_master WHERE user_id = '" . (int) $this->getId() . "'    ";
+        } else {
+            $sql =  "SELECT sum(cart_qty) AS total FROM cart_master WHERE  shopping_session = '" . $this->get_shopping_session() . "'";
+        }
+       
+        $query = $this->db->query($sql);
 
         $query_row = $query->row_array();
         return $query_row['total'];
@@ -232,7 +239,7 @@ class Services extends CI_Model
         $session_user_data = $this->session->userdata('front_user_detail');
         
 
-        if (isset($session_user_data['user_id'])) {
+        if (isset($session_user_data['customer_id'])) {
             $sql = "delete    from cart_master   where  user_id = '" . (int) $this->getId() . "' and product_id = '" . (int) $product_id . "'";
         } else {
             $sql = "delete    from cart_master   where  shopping_session = '" . $this->get_shopping_session() . "' and product_id = '" . (int) $product_id . "'";
@@ -244,7 +251,7 @@ class Services extends CI_Model
 	    $get_user_session_id = (!empty($this->getId())) ? $this->getId() : '' ;
         $session_user_data = $this->session->userdata('front_user_detail');
         
-        if (isset($session_user_data['user_id'])) {
+        if (isset($session_user_data['customer_id'])) {
             $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json from cart_master cm , product_master pm  where cm.product_id=pm.product_id and user_id = '" . (int) $this->getId() . "'";
         } else {
             $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json from cart_master cm , product_master pm  where cm.product_id=pm.product_id and  shopping_session = '" . $this->get_shopping_session() . "'";
@@ -258,7 +265,7 @@ class Services extends CI_Model
    function getCartSubtotal(){
     $get_user_session_id = (!empty($this->getId())) ? $this->getId() : '' ;
     $session_user_data = $this->session->userdata('front_user_detail');
-    if (isset($session_user_data['user_id'])) {
+    if (isset($session_user_data['customer_id'])) {
         $sql = "select sum(cart_qty * price) as subtotal from cart_master cm   where  user_id = '" . (int) $this->getId() . "'";
     } else {
         $sql = "select  sum(cart_qty * price) as subtotal from cart_master cm    where   shopping_session = '" . $this->get_shopping_session() . "'";
@@ -287,8 +294,8 @@ class Services extends CI_Model
 
     function getId(){
         $session_user_data = $this->session->userdata('front_user_detail');
-        if (isset($session_user_data['user_id'])) {
-            return (int)$session_user_data['user_id'];
+        if (isset($session_user_data['customer_id'])) {
+            return (int)$session_user_data['customer_id'];
         } else {
             return $this->get_shopping_session();
         }
@@ -352,18 +359,14 @@ class Services extends CI_Model
             $this->common->insertRecord('customer_address',$add_in_add);
             
             
-             $where_reg_user = "WHERE uuid='".$uuid2."'";
-            $row_address = $this->common->getOneRow('m_customer',$where_reg_user);
+           //  $where_reg_user = "WHERE uuid='".$uuid2."'";
+        //    $row_address = $this->common->getOneRow('m_customer',$where_reg_user);
              
-            $sql_query_update['address_id'] = $row_address['address_id'];
-            $where_user = "customer_id = '".$row_address['customer_id']."' ";
-             $this->common->updateRecord('m_customer',$sql_query_update,$where_user);
-           
-             
+           //  print_r($row_address);
             
             //update cart
                      $shopping_session = $this->services->get_shopping_session();
-                      $updt_cart['user_id'] = $row_address['customer_id'];
+                      $updt_cart['user_id'] = $customer_info['customer_id'];
                       $where_cart = "shopping_session = '".$shopping_session."' ";
                       $this->common->updateRecord('cart_master',$updt_cart,$where_cart);
             //end of update cart

@@ -536,10 +536,11 @@
 	});
     
     $(".btnAddCart").click(function(){
+
     let product_id =  $(this).data('product_id'); 
     let qty =  1;         
     let qty_detail =  $("#quantity").val();
-       //  console.log(qty_detail);
+         
          if(qty_detail!=undefined){
             qty = qty_detail;
          }
@@ -561,7 +562,7 @@
                if (json['redirect']) {
                    location = json['redirect'];
                }
-               console.log(json['cartItems']);
+               console.log(json);
                
                if (json['success']) {
                     

@@ -58,7 +58,7 @@ class Login extends CI_Controller
             $log_em_id = $this->input->post('email');
             $log_pass = $this->input->post('password');
 
-            $customer_query = $this->db->query("SELECT * FROM m_customer WHERE LOWER(email) = '" . $log_em_id . "' AND password = '" . $log_pass . "' AND status = '1' ");
+            $customer_query = $this->db->query("SELECT * FROM m_customer WHERE LOWER(email) = '" . $log_em_id . "' AND password = '" . $log_pass . "' AND status_flag = 'Active' ");
 
             if ($customer_query->num_rows() > 0) {
                 $result = $customer_query->row_array();
@@ -85,8 +85,9 @@ class Login extends CI_Controller
     }
     public function register()
     {
-        if (isset($_POST['frm_mode']) == "get_register") {
 
+        if (isset($_POST['frm_mode']) == "get_register") {
+            $error = "";
             $add_in['telephone'] = $telephone = (isset($_POST['telephone'])) ? $this->input->post('telephone') : '';
             $add_in['email'] = $email = $this->input->post('email');
 
@@ -100,7 +101,7 @@ class Login extends CI_Controller
                 $error = "Confirm Password does not match";
             }
             $add_in['date_added'] = date("Y-m-d h:i:s");
-            $add_in['status'] = 1;
+            $add_in['status_flag'] = 'Active';
 
             $where_reg_user = "where email='" . $email . "' ";
             //    $row_reg_user = $this->common->numRow('customer',$where_reg_user);
@@ -134,8 +135,8 @@ class Login extends CI_Controller
                     exit();
                 }
             } else {
-                $error = array('error' => $error);
-                $this->session->set_flashdata($error);
+                $error_arra = array('error' => $error);
+                $this->session->set_flashdata($error_arra);
             }
         }
         $data_info = $_POST;

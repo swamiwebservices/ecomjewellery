@@ -244,7 +244,7 @@ $domain_id = $this->domain_id;
                                                     <div class="action_links">
                                                         <ul>
                                                             <li><a href="wishlist.html" data-placement="top" title="Add to Wishlist" data-bs-toggle="tooltip"><span class="icon icon-Heart"></span></a></li>
-                                                            <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCrt" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
+                                                            <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCart" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
                                                            <!--  <li><a href="compare.html" title="compare"><i class="ion-ios-settings-strong"></i></a></li> -->
                                                         </ul>
                                                     </div>
@@ -312,7 +312,7 @@ $domain_id = $this->domain_id;
                                                 
                                                 <div class="action_links">
                                                     <ul>
-                                                        <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCrt" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
+                                                        <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCart" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
                                                         <li><a href="wishlist.html" title="Wishlist"><span class="icon icon-Heart"></span></a></li>
                                                         
                                                         <!-- <li><a href="compare.html" title="compare"><i class="ion-ios-settings-strong"></i></a></li> -->

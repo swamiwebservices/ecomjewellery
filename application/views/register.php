@@ -59,7 +59,14 @@
                                 href="<?php echo site_url("login")?>">login page</a>.</p>
                         <form id="form-register" class="form-horizontal"  action="<?php echo site_url('login/register');?>" method="post" >
                         <input type="hidden" name="frm_mode" value="get_register">
-
+                        <?php
+						$error = $this->session->flashdata('error');
+						if ($error!='') {
+					?>
+                                <div class="alert bg-danger text-white alert-dismissible">
+                                    <span class="font-weight-bold">Error!</span> <?php echo $error?>
+                                </div>
+                                <?php }?>
                             <fieldset id="account">
                                 <legend>Your Personal Details</legend>
                                 <div class="row mb-3 required">
