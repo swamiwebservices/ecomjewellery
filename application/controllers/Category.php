@@ -114,6 +114,8 @@ class Category extends CI_Controller
 
         $data['fun_name'] = $fun_name . "?" . $data['other_para'];
 
+
+
         $data['categoryProduct'] =  $categoryProduct = $this->services->getProductList($params);
         $data['num_row'] = sizeof($categoryProduct_total);
         

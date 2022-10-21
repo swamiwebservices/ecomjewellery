@@ -19,8 +19,3 @@
     <!-- Main JS -->
     <script src="<?php echo base_url();?>assets/js/main.js"></script>
 
-<script>
- 
- const SITE_URL = "<?php echo base_url()?>";
-
-</script>

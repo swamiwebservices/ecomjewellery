@@ -1,7 +1,7 @@
 <?php
 //print_r($home);
 $product_category  = json_decode(file_get_contents('uploads/jsondata/product_category.json'), true);
- 
+$carttotal = (int)$this->services->addtocart();
 //print_r($product_category);
 // $popupdata = [];
 // foreach($home_data['config_home'] as $key => $value){
@@ -9,9 +9,12 @@ $product_category  = json_decode(file_get_contents('uploads/jsondata/product_cat
 // }
 //print_r($popupdata);
 $page_url = $this->uri->segment(1);
+$session_user_data = $this->session->userdata('front_user_detail');
+
 ?>
-<!--Offcanvas menu area start-->
-<div class="off_canvars_overlay">
+ <!--Offcanvas menu area start-->
+ <div class="off_canvars_overlay">
+
 </div>
 <div class="Offcanvas_menu Offcanvas_two Offcanvas_black2">
     <div class="container">
@@ -22,10 +25,12 @@ $page_url = $this->uri->segment(1);
                 </div>
                 <div class="Offcanvas_menu_wrapper">
                     <div class="canvas_close">
-                        <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
+                          <a href="javascript:void(0)"><i class="ion-android-close"></i></a>  
                     </div>
+                   
+                    
                     <div id="menu" class="text-left ">
-                        <ul class="offcanvas_main_menu">
+                    <ul class="offcanvas_main_menu">
                             <li class="menu-item-has-children">
                                 <a href="<?php echo site_url('home');?>" class="text-uppercase"> Home</a>
                             </li>
@@ -50,13 +55,21 @@ $page_url = $this->uri->segment(1);
                             }
                             ?>
                             <li class="menu-item-has-children">
-                                <a href="my-account.html" class="text-uppercase">My Account</a>
+                            <?php
+                                    if (isset($session_user_data['user_id'])) {
+                                    ?>
+                                <a href="<?php echo site_url("account")?>" class="text-uppercase">My Account</a>
+                                <?php    
+                                    } else {
+                                    ?>
+                                     <a href="<?php echo site_url("login")?>" class="text-uppercase">Login/register</a>
+                                    <?php }?>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="about.html" class="text-uppercase">About Us</a>
+                                <a href="<?php echo site_url("about-us")?>" class="text-uppercase">About Us</a>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="contact.html" class="text-uppercase"> Contact Us</a>
+                                <a href="<?php echo site_url("contact-us")?>" class="text-uppercase"> Contact Us</a>
                             </li>
                         </ul>
                     </div>
@@ -76,22 +89,28 @@ $page_url = $this->uri->segment(1);
     </div>
 </div>
 <!--Offcanvas menu area end-->
+
 <!--header area start-->
 <header class="header_area header_black black_two">
+ 
+
     <!--header middel start-->
-    <div class="header_middel sticky-header sticky">
+    <div class="header_middel sticky-header">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-2 col-md-3 col-4">
                     <div class="logo">
-                        <a href="<?php echo site_url('home');?>"><img src="<?php echo base_url();?>assets/img/logo/logo.png" alt=""></a>
+                        <a href="<?php echo site_url("home")?>"><img src="<?php echo base_url('assets/img/logo/logo.png')?>" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-10 col-md-7 col-sm-12 col-6">
                     <div class="main_menu_inner">
-                        <div class="main_menu">
-                            <nav>
-                                <ul>
+                       <div class="logo_sticky">
+                           <a href="<?php echo site_url("home")?>"><img src="<?php echo base_url('assets/img/logo/logo-3.png')?>" alt=""></a>
+                       </div>
+                        <div class="main_menu"> 
+                            <nav>  
+                            <ul>
                                     <li><a href="<?php echo site_url('home');?>" class="text-uppercase">Home</a></li>
                                     <?php
                                     foreach($product_category as $key => $menuCategory){
@@ -115,9 +134,9 @@ $page_url = $this->uri->segment(1);
                                         ?>
                                     <li><a href="<?php echo site_url('home');?>" class="text-uppercase">Contact Us</a></li>
                                 </ul>
-                            </nav>
+                            </nav> 
                         </div>
-                    </div>
+                    </div> 
                     <div class="middel_right">
                         <div class="search_btn">
                             <a href="#"><i class="ion-ios-search-strong"></i></a>
@@ -134,7 +153,7 @@ $page_url = $this->uri->segment(1);
                         </div> -->
                         <div class="cart_link">
                             <a href="#"><i class="ion-android-cart"></i></a>
-                            <span class="cart_quantity" id="top_cart_quantity">0</span>
+                            <span class="cart_quantity" id="top_cart_quantity"><?php echo $carttotal?></span>
                             <!--mini cart-->
                             <div class="mini_cart" id="mini_cart">
                                 <div class="cart_close">
@@ -150,44 +169,7 @@ $page_url = $this->uri->segment(1);
 
                                     </div>
                                 </div>
-                                <!-- <div class="cart_item">
-                                    <div class="cart_img">
-                                        <a href="#"><img src="<?php echo base_url();?>assets/img/s-product/product.jpg" alt=""></a>
-                                    </div>
-                                    <div class="cart_info">
-                                        <a href="#">Letraset animal</a>
-                                        <span class="quantity">Qty: 1</span>
-                                        <span class="price_cart">$60.00</span>
-                                    </div>
-                                    <div class="cart_remove">
-                                        <a href="#"><i class="ion-android-close"></i></a>
-                                    </div>
-                                </div>
-                                <div class="cart_item">
-                                    <div class="cart_img">
-                                        <a href="#"><img src="<?php echo base_url();?>assets/img/s-product/product2.jpg" alt=""></a>
-                                    </div>
-                                    <div class="cart_info">
-                                        <a href="#">Natural passages</a>
-                                        <span class="quantity">Qty: 1</span>
-                                        <span class="price_cart">$69.00</span>
-                                    </div>
-                                    <div class="cart_remove">
-                                        <a href="#"><i class="ion-android-close"></i></a>
-                                    </div>
-                                </div>
-                                <div class="cart_total">
-                                    <span>Subtotal:</span>
-                                    <span>138.00</span>
-                                </div>
-                                <div class="mini_cart_footer">
-                                    <div class="cart_button view_cart">
-                                        <a href="cart.html">View cart</a>
-                                    </div>
-                                    <div class="cart_button checkout">
-                                        <a class="active" href="checkout.html">Checkout</a>
-                                    </div>
-                                </div>   -->
+                                 
                             </div>
                             <!--mini cart end-->
                         </div>
@@ -195,10 +177,22 @@ $page_url = $this->uri->segment(1);
                             <a href="#"><i class="ion-person"></i></a>
                             <div class="dropdown_setting">
                                 <ul>
-                                    <li><a href="checkout.html">Checkout </a></li>
-                                    <li><a href="my-account.html">My Account </a></li>
-                                    <li><a href="cart.html">Shopping Cart</a></li>
-                                    <li><a href="wishlist.html">Wishlist</a></li>
+                                    <?php
+                                    if (isset($session_user_data['user_id'])) {
+                                    ?>
+                                    <li><a href="<?php echo site_url("account")?>">My Account </a></li>
+                                    <li><a href="<?php echo site_url("account/logout")?>">Logout</a></li>
+                                     
+                                    <?php    
+                                    } else {
+                                    ?>
+                                    <li><a href="<?php echo site_url("login")?>">Login </a></li>
+                                    <li><a href="<?php echo site_url("login/register")?>">Register</a></li>
+                                    
+                                    <?php    
+                                    }
+                                    ?>
+                                    
                                 </ul>
                             </div>
                         </div>
@@ -208,5 +202,7 @@ $page_url = $this->uri->segment(1);
         </div>
     </div>
     <!--header middel end-->
+
+     
 </header>
 <!--header area end-->

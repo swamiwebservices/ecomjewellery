@@ -25,8 +25,10 @@ $trandomuuid = $this->common->randomuuid();
 <!-- /theme JS files -->
 
 
-<script  >
-var st_url = "<?php echo site_url() ?>/";
+<script>
+ 
+ const SITE_URL = "<?php echo base_url()?>";
+
 </script>
 <style  >
 .hidedefault {

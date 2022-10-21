@@ -1,5 +1,9 @@
 <?php
 error_reporting(E_ALL);
+//use Ifsnop\Mysqldump as IMysqldump;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Uuid;
+
 class Services extends CI_Model
 {
     public function __construct()
@@ -172,7 +176,7 @@ class Services extends CI_Model
 
         $string = '';
         if ($symbol_left) {
-            $string .= $symbol_left . " ";
+            $string .= $symbol_left . "";
         }
         $string .= number_format($number, (int) $decimal_place, '.', ',');
         if ($symbol_right) {
@@ -187,38 +191,63 @@ class Services extends CI_Model
 
         $product_id = (!empty($params['product_id'])) ? $params['product_id'] : '-999999999';
         $quantity = (!empty($params['quantity'])) ? $params['quantity'] : '1';
+        $price = (!empty($params['price'])) ? $params['price'] : '0';
         $date_added = date("Y-m-d");
         $domain = $this->getDomainId();
         //$get_user_session_id = (!empty($this->getId())) ? $this->getId() : $this->get_shopping_session() ;
 
-        $query = $this->db->query("SELECT COUNT('') AS total FROM cart_master WHERE user_id = '" . (int) $this->getId() . "' AND shopping_session = '" . $this->get_shopping_session() . "' AND product_id = '" . (int) $product_id . "'");
+        if($product_id>0){
+            $query = $this->db->query("SELECT COUNT('') AS total FROM cart_master WHERE user_id = '" . (int) $this->getId() . "' AND shopping_session = '" . $this->get_shopping_session() . "' AND product_id = '" . (int) $product_id . "'");
 
-        $query_row = $query->row_array();
-
-        if (!$query_row['total']) {
-
-            $cart_date = time();
-
-            $this->db->query("INSERT cart_master SET  domain='{$domain}', user_id = '" . (int) $this->getId() . "', shopping_session = '" . $this->get_shopping_session() . "', product_id = '" . (int) $product_id . "',   cart_qty = '" . (int) $quantity . "', date_added = '{$date_added}' ");
-
-        } else {
-
-            $this->db->query("UPDATE cart_master SET cart_qty = (cart_qty + " . (int) $quantity . ") WHERE   user_id = '" . (int) $this->getId() . "' AND shopping_session = '" . $this->get_shopping_session() . "' AND product_id = '" . (int) $product_id . "'");
-
+            $query_row = $query->row_array();
+    
+            if (!$query_row['total']) {
+    
+                $cart_date = time();
+    
+                $this->db->query("INSERT cart_master SET  domain='{$domain}', user_id = '" . (int) $this->getId() . "', shopping_session = '" . $this->get_shopping_session() . "', product_id = '" . (int) $product_id . "',   cart_qty = '" . (int) $quantity . "', price = '" .  $price . "', date_added = '{$date_added}' ");
+    
+            } else {
+    
+                $this->db->query("UPDATE cart_master SET cart_qty = (cart_qty + " . (int) $quantity . ") ,price = '" .  $price . "' WHERE   user_id = '" . (int) $this->getId() . "' AND shopping_session = '" . $this->get_shopping_session() . "' AND product_id = '" . (int) $product_id . "'");
+    
+            }
+    
         }
-
+       
+      
+        return $this->getCartQty();
+    }
+    function getCartQty(){
+        
         $query = $this->db->query("SELECT sum(cart_qty) AS total FROM cart_master WHERE user_id = '" . (int) $this->getId() . "' AND shopping_session = '" . $this->get_shopping_session() . "'");
 
         $query_row = $query->row_array();
         return $query_row['total'];
+    
     }
+    function doRemoveItemCart($params){
 
+        $product_id = (!empty($params['product_id'])) ? $params['product_id'] : '-999999999';
+        $session_user_data = $this->session->userdata('front_user_detail');
+        
+
+        if (isset($session_user_data['user_id'])) {
+            $sql = "delete    from cart_master   where  user_id = '" . (int) $this->getId() . "' and product_id = '" . (int) $product_id . "'";
+        } else {
+            $sql = "delete    from cart_master   where  shopping_session = '" . $this->get_shopping_session() . "' and product_id = '" . (int) $product_id . "'";
+        }
+        $query = $this->db->query($sql);
+        return $this->getCartQty();
+    }
     function getCartinfo(){
 	    $get_user_session_id = (!empty($this->getId())) ? $this->getId() : '' ;
-        if((int)$this->session->userdata('fron_user_id') >0 ) {
-            $sql = "select cm.* , pm.name , pm.price_json from cart_master cm , product_master pm  where cm.product_id=pm.product_id and user_id = '" . (int) $this->getId() . "'";
+        $session_user_data = $this->session->userdata('front_user_detail');
+        
+        if (isset($session_user_data['user_id'])) {
+            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json from cart_master cm , product_master pm  where cm.product_id=pm.product_id and user_id = '" . (int) $this->getId() . "'";
         } else {
-            $sql = "select  cm.*,pm.name ,pm.price_json from  cart_master cm , product_master pm  where cm.product_id=pm.product_id and  shopping_session = '" . $this->get_shopping_session() . "'";
+            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json from cart_master cm , product_master pm  where cm.product_id=pm.product_id and  shopping_session = '" . $this->get_shopping_session() . "'";
         }
       
         $query = $this->db->query($sql);
@@ -226,6 +255,20 @@ class Services extends CI_Model
          
         return $query_row;
    }
+   function getCartSubtotal(){
+    $get_user_session_id = (!empty($this->getId())) ? $this->getId() : '' ;
+    $session_user_data = $this->session->userdata('front_user_detail');
+    if (isset($session_user_data['user_id'])) {
+        $sql = "select sum(cart_qty * price) as subtotal from cart_master cm   where  user_id = '" . (int) $this->getId() . "'";
+    } else {
+        $sql = "select  sum(cart_qty * price) as subtotal from cart_master cm    where   shopping_session = '" . $this->get_shopping_session() . "'";
+    }
+  
+    $query = $this->db->query($sql);
+    $query_row = $query->row_array();
+     
+    return $query_row['subtotal'];
+}
 
     function get_shopping_session() {
 		if($this->session->userdata('sel_user_session')==""){   	
@@ -243,12 +286,91 @@ class Services extends CI_Model
 	}	
 
     function getId(){
-	  
-        if((int)$this->session->userdata('fron_user_id') >0 )
-            return (int)$this->session->userdata('fron_user_id');
-        else 
+        $session_user_data = $this->session->userdata('front_user_detail');
+        if (isset($session_user_data['user_id'])) {
+            return (int)$session_user_data['user_id'];
+        } else {
             return $this->get_shopping_session();
+        }
+        
       
    }
     //end of cart function
+
+    public function addCustomer($params = array())
+    {
+        $domain = $this->getDomainId();
+     
+        $customer_info = [];   
+        $params['store_id'] = $domain;
+        $uuid = "";
+        $uuid2 = "";
+        try {
+
+            // Generate a version 4 (random) UUID object
+            $uuid4 = Uuid::uuid4();
+            $uuid =  $uuid4->toString();
+
+            $uuid42 = Uuid::uuid4();
+            $uuid2 =  $uuid42->toString();
+    
+            } catch (UnsatisfiedDependencyException $e) {
+                //  echo 'Caught exception: ' . $e->getMessage() . "\n";
+            }  
+        $add_in_add['uuid'] = $uuid2;
+
+        $params['uuid'] = $uuid;
+
+        $this->common->insertRecord('m_customer',$params);
+        //$last_id = $this->db->insert_id();
+        $sql = "select * from m_customer where uuid='{$uuid}'";
+        $rs_chk = $this->db->query($sql);
+        if($rs_chk->num_rows()>0){
+            $customer_info = $rs_chk->row_array();
+
+            $add_in_add['customer_id'] = $customer_info['customer_id'];
+            $add_in_add['firstname'] = $customer_info['firstname'];
+            $add_in_add['lastname'] = $customer_info['lastname'];
+            
+            $add_in_add['company'] = $company = '';//$this->input->post($_POST['company']);
+            $add_in_add['address_1'] = $address_1 = '';//$this->input->post($_POST['address_1']);
+            $add_in_add['address_2'] = $address_2 = '';//$this->input->post($_POST['address_2']);
+            $add_in_add['city'] = $city = '';//$this->input->post($_POST['city']);
+            $add_in_add['postcode'] = $postcode = '';//$this->input->post($_POST['postcode']);
+            $add_in_add['country_id'] = $country_id = '221';//$this->input->post($_POST['country_id']);
+            $add_in_add['zone_id'] = $zone_id = '0';//$this->input->post($_POST['zone_id']);
+            if($domain==1){
+                $add_in_add['country_id'] = 99;
+            }
+            if($domain==2){
+                $add_in_add['country_id'] = 223;
+            }
+            if($domain==3){
+                $add_in_add['country_id'] = 221;
+            }
+
+            $this->common->insertRecord('customer_address',$add_in_add);
+            
+            
+             $where_reg_user = "WHERE uuid='".$uuid2."'";
+            $row_address = $this->common->getOneRow('m_customer',$where_reg_user);
+             
+            $sql_query_update['address_id'] = $row_address['address_id'];
+            $where_user = "customer_id = '".$row_address['customer_id']."' ";
+             $this->common->updateRecord('m_customer',$sql_query_update,$where_user);
+           
+             
+            
+            //update cart
+                     $shopping_session = $this->services->get_shopping_session();
+                      $updt_cart['user_id'] = $row_address['customer_id'];
+                      $where_cart = "shopping_session = '".$shopping_session."' ";
+                      $this->common->updateRecord('cart_master',$updt_cart,$where_cart);
+            //end of update cart
+            
+        }
+        
+        
+      return $customer_info;
+    }
 }

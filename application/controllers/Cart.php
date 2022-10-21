@@ -49,22 +49,43 @@ class Cart extends CI_Controller
 
             }
             $this->domain_id = $this->services->getDomainId();
+            
+            $ar_session_data['last_page_visited'] = site_url("cart");
+            $this->session->set_userdata($ar_session_data);
 
     }
     public function index()
     {
         
+        $cartinfo = $this->services->getCartinfo();
+        $cartSubtotal = $this->services->getCartSubtotal();
+        //print_r($cartinfo);
+        $data['record']['items'] = $cartinfo;
+        $data['record']['shipping_carges'] = 100;
+        $data['record']['subtotal'] = $cartSubtotal;
         
-        $params['type'] = "latestProduct";
-        $params['limit'] = 10;
-        $data['latestProduct'] =  $latestproduct_nameProduct = $this->services->getProductList($params);
-       
+      
         $this->load->view("cart", $data);
+
+    }
+    public function checkout()
+    {
+        
+        // $cartinfo = $this->services->getCartinfo();
+        // $cartSubtotal = $this->services->getCartSubtotal();
+        // //print_r($cartinfo);
+        // $data['record']['items'] = $cartinfo;
+        // $data['record']['shipping_carges'] = 100;
+        // $data['record']['subtotal'] = $cartSubtotal;
+        
+        // $this->load->view("cart", $data);
 
     }
     public function add()
     {
         $json = array();
+
+        $domain_id = $this->services->getDomainId();
 
         $product_id = (isset($_POST['product_id'])) ? $this->input->post('product_id') : '';
         $cart_qty = (isset($_POST['cart_qty'])) ? (int)$this->input->post('cart_qty') : 1;
@@ -74,24 +95,36 @@ class Cart extends CI_Controller
         $data['productdetail'] =  $productdetail = $this->services->getProductDetail($params_prd);
         
         if(sizeof($productdetail)<=0){
-            redirect('home');
-            die();
-        }
-
-
-        if (isset($_POST['cart_qty']) && ((int)$this->input->post('cart_qty') >= $productdetail['minimum'])) {
-            $cart_qty = (int)$this->input->post('cart_qty');
+            //redirect('home');
+            //die();
+            $param_cart=[];
+            $cartItems = $this->services->addtocart($param_cart);
         } else {
-            $cart_qty = $productdetail['minimum'] ? $productdetail['minimum'] : 1;
+            if (isset($_POST['cart_qty']) && ((int)$this->input->post('cart_qty') >= $productdetail['minimum'])) {
+                $cart_qty = (int)$this->input->post('cart_qty');
+            } else {
+                $cart_qty = $productdetail['minimum'] ? $productdetail['minimum'] : 1;
+            }
+    
+            if($cart_qty > $productdetail['quantity']){
+                $cart_qty = $productdetail['quantity'];
+            }
+    
+            $price_json = json_decode($productdetail['price_json'],true);
+            $quantity = $price_json['quantity'][$domain_id];
+            $mrp = $price_json['mrp'][$domain_id];
+            $sellprice = $price_json['sellprice'][$domain_id];  
+    
+            $param_cart['product_id']=$product_id;
+            $param_cart['quantity']=$cart_qty;
+            $param_cart['price']=$sellprice;
+            $cartItems = $this->services->addtocart($param_cart);
         }
 
-        if($cart_qty > $productdetail['quantity']){
-            $cart_qty = $productdetail['quantity'];
-        }
-        $param_cart['product_id']=$product_id;
-        $param_cart['quantity']=$cart_qty;
+
+      
         
-        $cartItems = $this->services->addtocart($param_cart);
+       
         $json['cartItems'] = $cartItems;
         // print_r($_REQUEST);
         // $json['redirect'] ='ddd';
@@ -104,13 +137,32 @@ class Cart extends CI_Controller
         echo json_encode($json);
 		die();
     }
+    public function remove()
+    {
+        $json = array();
+
+        
+        $product_id = (isset($_POST['product_id'])) ? $this->input->post('product_id') : '';
+        
+       
+         
+        $param_cart['product_id']=$product_id;
+        $cartItems = $this->services->doRemoveItemCart($param_cart);
+        $json['cartItems'] = $cartItems;
+        echo json_encode($json);
+		die();
+    }
     public function cartinfo(){
         
         $domain_id = $this->services->getDomainId();
         $cartinfo = $this->services->getCartinfo();
-
-        $data['cartinfo'] = $cartinfo;
+        $cartSubtotal = $this->services->getCartSubtotal();
+        //print_r($cartinfo);
+        $data['record']['items'] = $cartinfo;
+        $data['record']['subtotal'] = $cartSubtotal;
+        //print_r($data['record']);
         $this->load->view('cartinfo', $data);
        // print_r($cartinfo);
     }
+    
 }
