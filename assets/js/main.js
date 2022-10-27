@@ -597,6 +597,116 @@
     //$(".btnAddCart").trigger("click");
 })(jQuery);	
 
+// Chain ajax calls.
+class Chain {
+    constructor() {
+        this.start = false;
+        this.data = [];
+    }
+
+    attach(call) {
+        this.data.push(call);
+
+        if (!this.start) {
+            this.execute();
+        }
+    }
+
+    execute() {
+        if (this.data.length) {
+            this.start = true;
+
+            var call = this.data.shift();
+
+            var jqxhr = call();
+
+            jqxhr.done(function () {
+                chain.execute();
+            });
+        } else {
+            this.start = false;
+        }
+    }
+}
+
+var chain = new Chain();
+
+// Autocomplete
+(function ($) {
+    $.fn.autocomplete = function (option) {
+        return this.each(function () {
+            var $this = $(this);
+            var $dropdown = $('#' + $this.attr('list'));
+
+            this.timer = null;
+            this.items = [];
+
+            $.extend(this, option);
+
+            // Focus
+            $this.on('focus', function () {
+                this.request();
+            });
+
+            // Keydown
+            $this.on('input', function (e) {
+                this.request();
+
+                var value = $this.val();
+
+                if (value && this.items[value]) {
+                    this.select(this.items[value]);
+                }
+            });
+
+            // Request
+            this.request = function () {
+                clearTimeout(this.timer);
+
+                this.timer = setTimeout(function (object) {
+                    object.source($(object).val(), $.proxy(object.response, object));
+                }, 50, this);
+            }
+
+            // Response
+            this.response = function (json) {
+                var html = '';
+                var category = {};
+                var name;
+                var i = 0, j = 0;
+
+                if (json.length) {
+                    for (i = 0; i < json.length; i++) {
+                        // update element items
+                        this.items[json[i]['label']] = json[i];
+
+                        if (!json[i]['category']) {
+                            // ungrouped items
+                            html += '<option>' + json[i]['label'] + '</option>';
+                        } else {
+                            // grouped items
+                            name = json[i]['category'];
+
+                            if (!category[name]) {
+                                category[name] = [];
+                            }
+
+                            category[name].push(json[i]);
+                        }
+                    }
+
+                    for (name in category) {
+                        for (j = 0; j < category[name].length; j++) {
+                            html += '<option value="' + category[name][j]['label'] + '">' + name + '</option>';
+                        }
+                    }
+                }
+
+                $dropdown.html(html);
+            }
+        });
+    }
+})(window.jQuery);
 
 function getURLVar() {
 	 
@@ -675,3 +785,5 @@ var cart = {
 		});
 	}
 }
+
+

@@ -532,5 +532,10 @@ $config['proxy_ips'] = '';
 
 $DOMAINs = array(1=>'bondbeyond.in',2=>'bondbeyond.com',3=>'bondbeyond.ae');
 $config['DOMAINs'] = $DOMAINs;
- 
+
+$DEFAULT_COUNTRY_DOMAINs = array('1'=>99,'2'=>221, '3'=>223);
+
+$config['DEFAULT_COUNTRY_DOMAINs'] = $DEFAULT_COUNTRY_DOMAINs;
+$config['config_order_status_id'] = 1;
+
   

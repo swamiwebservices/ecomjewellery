@@ -160,6 +160,16 @@ class Services extends CI_Model
         }
         return $domain_id;
     }
+    public function getCurrency()
+    {
+        $currencyarr[1] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
+        $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
+        $currencyarr[3] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
+        $getDomainId = $this->getDomainId();
+
+        $currentCurrency = $currencyarr[$getDomainId];
+        return $currentCurrency;
+    }
     public function format($number)
     {
 
@@ -252,9 +262,9 @@ class Services extends CI_Model
         $session_user_data = $this->session->userdata('front_user_detail');
         
         if (isset($session_user_data['customer_id'])) {
-            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json from cart_master cm , product_master pm  where cm.product_id=pm.product_id and user_id = '" . (int) $this->getId() . "'";
+            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json,pm.item_code from cart_master cm , product_master pm  where cm.product_id=pm.product_id and user_id = '" . (int) $this->getId() . "'";
         } else {
-            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json from cart_master cm , product_master pm  where cm.product_id=pm.product_id and  shopping_session = '" . $this->get_shopping_session() . "'";
+            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json , pm.item_code from cart_master cm , product_master pm  where cm.product_id=pm.product_id and  shopping_session = '" . $this->get_shopping_session() . "'";
         }
       
         $query = $this->db->query($sql);
@@ -303,7 +313,180 @@ class Services extends CI_Model
       
    }
     //end of cart function
+    //order
+    public function addOrder($params = array())
+    {
+        $cartinfo = $this->getCartinfo();
+        $cartSubtotal = $this->getCartSubtotal();
 
+        
+            $uuid = "";
+            try {
+                // Generate a version 4 (random) UUID object
+                $uuid4 = Uuid::uuid4();
+                $uuid =  $uuid4->toString();
+        
+                } catch (UnsatisfiedDependencyException $e) {
+                    //  echo 'Caught exception: ' . $e->getMessage() . "\n";
+            }  
+            $order_data['uuid'] = $uuid;
+
+            $order_id = (int)$this->session->userdata('order_id_ki');
+            $order_query = $this->db->query("select * from `m_order` where order_id = '" . (int)$order_id . "'");
+
+            $order_data['transaction_id'] =  $uuid;
+            $order_data['total'] = (!empty($cartSubtotal['subtotal'])) ? $cartSubtotal['subtotal'] : '0.00';
+            if ($order_query->num_rows() > 0) {
+
+
+                $order_data['store_id'] = $this->services->getDomainId();
+                $order_data['store_name'] =  $_SERVER['HTTP_HOST'];
+                $order_data['customer_id'] =  $params['customer_id'];
+                $order_data['firstname'] =  $params['firstname'];
+                $order_data['lastname'] =  $params['lastname'];
+                $order_data['email'] =  $params['email'];
+                $order_data['telephone'] =  $params['telephone'];
+                $order_data['customer_id'] =  $params['customer_id'];
+                $order_data['payment_method'] = 'COD';
+                
+                $order_data['payment_firstname'] = $params['firstname'];
+                $order_data['payment_lastname'] = $params['lastname'];
+                $order_data['payment_company'] = $params['company'];
+                $order_data['payment_address_1'] = $params['address_1'];
+                $order_data['payment_address_2'] = $params['address_2'];
+                $order_data['payment_country_id'] = $params['country_id'];
+                $order_data['payment_zone_id'] = $params['zone_id'];
+                $order_data['payment_city'] = $params['city'];
+                $order_data['payment_postcode'] = $params['postcode'];
+
+                $order_data['shipping_firstname'] = $params['shipping_firstname'];
+                $order_data['shipping_lastname'] = $params['shipping_lastname'];
+                $order_data['shipping_company'] = $params['shipping_company'];
+                $order_data['shipping_address_1'] = $params['shipping_address_1'];
+                $order_data['shipping_address_2'] = $params['shipping_address_2'];
+                $order_data['shipping_country_id'] = $params['shipping_country_id'];
+                $order_data['shipping_zone_id'] = $params['shipping_zone_id'];
+                $order_data['shipping_city'] = $params['shipping_city'];
+                $order_data['shipping_postcode'] = $params['shipping_postcode'];
+                  
+             
+              
+               
+
+               // $order_data['total'] = $total = (isset($_POST['total'])) ? $this->input->post('total') : '';
+
+                $config_order_status_id = $this->config->item("config_order_status_id");
+
+                $order_data['order_status_id'] = $config_order_status_id;
+               
+                $currentCurrency = $this->services->getCurrency();
+                $order_data['currency_id'] = $this->services->getDomainId();
+                $order_data['currency_code'] = $currentCurrency['code'];
+                
+                $order_data['ip'] = $this->input->ip_address();
+                $order_data['user_agent'] = $this->input->user_agent();
+                $order_data['user_agent'] = $this->input->user_agent();
+
+                $where_cart = "order_id = '".$order_id."' ";
+                $this->common->updateRecord('m_order',$order_data,$where_cart);
+
+
+            } else {
+
+                
+                $order_data['store_id'] = $this->services->getDomainId();
+                $order_data['store_name'] =  $_SERVER['HTTP_HOST'];
+                $order_data['customer_id'] =  $params['customer_id'];
+                $order_data['firstname'] =  $params['firstname'];
+                $order_data['lastname'] =  $params['lastname'];
+                $order_data['email'] =  $params['email'];
+                $order_data['telephone'] =  $params['telephone'];
+                $order_data['customer_id'] =  $params['customer_id'];
+                $order_data['payment_method'] = 'COD';
+                
+                $order_data['payment_firstname'] = $params['firstname'];
+                $order_data['payment_lastname'] = $params['lastname'];
+                $order_data['payment_company'] = $params['company'];
+                $order_data['payment_address_1'] = $params['address_1'];
+                $order_data['payment_address_2'] = $params['address_2'];
+                $order_data['payment_country_id'] = $params['country_id'];
+                $order_data['payment_zone_id'] = $params['zone_id'];
+                $order_data['payment_city'] = $params['city'];
+                $order_data['payment_postcode'] = $params['postcode'];
+
+                $order_data['shipping_firstname'] = $params['shipping_firstname'];
+                $order_data['shipping_lastname'] = $params['shipping_lastname'];
+                $order_data['shipping_company'] = $params['shipping_company'];
+                $order_data['shipping_address_1'] = $params['shipping_address_1'];
+                $order_data['shipping_address_2'] = $params['shipping_address_2'];
+                $order_data['shipping_country_id'] = $params['shipping_country_id'];
+                $order_data['shipping_zone_id'] = $params['shipping_zone_id'];
+                $order_data['shipping_city'] = $params['shipping_city'];
+                $order_data['shipping_postcode'] = $params['shipping_postcode'];
+                   
+                $config_order_status_id = $this->config->item("config_order_status_id");
+
+                $order_data['order_status_id'] = $config_order_status_id;
+                
+                $currentCurrency = $this->services->getCurrency();
+                $order_data['currency_id'] = $this->services->getDomainId();
+                $order_data['currency_code'] = $currentCurrency['code'];
+                
+                $order_data['ip'] = $this->input->ip_address();
+                $order_data['user_agent'] = $this->input->user_agent();
+                $order_data['user_agent'] = $this->input->user_agent();
+
+               $order_id =  $this->common->insertRecord('m_order',$params);
+               
+            }
+
+           
+            $sql = "delete from order_product where order_id='".(int)$order_id ."'";
+            $this->db->query($sql);
+                
+
+            foreach($cartinfo as $key => $product){
+                $price_json = json_decode($product['price_json'],true);
+                //   print_r($price_json);
+                  
+                  $sellprice = $product['price']; 
+                  $sellprice_total   = $sellprice * $product['cart_qty'];
+
+                  $this->db->query("INSERT INTO order_product SET order_id = '" . (int)$order_id . "', product_id = '" . (int)$product['product_id'] . "', name = '" . $this->common->getDbValue($product['name']) . "', model = '" . $this->common->getDbValue($product['item_code']) . "', quantity = '" . (int)$product['cart_qty'] . "', price = '" . (float)$sellprice . "', total = '" . (float)$product['total'] . "', tax = '" . (float)$product['tax'] . "', reward = '" . (int)$product['reward'] . "'");
+
+
+            }
+
+            if (isset($params['totals'])) {
+                $sql = "delete from order_total where order_id='".(int)$order_id ."'";
+                $this->db->query($sql);
+                foreach ($params['totals'] as $total) {
+                    $this->db->query("INSERT INTO order_total SET order_id = '" . (int)$order_id . "', code = '" . $this->common->getDbValue($total['code']) . "', title = '" . $this->common->getDbValue($total['title']) . "', `value` = '" . (float)$total['value'] . "', sort_order = '" . (int)$total['sort_order'] . "'");
+    
+                }
+            }
+           
+    }
+    //end of order
+    public function getCustomerInfo($params = array())
+    {
+        $customer_info = [];   
+        
+        $session_user_data = $this->session->userdata('front_user_detail');
+
+        $uuid = $session_user_data['uuid'];
+
+        $sql = "select cm.customer_id, cm.firstname,cm.lastname,cm.email,cm.telephone,cm.uuid,cm.gender,cm.profile_pic ,ca.address_id, ca.uuid  as ca_uuid, ca.firstname as ship_firstname, ca.lastname as ship_lastname,ca.company,ca.address_1,ca.address_2,ca.city,ca.postcode,ca.country_id,ca.zone_id, cnt.name as country,cnt.iso_code_2,cnt.iso_code_3,z.name as zone,z.code as zone_code  from m_customer cm 
+                inner join customer_address ca on cm.customer_id = ca.customer_id 
+                left join   m_country cnt on ca.country_id = cnt.country_id 
+                left join   m_zone z on ca.zone_id = z.zone_id
+                where cm.uuid='{$uuid}'";
+        $rs_chk = $this->db->query($sql);
+        if($rs_chk->num_rows()>0){
+            $customer_info = $rs_chk->row_array();
+        }
+        return $customer_info;
+    }
     public function addCustomer($params = array())
     {
         $domain = $this->getDomainId();
@@ -346,14 +529,16 @@ class Services extends CI_Model
             $add_in_add['postcode'] = $postcode = '';//$this->input->post($_POST['postcode']);
             $add_in_add['country_id'] = $country_id = '221';//$this->input->post($_POST['country_id']);
             $add_in_add['zone_id'] = $zone_id = '0';//$this->input->post($_POST['zone_id']);
+            $add_in_add['default'] = 1;
+            
             if($domain==1){
                 $add_in_add['country_id'] = 99;
             }
             if($domain==2){
-                $add_in_add['country_id'] = 223;
+                $add_in_add['country_id'] = 221;
             }
             if($domain==3){
-                $add_in_add['country_id'] = 221;
+                $add_in_add['country_id'] = 223;
             }
 
             $this->common->insertRecord('customer_address',$add_in_add);
@@ -376,4 +561,21 @@ class Services extends CI_Model
         
       return $customer_info;
     }
+
+    //other 
+
+    public function getCountryNew($country_id) {
+		$query = $this->db->query("SELECT * FROM m_country WHERE country_id = '" . (int)$country_id . "' AND status = '1'");
+		return $query->row_array();
+	}
+
+    public function getZonesByCountryId($country_id) {
+		
+		 
+        $query = $this->db->query("SELECT * FROM  m_zone WHERE country_id = '" . (int)$country_id . "' AND status = '1' ORDER BY name");
+        $zone_data = $query->result_array();
+        
+     
+    return $zone_data;
+}
 }

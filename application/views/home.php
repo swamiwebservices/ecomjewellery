@@ -518,7 +518,7 @@ $domain_id = $this->domain_id;
         <!--product section area end-->
 
          <!--blog section area start-->
-         <section class="blog_section blog_black">
+         <section class="blog_section blog_black" style="display:none">
             <div class="container">
                <div class="row">
                    <div class="col-12">
@@ -633,7 +633,7 @@ $domain_id = $this->domain_id;
         <!--blog section area end-->
          
         <!--indtagram area start-->
-        <div class="instagram_area">
+        <div class="instagram_area" style="display:none">
              <div class="container">
                  <div class="row">
                     <div class="col-12">
@@ -650,7 +650,7 @@ $domain_id = $this->domain_id;
         <!--indtagram area end-->
 
          <!--Newsletter area start-->
-        <div class="newsletter_area newsletter_black">
+        <div class="newsletter_area newsletter_black" >
             <div class="container">
                 <div class="row">
                     <div class="col-12">

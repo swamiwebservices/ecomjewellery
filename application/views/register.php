@@ -36,7 +36,6 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="breadcrumb_content">
-
                             <h1>Register Account</h1>
                             <ul>
                                 <li><a href="<?php echo site_url('home')?>">home</a></li>
@@ -59,10 +58,10 @@
                                 href="<?php echo site_url("login")?>">login page</a>.</p>
                         <form id="form-register" class="form-horizontal"  action="<?php echo site_url('login/register');?>" method="post" >
                         <input type="hidden" name="frm_mode" value="get_register">
-                        <?php
-						$error = $this->session->flashdata('error');
-						if ($error!='') {
-					?>
+                                <?php
+                                $error = $this->session->flashdata('error');
+                                if ($error!='') {
+                            ?>
                                 <div class="alert bg-danger text-white alert-dismissible">
                                     <span class="font-weight-bold">Error!</span> <?php echo $error?>
                                 </div>
