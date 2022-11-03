@@ -15,6 +15,8 @@
     <script src="<?php echo base_url();?>assets/js/jqquery.ripples.js"></script>
     <script src="<?php echo base_url();?>assets/js/jquery.cookie.js"></script>
     <script src="<?php echo base_url();?>assets/js/bpopup.js"></script>
+    <script src="<?php echo base_url();?>assets/js/jquery.blockUI.js"></script>
+
 
     <!-- Main JS -->
     <script src="<?php echo base_url();?>assets/js/main.js"></script>
