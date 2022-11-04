@@ -8,6 +8,17 @@ $tab = (isset($tab) && $tab!="")?$tab :'1';
         <?php $this->load->view('inc_metacss');?>
         <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_layouts.js"></script>
         <script src="<?php echo base_url() ?>global_assets/js/demo_pages/form_checkboxes_radios.js"></script>
+        <style>
+            .nav-tabs-highlight .nav-link {
+    /* text-transform: uppercase; */
+    font-size: 16px;
+    letter-spacing: 0.5px;
+    color: #777!important;
+}
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    color: #333!important;
+}
+        </style>    
     </head>
 
     <body>
@@ -74,201 +85,148 @@ $tab = (isset($tab) && $tab!="")?$tab :'1';
                         <div class="card-body">
                             <ul class="nav nav-tabs nav-tabs-highlight">
                                 <li class="nav-item"><a href="#highlighted-tab1" class="nav-link <?php echo ($tab==1)?'active':'' ?>" data-toggle="tab"><i class="icon-user mr-2"></i> Customer Info</a></li>
-                                <li class="nav-item"><a href="#highlighted-tab2" class="nav-link <?php echo ($tab==2)?'active':'' ?>" data-toggle="tab"><i class="icon-users2  mr-2"></i>Branch user</a></li>
-                                <li class="nav-item"><a href="#highlighted-tab3" class="nav-link <?php echo ($tab==3)?'active':'' ?>" data-toggle="tab"><i class="icon-basket  mr-2"></i>Order (Completed) </a></li>
-                                <li class="nav-item"><a href="#highlighted-tab4" class="nav-link <?php echo ($tab==4)?'active':'' ?>" data-toggle="tab"><i class="icon-cart2  mr-2"></i>Order (In Process) </a></li>
-                                <li class="nav-item"><a href="#highlighted-tab5" class="nav-link <?php echo ($tab==5)?'active':'' ?>" data-toggle="tab"><i class="icon-box  mr-2"></i>Cool Box </a></li>
+                                
+                                <li class="nav-item"><a href="#highlighted-tab3" class="nav-link <?php echo ($tab==3)?'active':'' ?>" data-toggle="tab"><i class="icon-basket  mr-2"></i>Order</a></li>
+                                
                             </ul>
 
                             <div class="tab-content">
                                 <div class="tab-pane fade <?php echo ($tab==1)?'show active':'' ?>" id="highlighted-tab1">
-                                    <form name="frm-edit" id="frm-edit" action="<?php echo site_url($this->ctrl_name.'/view_customer/'.$id) ?>" method="post">
-                                        <input type="hidden" name="mode" id="mode" value="submitform">
+                                <form id="form1" name="form1" method="post" action="<?php echo site_url($controller.'/editdata/'.$id)?>" >
+<input type="hidden" name="mode" id="mode" value="edit_content">
+ 
 
+                                              <div class="form-group row  ">
+                                                <label class="col-sm-2 control-label" for="input-firstname">First Name</label>
+                                                <div class="col-sm-10">
+                                                  <input name="firstname" required  placeholder="First Name" id="input-firstname" class="form-control" type="text" value="<?php echo isset($records['firstname']) ? $this->common->getDbValue($records['firstname']) : ''; ?>">
+                                                </div>
+                                              </div>
+                                              <div class="form-group row ">
+                                                <label class="col-sm-2 control-label" for="input-lastname">Last Name</label>
+                                                <div class="col-sm-10">
+                                                  <input name="lastname" required value="<?php echo isset($records['lastname']) ? $this->common->getDbValue($records['lastname']) : ''; ?>" placeholder="Last Name" id="input-lastname" class="form-control" type="text">
+                                                </div>
+                                              </div>
+                                              <div class="form-group row required">
+                                                <label class="col-sm-2 control-label" for="input-email">E-Mail</label>
+                                                <div class="col-sm-10">
+                                                  <input name="email" required value="<?php echo isset($records['email']) ? $this->common->getDbValue($records['email']) : ''; ?>" placeholder="E-Mail" id="input-email" class="form-control" type="text">
+                                                  <input name="oldemail"   value="<?php echo isset($records['email']) ? $this->common->getDbValue($records['email']) : ''; ?>"   class="form-control" type="hidden">
+                                                </div>
+                                              </div>
+                                              <div class="form-group row required">
+                                                <label class="col-sm-2 control-label" for="input-telephone">Telephone</label>
+                                                <div class="col-sm-10">
+                                                  <input name="telephone"   value="<?php echo isset($records['telephone']) ? $this->common->getDbValue($records['telephone']) : ''; ?>" placeholder="Telephone" id="input-telephone" class="form-control" type="text">
+                                                </div>
+                                              </div>
+                                              <div class="form-group row">
+                                                <label class="col-sm-2 control-label" for="input-fax">Fax</label>
+                                                <div class="col-sm-10">
+                                                  <input name="fax" value="<?php echo isset($records['fax']) ? $this->common->getDbValue($records['fax']) : ''; ?>" placeholder="Fax" id="input-fax" class="form-control" type="text">
+                                                </div>
+                                              </div>
+                                              <h4 class="header-title m-t-0">Address Details</h4>
+												<br>
+                                               <div class="form-group row">
+                        <label class="col-sm-2 control-label" for="input-company">Company</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="company" value="<?php echo isset($records_address['company']) ? $this->common->getDbValue($records_address['company']) : ''; ?>" placeholder="Company" id="input-company`" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group  row required">
+                        <label class="col-sm-2 control-label" for="input-address_1">Address 1</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="address_1" required value="<?php echo isset($records_address['address_1']) ? $this->common->getDbValue($records_address['address_1']) : ''; ?>" placeholder="Address 1" id="input-address_1" class="form-control" />
+                                                  </div>
+                      </div>
+                      <div class="form-group row">
+                        <label class="col-sm-2 control-label" for="input-address_2">Address 2</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="address_2" value="<?php echo isset($records_address['address_2']) ? $this->common->getDbValue($records_address['address_2']) : ''; ?>" placeholder="Address 2" id="input-address_2" class="form-control" />
+                        </div>
+                      </div>
+                      <div class="form-group  row required">
+                        <label class="col-sm-2 control-label"  for="input-city">City</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="city" required value="<?php echo isset($records_address['city']) ? $this->common->getDbValue($records_address['city']) : ''; ?>" placeholder="City" id="input-city" class="form-control" />
+                                                  </div>
+                      </div>
+                      <div class="form-group row required">
+                        <label class="col-sm-2 control-label"   for="input-postcode">Postcode</label>
+                        <div class="col-sm-10">
+                          <input type="text" name="postcode" required value="<?php echo isset($records_address['postcode']) ? $this->common->getDbValue($records_address['postcode']) : ''; ?>" placeholder="Postcode" id="input-postcode" class="form-control" />
+                                                  </div>
+                      </div>
+                      <div class="form-group row required">
+                        <label class="col-sm-2 control-label" for="input-country_id">Country</label>
+                        <div class="col-sm-10">
+                         <?php $country_id = isset($records_address['country_id']) ? $records_address['country_id'] : 99; ?>
+						 <?php $zone_id = isset($records_address['zone_id']) ? $records_address['zone_id'] : 0; ?>
+                          <select name="country_id" id="input-country_id"  onchange="country(this, '1', '<?php echo $zone_id?>');"  class="form-control">
+                           
+                            <?php echo $this->common->getCountry($country_id);?>
+                          </select>
+                       </div>
+                     </div>
+                      <div class="form-group row required">
+                        <label class="col-sm-2 control-label" for="input-zone_id">Region / State</label>
+                        <div class="col-sm-10">
+                          <select name="zone_id" id="input-zone1" class="form-control">
+                         
+                           <?php echo $this->common->getState($zone_id,$country_id);?>
+                          </select>
+                                                  </div>
+                      </div>     
+                                              <h4 class="header-title m-t-0">Status Details</h4>
+												<br>
+                                               <div class="form-group row">
+                                                <label class="col-sm-2 control-label" for="input-status">Status</label>
+                                                <div class="col-sm-10">
+                                                  <select name="status"  id="input-status" class="form-control">
+                                                                                <option value="1"  <?php if($records['status']==1){?> selected <?php } ?>>Enabled</option>
+                                                    <option value="0"  <?php if($records['status']==0){?> selected <?php } ?>>Disabled</option>
+                                                                              </select>
+                                                </div>
+                                              </div>
+                                              <div class="form-group row">
+                                                <label class="col-sm-2 control-label" for="input-approved">Approved</label>
+                                                <div class="col-sm-10">
+                                                  <select name="approved" id="input-approved" class="form-control">
+                                                                                <option value="1"  <?php if($records['approved']==1){?> selected <?php } ?>>Yes</option>
+                                                    <option value="0"  <?php if($records['approved']==0){?> selected <?php } ?>>No</option>
+                                                                              </select>
+                                                </div>
+                                              </div>
+                                               <br>
 
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="first_name">Name :</label>
-                                            <div class="col-lg-9">
-                                                <?php echo isset($records['first_name'])?$this->common->getDbValue($records['first_name']):''; ?>
-                                                <?php echo isset($records['middle_name'])?$this->common->getDbValue($records['middle_name']):''; ?>
-                                                <?php echo isset($records['last_name'])?$this->common->getDbValue($records['last_name']):''; ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="email">Email :</label>
-                                            <div class="col-lg-9">
-                                                <?php echo isset($records['email'])?$this->common->getDbValue($records['email']):''; ?>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="mobile">Mobile :</label>
-                                            <div class="col-lg-9">
-                                                <?php echo isset($records['mobile'])?$this->common->getDbValue($records['mobile']):''; ?>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="gender">Gender :</label>
-                                            <div class="col-lg-9">
-                                                <?php echo isset($records['gender'])?$this->common->getDbValue($records['gender']):''; ?>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="business_type">Register Date :</label>
-                                            <div class="col-lg-9">
-                                                <?php echo isset($records['added_date'])?$this->common->getDbValue($records['added_date']):''; ?>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="customer_shipping_address">Address (<?php echo sizeof($customer_shipping_address)?>):</label>
-                                            <div class="col-lg-10">
-                                                <div class="row">
-                                                    <div class="col-lg-12">
-                                                        <div class="row">
-
-                                                            <?php
-                                            if(isset($customer_shipping_address) && sizeof($customer_shipping_address)>0){
-                                            $ki=0;
-                                                    foreach($customer_shipping_address as $key => $valueAddess){
-                                                        $ki++;
-                                            ?>
-                                                            <div class="col-md-6 border-left-3 border-left-slate">
-                                                                <strong>Address (<?php echo $ki?>):</strong> <strong><?php echo isset($valueAddess['address_name'])?$this->common->getDbValue($valueAddess['address_name']):''; ?></strong> <?php echo isset($valueAddess['address_1'])?$this->common->getDbValue($valueAddess['address_1']):''; ?><br />
-                                                                District : <?php echo isset($valueAddess['district_name_en'])?$this->common->getDbValue($valueAddess['district_name_en']):''; ?> <br />
-                                                                State : <?php echo isset($valueAddess['state_name_en'])?$this->common->getDbValue($valueAddess['state_name_en']):''; ?> <br />
-                                                                Pin Code : <?php echo isset($valueAddess['postcode'])?$this->common->getDbValue($valueAddess['postcode']):''; ?> <br />
-                                                                Longitude : <?php echo isset($valueAddess['longitude'])?$this->common->getDbValue($valueAddess['longitude']):''; ?> <br />
-                                                                Latitude : <?php echo isset($valueAddess['latitude'])?$this->common->getDbValue($valueAddess['latitude']):''; ?> <br />
-
-                                                            </div>
-                                                            <?php    
-                                                    }
-                                            }
-                                            ?></div>
+                                                <h4 class="header-title m-t-0">Login Details</h4>
+												<br>
+                                                <div class="form-group row required">
+                                                <label class="col-sm-2 control-label" for="input-password">Password</label>
+                                                <div class="col-sm-10">
+                                                  <input name="password" value="" placeholder="Password" id="input-password" class="form-control" autocomplete="off" type="password">
+                                                </div>
+                                              </div>
+                                              <div class="form-group row required">
+                                                <label class="col-sm-2 control-label" for="input-confirm">Confirm</label>
+                                                <div class="col-sm-10">
+                                                  <input name="confirm" value="" placeholder="Confirm" autocomplete="off" id="input-confirm" class="form-control" type="password">
+                                                </div>
+                                              </div>
+                                               
+                                             <div class="form-group row">
+                                                        <div class="col-sm-8 col-sm-offset-4">
+                                                            <button type="submit" class="btn btn-primary waves-effect waves-light" name="btnAdd" value="btnAdd">
+                                                                Submit
+                                                            </button>
+                                                            <button type="reset" class="btn btn-secondary waves-effect m-l-5">
+                                                                Reset
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="business_type">Business Type :</label>
-
-                                            <div class="col-lg-9">
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-success" value="Enterprise" name="business_type" id="business_type1" <?php if (isset($records['business_type']) && $records['business_type'] == 'Enterprise')  {  echo 'checked'; } ?>>
-                                                        Enterprise
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-danger" value="General" name="business_type" id="business_type2" <?php if (isset($records['business_type']) && $records['business_type'] == 'General')  {  echo 'checked'; } ?>>
-                                                        General
-                                                    </label>
-                                                </div>
-                                                <div class="hidedefault validation-invalid-label mt-2" id=" ">Please select Business Type</div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="enterprise_name">Enterprise Name :</label>
-                                            <div class="col-lg-9"><input type="text" class="form-control" id="enterprise_name" name="enterprise_name" placeholder="" value="<?php echo isset($records['enterprise_name']) ? $this->common->getDbValue($records['enterprise_name']) : ''; ?>" required1> </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="bo_ice_id">Bo Ice Id :</label>
-                                            <div class="col-lg-9"><input type="text" class="form-control" id="bo_ice_id" name="bo_ice_id" placeholder="" value="<?php echo isset($records['bo_ice_id']) ? $this->common->getDbValue($records['bo_ice_id']) : ''; ?>" required1> </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="user_language">Language :</label>
-                                            <div class="col-lg-9">
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-success" value="EN" name="user_language" id="user_language1" <?php if (isset($records['user_language']) && $records['user_language'] == 'EN')  {  echo 'checked'; } ?>>
-                                                        EN
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-danger" value="LA" name="user_language" id="user_language2" <?php if (isset($records['user_language']) && $records['user_language'] == 'LA')  {  echo 'checked'; } ?>>
-                                                        LA
-                                                    </label>
-                                                </div>
-                                                <div class="hidedefault validation-invalid-label mt-2" id=" ">Please select status</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="push_notification">Push notification :</label>
-                                            <div class="col-lg-9">
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-success" value="1" name="push_notification" id="push_notification1" <?php if (isset($records['push_notification']) && $records['push_notification'] == '1')  {  echo 'checked'; } ?>>
-                                                        Yes
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-danger" value="0" name="push_notification" id="push_notification2" <?php if (isset($records['push_notification']) && $records['push_notification'] == '0')  {  echo 'checked'; } ?>>
-                                                        No
-                                                    </label>
-                                                </div>
-                                                <div class="hidedefault validation-invalid-label mt-2" id=" ">Please select push notification</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="credit_limit_status">Credit status :</label>
-                                            <div class="col-lg-9">
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-success" value="Active" name="credit_limit_status" id="credit_limit_status1" <?php if (isset($records['credit_limit_status']) && $records['credit_limit_status'] == 'Active')  {  echo 'checked'; } ?>>
-                                                        Active
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-danger" value="Inactive" name="credit_limit_status" id="credit_limit_status2" <?php if (isset($records['credit_limit_status']) && $records['credit_limit_status'] == 'Inactive')  {  echo 'checked'; } ?>>
-                                                        In-Active
-                                                    </label>
-                                                </div>
-                                                <div class="hidedefault validation-invalid-label mt-2" id=" ">Please select credit status</div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="credit_limit">Credit Limit :</label>
-                                            <div class="col-lg-9"><input type="text" class="form-control" id="credit_limit" name="credit_limit" placeholder="" value="<?php echo isset($records['credit_limit']) ? $this->common->getDbValue($records['credit_limit']) : ''; ?>" required1> </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2" for="status">User Status :</label>
-                                            <div class="col-lg-9">
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-success" value="Active" name="status" id="status1" <?php if (isset($records['status']) && $records['status'] == 'Active')  {  echo 'checked'; } ?>>
-                                                        Active
-                                                    </label>
-                                                </div>
-
-                                                <div class="form-check form-check-inline">
-                                                    <label class="form-check-label">
-                                                        <input type="radio" class="form-check-input-styled-danger" value="Inactive" name="status" id="status2" <?php if (isset($records['status']) && $records['status'] == 'Inactive')  {  echo 'checked'; } ?>>
-                                                        In-Active
-                                                    </label>
-                                                </div>
-                                                <div class="hidedefault validation-invalid-label mt-2" id=" ">Please select status</div>
-                                            </div>
-
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-form-label col-lg-2"></label>
-                                            <div class="col-lg-9">
-                                                <button type="submit" class="btn bg-blue">Submit <i class="icon-paperplane ml-2"></i></button>
-                                            </div>
-                                        </div>
-                                    </form>
+                       </form>
 
                                     <form class="form-horizontal" action="<?php echo site_url($controller.'/view_customer/'.$id) ?>" method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="mode" id="mode" value="edit_content_password">
@@ -294,76 +252,7 @@ $tab = (isset($tab) && $tab!="")?$tab :'1';
                                     </form>
 
                                 </div>
-                                <div class="tab-pane fade   <?php echo ($tab==2)?'show active':'' ?>  " id="highlighted-tab2">
-                                    <div class="float-right mb-2"><a href="javascript:void(0);" class="addchildpoup">
-                                            <button type="button" class="btn btn-success btn-sm"><i class="icon-plus2 mr-2"></i> Add Branch user</button>
-                                        </a></div>
-
-                                    <?php
-						 if (isset($child_user) && sizeof($child_user)>0) { 
-					    ?>
-                                    <div class="table-responsive">
-                                        <table class="table dashboarddatatable1" width="100%">
-                                            <thead>
-                                                <tr class="bg-blue ">
-                                                    <th width="4%">#</th>
-                                                    <th width="17%">Name</th>
-
-                                                    <th width="22%">Mobile</th>
-
-
-                                                    <th width="8%">Status</th>
-                                                    <th width="8%">Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php  $i=0;
-                               //  print_r($child_user);
-								foreach($child_user as $key => $value){
-								$i++;
-								$status = $this->common->getDbValue($value['status']);
-								?>
-                                                <tr class="  border-left-3  <?php echo ($status == "Active") ? 'border-left-success' : 'border-left-danger' ?>  tr<?php echo $this->common->getDbValue($value['status']); ?>">
-                                                    <td valign="top"><?php echo $i?></td>
-                                                    <td valign="top"><strong>
-                                                            <?php echo $this->common->getDbValue($value['first_name']); ?>
-                                                            <?php echo $this->common->getDbValue($value['middle_name']); ?>
-                                                            <?php echo $this->common->getDbValue($value['last_name']); ?>
-                                                        </strong></td>
-
-                                                    <td valign="top"><?php echo $this->common->getDbValue($value['mobile']); ?></td>
-
-
-                                                    <td valign="top">
-                                                        <?php
-                                        if($status=="Active"){echo '<span class="badge badge-success">Active</span>';}
-                                        ?>
-                                                        <?php
-                                        if($status=="Inactive"){echo '<span class="badge badge-danger">Inactive</span>';}
-                                        ?>
-                                                    </td>
-                                                    <td valign="top">
-                                                        <div class="list-icons">
-                                                            <a href="javascript:void(0);" id="<?php echo $this->common->getDbValue($value['user_id'])?>" data-userid="<?php echo $this->common->getDbValue($value['user_id'])?>" class="childuserpop list-icons-item text-primary-600" data-popup="tooltip" title="" data-original-title="Edit"><i class="icon-pencil7"></i></a>
-                                                            <?php //if($query->num_rows()==0){ ?>
-                                                            <!--<a href="<?php echo site_url($this->ctrl_name.'/delete_project/')?>" class="list-icons-item text-danger-600" title="Delete" onClick="return confirm('Are you sure want to delete this record?');"><i class="icon-trash"></i></a>-->
-                                                            <?php //} ?>
-
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <?php } ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <?php } else {
-                        ?>
-                                    <div class=" text-center  card-body border-top-info1">
-                                        No record found
-                                    </div>
-                                    <?php    
-                            }?>
-                                </div>
+                                
 
                                 <div class="tab-pane fade  <?php echo ($tab==3)?'show active':'' ?>" id="highlighted-tab3">
                                     <?php
@@ -427,105 +316,8 @@ $i = 0;
 
                                 </div>
 
-                                <div class="tab-pane fade  <?php echo ($tab==4)?'show active':'' ?>" id="highlighted-tab4">
-                                    <?php
-if (isset($order_inprocess) && sizeof($order_inprocess) > 0) {
-    ?>
-                                    <table class="table table-hover datatablecustom">
-                                        <thead>
-                                            <tr class="bg-blue ">
-
-                                                <th style="width:2%">#</th>
-                                                <th style="width:auto">Deliver to </th>
-                                                <th style="width:auto">Phone</th>
-                                                <th style="width:auto">Mode</th>
-                                                <th style="width:auto">Total</th>
-                                                <th>Order Date</th>
-                                                <th>Action</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-$i = 0;
-    foreach ($order_inprocess as $key => $value) {
-        $i++;
-        ?>
-                                            <tr>
-                                                <td><?php echo stripslashes($value['invoice_no']) ?></td>
-                                                <td><?php echo stripslashes($value['shipping_firstname']) ?> <?php echo stripslashes($value['shipping_lastname']) ?></td>
-                                                <td><?php echo stripslashes($value['telephone']) ?></td>
-                                                <td><?php echo stripslashes($value['payment_method']) ?></td>
-                                                <td><?php echo $this->currencymodal->format($value['total'], currency_code, 1);
-
-        ?></td>
-                                                <td>
-                                                    <?php echo $this->common->getDateFormat($value['date_added'], 'd-m-Y'); ?>
-
-                                                <td><a href="<?php echo site_url('orders/orderdetail/' . $value['oorder_uid']."?l_s_act=".$l_s_act."&page=".$page) ?>">Detail</a>
-
-
-                                                </td>
-                                            </tr>
-                                            <?php }?>
-                                        </tbody>
-                                    </table>
-                                    <?php } else {
-    ?>
-                                    <div class=" text-center  card-body border-top-info1">
-                                        No record found
-                                    </div>
-                                    <?php
-}?>
-
-
-
-                                </div>
-                                <div class="tab-pane fade  <?php echo ($tab==5)?'show active':'' ?>" id="highlighted-tab5">
-                                    <?php
-if (isset($coolbox_cust_master) && sizeof($coolbox_cust_master) > 0) {
-    ?>
-                                    <table class="table table-hover datatablecustom">
-                                        <thead>
-                                            <tr class="bg-blue ">
-
-                                                <th style="width:2%">#</th>
-                                                <th style="width:auto">Box </th>
-                                                <th style="width:auto">Size</th>
-                                                <th style="width:auto">Qty</th>
-                                                <th style="width:auto">Date</th>
-
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-$i = 0;
-    foreach ($coolbox_cust_master as $key => $value) {
-        $i++;
-        ?>
-                                            <tr>
-                                                <td><?php echo stripslashes($i) ?></td>
-                                                <td><?php echo stripslashes($value['box_name_en']) ?> </td>
-                                                <td><?php echo stripslashes($value['box_size']) ?></td>
-                                                <td><?php echo stripslashes($value['qty']) ?></td>
-                                                <td> <?php echo $this->common->getDateFormat($value['added_date'], 'd-m-Y'); ?>
-                                                </td>
-                                            </tr>
-                                            <?php }?>
-                                        </tbody>
-                                    </table>
-                                    <?php } else {
-    ?>
-                                    <div class=" text-center  card-body border-top-info1">
-                                        No record found
-                                    </div>
-                                    <?php
-}?>
-
-
-
-                                </div>
-
+                               
+                                
                             </div>
 
 

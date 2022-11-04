@@ -88,13 +88,11 @@
                                 <thead>
                                     <tr class="bg-blue ">
                                         <th width="4%">#</th>
+                                        <th width="34%">Domain</th>
                                         <th width="17%">Name</th>
-
-
                                         <th width="34%">Address</th>
-                                        <th width="7%">Business Type</th>
+                                        <th width="8%">Date</th>
                                         <th width="7%">No. Of Order</th>
-                                      
                                         <th width="8%">Status</th>
                                         <th width="8%">Actions</th>
                                     </tr>
@@ -103,49 +101,49 @@
                                     <?php  $i=0;
 								foreach($results as $key => $value){
 								$i++;
-                                $status = $this->common->getDbValue($value['status']);
-                                $sql = " and (parent_id = '".$value['user_id']."')";
-                                $total_order =  $this->ecommercemodal->getOderlist_custom('1,2,3,4',0,0,'numrows',$sql);
+                                $status_flag = $this->common->getDbValue($value['status_flag']);
+                                $sql = " and (parent_id = '".$value['customer_id']."')";
+                                $total_order =  0;//$this->ecommercemodal->getOderlist_custom('1,2,3,4',0,0,'numrows',$sql);
                                
 								?>
-                                    <tr class="  border-left-3  <?php echo ($status == "Active") ? 'border-left-success' : 'border-left-danger' ?>  tr<?php echo $this->common->getDbValue($value['status']); ?>">
+                                    <tr class="  border-left-3  <?php echo ($status_flag == "Active") ? 'border-left-success' : 'border-left-danger' ?>  tr<?php echo $this->common->getDbValue($value['status_flag']); ?>">
+                                        <td valign="top"><?php echo $i?></td>
                                         <td valign="top"><?php echo $i?></td>
                                         <td valign="top"><strong>
-                                                <?php echo $this->common->getDbValue($value['first_name']); ?>
-                                                <?php echo $this->common->getDbValue($value['middle_name']); ?>
-                                                <?php echo $this->common->getDbValue($value['last_name']); ?>
+                                                <?php echo $this->common->getDbValue($value['firstname']); ?>
+                                                
+                                                <?php echo $this->common->getDbValue($value['lastname']); ?>
                                             </strong></td>
 
 
                                         <td valign="top">
-                                            <?php echo $this->common->getDbValue($value['mobile']); ?></br>
+                                            Email:<?php echo $this->common->getDbValue($value['email']); ?></br>
+                                            Mob:<?php echo $this->common->getDbValue($value['telephone']); ?></br>
                                             <strong>Address :</strong>
                                             <?php echo $this->common->getDbValue($value['address_1']); ?><br>
-                                            <strong>City :</strong> <?php echo $this->common->getDbValue($value['state_name_en']); ?><br>
-                                            <strong>State :</strong> <?php echo $this->common->getDbValue($value['district_name_en']); ?><br>
+                                            <strong>Country :</strong> <?php echo $this->common->getDbValue($value['country_name']); ?><br>
+                                            <strong>State :</strong> <?php echo $this->common->getDbValue($value['state_name']); ?><br>
                                             <strong>Pin Code:</strong> <?php echo $this->common->getDbValue($value['postcode']); ?>
                                         </td>
 
-                                        <td valign="top"><?php echo $this->common->getDbValue($value['business_type']); ?></td>
+                                        <td>		
+                                              <?php  echo $this->common->getDateFormat($value['date_added'],'d-m-Y');?>	
                                         <td valign="top"><?php
                                     echo $total_order;
                                     ?></td>
                                        
                                         <td valign="top">
                                             <?php
-                                        if($status=="Active"){echo '<span class="badge badge-success">Active</span>';}
+                                        if($status_flag=="Active"){echo '<span class="badge badge-success">Active</span>';}
                                         ?>
                                             <?php
-                                        if($status=="Inactive"){echo '<span class="badge badge-danger">Inactive</span>';}
+                                        if($status_flag=="Inactive"){echo '<span class="badge badge-danger">Inactive</span>';}
                                         ?>
                                         </td>
                                         <td valign="top">
                                             <div class="list-icons">
-                                                <a href="<?php echo site_url($this->ctrl_name.'/view_customer/'.$this->common->getDbValue($value['user_id'])) ?>" class="list-icons-item text-primary-600" data-popup="tooltip" title="" data-original-title="VIEW"><i class="icon-file-stats"></i></a>
-                                                <?php //if($query->num_rows()==0){ ?>
-                                                <!--<a href="<?php echo site_url($this->ctrl_name.'/delete_project/')?>" class="list-icons-item text-danger-600" title="Delete" onClick="return confirm('Are you sure want to delete this record?');"><i class="icon-trash"></i></a>-->
-                                                <?php //} ?>
-
+                                                <a href="<?php echo site_url($this->ctrl_name.'/view_customer/'.$this->common->getDbValue($value['uuid'])) ?>" class="list-icons-item text-primary-600" data-popup="tooltip" title="" data-original-title="VIEW"><i class="icon-file-stats"></i></a>
+                                               
                                             </div>
                                         </td>
                                     </tr>

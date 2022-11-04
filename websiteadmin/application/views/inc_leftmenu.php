@@ -99,7 +99,7 @@ if($user_data['access_ids']!=''){
                 <li class="nav-item nav-item-submenu <?php if(isset($activaation_id) && $activaation_id==1){ echo ' nav-item-expanded nav-item-open';}?>">
                     <a href="#" class="nav-link"><i class="icon-man "></i> <span>Customers</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                        <li class="nav-item"><a href="<?php //echo site_url('customers') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id==1){ echo 'active';}?>">Customers List</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('customers') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id==1){ echo 'active';}?>">Customers List</a></li>
                     </ul>
                 </li>
                 <?php }?>
