@@ -881,6 +881,138 @@ class Services extends CI_Model
 
     //other
 
+    public function getAddress($customer_id=0) {
+
+		$address_query = $this->db->query("SELECT DISTINCT * FROM customer_address WHERE customer_id = '" . (int)$customer_id . "' ");
+
+		if ($address_query->num_rows() > 0 ) {
+			$address_query_row = $address_query->row_array(); 
+			$country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int)$address_query_row['country_id'] . "'");
+
+			if ($country_query->num_rows() > 0 ) {
+				$country_query_row = $country_query->row_array(); 
+				$country = $country_query_row['name'];
+				$iso_code_2 = $country_query_row['iso_code_2'];
+				$iso_code_3 = $country_query_row['iso_code_3'];
+			 
+				 $geo_zone_id= 0;//$country_query_row['geo_zone_id'];
+			} else {
+				$country = '';
+				$iso_code_2 = '';
+				$iso_code_3 = '';
+				$address_format = '';
+				$geo_zone_id = "0";
+			}
+
+			$zone_query = $this->db->query("SELECT * FROM `m_zone` WHERE zone_id = '" . (int)$address_query_row['zone_id'] . "'");
+			
+			if ($zone_query->num_rows() > 0 ) {
+				$zone_query_row = $zone_query->row_array(); 
+				$zone = $zone_query_row['name'];
+				$zone_code = $zone_query_row['code'];
+			} else {
+				$zone = '';
+				$zone_code = '';
+			}
+
+			$address_data = array(
+				'address_id'     => $address_query_row['address_id'],
+				'firstname'      => $address_query_row['firstname'],
+				'lastname'       => $address_query_row['lastname'],
+				//'mobile'       => $address_query_row['mobile'],
+				'company'        => $address_query_row['company'],
+				'address_1'      => $address_query_row['address_1'],
+				'address_2'      => $address_query_row['address_2'],
+				'postcode'       => $address_query_row['postcode'],
+				'city'           => $address_query_row['city'],
+				'zone_id'        => $address_query_row['zone_id'],
+				'zone_id'        => $address_query_row['zone_id'],
+				'zone'           => $zone,
+				'zone_code'      => $zone_code,
+				'country_id'     => $address_query_row['country_id'],
+				'country'        => $country,
+				'iso_code_2'     => $iso_code_2,
+				'iso_code_3'     => $iso_code_3,
+				//'address_format' => $address_format,
+				'geo_zone_id'	 => $geo_zone_id
+				 
+			);
+
+			return $address_data;
+		} else {
+			return false;
+		}
+	}
+	public function getAddresses($customer_id=0) {
+		$address_data = array();
+
+		$query = $this->db->query("SELECT * FROM customer_address WHERE customer_id = '" . (int)$customer_id . "'");
+
+		foreach ($query->result_array() as $result) {
+			$country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int)$result['country_id'] . "'");
+
+			if ($country_query->num_rows() > 0) {
+				$country_query_row = $country_query->row_array(); 
+				$country = $country_query_row['name'];
+				$iso_code_2 = $country_query_row['iso_code_2'];
+				$iso_code_3 = $country_query_row['iso_code_3'];
+				 
+				$geo_zone_id= $country_query_row['geo_zone_id'];
+				
+			} else {
+				$country = '';
+				$iso_code_2 = '';
+				$iso_code_3 = '';
+				$address_format = '';
+				$geo_zone_id = "0";
+			}
+
+			$zone_query = $this->db->query("SELECT * FROM `m_zone` WHERE zone_id = '" . (int)$result['zone_id'] . "'");
+
+			if ($zone_query->num_rows() > 0 ) {
+				$zone_query_row = $zone_query->row_array(); 
+				$zone = $zone_query_row['name'];
+				$zone_code = $zone_query_row['code'];
+			} else {
+				$zone = '';
+				$zone_code = '';
+			}
+
+			$address_data[$result['address_id']] = array(
+				'address_id'     => $result['address_id'],
+				'firstname'      => $result['firstname'],
+				'lastname'       => $result['lastname'],
+				'mobile'       => $result['mobile'],
+				'company'        => $result['company'],
+				'address_1'      => $result['address_1'],
+				'address_2'      => $result['address_2'],
+				'postcode'       => $result['postcode'],
+				'city'           => $result['city'],
+				'zone_id'        => $result['zone_id'],
+				'zone'           => $zone,
+				'zone_code'      => $zone_code,
+				'country_id'     => $result['country_id'],
+				'country'        => $country,
+				'iso_code_2'     => $iso_code_2,
+				'iso_code_3'     => $iso_code_3,
+				'address_format' => $address_format,
+				'geo_zone_id'	 => $geo_zone_id
+				 
+
+			);
+		}
+
+		return $address_data;
+	}
+
+	public function getTotalAddresses() {
+		$query = $this->db->query("SELECT COUNT(*) AS total FROM customer_address WHERE customer_id = '" . (int)$this->session->userdata('lux_address_id') . "'");
+
+		$row = $query->row_array();
+
+		return $row['total'];
+	}
+
     public function getCountryNew($country_id)
     {
         $query = $this->db->query("SELECT * FROM m_country WHERE country_id = '" . (int) $country_id . "' AND status = '1'");

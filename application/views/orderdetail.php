@@ -165,11 +165,13 @@ $domain_id = $this->domain_id;
                 <div class="row">
                     <div class="col-12">
                         <div class="breadcrumb_content">
-                            <h3>My account</h3>
+                            <h3>Order Information</h3>
                             <ul>
-                                <li><a href="<?php echo site_url('home')?>">home</a></li>
+                                <li><a href="<?php echo site_url('home')?>">Home</a></li>
                                 <li>&gt;</li>
-                                <li>My account</li>
+                                <li><a href="<?php echo site_url('account')?>">Account</a></li>
+                                <li>&gt;</li>
+                                <li>Order Detail</li>
                             </ul>
                         </div>
                     </div>
@@ -184,7 +186,7 @@ $domain_id = $this->domain_id;
                     <div class="row">
 
                         <div id="content" class="col-sm-9">
-                            <h2>Order Information</h2>
+                            
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>

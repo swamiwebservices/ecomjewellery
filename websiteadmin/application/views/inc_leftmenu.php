@@ -53,15 +53,15 @@ if($user_data['access_ids']!=''){
                 
                 
             <?php if (1){?>
-                <li class="nav-item nav-item-submenu <?php if(isset($activaation_id) && $activaation_id==6){ echo ' nav-item-expanded nav-item-open';}?>">
+                <li class="nav-item nav-item-submenu <?php if(isset($activaation_id) && $activaation_id==22){ echo ' nav-item-expanded nav-item-open';}?>">
                     <a href="#" class="nav-link"><i class="icon-basket"></i> <span>Orders</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                    <li class="nav-item"><a href="<?php //echo site_url('orders/new_orders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id==1){ echo 'active';}?>">New Orders</a></li>
-                    <li class="nav-item"><a href="<?php //echo site_url('orders/confirmed_orders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id==2){ echo 'active';}?>">Confirmed Orders</a></li>
-                    <li class="nav-item"><a href="<?php //echo site_url('orders/delivered') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id==3){ echo 'active';}?>">Delivered</a></li>
-                    <li class="nav-item"><a href="<?php //echo site_url('orders/reviewpending') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id==4){ echo 'active';}?>">Review Pending</a></li>
-                    <li class="nav-item"><a href="<?php //echo site_url('orders/reviewlist') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id==5){ echo 'active';}?>">Review List</a></li>
-                    <li class="nav-item"><a href="<?php //echo site_url('orders/allorders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id==6){ echo 'active';}?>">All Order</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('orders/new_orders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_1'){ echo 'active';}?>">New Orders</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('orders/confirmed_orders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_2'){ echo 'active';}?>">Confirmed Orders</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('orders/delivered') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_3'){ echo 'active';}?>">Delivered</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('orders/reviewpending') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_4'){ echo 'active';}?>">Review Pending</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('orders/reviewlist') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_5'){ echo 'active';}?>">Review List</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('orders/allorders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_6'){ echo 'active';}?>">All Order</a></li>
                         
                     </ul>
                 </li>
@@ -96,10 +96,10 @@ if($user_data['access_ids']!=''){
 
                 <?php }?>
                 <?php if (in_array("33", $permission)){?>
-                <li class="nav-item nav-item-submenu <?php if(isset($activaation_id) && $activaation_id==1){ echo ' nav-item-expanded nav-item-open';}?>">
+                <li class="nav-item nav-item-submenu <?php if(isset($activaation_id) && $activaation_id==21){ echo ' nav-item-expanded nav-item-open';}?>">
                     <a href="#" class="nav-link"><i class="icon-man "></i> <span>Customers</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                        <li class="nav-item"><a href="<?php echo site_url('customers') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id==1){ echo 'active';}?>">Customers List</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('customers') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='21_2'){ echo 'active';}?>">Customers List</a></li>
                     </ul>
                 </li>
                 <?php }?>

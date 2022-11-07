@@ -135,7 +135,7 @@ class Dashboard extends CI_Controller
 
         //print_r($query_top);
 
-        $sql = " and    payment_method='Credit' and credit_pay_date <= '".$data['today_dateymd']."' and credit_pay_status='Unpaid'";
+        $sql = " and    payment_method='Credit' ";
         $data['oderlistinprogress'] =  $this->ecommercemodal->getOderlist_custom('4', 0,100, 'rows',$sql);
         
         $data['oderlistnew'] = $this->ecommercemodal->getOderlist_custom('1', 0,10, 'rows');

@@ -191,8 +191,8 @@ class Ecommercemodal extends CI_Model
 
     public function getOrder($store_order_uuid, $from = "WEB", $returnformat = "json")
     {
-
-        $order_query = $this->db->query("SELECT *  FROM `order_master` o WHERE o.oorder_uid = '" . $store_order_uuid . "'");
+        $order_query_row = [];
+        $order_query = $this->db->query("SELECT *  FROM `m_order` o WHERE o.uuid = '" . $store_order_uuid . "'");
         if ($order_query->num_rows() > 0) {
             $order_query_row = $order_query->row_array();
             return $order_query_row;
@@ -290,7 +290,7 @@ class Ecommercemodal extends CI_Model
     }
     public function getOrderProducts($order_id)
     {
-        $query = $this->db->query("SELECT op.*, p.main_image, p.kg_bag,p.unit,p.unit_bag, p.name_en , p.driver_bonus ,p.carry_boy_bonus FROM order_product op
+        $query = $this->db->query("SELECT op.*, p.main_image,  p.name FROM order_product op
 								left join 	product_master p on op.product_id = p.product_id
 							 WHERE order_id = '" . (int) $order_id . "'");
 
@@ -336,7 +336,7 @@ return $query->result_array() ;
         $other_para = "?v=l";
         $search_qry = " WHERE o.order_id!=0    and o.order_status_id in ($order_status) ";
 // inner join user_master_front um on o.customer_id = um.user_id
-        $sSql = "SELECT o.order_id, o.oorder_uid,o.invoice_no,o.customer_id, o.email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_state_name,o.payment_district_name,o.payment_state_id,o.payment_district_id,o.payment_method,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_postcode,o.shipping_state_name,o.shipping_state_id,o.shipping_district_id,o.shipping_district_name ,o.comment ,o.total ,o.order_status_id,o.order_status_id as order_satus_code ,o.date_added,o.credit_pay_date, o.delivery_time ,o.order_delivery_date_expected ,o.shipping_longitude ,o.shipping_latitude , os.name as order_satus_name,o.complete_date, IFNULL(ro.rating, 0) as rating 
+        $sSql = "SELECT o.order_id, o.oorder_uid,o.invoice_no,o.customer_id, o.email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_state_name,o.payment_district_name,o.payment_state_id,o.payment_district_id,o.payment_method,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_postcode,o.shipping_state_name,o.shipping_state_id,o.shipping_district_id,o.shipping_district_name ,o.comment ,o.total ,o.order_status_id,o.order_status_id as order_satus_code ,o.date_added, os.name as order_satus_name,o.complete_date, IFNULL(ro.rating, 0) as rating 
         FROM `order_master` o  inner join master_order_status os on o.order_status_id = os.order_status_id left join review_order ro on o.order_id = ro.order_id
         $search_qry
         ORDER BY o.order_id DESC";
@@ -360,8 +360,8 @@ return $query->result_array() ;
         $other_para = "?v=l";
         $search_qry = " WHERE o.order_id!=0    and o.order_status_id in ($order_status) ".$condtion;
 // inner join user_master_front um on o.customer_id = um.user_id
-         $sSql = "SELECT o.order_id, o.oorder_uid,o.invoice_no,o.customer_id, o.email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_state_name,o.payment_district_name,o.payment_state_id,o.payment_district_id,o.payment_method,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_postcode,o.shipping_state_name,o.shipping_state_id,o.shipping_district_id,o.shipping_district_name ,o.comment ,o.total ,o.order_status_id,o.order_status_id as order_satus_code ,o.date_added,o.credit_pay_date, o.delivery_time ,o.order_delivery_date_expected ,o.shipping_longitude ,o.shipping_latitude , os.name as order_satus_name,o.complete_date, IFNULL(ro.rating, 0) as rating 
-        FROM `order_master` o  inner join master_order_status os on o.order_status_id = os.order_status_id 
+         $sSql = "SELECT o.order_id, o.uuid,o.transaction_id,o.invoice_no,o.store_id,o.store_name,o.store_url,o.customer_id, o.firstname,o.lastname,email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_zone,o.payment_country,o.payment_country_id,o.payment_zone_id, o.payment_method,o.payment_code,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_city,o.shipping_postcode,o.shipping_country,o.shipping_country_id,o.shipping_zone,o.shipping_zone_id,o.shipping_code ,o.comment ,o.total ,o.order_status_id, o.date_added,  os.name as order_satus_name, IFNULL(ro.rating, 0) as rating 
+        FROM `m_order` o  inner join 	m_order_status os on o.order_status_id = os.order_status_id 
         left join review_order ro on o.order_id = ro.order_id
         $search_qry
         ORDER BY o.order_id DESC";
@@ -385,7 +385,7 @@ return $query->result_array() ;
         $other_para = "?v=l";
         $search_qry = " WHERE o.order_status_id=4  and  ro.order_id  IS NULL    ";
 // inner join user_master_front um on o.customer_id = um.user_id
-        $sSql = "SELECT  o.order_id, o.oorder_uid,o.invoice_no,o.customer_id, o.email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_state_name,o.payment_district_name,o.payment_state_id,o.payment_district_id,o.payment_method,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_postcode,o.shipping_state_name,o.shipping_state_id,o.shipping_district_id,o.shipping_district_name ,o.comment ,o.total ,o.order_status_id,o.order_status_id as order_satus_code ,o.date_added,o.credit_pay_date, o.delivery_time ,o.order_delivery_date_expected ,o.shipping_longitude ,o.shipping_latitude , os.name as order_satus_name,o.complete_date, IFNULL(ro.rating, 0) as rating   FROM `order_master` o
+        $sSql = "SELECT  o.order_id, o.oorder_uid,o.invoice_no,o.customer_id, o.email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_state_name,o.payment_district_name,o.payment_state_id,o.payment_district_id,o.payment_method,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_postcode,o.shipping_state_name,o.shipping_state_id,o.shipping_district_id,o.shipping_district_name ,o.comment ,o.total ,o.order_status_id,o.order_status_id as order_satus_code ,o.date_added,os.name as order_satus_name,o.complete_date, IFNULL(ro.rating, 0) as rating   FROM `order_master` o
         inner join master_order_status os on o.order_status_id = os.order_status_id
         left join review_order ro on o.order_id = ro.order_id  
         $search_qry
@@ -410,7 +410,7 @@ return $query->result_array() ;
         $other_para = "?v=l";
         $search_qry = " WHERE o.order_status_id=4       ";
 // inner join user_master_front um on o.customer_id = um.user_id
-        $sSql = "SELECT o.order_id, o.oorder_uid,o.invoice_no,o.customer_id, o.email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_state_name,o.payment_district_name,o.payment_state_id,o.payment_district_id,o.payment_method,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_postcode,o.shipping_state_name,o.shipping_state_id,o.shipping_district_id,o.shipping_district_name ,o.comment ,o.total ,o.order_status_id,o.order_status_id as order_satus_code ,o.date_added,o.credit_pay_date, o.delivery_time ,o.order_delivery_date_expected ,o.shipping_longitude ,o.shipping_latitude , os.name as order_satus_name,o.complete_date, IFNULL(ro.rating, 0) as rating ,ro.review_text  FROM `order_master` o
+        $sSql = "SELECT o.order_id, o.oorder_uid,o.invoice_no,o.customer_id, o.email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_state_name,o.payment_district_name,o.payment_state_id,o.payment_district_id,o.payment_method,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_postcode,o.shipping_state_name,o.shipping_state_id,o.shipping_district_id,o.shipping_district_name ,o.comment ,o.total ,o.order_status_id,o.order_status_id as order_satus_code ,o.date_added, os.name as order_satus_name,o.complete_date, IFNULL(ro.rating, 0) as rating ,ro.review_text  FROM `order_master` o
         inner join master_order_status os on o.order_status_id = os.order_status_id
         inner join review_order ro on o.order_id = ro.order_id  
         $search_qry
@@ -538,7 +538,7 @@ return $query->result_array() ;
     }
     public function setFirebaserealtimedata($recordtype = "insert", $orderinfo = array(), $status = "New Order")
     {
-
+        return false;
         $todaydate = date("Ymd");
 
         $serverKey = FIREBASE_API_KEY;
@@ -560,10 +560,10 @@ return $query->result_array() ;
                 'invoice_no' => $orderinfo['invoice_no'],
                 'shipping_address_1' => $orderinfo['shipping_address_1'],
                 'shipping_state_name' => $orderinfo['shipping_state_name'],
-                'delivery_time' => $orderinfo['delivery_time'],
+              
                 'payment_method' => $orderinfo['payment_method'],
                 'total' => $this->common->tep_round($orderinfo['total']),
-                'driver_id' => 0,
+             
                 'status_id' => $orderinfo['order_status_id'],
                 'status' => $status,
             ];
@@ -664,5 +664,30 @@ return $query->result_array() ;
             $customer_master_info = $user_query->row_array();
         }
         return $customer_master_info;
+    }
+
+    public function format($number,$domain_id=1)
+    {
+
+        $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '3');
+        $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
+        $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '1');
+
+        
+
+        $currentCurrency = $currencyarr[$domain_id];
+        $symbol_left = $currentCurrency['symbol_left'];
+        $symbol_right = $currentCurrency['symbol_right'];
+        $decimal_place = $currentCurrency['decimal_place'];
+
+        $string = '';
+        if ($symbol_left) {
+            $string .= $symbol_left . "";
+        }
+        $string .= number_format($number, (int) $decimal_place, '.', ',');
+        if ($symbol_right) {
+            $string .= $symbol_right;
+        }
+        return $string;
     }
 }

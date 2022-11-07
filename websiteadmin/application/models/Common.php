@@ -1159,26 +1159,26 @@ class Common extends CI_Model
 
     }
 
-    public function getState($id = 1, $zonearea_id = 0)
-    {
+    // public function getState($id = 1, $zonearea_id = 0)
+    // {
 
-        $where = "where  status='Active' order by name asc";
-        $results = $this->getAllRow('master_province', $where);
+    //     $where = "where  status='Active' order by name asc";
+    //     $results = $this->getAllRow('master_province', $where);
 
-        $combo = "<option value='' >Select province</option>";
-        foreach ($results as $key => $value) {
+    //     $combo = "<option value='' >Select province</option>";
+    //     foreach ($results as $key => $value) {
 
-            if ($id == $value['id']) {
-                $combo .= "<option value='" . $value['id'] . "' selected>" . $value['name_en'] . "</option>";
-            } else {
-                $combo .= "<option value='" . $value['id'] . "' >" . $value['name_en'] . "</option>";
-            }
+    //         if ($id == $value['id']) {
+    //             $combo .= "<option value='" . $value['id'] . "' selected>" . $value['name_en'] . "</option>";
+    //         } else {
+    //             $combo .= "<option value='" . $value['id'] . "' >" . $value['name_en'] . "</option>";
+    //         }
 
-        }
+    //     }
 
-        return $combo;
+    //     return $combo;
 
-    }
+    // }
     public function get_district($state_id = 1, $district_id = 0)
     {
         $state_id = $this->common->mysql_safe_string($state_id);
@@ -1622,25 +1622,25 @@ class Common extends CI_Model
     }
     public function createmenujson()
     {
-       $response = array();
-       $domain_id =1;
+        $response = array();
+        $domain_id = 1;
 
         $sql = "select * from   product_category where    status_flag='Active' and parent_id=0 order by sort_order asc, name asc  ";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->result_array();
-            foreach($resultdata as $key => $value){
+            foreach ($resultdata as $key => $value) {
                 $response[$value['category_id']] = $value;
-               
+
                 $sql = "select * from product_category where status_flag=1 and  parent_id='{$value['category_id']}' ";
                 $query2 = $this->db->query($sql);
                 if ($query2->num_rows() > 0) {
                     $resultdata2 = $query2->result_array();
-                    foreach($resultdata2 as $key2 => $value2){
+                    foreach ($resultdata2 as $key2 => $value2) {
                         $response[$value['category_id']]['sub_category'][] = $value2;
                     }
                 }
-                
+
             }
         }
         //print_r($response);
@@ -1661,5 +1661,55 @@ class Common extends CI_Model
             $color .= str_pad(dechex(mt_rand(0, 255)), 2, '0', STR_PAD_LEFT);
         }
         return "#" . $color;
+    }
+
+    public function getCountry($id = 99)
+    {
+
+        $where = " order by name asc";
+        $results = $this->getAllRow('m_country', $where);
+        $combo = '';
+        $combo .= "<option value='' >Select Country</option>";
+        foreach ($results as $key => $value) {
+
+            if ($id == $value['country_id']) {
+                $combo .= "<option value='" . $value['country_id'] . "' selected>" . $value['name'] . "</option>";
+            } else {
+                $combo .= "<option value='" . $value['country_id'] . "' >" . $value['name'] . "</option>";
+            }
+
+        }
+
+        return $combo;
+
+    }
+    public function getZonesByCountryId($country_id)
+    {
+
+        $query = $this->db->query("SELECT * FROM m_zone WHERE country_id = '" . (int) $country_id . "' AND status = '1' ORDER BY name");
+
+        $zone_data = $query->result_array();
+
+        return $zone_data;
+    }
+
+    public function getState($id, $country_id = 99, $initText = 'Please Select')
+    {
+        $where = "where country_id = '" . $country_id . "' order by name asc";
+        $results = $this->getAllRow('m_zone', $where);
+
+        $combo = "<option value='' >Select State</option>";
+        foreach ($results as $key => $value) {
+
+            if ($id == $value['zone_id']) {
+                $combo .= "<option value='" . $value['zone_id'] . "' selected>" . $value['name'] . "</option>";
+            } else {
+                $combo .= "<option value='" . $value['zone_id'] . "' >" . $value['name'] . "</option>";
+            }
+
+        }
+
+        return $combo;
+
     }
 }
