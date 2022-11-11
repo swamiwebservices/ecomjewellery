@@ -13,16 +13,20 @@
                                 <a href="<?php echo site_url("")?>"><img src="<?php echo base_url('assets/img/logo/logo.png')?>" alt=""></a>
                             </div></h3>
                                     <div class="footer_contact">
-                                        <p>Address: Your address goes here.</p>
-                                        <p>Phone: <a href="tel:0123456789">0123456789</a></p>
-                                        <p>Email: demo@example.com</p>
+                                        <p>Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,</br>
+<!-- Karama, Dubai </br>
++971 559632581</br>
++971 0543054719. -->
+</p>
+                                        <p>Phone: <a href="tel:+971 4 2968516" class="text-footer">+971 4 2968516</a></p>
+                                        <p>Email: <a href="mail:info@bondbeyond.ae" class="text-footer">info@bondbeyond.ae</a></p>
                                         <ul>
-                                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                            <!-- <li><a href="#" ><i class="fa fa-facebook"></i></a></li>
                                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                                             <li><a href="#"><i class="ion-social-rss"></i></a></li>
                                             <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
 
-                                            <li><a href="#"><i class="ion-social-youtube"></i></a></li>
+                                            <li><a href="#"><i class="ion-social-youtube"></i></a></li> -->
                                         </ul>
 
                                     </div>
@@ -33,12 +37,16 @@
                                     <h3>Information</h3>
                                     <div class="footer_menu">
                                         <ul>
-                                            <li><a href="about.html">About Us</a></li>
-                                            <li><a href="blog.html">blog</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="services.html">Services</a></li>
-                                            <li><a href="#">Sample Page</a></li>
-                                            <li><a href="portfolio.html">Portfolio</a></li>
+                                            <li><a href="<?php echo site_url("about-us")?>">About Us</a></li>
+                                            <!-- <li><a href="blog.html">blog</a></li> -->
+                                            <li><a href="<?php echo site_url("terms-condition")?>">Terms & Conditions</a></li>
+                                            <li><a href="<?php echo site_url("privacy-policy")?>">Privacy Policy</a></li>
+                                            <li><a href="<?php echo site_url("faq")?>">FAQ</a></li>
+                                            <li><a href="<?php echo site_url("disclaimer")?>">Disclaimer</a></li>
+                                            <li><a href="<?php echo site_url("contact-us")?>">Contact</a></li>
+                                            <!-- <li><a href="services.html">Services</a></li> -->
+                                             
+                                             
                                         </ul>
                                     </div>
                                 </div>

@@ -190,13 +190,13 @@ $domain_id = $this->domain_id;
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th class="text-left" colspan="2">Order Details</th>
+                                        <th class="text-left" >Order Details</th>
+                                        <th class="text-left" ><b>Order ID:</b> #<?php echo $order_info['invoice_no']?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-left" style="width: 50%;"> <b>Order ID:</b>
-                                            #<?php echo $order_id?><br>
+                                        <td class="text-left" style="width: 50%;"> 
                                             <b>Date Added:</b> <?php echo $date_added; ?>
                                         </td>
                                         <td class="text-left" style="width: 50%;"> <b>Payment Method:</b>
@@ -214,14 +214,14 @@ $domain_id = $this->domain_id;
                                         <th class="text-left" style="width: 50%; vertical-align: top;">Payment Address
                                         </th>
                                         <th class="text-left" style="width: 50%; vertical-align: top;">
-                                            <?php if ($shipping_address) { ?>Shipping Address<?php }?></th>
+                                           Shipping Address</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td class="text-left"><?php echo $payment_address; ?></td>
                                         <td class="text-left">
-                                            <?php if ($shipping_address) { ?><?php echo $shipping_address; ?><?php }?>
+                                            <?php echo $shipping_address; ?>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -241,18 +241,16 @@ $domain_id = $this->domain_id;
                                     <tbody>
                                         <?php
 if(isset($products)){
-foreach ($products as $product) { ?>
+foreach ($products as $product) {
+    $main_image = (isset($product['image']) && $product['image']!="" ) ? base_url().'uploads/prod_images/'.$product['image']:base_url().'assets/img/350x350.png';
+    ?>
                                         <tr>
                                             <td class="text-left">
-                                                <?php echo $this->common->getDbValue($product['name']); ?>
-                                                <?php
-if(isset($product['image'])){
-?>
+                                            <a href="<?php echo site_url('product-detail/'.$product['slug_name']);?>"><?php echo $product['name']?></a>
+                                                
                                                 <div class="product-image-sm">
-                                                    <img
-                                                        src="<?php echo $this->common->showImage('uploads/prod_images/',$product['image']);?>">
-                                                </div>
-                                                <?php }
+                                                    <img src="<?php echo $main_image;?>">
+                                          
 ?>
                                             </td>
                                             <td class="text-left">
@@ -302,7 +300,7 @@ if(isset($product['image'])){
                                 <tbody>
                                     <tr>
                                         <td class="text-left">
-                                            <div style="max-width:400px; overflow:scroll"><?php echo $comment; ?></div>
+                                            <div style=" overflow:scroll"><?php echo $comment; ?></div>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -333,8 +331,8 @@ if(isset($product['image'])){
                             <?php } ?>
 
                             <div class="buttons clearfix">
-                                <div class="pull-right"><a href="<?php echo site_url('my_dashboard');?>"
-                                        class="btn btn-primary">Continue</a></div>
+                                <div class="pull-right"><a href="<?php echo site_url("account")?>"
+                                                        class="btn btn-light">Back</a></div>
                             </div>
                         </div>
 

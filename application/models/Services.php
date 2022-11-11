@@ -117,7 +117,7 @@ class Services extends CI_Model
 
             //where status_flag=1 and  FIND_IN_SET ({$value['category_id']},category_id) > 0
             //and  sub_category_id='{$params['category_id']}'
-            $sql = "select * from product_master where status_flag='Active'     " . $order_by . ' ' . $order_limit;
+            $sql = "select * from product_master where status_flag='Active'    and category_id='{$params['category_id']}' " . $order_by . ' ' . $order_limit;
 
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
@@ -162,9 +162,10 @@ class Services extends CI_Model
     }
     public function getCurrency()
     {
-        $currencyarr[1] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
+        
         $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
-        $currencyarr[3] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
+        $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
+        $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
         $getDomainId = $this->getDomainId();
 
         $currentCurrency = $currencyarr[$getDomainId];
@@ -172,10 +173,9 @@ class Services extends CI_Model
     }
     public function format($number)
     {
-
-        $currencyarr[1] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
+        $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
         $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
-        $currencyarr[3] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
+        $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
 
         $getDomainId = $this->getDomainId();
 
@@ -744,7 +744,7 @@ class Services extends CI_Model
         }
     }
 	public function getOrderProducts($order_id) {
-		$query = $this->db->query("SELECT op.*, p.main_image FROM order_product op 
+		$query = $this->db->query("SELECT op.*, p.main_image,p.slug_name FROM order_product op 
 								left join 	product_master p on op.product_id = p.product_id
 							 WHERE order_id = '" . (int)$order_id . "'");
 
@@ -1031,7 +1031,7 @@ class Services extends CI_Model
 
         $session_user_data = $this->session->userdata('front_user_detail');
         //print_r($session_user_data);
-        if (!isset($session_user_data['user_id'])) {
+        if (!isset($session_user_data['customer_id'])) {
             $this->db->query("DELETE FROM cart_master WHERE  user_id = '" . (int) $this->getId() . "'    ");
         } else {
             $this->db->query("DELETE FROM cart_master WHERE   shopping_session = '" . $this->get_shopping_session() . "'  ");

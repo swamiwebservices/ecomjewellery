@@ -54,8 +54,8 @@ class Checkout extends CI_Controller
     public function index()
     {
         $session_user_data = $this->session->userdata('front_user_detail');
-        //print_r($session_user_data);
-        if (!isset($session_user_data['user_id'])) {
+        //print_r($session_user_data);die();
+        if (!isset($session_user_data['customer_id'])) {
             $ar_session_data['last_page_visited'] = site_url("checkout");
             $this->session->set_userdata($ar_session_data);
     
@@ -214,7 +214,7 @@ class Checkout extends CI_Controller
             $order_data['ip'] = $this->input->ip_address();
             $order_data['user_agent'] = $this->input->user_agent();
             $order_data['user_agent'] = $this->input->user_agent();
-
+            //print_r($order_data);exit;
             $order_id = $this->services->addOrder($order_data);
             $order_id_sess = array('order_id_ki'=>$order_id);
             $this->session->set_userdata($order_id_sess);
@@ -285,9 +285,10 @@ class Checkout extends CI_Controller
 			$this->session->unset_userdata('vouchers');
 			$this->session->unset_userdata('totals');
   			*/
-			 
-			$array_items = array('shipping_method'=>'','shipping_methods'=>'','payment_method'=>'','payment_methods'=>'','guest'=>'','comment'=>'','order_id'=>'','shipping_methods'=>'','coupon'=>'','reward'=>'','voucher'=>'','vouchers'=>'','totals'=>'','shipping_address'=>'','payment_address'=>'','order_id_ki'=>'','oldisgold'=>'','oldisgoldqty'=>'','warning'=>'','shipping_address'=>'','payment_address'=>'','same_payment_shipping_address'=>'','order_id_custom'=>'');
-			 	$this->session->unset_userdata($array_items);
+              $this->session->unset_userdata('order_id_ki');
+
+			// $array_items = array('shipping_method'=>'','shipping_methods'=>'','payment_method'=>'','payment_methods'=>'','guest'=>'','comment'=>'','order_id'=>'','shipping_methods'=>'','coupon'=>'','reward'=>'','voucher'=>'','vouchers'=>'','totals'=>'','shipping_address'=>'','payment_address'=>'','order_id_ki'=>'','oldisgold'=>'','oldisgoldqty'=>'','warning'=>'','shipping_address'=>'','payment_address'=>'','same_payment_shipping_address'=>'','order_id_custom'=>'');
+			//  	$this->session->unset_userdata($array_items);
 		
 		}
  

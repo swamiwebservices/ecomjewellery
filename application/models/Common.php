@@ -999,79 +999,14 @@ class Common extends CI_Model
     public function check_user_session($current_site_url = '')
     {
         $current_site_url = $current_site_url;
-        $session_user_data = $this->session->userdata('user_data');
-        if (!isset($session_user_data['user_id'])) {
+        $session_user_data = $this->session->userdata('front_user_detail');
+        if (!isset($session_user_data['customer_id'])) {
             //redirect( $this->config->item('site_url'));
             redirect(site_url());
         }
     }
 
-    /////////////////////////////
-    public function getUniqueUserSlug($slug_name)
-    {
-
-        $data_info = array();
-        $query = $this->db->query("select * from user_master where `slug_name` like '" . $slug_name . "%'");
-
-        if ($query->num_rows() > 0) {
-            //->row_array()
-            $data_info = $query->result_array();
-            $slug_name = $slug_name . "-" . $query->num_rows();
-        }
-        return $slug_name;
-    }
-    public function stafflist($start = 0, $maxm = 100, $search_qry = "", $order_by = "")
-    {
-
-        $limit_qry = "LIMIT " . $start . "," . $maxm;
-        $resultdata = array();
-
-        if ($maxm == 0) {
-            $where_cond = " $search_qry  " . $order_by;
-        } else {
-            $where_cond = " $search_qry " . $order_by . $limit_qry;
-        }
-        $sql = "select  * from  user_master um   " . $where_cond;
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->result_array();
-        }
-        return $resultdata;
-    }
-    public function stafflist_count($search_qry = "", $order_by = "")
-    {
-        $sql = "select  count('') as total from  user_master um   " . $search_qry . $order_by;
-        $query = $this->db->query($sql);
-        $resultdata = $query->row_array();
-        return $resultdata['total'];
-    }
-
-    public function doctorlist($start = 0, $maxm = 100, $search_qry = "", $order_by = "")
-    {
-
-        $limit_qry = "LIMIT " . $start . "," . $maxm;
-        $resultdata = array();
-
-        if ($maxm == 0) {
-            $where_cond = " $search_qry  " . $order_by;
-        } else {
-            $where_cond = " $search_qry " . $order_by . $limit_qry;
-        }
-        $sql = "select  * from  doctors_master um   " . $where_cond;
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->result_array();
-        }
-        return $resultdata;
-    }
-    public function doctorlist_count($search_qry = "", $order_by = "")
-    {
-        $sql = "select  count('') as total from  doctors_master um   " . $search_qry . $order_by;
-        $query = $this->db->query($sql);
-        $resultdata = $query->row_array();
-        return $resultdata['total'];
-    }
-//
+    
     public function getCity($id = 1, $zonearea_id = 0)
     {
 

@@ -74,7 +74,7 @@ class Cod extends CI_Controller
         $where_cart = "order_id = '" . $order_id . "' ";
         $this->common->updateRecord('m_order', $order_data, $where_cart);
         
-        
+        //print_r($order_data);
          // $this->session->set_userdata('comment', $comment_temp);
         //echo $this->configmodal->get('cod_order_status_id');
         $this->services->addOrderHistory($this->session->userdata('order_id_ki'), 1);

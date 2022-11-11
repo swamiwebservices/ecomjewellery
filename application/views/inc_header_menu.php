@@ -116,9 +116,13 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                     <?php
                                     foreach($product_category as $key => $menuCategory){
                                         //print_r($menuCategory);
+                                        if(!empty($menuCategory['sub_category'])){
+
+                                        
                                         ?>
                                     <li>
                                         <a href="#" class="text-uppercase"><?php echo $menuCategory['name']?></a>
+                                        
                                         <ul class="sub_menu">
                                             <?php
                                         foreach($menuCategory['sub_category'] as $key2 => $menuCategory2){
@@ -131,6 +135,11 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                         </ul>
                                     </li>
                                     <?php
+                                         } else{
+                                    ?>
+                                    <li><a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>" class="text-uppercase"><?php echo $menuCategory['name']?></a></li>
+                                    <?php        
+                                         } 
                                         }
                                         ?>
                                     <li><a href="<?php echo site_url('home');?>" class="text-uppercase">Contact Us</a></li>
@@ -142,9 +151,10 @@ $session_user_data = $this->session->userdata('front_user_detail');
                         <div class="search_btn">
                             <a href="#"><i class="ion-ios-search-strong"></i></a>
                             <div class="dropdown_search">
-                               
+                            <form action="#">
                                     <input placeholder="Search product..." name="keyword_search" id="top_keyword_search" type="text">
                                     <button type="button" name="btn_keyword_search" id="top_btn_keyword_search"><i class="ion-ios-search-strong"></i></button>
+                            </form>
                                 
                             </div>
                         </div>

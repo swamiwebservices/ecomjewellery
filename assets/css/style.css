@@ -1761,7 +1761,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .main_menu nav > ul > li ul.sub_menu {
   position: absolute;
   min-width: 200px;
-  padding: 30px 25px;
+  padding: 10px 10px 10px 20px;
   background: #fff;
   border: 1px solid #ebebeb;
   -webkit-transform: perspective(600px) rotateX(-90deg);
@@ -12152,4 +12152,12 @@ div.product_thumb img{
   cursor: pointer;
   padding: 0 12px;
   transition: color 300ms ease-in-out 0s, background-color 300ms ease-in-out 0s, background-position 300ms ease-in-out 0s;
+}
+
+.text-footer {
+    color: #999c9b!important;
+}
+
+.text-footer:hover {
+  color: #a8741a!important;
 }

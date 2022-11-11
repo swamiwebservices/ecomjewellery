@@ -530,10 +530,10 @@ $config['rewrite_short_tags'] = FALSE;
 $config['proxy_ips'] = '';
 
 
-$DOMAINs = array(1=>'bondbeyond.in',2=>'bondbeyond.com',3=>'bondbeyond.ae');
+$DOMAINs = array(1=>'bondbeyond.ae',2=>'bondbeyond.com',3=>'bondbeyond.in');
 $config['DOMAINs'] = $DOMAINs;
 
-$DEFAULT_COUNTRY_DOMAINs = array('1'=>99,'2'=>221, '3'=>223);
+$DEFAULT_COUNTRY_DOMAINs = array('1'=>223,'2'=>221, '3'=>99);
 
 $config['DEFAULT_COUNTRY_DOMAINs'] = $DEFAULT_COUNTRY_DOMAINs;
 $config['config_order_status_id'] = 1;

@@ -22,12 +22,15 @@ class Pages extends CI_Controller
      * map to /index.php/welcome/<method_name>
      * @see https://codeigniter.com/user_guide/general/urls.html
      */
-
+    public $controller = "pages";
+    public $domain_id = 1;
     public function __construct()
     {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('common');
+        $this->load->model('services');
+
         $this->load->helper('security');
         $this->load->library('email');
         $this->load->helper('url_helper');
@@ -38,6 +41,22 @@ class Pages extends CI_Controller
             redirect("maintenance");
             exit;
         }
+
+    
+ 
+        if (empty($this->session->userdata('domain_id'))) {
+            $this->session->set_userdata('domain_id', '1');
+
+        }
+
+        if (empty($this->session->userdata('domain_id'))) {
+            $this->session->set_userdata('domain_id', '1');
+
+        }
+        $this->domain_id = $this->services->getDomainId();
+
+        $ar_session_data['last_page_visited'] = site_url("account");
+        $this->session->set_userdata($ar_session_data);
     }
     public function index()
     {
@@ -62,11 +81,7 @@ class Pages extends CI_Controller
 
         $data['wti_cms_pages_images'] = array();
 
-        $sql = "select * from wti_cms_pages_images where   `section`='" . $section . "'";
-        $request_query = $this->db->query($sql);
-        if ($request_query->num_rows() > 0) {
-            $data['wti_cms_pages_images'] = $request_query->result_array();
-        }
+        
 
        
          
@@ -87,7 +102,7 @@ class Pages extends CI_Controller
         } */
         $this->load->view('about-us', $data);
     }
-    public function formulation()
+    public function termscondition()
     {
         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
 
@@ -101,7 +116,7 @@ class Pages extends CI_Controller
         if ($param_page == "") {
             $param_page = "home";
         }
-        $section = 'formulation';
+        $section = 'termscondition';
 
         
         $resultdata = array();
@@ -114,189 +129,9 @@ class Pages extends CI_Controller
             $data['resultdata'] = $resultdata;
             $data['records'][$resultdata['section']] = $resultdata['details'];
         }
-        $this->load->view('formulation', $data);
+        $this->load->view('termscondition', $data);
     }
-
-    public function contract_manufacturing()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-
-        
-        $resultdata = array();
-        $section = 'contract-manufacturing';
-        
-        $resultdata = array();
-        $data['records'] = array();
-        $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->row_array();
-            $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
-        }
-        
-        $this->load->view('contract_manufacturing', $data);
-    }
-    public function products()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-
-         $sql = "select DISTINCT  c.name,c.category_id  from wti_m_category  c 
-                inner join wti_m_products p on c.category_id=p.category_id   where  c.status_flag='Active' and p.status_flag='Active'     ";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $data_info = $query->result_array();
-            $data['records'] = $data_info;
-        }
-        $this->load->view('products', $data);
-    }
-    public function research_dev()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-
-        $resultdata = array();
-        $section = 'research-dev';
-
-        $resultdata = array();
-        $data['records'] = array();
-        $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->row_array();
-            $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
-        }
-        
-        $this->load->view('research_dev', $data);
-    }
-    public function manufacturing_capability()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $resultdata = array();
-        $section = 'manufacturing-capability';
-        
-        $resultdata = array();
-        $data['records'] = array();
-        $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->row_array();
-            $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
-        }
-        
-        $this->load->view('manufacturing_capability', $data);
-    }
-
-    public function business_development()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $resultdata = array();
-        $section = 'business-development';
-        
-        $resultdata = array();
-        $data['records'] = array();
-        $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->row_array();
-            $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
-        }
-
-        $this->load->view('business_development', $data);
-    }
-
-    public function careers()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-         $resultdata = array();
-        $section = 'careers';
-        
-        $resultdata = array();
-        $data['records'] = array();
-        $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->row_array();
-            $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
-        }
-
-        $this->load->view('careers', $data);
-    }
-
+ 
     public function contact()
     {
         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
@@ -497,6 +332,37 @@ class Pages extends CI_Controller
 
         $this->load->view('termsconditions', $data);
     }
+    public function disclaimer()
+    {
+        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+
+        if ($param_page == "") {
+            $param_page = "home";
+        }
+        $data['canonical'] = site_url($param_page);
+
+        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
+        if ($param_page == "") {
+            $param_page = "home";
+        }
+
+        $resultdata = array();
+        $section = 'terms-conditions';
+        
+        $resultdata = array();
+        $data['records'] = array();
+        $data['resultdata'] = array();
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->row_array();
+            $data['resultdata'] = $resultdata;
+            $data['records'][$resultdata['section']] = $resultdata['details'];
+        }
+
+        $this->load->view('disclaimer', $data);
+    }
     public function cookies()
     {
         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
@@ -526,35 +392,6 @@ class Pages extends CI_Controller
         }
         $this->load->view('cookies', $data);
     }
-    public function accessibility()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $resultdata = array();
-        $section = 'accessibility';
-        
-        $resultdata = array();
-        $data['records'] = array();
-        $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->row_array();
-            $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
-        }
-        $this->load->view('accessibility', $data);
-    }
-
+    
     
 }

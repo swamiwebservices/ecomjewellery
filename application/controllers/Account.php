@@ -100,6 +100,7 @@ class Account extends CI_Controller
         }
 
         $order_info = $this->services->getOrderUUID($order_uuid);
+        //print_r($order_info);exit;
         $order_id = $order_info['order_id'];
 
         if (!$order_info) {
@@ -218,13 +219,7 @@ class Account extends CI_Controller
         foreach ($products as $product) {
             $option_data = array();
 
-            $product_info = ''; //$this->model_catalog_product->getProduct($product['product_id']);
-
-            if ($product_info) {
-                $reorder = '';
-            } else {
-                $reorder = '';
-            }
+           
             $data['products'][] = array(
                 'order_product_id' => $product['order_product_id'],
                 'product_id' => $product['product_id'],
@@ -233,9 +228,9 @@ class Account extends CI_Controller
                 'model' => $product['model'],
                 'option' => $option_data,
                 'quantity' => $product['quantity'],
-                'price' => 0,
-                'total' => 0,
-                'href' => '',
+                'price' => $product['price'],
+                'total' => $product['total'],
+                'slug_name' => $product['slug_name'],
             );
         }
 
@@ -246,7 +241,7 @@ class Account extends CI_Controller
         foreach ($totals as $total) {
             $data['totals'][] = array(
                 'title' => $total['title'],
-                'text' => 0,
+                'text' => $total['value'],
             );
         }
 

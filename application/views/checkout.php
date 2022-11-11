@@ -277,7 +277,8 @@ $getDomainId = $this->services->getDomainId();
     $('#button-confirm').on('click', function(e) {
        // e.preventDefault();
 
-       
+       //form-checkout
+       var dataString = $("#form-checkout").serialize();
         var shipping_payment_error = $("#shipping_payment_error").val();
         if (shipping_payment_error != "") {
             $("#div_shipping_payment_error").html(shipping_payment_error);
@@ -285,7 +286,7 @@ $getDomainId = $this->services->getDomainId();
         } else {
             $("#div_shipping_payment_error").hide();
             var comment = $("#comment").val();
-            var dataString = 'comment=' + comment;
+            //var dataString = 'comment=' + comment;
             $.ajax({
                 type: 'post',
                 dataType: 'html',
@@ -302,8 +303,10 @@ $getDomainId = $this->services->getDomainId();
                 complete: function() {
                     //	$('#button-confirm').button('reset');
                 },
-                success: function(msg) {
+                success: function(dataresp) {
                     //alert(msg);
+                    console.log(dataresp);
+
                     $.unblockUI();
                     location = '<?php echo site_url('checkout/success')?>';
                 }
