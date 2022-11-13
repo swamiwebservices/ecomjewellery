@@ -55,10 +55,10 @@ $route['about-us'] = 'pages/aboutus';
 $route['terms-condition'] = 'pages/termsconditions';
 $route['privacy-policy'] = 'pages/privacypolicy';
 $route['cookies'] = 'pages/cookies';
-
+$route['termsconditions'] = 'pages/termsconditions';
+$route['disclaimer'] = 'pages/disclaimer';
+$route['contact-us'] = 'pages/contact';
 $route['faq'] = 'faq';
- $route['disclaimer'] = 'pages/disclaimer';
- $route['contact-us'] = 'pages/contact';
 
 $route['^category/([a-zA-Z0-9._-]+)'] = "category/index/$1";
 $route['^category/([a-zA-Z0-9._-]+)/([a-zA-Z0-9._-]+)'] = "category/index/$1/$2";
