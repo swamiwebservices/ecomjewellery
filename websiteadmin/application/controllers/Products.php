@@ -470,7 +470,7 @@ class Products extends CI_Controller
 
                     $filename = time() . "-" . $this->common->tep_short_name_list($_FILES['pdf_file']['name']);
                     $file_allowed = array('pdf');
-                    $upload = $this->common->UploadFiles('pdf_file', 'uploads/category/', $filename, $file_allowed);
+                    $upload = $this->common->UploadFiles('pdf_file', '../uploads/category/', $filename, $file_allowed);
                     if ($upload['uploaded'] == 'false') {
 
                         $error = $upload['uploadMsg'];

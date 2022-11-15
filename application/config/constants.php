@@ -93,10 +93,10 @@ defined('ZEROQTYALLOW') or define('ZEROQTYALLOW', '0');
 
 
 if($_SERVER['HTTP_HOST'] == "127.0.0.1:8074") {
-    define("DIR_WS_UPLOAD", 'D:\xampp74\htdocs\bmn');
+    define("DIR_WS_UPLOAD", 'D:\xampp74\htdocs');
     define("SITE_BASE_URL", 'http://127.0.0.1:8074/ecomjewellery');
     } else {
-    define('DIR_WS_UPLOAD', "D:\xampp74\htdocs\bmn'");
-    define("SITE_BASE_URL", 'http://kindmobiel.com/ecomjewellery');	
+    define('DIR_WS_UPLOAD', "D:\xampp74\htdocs");
+    define("SITE_BASE_URL", 'https://www.bondbeyond.ae');	
     }
  

@@ -362,7 +362,9 @@
                                 <label class="control-label col-lg-2" for="sort_order">Specification:</label>
                                 <div class="col-lg-10">
                                     <?php
-                                        $specification = (isset($records['specification'])) ? json_decode($records['specification'],true) : [];
+                                       // print_r($records['specification']);
+                                        $specification2 = (isset($records['specification']) && is_array($records['specification'])) ? $records['specification'] : [];
+                                        $specification = (isset($records['specification']) && !is_array($records['specification']) ) ? json_decode($records['specification'],true) : $specification2;
                                         //print_r($specification);
                                         for($p=1;$p<8;$p++){
                                         ?>
@@ -439,7 +441,7 @@
                                 $domain_org = $domain;
                                 $domain = str_replace(".","_",$domain);
                                 $records_temp = (isset($price_json[$domain])) ?  $price_json[$domain] : [];
-                                //print_r($records_temp);
+                              //  print_r($records_temp);
                                 
                             ?>
                             <fieldset>
@@ -461,7 +463,7 @@
                                         for="mrp_<?php echo $domain_id?>">MRP Price: <span
                                             class="text-danger">*</span></label>
                                     <div class="col-lg-1"><input type="number" min=0
-                                            class="form-control cost mrp mrp_<?php echo $domain_id?>  auto_mrp_<?php echo $domain_id?> numbersOnly"
+                                            class="form-control cost mrp mrp_<?php echo $domain_id?>  auto_mrp_<?php echo $domain_id?> numbersOnly1"
                                             id="mrp<?php echo $domain_id?>" data-domain="<?php echo $domain_id?>"
                                             name="mrp[<?php echo $domain_id?>]" placeholder="MRP"
                                             value="<?php echo isset($mrp[$domain_id])?$this->common->getDbValue($mrp[$domain_id]):''; ?>"
@@ -470,7 +472,7 @@
                                     <label class="col-form-label col-lg-1 " for="sellprice_<?php echo $domain?>">Sell
                                         Price: <span class="text-danger">*</span></label>
                                     <div class="col-lg-1"><input type="number" min=0
-                                            class="form-control cost sellprice sellprice_<?php echo $domain_id?> auto_sellprice_<?php echo $domain_id?> numbersOnly"
+                                            class="form-control cost sellprice sellprice_<?php echo $domain_id?> auto_sellprice_<?php echo $domain_id?> numbersOnly1"
                                             id="sellprice_<?php echo $domain?>" data-domain="<?php echo $domain_id?>"
                                             name="sellprice[<?php echo $domain_id?>]" placeholder="Sell Price"
                                             value="<?php echo isset($sellprice[$domain_id])?$this->common->getDbValue($sellprice[$domain_id]):''; ?>"
@@ -513,13 +515,15 @@
     <script>
     var default_domain_flag = 0;
     <?php
-        $sql = "select * from wti_process_cost order by percentage ";
+        $sql = "select * from wti_process_cost order by domain ";
         $query = $this->db->query($sql);
         $process_costrs = $query->result_array();
         $domain_wise = [];
+        $domain_currency_value = [];
         $default_domain_flag =0;
         foreach($process_costrs as $key => $process_cost){
             $domain_wise[$process_cost['domain']] = $process_cost['percentage'];
+            $domain_currency_value[$process_cost['domain']] = $process_cost['rate'];
             if($process_cost['default_flag']){
                 $default_domain_flag = 1;
             }
@@ -527,22 +531,25 @@
     
         ?>
     var domain_wise = <?php echo json_encode($domain_wise)?>;
+    var domain_currency_value = <?php echo json_encode($domain_currency_value)?>;
+
     default_domain_flag = <?php echo $default_domain_flag?>;
 
     console.log(domain_wise);
     $(document).ready(function() {
         $(".mrp").keyup(function() {
             const mrp_id = $(this).attr('id');
-            const domain = $(this).data('domain');
-            let mrp = parseInt(this.value);
+            const domain = parseInt($(this).data('domain'));
+            let mrp = parseFloat(this.value);
             $(".sellprice_" + domain).val(mrp);
-            console.log(domain);
+            console.log("domain:",domain);
 
             if (domain == default_domain_flag) {
                 $.each(domain_wise, function(key1, val1) {
-                    val1 = parseInt(val1);
+                    val1 = parseFloat(val1);
+                    currency_value = domain_currency_value[key1];
                     if (key1 != default_domain_flag) {
-                        let other_mrp = parseInt(mrp + (mrp * val1 / 100))
+                        let other_mrp = Math.round(parseFloat((mrp + (mrp * val1 / 100)) * currency_value ));
                         $(".auto_mrp_" + key1).val(other_mrp);
                         $(".auto_sellprice_" + key1).val(other_mrp);
 
@@ -557,8 +564,8 @@
         $(".sellprice").keyup(function() {
             const mrp_id = $(this).attr('id');
             const domain = $(this).data('domain');
-            let mrp = parseInt($(".mrp_" + domain).val());
-            let value = parseInt(this.value);
+            let mrp = parseFloat($(".mrp_" + domain).val());
+            let value = parseFloat(this.value);
             if (value >= mrp) {
                 this.value = mrp;
                 value = mrp;

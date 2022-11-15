@@ -1,5 +1,7 @@
 
       <?php
+      $session_user_data = $this->session->userdata('front_user_detail');
+      
       $product_category  = json_decode(file_get_contents('uploads/jsondata/product_category.json'), true);
       ?>
       <!--footer area start-->
@@ -56,12 +58,21 @@
                                     <h3>My Account</h3>
                                     <div class="footer_menu">
                                         <ul>
-                                            <li><a href="my-account.html">My Account</a></li>
-                                            <li><a href="contact.html">Contact</a></li>
-                                            <li><a href="wishlist.html">Wishlist</a></li>
-                                            <li><a href="portfolio.html">Portfolio</a></li>
-                                            <li><a href="checkout.html">Checkout</a></li>
-                                            <li><a href="faq.html">Frequently Questions</a></li>
+                                        <?php
+                                    if (isset($session_user_data['customer_id'])) {
+                                    ?>
+                                            <li><a href="<?php echo site_url("account")?>">My Account</a></li>
+                                            <li><a href="<?php echo site_url("account/address")?>">Address</a></li>
+                                            <li><a href="<?php echo site_url("account/my_wish_list")?>">Wishlist</a></li>
+                                            <?php    
+                                    } else {
+                                    ?>
+                                    <li><a href="<?php echo site_url("login")?>">Login</a></li>
+                                    <li><a href="<?php echo site_url("login/register")?>">Register</a></li>
+                                     <?php }?>       
+                                            <!-- <li><a href="<?php echo site_url("disclaimer")?>">Wishlist</a></li>
+                                           -->
+                                             
                                         </ul>
                                     </div>
                                 </div>

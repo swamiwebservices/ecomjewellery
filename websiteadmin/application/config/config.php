@@ -534,5 +534,5 @@ $config['rewrite_short_tags'] = false;
  */
 $config['proxy_ips'] = '';
 
-$DOMAINs = array(1=>'ecome.in',2=>'ecome.com',3=>'ecome.ae');
+$DOMAINs = array(1=>'bondbeyond.ae',2=>'bondforu.com',3=>'bondbeyond.in');
 $config['DOMAINs'] = $DOMAINs;

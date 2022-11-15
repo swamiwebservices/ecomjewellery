@@ -38,6 +38,11 @@ $domain_id = $this->domain_id;
         background: #05555c;
         /* background-image: url("<?php echo base_url();?>assets/img/logo/bg_breadcrum.jpg"); */
     }
+    .product_black_section .product_hover {
+  background: #242424;
+  left: -17px;
+  width: 113%!important;
+}
     </style>
 </head>
 
@@ -66,7 +71,7 @@ $domain_id = $this->domain_id;
     <!--breadcrumbs area end-->
     
     <!--shop  area start-->
-    <div class="shop_area shop_reverse whitebg">
+    <div class="shop_area shop_reverse product_black_section  whitebg">
         <div class="container">
             <div class="row">
                     <div class="col-lg-3 col-md-12">
@@ -91,7 +96,7 @@ $domain_id = $this->domain_id;
                                 <?php
         
                             foreach($latestProduct as $key => $value){
-                                $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
                                 $price_json = json_decode($value['price_json'],true);
                                 //   print_r($price_json);
                                   $quantity = $price_json['quantity'][$domain_id];
@@ -186,7 +191,7 @@ $domain_id = $this->domain_id;
                                 <div class="row">
                                 <?php
                                 foreach($categoryProduct as $key => $value){
-                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
                                      //   print_r($price_json);
                                      $price_json = json_decode($value['price_json'],true);
                                      //   print_r($price_json);
@@ -196,7 +201,7 @@ $domain_id = $this->domain_id;
                                        
                                      
                                 ?>
-                                   <div class="col-lg-4 col-md-4 col-sm-6">
+                                  <div class="col-lg-4 col-md-4 col-sm-6">
                                         <div class="single_product">
                                             <div class="product_thumb">
                                              
@@ -243,7 +248,7 @@ $domain_id = $this->domain_id;
                                                     </div>
                                                     <div class="action_links">
                                                         <ul>
-                                                            <li><a href="wishlist.html" data-placement="top" title="Add to Wishlist" data-bs-toggle="tooltip"><span class="icon icon-Heart"></span></a></li>
+                                                            <!-- <li><a href="#wishlist.html" data-placement="top" title="Add to Wishlist" data-bs-toggle="tooltip"><span class="icon icon-Heart"></span></a></li> -->
                                                             <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCart" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
                                                            <!--  <li><a href="compare.html" title="compare"><i class="ion-ios-settings-strong"></i></a></li> -->
                                                         </ul>
@@ -258,12 +263,13 @@ $domain_id = $this->domain_id;
                             <div class="tab-pane list_view fade" id="list" role="tabpanel">
                             <?php
                                 foreach($categoryProduct as $key => $value){
-                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
                                      //   print_r($price_json);
-                                     $quantity = $price_json['quantity'][$domain_id];
-                                     $mrp = $price_json['mrp'][$domain_id];
-                                     $sellprice = $price_json['sellprice'][$domain_id];  
-                                     
+                                    $price_json = json_decode($value['price_json'],true);
+                                       $quantity = $price_json['quantity'][$domain_id];
+                                       $mrp = $price_json['mrp'][$domain_id];
+                                       $sellprice = $price_json['sellprice'][$domain_id];  
+                                       
                                 ?>
                                 <div class="single_product product_list_item">
                                    <div class="row">
@@ -313,7 +319,7 @@ $domain_id = $this->domain_id;
                                                 <div class="action_links">
                                                     <ul>
                                                         <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCart" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
-                                                        <li><a href="wishlist.html" title="Wishlist"><span class="icon icon-Heart"></span></a></li>
+                                                        <!-- <li><a href="wishlist.html" title="Wishlist"><span class="icon icon-Heart"></span></a></li> -->
                                                         
                                                         <!-- <li><a href="compare.html" title="compare"><i class="ion-ios-settings-strong"></i></a></li> -->
                                                     </ul>

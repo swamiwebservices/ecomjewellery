@@ -39,5 +39,8 @@ $trandomuuid = $this->common->randomuuid();
     color: #ffffff!important;
 }
 
+div.product_thumb img{
+    border-radius: 5px;
+}
 
 </style>

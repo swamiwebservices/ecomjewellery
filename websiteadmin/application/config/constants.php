@@ -116,14 +116,14 @@ if(setting==2){
     
     define('FIREBASE_API_KEY_USER', 'AAAA09fPpjE:APA91bHD7jIlW2bLYYbrobcGJowMy5Fnh47gau44mhCji2YVODYAedxc1SRRs3aJ_8lilawfNjVZWfv1PmipMr2tFX6t4ZnjyPR4RHFz0Iwe-Kk_MT1Ce8-Ua8YMIbK8sBsKusNtBE3D');
 } else {
-    define('back_path', 'http://kindmobiel.com/ecomjewellery/');
+    define('back_path', 'https://bondbeyond.ae/');
     define('FIREBASE_CREDENTIALS_PATH', 'firebase/bo-ice-2f1ce71da14c.json');
     define('FIREBASE_DATABASE_PATH', 'https://thao-bo-ice.firebaseio.com');
     
-    define('FIREBASE_NOTIFICATION_ADMIN_ORDER_DETAIL_URL', 'http://kindmobiel.com/ecomjewellery/secu_doice/index.php/orders/orderdetail/');
-    define('FIREBASE_NOTIFICATION_MP3', 'http://kindmobiel.com/ecomjewellery/firebase/for-sure.mp3');
-    define('FIREBASE_NOTIFICATION_ICON', 'http://kindmobiel.com/ecomjewellery/firebase/logoforfirebase.png');
-    define('FIREBASE_NOTIFICATION_IMAGE', 'http://kindmobiel.com/ecomjewellery/firebase/logoforfirebase.png');
+    define('FIREBASE_NOTIFICATION_ADMIN_ORDER_DETAIL_URL', 'https://bondbeyond.ae/secu_doice/index.php/orders/orderdetail/');
+    define('FIREBASE_NOTIFICATION_MP3', 'https://bondbeyond.ae/firebase/for-sure.mp3');
+    define('FIREBASE_NOTIFICATION_ICON', 'https://bondbeyond.ae/firebase/logoforfirebase.png');
+    define('FIREBASE_NOTIFICATION_IMAGE', 'https://bondbeyond.ae/firebase/logoforfirebase.png');
     define('FIREBASE_NOTIFICATION_URL', 'https://fcm.googleapis.com/fcm/send');
     define('FIREBASE_API_KEY', 'AAAA-VhoMwI:APA91bH_Y5oSrhzQgrYBjp2xwL128V46ywKysND8isL86hAAd67MHgd2u07EorcDNXfmaY2HfMGuKI2zynL2hBfpu1wk9O7zSqT8xZ1BuB12ZyTSEPoOQr7PTSu6q-ZFjrT5oJYxhc8I');
     define('FIREBASE_PUBLIC_KEY', 'BFco0ok32I-a4H6eTHnX2hswn0mDmftmoauUZKRbryivOQ4Lk6lEWn0vcfg0A6RcR0_zv5RX8B_Q8ljjBdABA44');

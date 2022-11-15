@@ -52,7 +52,6 @@ class Services extends CI_Model
         if ($product_id != "") {
             $sql = "select *  from  product_master p where (status_flag='Active')  and product_id='" . $product_id . "'  ";
         }
-
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $records = $query->row_array();

@@ -5393,8 +5393,8 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 div.product_thumb {
   position: relative;
   margin-bottom: 8px;
-  width: 233px;
-  height: 233px;
+  /* width: 233px;
+  height: 233px; */
 }
 div.product_thumb img{
  height:100%!important;

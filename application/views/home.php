@@ -63,7 +63,7 @@ $domain_id = $this->domain_id;
            
           foreach($latestProduct as $key => $value){
               //print_r($price_json);
-              $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+              $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
 
               $price_json = json_decode($value['price_json'],true);
             //   print_r($price_json);
@@ -190,10 +190,10 @@ $domain_id = $this->domain_id;
                                         <a data-bs-toggle="tab" href="#arrivals" role="tab" aria-controls="arrivals"
                                             aria-selected="false">New Arrivals</a>
                                     </li>
-                                    <li>
+                                    <!-- <li>
                                         <a data-bs-toggle="tab" href="#onsale" role="tab" aria-controls="onsale"
                                             aria-selected="false">Onsale</a>
-                                    </li>
+                                    </li> -->
 
                                 </ul>
                             </div>
@@ -204,7 +204,7 @@ $domain_id = $this->domain_id;
                                             <?php
         
                                                 foreach($latestProduct as $key => $value){
-                                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
                                                     $price_json = json_decode($value['price_json'],true);
                                                     //   print_r($price_json);
                                                       $quantity = $price_json['quantity'][$domain_id];
@@ -307,7 +307,7 @@ $domain_id = $this->domain_id;
                                             <?php
         
                                                 foreach($latestProduct as $key => $value){
-                                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
                                                     $price_json = json_decode($value['price_json'],true);
                                                     //   print_r($price_json);
                                                       $quantity = $price_json['quantity'][$domain_id];
@@ -411,7 +411,7 @@ $domain_id = $this->domain_id;
                                             <?php
         
                                                 foreach($latestProduct as $key => $value){
-                                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+                                                    $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
                                                     $price_json = json_decode($value['price_json'],true);
                                                     //   print_r($price_json);
                                                       $quantity = $price_json['quantity'][$domain_id];

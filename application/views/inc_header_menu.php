@@ -38,6 +38,7 @@ $session_user_data = $this->session->userdata('front_user_detail');
                             <?php
                         foreach($product_category as $key => $menuCategory){
                             //print_r($menuCategory);
+                                if(!empty($menuCategory['sub_category'])){
                             ?>
                             <li class="menu-item-has-children">
                                 <a href="#" class="text-uppercase"><?php echo $menuCategory['name']?></a>
@@ -53,6 +54,14 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                 </ul>
                             </li>
                             <?php
+                                } else {
+                             ?>
+                             <!-- <li class="menu-item-has-children">
+                                <a href="<?php echo site_url("contact-us")?>" class="text-uppercase"> Contact Us</a>
+                            </li> -->
+                            <li><a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>" class="text-uppercase"><?php echo $menuCategory['name']?></a></li>
+                             <?php       
+                                }
                             }
                             ?>
                             <li class="menu-item-has-children">

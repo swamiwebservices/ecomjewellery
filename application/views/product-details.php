@@ -92,6 +92,9 @@ $domain_id = $this->domain_id;
                 <div class="row">
                  
                 <div class="col-lg-6 col-md-6">
+                    <?php 
+                       //print_r($productdetail);
+                    ?>
                    <div class="product-detail-tab">
 
                         <div id="img-1" class="zoomWrapper single-zoom">
@@ -102,15 +105,17 @@ $domain_id = $this->domain_id;
 
                         <div class="single-zoom-thumb">
                             <ul class="s-tab-zoom owl-carousel single-product-active" id="gallery_01">
-                            <li>
+                                   
+                                    <?php
+                                    if(isset($productdetail['other_images'])){
+                                     ?>
+                                      <li>
                                         <a href="javascript:void(0);" class="elevatezoom-gallery active" data-update="" data-image="<?php echo base_url()?>uploads/prod_images/<?php echo $productdetail['main_image']?>"  data-zoom-image="<?php echo base_url()?>uploads/prod_images/<?php echo $productdetail['main_image']?>">
                                             <img src="<?php echo base_url()?>uploads/prod_images/<?php echo $productdetail['main_image']?>"   alt="<?php echo $productdetail['main_image']?>" />
                                         </a>
 
                                     </li>
-                                    <?php
-                                    if(isset($productdetail['other_images'])){
-
+                                     <?php
                                     
                                     foreach($productdetail['other_images'] as $key => $valueImage){
                                     ?>
@@ -183,7 +188,7 @@ $domain_id = $this->domain_id;
                                 </div>
                                 <div class=" product_d_action">
                                     <ul>
-                                        <li><a href="javascript:void(0);" title="Add to wishlist">+ Add to Wishlist</a></li>
+                                        <!-- <li><a href="javascript:void(0);" title="Add to wishlist">+ Add to Wishlist</a></li> -->
                                         <!-- <li><a href="javascript:void(0);" title="Add to wishlist">+ Compare</a></li> -->
                                     </ul>
                                 </div>
@@ -237,10 +242,10 @@ $domain_id = $this->domain_id;
                                             aria-selected="false">Specification</a>
                                     </li>
                                     <?php }?>
-                                    <li>
+                                    <!-- <li>
                                         <a data-bs-toggle="tab" href="#reviews" role="tab" aria-controls="reviews"
                                             aria-selected="false">Reviews (1)</a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
                             <div class="tab-content">
@@ -348,7 +353,7 @@ $domain_id = $this->domain_id;
         <!--product info end-->
 
         <!--product section area start-->
-        <section class="product_section  p_section1 whitebg">
+        <section class="product_section  p_section1 product_black_section whitebg">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -363,7 +368,7 @@ $domain_id = $this->domain_id;
                                 <?php
         
         foreach($latestProduct as $key => $value){
-            $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
+            $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
             $price_json = json_decode($value['price_json'],true);
             //   print_r($price_json);
               $quantity = $price_json['quantity'][$domain_id];
