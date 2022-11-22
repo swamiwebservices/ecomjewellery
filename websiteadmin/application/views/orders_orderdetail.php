@@ -80,6 +80,9 @@ if ($warning) {
 
 
                 <div class="card">
+                    <?php
+                    //print_r($order_info);
+                    ?>
                     <div class="card-header header-elements-inline">
 
                         <div class="pull-left">
@@ -94,11 +97,11 @@ if ($warning) {
                         <div class="row">
                             <div class="col-md-4">
                                 <p class="order-id"> <strong>Order ID:</strong>
-                                    #<?php echo $order_info['invoice_no']; ?></p>
+                                    #<?php echo $order_info['invoice_prefix'].$order_info['invoice_no']?></p>
                             </div>
                             <div class="col-md-4">
                                 <p class="placed-on"><strong><i class="fa fa-calendar fa-fw"></i> Placed on
-                                    </strong><?php echo $order_info['date_added']; ?>
+                                    </strong><?php echo $this->common->getDateFormat($order_info['date_added'], 'd-m-Y h:i A'); ?>
                                 </p>
                             </div>
                         </div>

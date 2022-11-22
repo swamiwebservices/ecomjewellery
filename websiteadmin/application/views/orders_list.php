@@ -107,7 +107,7 @@ $i = 0;
         $i++;
         ?>
                             <tr>
-                                <td><?php echo stripslashes($value['invoice_no']) ?></td>
+                                <td><?php echo $value['invoice_prefix'].$value['invoice_no']?></td>
                                 <td><?php echo stripslashes($value['payment_firstname']) ?>
                                     <?php echo stripslashes($value['payment_lastname']) ?></td>
 

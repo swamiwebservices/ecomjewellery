@@ -141,11 +141,7 @@ class Account extends CI_Controller
         $data['payment_method'] = $order_info['payment_method'];
 
         // Payment Address
-        if ($order_info['payment_address_format']) {
-            $format = $order_info['payment_address_format'];
-        } else {
-            $format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
-        }
+        $format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}'. "\n" . '{mobile}';
 
         $find = array(
             '{firstname}',
@@ -158,6 +154,8 @@ class Account extends CI_Controller
             '{zone}',
             '{zone_code}',
             '{country}',
+            '{mobile}'
+
 
         );
 
@@ -172,17 +170,14 @@ class Account extends CI_Controller
             'zone' => ucfirst($order_info['payment_zone']),
             'zone_code' => $order_info['payment_zone_code'],
             'country' => ucfirst($order_info['payment_country']),
+            'mobile' => ucfirst($order_info['telephone']),
 
         );
 
         $data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
 
         // Shipping Address
-        if ($order_info['shipping_address_format']) {
-            $format = $order_info['shipping_address_format'];
-        } else {
-            $format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}';
-        }
+        $format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}'. "\n" . '{mobile}';
 
         $find = array(
             '{firstname}',
@@ -195,6 +190,7 @@ class Account extends CI_Controller
             '{zone}',
             '{zone_code}',
             '{country}',
+            '{mobile}'
 
         );
 
@@ -209,6 +205,7 @@ class Account extends CI_Controller
             'zone' => ucfirst($order_info['shipping_zone']),
             'zone_code' => $order_info['shipping_zone_code'],
             'country' => ucfirst($order_info['shipping_country']),
+            'mobile' => ucfirst($order_info['shipping_mobile']),
 
         );
 
@@ -479,7 +476,7 @@ class Account extends CI_Controller
 
 		$where_new_rand = " WHERE customer_id=".$session_user_data['customer_id'];
 		$cust_adrs_rs = $this->common->getOneRow('customer_address',$where_new_rand);
-		 
+		// print_r($cust_adrs_rs);
 		if($cust_adrs_rs) {
 			$data['firstname'] = stripslashes($cust_adrs_rs['firstname']);
 			$data['lastname'] = stripslashes($cust_adrs_rs['lastname']);
@@ -489,7 +486,7 @@ class Account extends CI_Controller
 			$data['city'] = stripslashes($cust_adrs_rs['city']);
 			$data['postcode'] = stripslashes($cust_adrs_rs['postcode']);
 			$data['country_id'] = $country_id = stripslashes($cust_adrs_rs['country_id']);
-			 $data['zone_id'] = stripslashes($cust_adrs_rs['zone_id']);	
+			$data['zone_id'] = stripslashes($cust_adrs_rs['zone_id']);	
 			// $data['mobile'] = stripslashes($cust_adrs_rs['mobile']);	
 			
 		} else {
@@ -518,18 +515,16 @@ class Account extends CI_Controller
 		 $this->session->unset_userdata('warning');
 	}
 
-	public function my_wish_list(){
+	public function mywishlist(){
 		$session_user_data = $this->session->userdata('front_user_detail');
 
         if (!isset($session_user_data['customer_id'])) {
-            $redirect = array('redirect' => site_url('account/edit_address'));
+            $redirect = array('redirect' => site_url('account/mywishlist'));
             $this->session->set_userdata($redirect);
 
             redirect("login");
         }
-		$data['lf_act'] = 4;
-		 
-			
+		 	
 			if (isset($_GET['remove'])) {
 			
 		    $pro_id = $this->common->mysql_safe_string($_GET['remove']);

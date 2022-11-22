@@ -290,7 +290,7 @@ class Ecommercemodal extends CI_Model
     }
     public function getOrderProducts($order_id)
     {
-        $query = $this->db->query("SELECT op.*, p.main_image,  p.name FROM order_product op
+        $query = $this->db->query("SELECT op.*, p.main_image,p.item_code,  p.name FROM order_product op
 								left join 	product_master p on op.product_id = p.product_id
 							 WHERE order_id = '" . (int) $order_id . "'");
 
@@ -360,7 +360,7 @@ return $query->result_array() ;
         $other_para = "?v=l";
         $search_qry = " WHERE o.order_id!=0    and o.order_status_id in ($order_status) ".$condtion;
 // inner join user_master_front um on o.customer_id = um.user_id
-         $sSql = "SELECT o.order_id, o.uuid,o.transaction_id,o.invoice_no,o.store_id,o.store_name,o.store_url,o.customer_id, o.firstname,o.lastname,email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_zone,o.payment_country,o.payment_country_id,o.payment_zone_id, o.payment_method,o.payment_code,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_city,o.shipping_postcode,o.shipping_country,o.shipping_country_id,o.shipping_zone,o.shipping_zone_id,o.shipping_code ,o.comment ,o.total ,o.order_status_id, o.date_added,  os.name as order_satus_name, IFNULL(ro.rating, 0) as rating 
+         $sSql = "SELECT o.invoice_prefix, o.order_id, o.uuid,o.transaction_id,o.invoice_no,o.store_id,o.store_name,o.store_url,o.customer_id, o.firstname,o.lastname,email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_zone,o.payment_country,o.payment_country_id,o.payment_zone_id, o.payment_method,o.payment_code,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_city,o.shipping_postcode,o.shipping_country,o.shipping_country_id,o.shipping_zone,o.shipping_zone_id,o.shipping_code ,o.comment ,o.total ,o.order_status_id, o.date_added,  os.name as order_satus_name, IFNULL(ro.rating, 0) as rating 
         FROM `m_order` o  inner join 	m_order_status os on o.order_status_id = os.order_status_id 
         left join review_order ro on o.order_id = ro.order_id
         $search_qry

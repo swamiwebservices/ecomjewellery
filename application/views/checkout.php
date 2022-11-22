@@ -51,6 +51,7 @@ $getDomainId = $this->services->getDomainId();
     <div class="Checkout_section" id="accordion">
         <div class="container">
             <?php
+           
                                 $error = $this->session->flashdata('error');
                                 if ($error!='') {
                             ?>
@@ -88,7 +89,15 @@ $getDomainId = $this->services->getDomainId();
                                             required>
                                         <div id="error-shipping-lastname" class="invalid-feedback"></div>
                                     </div>
-                                    <div class="col-md-12 mb-3">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="input-shipping_mobile" class="form-label">Mobile
+                                            </label>
+                                        <input type="text" name="shipping_mobile"
+                                            value="<?php echo (isset($shipping_address['shipping_mobile'])) ? $shipping_address['shipping_mobile'] : ''?>"
+                                            placeholder="Mobile)" id="input-shipping_mobile"
+                                            class="form-control">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
                                         <label for="input-shipping-company" class="form-label">Company
                                             (Optional)</label>
                                         <input type="text" name="shipping_company"
@@ -96,6 +105,7 @@ $getDomainId = $this->services->getDomainId();
                                             placeholder="Company (optional)" id="input-shipping-company"
                                             class="form-control">
                                     </div>
+                                   
                                     <div class="col-md-12 mb-3 required">
                                         <label for="input-shipping-address-1" class="form-label">Address 1</label>
                                         <input type="text" name="shipping_address_1"
@@ -127,11 +137,18 @@ $getDomainId = $this->services->getDomainId();
                                         <div id="error-shipping-country" class="invalid-feedback"></div>
                                     </div>
                                     <div class="col mb-3 required">
-                                        <label for="input-shipping-zone" class="form-label">State</label>
+                                        <?php 
+                                       // print_r($shipping_address);
+                                        ?>
+                                        <label for="input-shipping-zone" class="form-label">Region /
+                                                State</label>
                                         <select name="shipping_zone_id" id="input-shipping-zone" class="form-select"
                                             required>
                                             <option value=""> --- Please Select --- </option>
-                                            <option value="-99" selected=""> --- None --- </option>
+                                            <?php foreach($state_rs as $det){?>
+                                                    <option value="<?php echo stripslashes($det['zone_id'])?>" <?php if($shipping_address['shipping_zone_id']==$det['zone_id']){?>selected<?php } ?>>
+                                                        <?php echo stripslashes($det['name'])?></option>
+                                                    <?php } ?>
                                         </select>
                                         <div id="error-shipping-zone" class="invalid-feedback"></div>
                                     </div>
@@ -249,11 +266,12 @@ $getDomainId = $this->services->getDomainId();
                     // } else {
                     //     $('#input-shipping-postcode').parent().removeClass('required');
                     // }
+                    var input_zone = $("#input-shipping-zone").val();
                     html = '<option value=""> --- Please Select --- </option>';
                     if (json['zone'] && json['zone'] != '') {
                         for (i = 0; i < json['zone'].length; i++) {
                             html += '<option value="' + json['zone'][i]['zone_id'] + '"';
-                            if (json['zone'][i]['zone_id'] == '') {
+                            if (json['zone'][i]['zone_id'] == input_zone) {
                                 html += ' selected';
                             }
                             html += '>' + json['zone'][i]['name'] + '</option>';
@@ -289,7 +307,7 @@ $getDomainId = $this->services->getDomainId();
             //var dataString = 'comment=' + comment;
             $.ajax({
                 type: 'post',
-                dataType: 'html',
+                dataType: 'json',
                 data: dataString,
                 cache: false,
                 url: '<?php echo site_url('cod/confirm')?>',
@@ -308,7 +326,8 @@ $getDomainId = $this->services->getDomainId();
                     console.log(dataresp);
 
                     $.unblockUI();
-                    location = '<?php echo site_url('checkout/success')?>';
+
+                    location = '<?php echo site_url('checkout/success/')?>'+dataresp.uuid;
                 }
             });
         }

@@ -146,7 +146,7 @@ $domain_id = $this->domain_id;
                                     <li class="next"><a href="javascript:void(0);"><i class="fa fa-angle-right"></i></a></li>
                                 </ul>
                             </div> -->
-                                <div class=" product_ratting">
+                                <!-- <div class=" product_ratting">
                                     <ul>
                                         <li><a href="javascript:void(0);"><i class="fa fa-star"></i></a></li>
                                         <li><a href="javascript:void(0);"><i class="fa fa-star"></i></a></li>
@@ -155,7 +155,7 @@ $domain_id = $this->domain_id;
                                         <li><a href="javascript:void(0);"><i class="fa fa-star"></i></a></li>
                                         <li><a href="javascript:void(0);"> (customer review ) </a></li>
                                     </ul>
-                                </div>
+                                </div> -->
                                 <div class="product_d_meta">
                                     <span>Model: <?php echo $productdetail['item_code']?></span>
                                     <span>Availability: <?php echo ($quantity>0) ? 'In Stock' : 'Out Of Stock' ?></span>
@@ -358,7 +358,7 @@ $domain_id = $this->domain_id;
                 <div class="row">
                     <div class="col-12">
                         <div class="section_title">
-                            <h2>Related products</h2>
+                            <h2>Latest Products</h2>
                         </div>
                     </div>
                     <div class="col-12">
@@ -419,7 +419,7 @@ $domain_id = $this->domain_id;
                 ?>
                 </div>
                 <div class="product_hover">
-                    <div class="product_ratings">
+                    <!-- <div class="product_ratings">
                         <ul>
                             <li><a href="javascript:void(0);"><i
                                         class="ion-ios-star-outline"></i></a>
@@ -437,14 +437,14 @@ $domain_id = $this->domain_id;
                                         class="ion-ios-star-outline"></i></a>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
                     <div class="product_desc">
                         <p><?php echo $this->common->pdesc($value['description'])?>
                         </p>
                     </div>
                     <div class="action_links">
                         <ul>
-                            <li><a href="wishlist.html" data-placement="top"
+                            <li><a href="javascript:void(0);"  onclick="mgk_wishlist.add('<?php echo $value['product_id']?>');" data-placement="top"
                                     title="Add to Wishlist"
                                     data-bs-toggle="tooltip"><span
                                         class="icon icon-Heart"></span></a></li>

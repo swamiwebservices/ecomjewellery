@@ -339,7 +339,7 @@ class Orders extends CI_Controller
                 'order_product_id' => $product['order_product_id'],
                 'product_id' => $product['product_id'],
                 'name' => $product['name'],
-                'model' => '',
+                'model' => $product['item_code'],
                 'main_image' => $product['main_image'],
                 'quantity' => $product['quantity'],
                 'order_status_name' => isset($product['order_status_name']) ? $product['order_status_name'] : '',

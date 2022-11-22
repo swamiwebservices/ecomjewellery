@@ -184,7 +184,7 @@ ul {
     float: left !important;
     width: 70% !important;
 }
-.main_menu nav > ul > li > a{padding: 10px 20px !important;}
+.main_menu nav > ul > li > a{padding: 10px 10px !important;}
 .header_black .header_middel {
     border-bottom: 5px solid #939598 !important;
 }
@@ -266,7 +266,7 @@ ul {
     background-repeat: repeat !important;
     background-size: cover !important;}*/
 .footer_black .footer_contact ul li a{background-color: #fec210 !important;}
-.widgets_container .logo img{width:74px !important;}
+.widgets_container .logo img{width:120px !important;}
 .blog_black .blog_wrapper .owl-nav {
     background: #fec210 !important;
 }
@@ -1272,7 +1272,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 }
 
 .logo {
-  padding: 0 20px;
+  padding: 0 0px;
 }
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .logo {
@@ -9153,7 +9153,7 @@ div.product_thumb img{
   color: #5a5a5a;
 }
 .contact_message textarea {
-  height: 170px;
+  /* height: 170px; */
   border: 1px solid #ebebeb;
   background: #ffffff;
   resize: none;
@@ -9162,23 +9162,7 @@ div.product_thumb img{
   padding: 10px 20px;
   color: #5a5a5a;
 }
-.contact_message button {
-  font-weight: 400;
-  height: 42px;
-  line-height: 42px;
-  padding: 0 30px;
-  text-transform: capitalize;
-  border: none;
-  background: #242424;
-  color: #ffffff;
-  cursor: pointer;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-  border-radius: 4px;
-}
-.contact_message button:hover {
-  background: #c09578;
-}
+
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .contact_message.content {
     margin-bottom: 62px;
@@ -12160,4 +12144,10 @@ div.product_thumb img{
 
 .text-footer:hover {
   color: #a8741a!important;
+}
+.text-link{
+  color:#fec210;
+}
+text-link:hover {
+  color: #05535A ;
 }

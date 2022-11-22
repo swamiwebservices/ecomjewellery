@@ -234,12 +234,12 @@
 
                                 </div>
                                 <label class="col-form-label col-lg-2 text-right" for="item_code">Item Code:<span
-                                        class="text-danger">*</span></label>
+                                        class="text-danger"></span></label>
                                 <div class="col-lg-4">
                                     <input type="text" class="form-control maxlength-textarea " maxlength="150"
                                         id="item_code" name="item_code" placeholder="Item Code"
                                         value="<?php echo isset($records['item_code'])?$this->common->getDbValue($records['item_code']):''; ?>"
-                                        required>
+                                        required1>
 
                                 </div>
                             </div>

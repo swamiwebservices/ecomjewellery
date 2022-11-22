@@ -140,7 +140,7 @@ class Products extends CI_Controller
            
 
             if ($name == '') {$error .= "Please enter Name/Title  <br>";}
-            if ($item_code == '') {$error .= "Please enter Item Code <br>";}
+            //if ($item_code == '') {$error .= "Please enter Item Code <br>";}
             if ($category_id == '0|0') {$error .= "Please select category_id <br>";}
 
 

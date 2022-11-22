@@ -28,6 +28,7 @@ class Login extends CI_Controller
 
         $this->load->model('common');
         $this->load->model('services');
+        $this->load->model('configmodal');
 
         $this->load->helper('security');
         $this->load->library('email');
@@ -88,14 +89,24 @@ class Login extends CI_Controller
 
         if (isset($_POST['frm_mode']) == "get_register") {
             $error = "";
+
+
             $add_in['telephone'] = $telephone = (isset($_POST['telephone'])) ? $this->input->post('telephone') : '';
-            $add_in['email'] = $email = $this->input->post('email');
-
-            $add_in['firstname'] = $firstname = $this->input->post('firstname');
-            $add_in['lastname'] = $lastname = $this->input->post('lastname');
-
-            $add_in['newsletter'] = $newsletter = '0'; //$this->input->post($_POST['newsletter']);
-            $add_in['password'] = $password = $this->input->post('password');
+            $add_in['email'] = $email = (isset($_POST['email'])) ? $this->input->post('email') : '';
+            $add_in['firstname'] = $firstname = (isset($_POST['firstname'])) ? $this->input->post('firstname') : '';
+            $add_in['lastname'] = $lastname = (isset($_POST['lastname'])) ? $this->input->post('lastname') : '';
+            $add_in['password'] = $password = (isset($_POST['password'])) ? $this->input->post('password') : '';
+            $confirm_password = (isset($_POST['confirm_password'])) ? $this->input->post('confirm_password') : '';
+            $add_in['address_1'] = $address_1 = (isset($_POST['address_1'])) ? $this->input->post('address_1') : '';
+            $add_in['address_2'] = $address_2 = (isset($_POST['address_2'])) ? $this->input->post('address_2') : '';
+            $add_in['city'] = $city = (isset($_POST['city'])) ? $this->input->post('city') : '';
+            $add_in['postcode'] = $postcode = (isset($_POST['postcode'])) ? $this->input->post('postcode') : '';
+            $add_in['country_id'] = $country_id = (isset($_POST['country_id'])) ? $this->input->post('country_id') : '';
+            $add_in['zone_id'] = $zone_id = (isset($_POST['zone_id'])) ? $this->input->post('zone_id') : '';
+            $add_in['default'] = $default = 1; //$this->input->post($_POST['default']);
+            
+            $add_in['newsletter'] = (isset($_POST['newsletter'])) ? $this->input->post('newsletter') : '0';
+           
             $confirm = $this->input->post('confirm_password');
             if ($password != $confirm) {
                 $error = "Confirm Password does not match";
@@ -139,13 +150,109 @@ class Login extends CI_Controller
                 $this->session->set_flashdata($error_arra);
             }
         }
-        $data_info = $_POST;
-        //print_r($_POST);
-        $data['records'] = $data_info;
+
+        if(sizeof($_POST)>0) {
+            $data_info = $_POST;
+            //print_r($_POST);
+           
+            $data['records'] = $data_info;
+			
+		} else {
+	 
+			$data['records']['country_id'] = $country_id = '221';
+			 
+		}
+
+       
+
+        $where_cond = "  ORDER BY name";
+		$data['country_rs'] = $country_rs = $this->common->getAllRow('m_country',$where_cond);
+
+        $where_cond = "  WHERE country_id='".$country_id."' ORDER BY name";
+		$data['state_rs'] = $state_rs = $this->common->getAllRow('m_zone',$where_cond);
+
         $this->load->view("register", $data);
         $this->session->unset_userdata('success');
         $this->session->unset_userdata('warning');
         $this->session->unset_userdata('error');
     }
+    public function forgotten(){
+		//mail("swamiwebservices@gmail.com","test","test");
+		 $data['cat_slug'] = 0;
+		 
+		  if(isset($_POST['mode']) && $_POST['mode']=='forgotten'){
+			 
+			  $sql_data_array['email'] 	= $email = $this->common->mysql_safe_string($_POST['email']);
+			  $sql = "select * from m_customer WHERE LOWER(email) = '" . $email . "' ";
+			  $query = $this->db->query($sql);
+				if($query->num_rows()>0) {
+				$customer_info = $query->row_array(); 
+					
+				$config_site_from_name 	 =  $this->configmodal->get('config_site_from_name');
+				$config_name =    $_SERVER['HTTP_HOST'];;		
+                $password = substr(sha1(uniqid(mt_rand(), true)), 0, 10);
+                $salt = $this->common->token(9);
+               $add_in['salt'] = $salt;
+               $new_pass = $salt;// sha1($salt . sha1($salt . sha1($password)));
+               
+               $this->db->query("UPDATE m_customer SET salt = '" . $salt . "', password = '" . $new_pass . "' WHERE LOWER(email) = '" . $email . "'");
 
+               //mail code
+               $subject = sprintf('%s - New Password', $config_site_from_name);
+
+               $message  = sprintf('A new password was requested from %s.',$config_name) . "\n\n";
+               $message .= 'Your new password to is:' . "\n\n";
+               $message .= $password;
+                
+               
+               //$myFile = './html_emails/account_create.html';
+           //	$from_email = FROM_EMAIL;
+               
+                    $content = $message;
+                   $this->email->from($this->configmodal->get('config_site_mail'));
+                   $this->email->to($email);
+                   $this->email->subject($subject);
+                   $this->email->message($content);
+                   $this->email->send();
+                   
+                    /*
+                   $mail = new Mail();
+                   $mail->protocol = $this->configmodal->get('config_mail_protocol');
+                   $mail->parameter = $this->configmodal->get('config_mail_parameter');
+                   $mail->hostname = $this->configmodal->get('config_smtp_host');
+                   $mail->username = $this->configmodal->get('config_smtp_username');
+                   $mail->password = $this->configmodal->get('config_smtp_password');
+                   $mail->port = $this->configmodal->get('config_smtp_port');
+                   $mail->timeout = $this->configmodal->get('config_smtp_timeout');				
+                   $mail->setTo($email);
+                   $mail->setFrom($this->configmodal->get('config_email'));
+                   $mail->setSender($this->configmodal->get('config_name'));
+                   $mail->setSubject(html_entity_decode($subject, ENT_QUOTES, 'UTF-8'));
+                   $mail->setText(html_entity_decode($message, ENT_QUOTES, 'UTF-8'));
+                   $mail->send();
+                    */
+               //end of mail code
+                
+               
+               $newdata = array('success'  => ' Success: A new password has been sent to your e-mail address.!');
+               $this->session->set_flashdata($newdata);
+             //  $this->session->set_userdata($newdata);
+                redirect("login");
+				 
+				} else {
+				 $newdata = array('error'  => ' Warning: The E-Mail Address was not found in our records, please try again!');
+                 $this->session->set_flashdata($newdata);
+ 				// $this->session->set_userdata($newdata);
+                 redirect("login/forgotten");
+				}
+			   
+		  } else {
+			 //  $newdata = array('warning'  => ' Warning: Please enter E-Mail Address!');
+						  
+ 			 // $this->session->set_userdata($newdata);
+		  }
+		$this->load->view('forgotten',$data);
+		$this->session->unset_userdata('success');
+		$this->session->unset_userdata('warning');
+	}
 }

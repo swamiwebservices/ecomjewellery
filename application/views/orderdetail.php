@@ -186,17 +186,18 @@ $domain_id = $this->domain_id;
                     <div class="row">
 
                         <div id="content" class="col-sm-9">
-                            
+
                             <table class="table table-bordered table-hover">
                                 <thead>
                                     <tr>
-                                        <th class="text-left" >Order Details</th>
-                                        <th class="text-left" ><b>Order ID:</b> #<?php echo $order_info['invoice_no']?></th>
+                                        <th class="text-left">Order Details</th>
+                                        <th class="text-left"><b>Order ID:</b>
+                                            #<?php echo $order_info['invoice_prefix'].$order_info['invoice_no']?></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td class="text-left" style="width: 50%;"> 
+                                        <td class="text-left" style="width: 50%;">
                                             <b>Date Added:</b> <?php echo $date_added; ?>
                                         </td>
                                         <td class="text-left" style="width: 50%;"> <b>Payment Method:</b>
@@ -214,7 +215,7 @@ $domain_id = $this->domain_id;
                                         <th class="text-left" style="width: 50%; vertical-align: top;">Payment Address
                                         </th>
                                         <th class="text-left" style="width: 50%; vertical-align: top;">
-                                           Shipping Address</th>
+                                            Shipping Address</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -246,12 +247,13 @@ foreach ($products as $product) {
     ?>
                                         <tr>
                                             <td class="text-left">
-                                            <a href="<?php echo site_url('product-detail/'.$product['slug_name']);?>"><?php echo $product['name']?></a>
-                                                
+                                                <a
+                                                    href="<?php echo site_url('product-detail/'.$product['slug_name']);?>"><?php echo $product['name']?></a>
+
                                                 <div class="product-image-sm">
                                                     <img src="<?php echo $main_image;?>">
-                                          
-?>
+
+
                                             </td>
                                             <td class="text-left">
                                                 <?php echo $this->common->getDbValue($product['model']); ?></td>
@@ -332,7 +334,7 @@ foreach ($products as $product) {
 
                             <div class="buttons clearfix">
                                 <div class="pull-right"><a href="<?php echo site_url("account")?>"
-                                                        class="btn btn-light">Back</a></div>
+                                        class="btn btn-light">Back</a></div>
                             </div>
                         </div>
 
@@ -340,8 +342,7 @@ foreach ($products as $product) {
 
                         <aside id="column-right" class="col-right col-xs-12  col-sm-3">
                             <?php 
-
-$this->load->view('account_left'); ?>
+                            $this->load->view('account_left'); ?>
                         </aside>
                     </div>
                 </div>

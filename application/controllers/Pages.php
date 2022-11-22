@@ -205,8 +205,8 @@ class Pages extends CI_Controller
 
                     $fileg = file_get_contents("htmlemails/mail_contactus.html");
 
-                    $pattern = array('/{fname}/',  '/{email}/', '/{message}/', '/{DATE}/');
-                    $replacement = array( $contact_fname, $contact_email, $contact_message, $dateadded);
+                    $pattern = array('/{fname}/',  '/{email}/', '/{subject}/','/{message}/', '/{DATE}/');
+                    $replacement = array( $contact_fname, $contact_email,$contact_subject, $contact_message, $dateadded);
                     $mess_body = preg_replace($pattern, $replacement, $fileg);
                     $contact_name = $contact_fname;
 
@@ -286,21 +286,84 @@ class Pages extends CI_Controller
             $param_page = "home";
         }
         $resultdata = array();
-        $section = 'privacy-policy';
+        $section = 'privacy';
         
+        $data['section'] = $section;
+        $domains = $this->services->getDomainId();
         $resultdata = array();
         $data['records'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
             $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
+            $data['records'] = $resultdata['details'];
         }
-        $this->load->view('privacypolicy', $data);
+        $this->load->view('privacy-policy', $data);
     }
+    public function refund()
+    {
+        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
 
+        if ($param_page == "") {
+            $param_page = "home";
+        }
+        $data['canonical'] = site_url($param_page);
+
+        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
+        if ($param_page == "") {
+            $param_page = "home";
+        }
+        $resultdata = array();
+        $section = 'privacy';
+        
+        $data['section'] = $section;
+        $domains = $this->services->getDomainId();
+        $resultdata = array();
+        $data['records'] = array();
+        $data['resultdata'] = array();
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->row_array();
+            $data['resultdata'] = $resultdata;
+            $data['records'] = $resultdata['details'];
+        }
+        $this->load->view('refund', $data);
+    }
+    public function shippingpolicy()
+    {
+        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+
+        if ($param_page == "") {
+            $param_page = "home";
+        }
+        $data['canonical'] = site_url($param_page);
+
+        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
+        if ($param_page == "") {
+            $param_page = "home";
+        }
+        $resultdata = array();
+        $section = 'shippingpolicy';
+        
+        $data['section'] = $section;
+        $domains = $this->services->getDomainId();
+        $resultdata = array();
+        $data['records'] = array();
+        $data['resultdata'] = array();
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->row_array();
+            $data['resultdata'] = $resultdata;
+            $data['records'] = $resultdata['details'];
+        }
+        $this->load->view('shippingpolicy', $data);
+    }
     public function termsconditions()
     {
         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
@@ -317,17 +380,18 @@ class Pages extends CI_Controller
         }
 
         $resultdata = array();
-        $section = 'terms-conditions';
-        
+        $section = 'termscondtion';
+        $data['section'] = $section;
+        $domains = $this->services->getDomainId();
         $resultdata = array();
         $data['records'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
             $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
+            $data['records'] = $resultdata['details'];
         }
 
         $this->load->view('termsconditions', $data);
@@ -348,50 +412,23 @@ class Pages extends CI_Controller
         }
 
         $resultdata = array();
-        $section = 'terms-conditions';
-        
+        $section = 'disclaimer';
+        $data['section'] = $section;
+        $domains = $this->services->getDomainId();
         $resultdata = array();
         $data['records'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
             $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
+            $data['records'] = $resultdata['details'];
         }
 
         $this->load->view('disclaimer', $data);
     }
-    public function cookies()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $resultdata = array();
-        $section = 'cookies';
-        
-        $resultdata = array();
-        $data['records'] = array();
-        $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->row_array();
-            $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
-        }
-        $this->load->view('cookies', $data);
-    }
+    
     
     
 }

@@ -70,17 +70,17 @@ if(sizeof($sel_rs)){
 ?>
                                     <table class="table table-hover">
                                         <colgroup>
-                                            <col width="10%">
+                                            <col >
                                             </col>
-                                            <col width="35%">
+                                            <col >
                                             </col>
-                                            <col width="13%">
+                                            <col >
                                             </col>
-                                            <col width="10%">
+                                            <col >
                                             </col>
-                                            <col width="15%">
+                                            <col >
                                             </col>
-                                            <col width="17%">
+                                            <col >
                                             </col>
                                         </colgroup>
                                         <thead>
@@ -88,7 +88,7 @@ if(sizeof($sel_rs)){
                                                 <th class="text-center">Image</th>
                                                 <th class="text-left">Product Name</th>
                                                 <th class="text-left">Model</th>
-                                                <th class="text-right">Stock</th>
+                                                <!-- <th class="text-right">Stock</th> -->
                                                 <th class="text-right">Unit Price</th>
                                                 <th class="text-right">Action</th>
                                             </tr>
@@ -97,55 +97,47 @@ if(sizeof($sel_rs)){
                                             <?php
  
 foreach($sel_rs as $det){
-	
-				$pro_slug = $this->common->getDbValue($det['name_slug']);	
-				if($pro_slug==""){
-					$pro_slug = $det['product_id'];
-				}
+    $main_image = (isset($det['main_image']) && $det['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$det['main_image']:base_url().'assets/img/350x350.png';
+    //   print_r($price_json);
+   $price_json = json_decode($det['price_json'],true);
+      $quantity = $price_json['quantity'][$domain_id];
+      $mrp = $price_json['mrp'][$domain_id];
+      $sellprice = $price_json['sellprice'][$domain_id];  
+
+				 
 	
 ?>
                                             <tr>
                                                 <td class="text-center"> <a
-                                                        href="<?php echo site_url('detail/'.$pro_slug.'/'.$det['product_id'])?>"><img
-                                                            src="<?php echo $this->common->showImage('uploads/prod_images/',$det['image']);?>"
+                                                        href="<?php echo site_url('product-detail/'.$det['slug_name']);?>"><img
+                                                            src="<?php echo $main_image;?>"
                                                             alt="<?php echo $this->common->getDbValue($det['name'])?>"
                                                             title="<?php echo $this->common->getDbValue($det['name'])?>"
                                                             style="max-height:47px; width:auto" /></a>
                                                 </td>
                                                 <td class="text-left"><a
-                                                        href="<?php echo site_url('detail/'.$pro_slug.'/'.$det['product_id'])?>"><?php echo $this->common->getDbValue($det['name'])?></a>
+                                                        href="<?php echo site_url('product-detail/'.$det['slug_name']);?>"><?php echo $this->common->getDbValue($det['name'])?></a>
                                                 </td>
                                                 <td class="text-left">
-                                                    <?php echo $this->common->getDbValue($det['model'])?></td>
-                                                <td class="text-right">
-                                                    <?php
-              	if($det['quantity']>0){
-					echo 'In Stock';
-				} else {
-					echo 'Out of Stock';
-				}
-			  ?>
-                                                </td>
+                                                    <?php echo $this->common->getDbValue($det['item_code'])?></td>
+                                                
                                                 <td class="text-right">
                                                     <div class="price">
-                                                        <?php
-
-                if($det['special_price']>0){
-
-				?>
-                                                        <p class="old-price"><span
-                                                                class="price"><?php echo $this->currencymodal->format($det['price'],$this->session->userdata('currency'))?></span>
-                                                        </p>
-                                                        <p class="special-price"><span
-                                                                class="price"><?php echo $this->currencymodal->format($det['special_price'],$this->session->userdata('currency'))?></span>
-                                                        </p>
-                                                        <?php } else {
-				?>
-                                                        <p class="regular-price"><span
-                                                                class="price"><?php echo $this->currencymodal->format($det['price'],$this->session->userdata('currency'))?></span>
-                                                        </p>
-                                                        <?php	
-				}?>
+                                                    <?php
+                                                        if($sellprice<$mrp){
+                                                        ?>
+                                                            <span
+                                                                class="old_price"><?php echo $this->services->format($mrp)?></span>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                        }else {
+                                                        ?>
+                                                            <span
+                                                                class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                            <?php    
+                                                        }
+                                                        ?>
                                                     </div>
                                                 </td>
                                                 <td class="text-right"><button type="button"
@@ -153,7 +145,7 @@ foreach($sel_rs as $det){
                                                         data-toggle="tooltip" title="Add to Cart"
                                                         class="btn btn-primary"><i
                                                             class="fa fa-shopping-cart"></i></button>
-                                                    <a href="<?php echo site_url("my_dashboard/my_wish_list");?>?remove=<?php echo $det['product_id']?>"
+                                                    <a href="<?php echo site_url("account/mywishlist");?>?remove=<?php echo $det['product_id']?>"
                                                         data-toggle="tooltip" title="Remove" class="btn btn-danger"><i
                                                             class="fa fa-times"></i></a>
                                                 </td>

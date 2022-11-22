@@ -6,8 +6,22 @@ $domain_id = $this->domain_id;
 
 <head>
     <?php $this->load->view('inc_metacss'); ?>
+
     <style>
-    
+    .product_container.categorybottom button {
+    display: block !important;
+    position: absolute;
+    top: 105px;
+    /* right: 0px; */
+    z-index: 99;
+    border: 0;
+    background: inherit;
+    font-size: 23px;
+    background: #FEC210;
+}
+.product_container.categorybottom button.next_arrow {
+    right: 0px;
+}
     </style>
 </head>
 
@@ -39,25 +53,74 @@ $domain_id = $this->domain_id;
         </div>
         <?php }?>
         <!--slider area end-->
+        <section class="banner_section mt-5">
+            <div class="container">
+            <div class="col-12">
+                        <div class="section_title">
+                            <h2>Shop By Category</h2>
+                        </div>
+                    </div>
+                <div class="row">
 
-      
+                <div class="col-12">
+                        <div class="product_area">
+                            <div class="product_container categorybottom">
+                                <div class="custom-row category_row1">
+                                    <?php
+           
+           //  echo $this->domain_id; exit;
+           $product_category  = json_decode(file_get_contents('uploads/jsondata/product_category.json'), true);
+           //print_r($product_category);
+           foreach($product_category as $key => $menuCategory){
+            $main_image = (isset($menuCategory['main_image']) && $menuCategory['main_image']!="" ) ? base_url().'uploads/category/350-'.$menuCategory['main_image']:'https://via.placeholder.com/150x100';
+              
+          ?>
+                                    <div class="custom-col-5">
+                                        <div class="single_product">
+                                            <div class="product_thumb">
+                                                <a class="primary_img"  href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>"><img src="<?php echo $main_image?>" alt="<?php echo $menuCategory['name']?>"></a>
+                                                 
+                                                 
+                                            </div>
+                                            <div class="product_content">
+                                               
+                                                <h3><a
+                                                        href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>"><?php echo $menuCategory['name']?></a>
+                                                </h3>
+                                                 
+                                                 
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php }?>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+
         <!--product section area start-->
         <?php
         if(isset($latestProduct)  && sizeof($latestProduct) > 0 ){
         ?>
-          <section class="product_section p_section1 product_black_section whitebg">
+        <section class="product_section p_section1 product_black_section whitebg">
             <div class="container">
-                <div class="row">  
+                <div class="row">
                     <div class="col-12">
                         <div class="section_title">
                             <h2>Latest Products</h2>
-                        </div> 
-                    </div> 
+                        </div>
+                    </div>
                     <div class="col-12">
-                        <div class="product_area"> 
+                        <div class="product_area">
                             <div class="product_container bottom">
                                 <div class="custom-row product_row1">
-                                <?php
+                                    <?php
            
            //  echo $this->domain_id; exit;
            
@@ -72,82 +135,91 @@ $domain_id = $this->domain_id;
               $sellprice = $price_json['sellprice'][$domain_id];  
               
           ?>
-              <div class="custom-col-5">
-                  <div class="single_product">
-                      <div class="product_thumb">
-                          <a class="primary_img"
-                              href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
-                                  src="<?php echo $main_image?>" alt=""></a>
-                          <a class="secondary_img"
-                              href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
-                                  src="<?php echo $main_image?>" alt=""></a>
-                          <div class="quick_button">
-                              <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box" data-placement="top"  data-original-title="quick view" data-uuid="<?php echo $value['uuid']; ?>"
+                                    <div class="custom-col-5">
+                                        <div class="single_product">
+                                            <div class="product_thumb">
+                                                <a class="primary_img"
+                                                    href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
+                                                        src="<?php echo $main_image?>" alt=""></a>
+                                                <a class="secondary_img"
+                                                    href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
+                                                        src="<?php echo $main_image?>" alt=""></a>
+                                                <div class="quick_button">
+                                                    <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box" data-placement="top"  data-original-title="quick view" data-uuid="<?php echo $value['uuid']; ?>"
                                   data-pdata="<?php echo json_encode($value); ?>"> quick view</a> -->
-                          </div>
-                      </div>
-                      <div class="product_content">
-                          <!--  <div class="tag_cate">
+                                                </div>
+                                            </div>
+                                            <div class="product_content">
+                                                <!--  <div class="tag_cate">
                               <a href="#">Clothing,</a>
                               <a href="#">Potato chips</a>
                           </div> -->
-                          <h3><a
-                                  href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
-                          </h3>
-                          <div class="price_box">
-                              <?php
+                                                <h3><a
+                                                        href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
+                                                </h3>
+                                                <div class="price_box">
+                                                    <?php
                               if($sellprice<$mrp){
                               ?>
-                              <span
-                                  class="old_price"><?php echo $this->services->format($mrp)?></span>
-                              <span
-                                  class="current_price"><?php echo $this->services->format($sellprice)?></span>
-                              <?php    
+                                                    <span
+                                                        class="old_price"><?php echo $this->services->format($mrp)?></span>
+                                                    <span
+                                                        class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                    <?php    
                               }else {
                               ?>
-                              <span
-                                  class="current_price"><?php echo $this->services->format($sellprice)?></span>
-                              <?php    
+                                                    <span
+                                                        class="current_price"><?php echo $this->services->format($sellprice)?></span>
+                                                    <?php    
                               }
                               ?>
 
 
-                          </div>
-                          <div class="product_hover">
-                              <div class="product_ratings">
-                                  <ul>
-                                  <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                  <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                  <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                  <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                  <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
-                                  </ul>
-                              </div>
-                              <div class="product_desc">
-                                  <p><?php echo $this->common->pdesc($value['description'])?></p>
-                              </div>
-                              <div class="action_links">
-                                  <ul>
-                                      <li><a href="wishlist.html" data-placement="top"
-                                              title="Add to Wishlist"
-                                              data-bs-toggle="tooltip"><span
-                                                  class="icon icon-Heart"></span></a></li>
-                                      <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCart" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'    title="add to cart">add to cart</a></li>
-                                      <!-- <li><a href="compare.html" title="compare"><i
+                                                </div>
+                                                <div class="product_hover">
+                                                    <!-- <div class="product_ratings">
+                                                        <ul>
+                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
+                                                            </li>
+                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
+                                                            </li>
+                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
+                                                            </li>
+                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
+                                                            </li>
+                                                            <li><a href="#"><i class="ion-ios-star-outline"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                    </div> -->
+                                                    <div class="product_desc">
+                                                        <p><?php echo $this->common->pdesc($value['description'])?></p>
+                                                    </div>
+                                                    <div class="action_links">
+                                                        <ul>
+                                                            <li><a href="javascript:void(0);"  onclick="mgk_wishlist.add('<?php echo $value['product_id']?>');" data-placement="top"
+                                                                    title="Add to Wishlist"
+                                                                    data-bs-toggle="tooltip"><span
+                                                                        class="icon icon-Heart"></span></a></li>
+                                                            <li class="add_to_cart"><a href="javascript:void(0);"
+                                                                    class="btnAddCart"
+                                                                    data-product_id='<?php echo $value['product_id']?>'
+                                                                    data-qty='1' title="add to cart">add to cart</a>
+                                                            </li>
+                                                            <!-- <li><a href="compare.html" title="compare"><i
                                                   class="ion-ios-settings-strong"></i></a></li> -->
-                                  </ul>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              </div>
-              <?php }?>
-                                     
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <?php }?>
+
                                 </div>
-                            </div> 
+                            </div>
                         </div>
                     </div>
-                </div>    
+                </div>
             </div>
         </section>
         <?php }?>
@@ -255,7 +327,7 @@ $domain_id = $this->domain_id;
                                                             ?>
                                                         </div>
                                                         <div class="product_hover">
-                                                            <div class="product_ratings">
+                                                            <!-- <div class="product_ratings">
                                                                 <ul>
                                                                     <li><a href="#"><i
                                                                                 class="ion-ios-star-outline"></i></a>
@@ -273,18 +345,23 @@ $domain_id = $this->domain_id;
                                                                                 class="ion-ios-star-outline"></i></a>
                                                                     </li>
                                                                 </ul>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="product_desc">
                                                                 <p><?php echo $this->common->pdesc($value['description'])?>
                                                                 </p>
                                                             </div>
                                                             <div class="action_links">
                                                                 <ul>
-                                                                    <li><a href="wishlist.html" data-placement="top"
+                                                                    <li><a href="javascript:void(0);"  onclick="mgk_wishlist.add('<?php echo $value['product_id']?>');" data-placement="top"
                                                                             title="Add to Wishlist"
                                                                             data-bs-toggle="tooltip"><span
                                                                                 class="icon icon-Heart"></span></a></li>
-                                                                    <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCart" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'   title="add to cart">add to cart</a></li>
+                                                                    <li class="add_to_cart"><a
+                                                                            href="javascript:void(0);"
+                                                                            class="btnAddCart"
+                                                                            data-product_id='<?php echo $value['product_id']?>'
+                                                                            data-qty='1' title="add to cart">add to
+                                                                            cart</a></li>
                                                                     <!-- <li><a href="compare.html" title="compare"><i
                                                                                 class="ion-ios-settings-strong"></i></a> -->
                                                                     </li>
@@ -358,7 +435,7 @@ $domain_id = $this->domain_id;
                                                         ?>
                                                         </div>
                                                         <div class="product_hover">
-                                                            <div class="product_ratings">
+                                                            <!-- <div class="product_ratings">
                                                                 <ul>
                                                                     <li><a href="#"><i
                                                                                 class="ion-ios-star-outline"></i></a>
@@ -376,18 +453,23 @@ $domain_id = $this->domain_id;
                                                                                 class="ion-ios-star-outline"></i></a>
                                                                     </li>
                                                                 </ul>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="product_desc">
                                                                 <p><?php echo $this->common->pdesc($value['description'])?>
                                                                 </p>
                                                             </div>
                                                             <div class="action_links">
                                                                 <ul>
-                                                                    <li><a href="wishlist.html" data-placement="top"
+                                                                    <li><a href="javascript:void(0);"  onclick="mgk_wishlist.add('<?php echo $value['product_id']?>');" data-placement="top"
                                                                             title="Add to Wishlist"
                                                                             data-bs-toggle="tooltip"><span
                                                                                 class="icon icon-Heart"></span></a></li>
-                                                                    <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCart" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'   title="add to cart">add to cart</a></li>
+                                                                    <li class="add_to_cart"><a
+                                                                            href="javascript:void(0);"
+                                                                            class="btnAddCart"
+                                                                            data-product_id='<?php echo $value['product_id']?>'
+                                                                            data-qty='1' title="add to cart">add to
+                                                                            cart</a></li>
                                                                     <!-- <li><a href="compare.html" title="compare"><i
                                                                                 class="ion-ios-settings-strong"></i></a> -->
                                                                     </li>
@@ -487,11 +569,12 @@ $domain_id = $this->domain_id;
                                                             </div>
                                                             <div class="action_links">
                                                                 <ul>
-                                                                    <li><a href="wishlist.html" data-placement="top"
-                                                                            title="Add to Wishlist"
-                                                                            data-bs-toggle="tooltip"><span
-                                                                                class="icon icon-Heart"></span></a></li>
-                                                                    <li class="add_to_cart"><a  href="javascript:void(0);" class="btnAddCart"  data-product_id='<?php echo $value['product_id']?>' data-qty='1'    title="add to cart">add to cart</a></li>
+                                                                    <li><a href="javascript:void(0);" onclick="mgk_wishlist.add('<?php echo $value['product_id']?>');"  data-placement="top"  title="Add to Wishlist"  data-bs-toggle="tooltip"><span   class="icon icon-Heart"></span></a></li>
+                                                                    <li class="add_to_cart"><a   href="javascript:void(0);"
+                                                                            class="btnAddCart"
+                                                                            data-product_id='<?php echo $value['product_id']?>'
+                                                                            data-qty='1' title="add to cart">add to
+                                                                            cart</a></li>
                                                                     <!-- <li><a href="compare.html" title="compare"><i
                                                                                 class="ion-ios-settings-strong"></i></a> -->
                                                                     </li>
@@ -517,164 +600,60 @@ $domain_id = $this->domain_id;
         </section>
         <!--product section area end-->
 
-         <!--blog section area start-->
-         <section class="blog_section blog_black" style="display:none">
-            <div class="container">
-               <div class="row">
-                   <div class="col-12">
-                       <div class="section_title">
-                           <h2>Monsta News</h2>
-                       </div>
+        
+
+ 
+         
+    <!--chose us area start-->
+    <div class="choseus_area mt-5">
+        <div class="container">
+            <div class="row">
+               <div class="col-12">
+                   <div class="chose_title">
+                       <h1>Why chose us?</h1>
                    </div>
                </div>
-                <div class="row">
-                    <div class="blog_wrapper blog_column3 owl-carousel">
-                        <div class="col-lg-4">
-                            <div class="single_blog">
-                                <div class="blog_thumb">
-                                    <a href="blog-details.html"><img src="assets/img/blog/blog4.jpg" alt=""></a>
-                                </div>
-                                <div class="blog_content">
-                                    <h3><a href="blog-details.html">Blog image post</a></h3>
-                                    <div class="author_name">
-                                       <p> 
-                                            <span>by</span>
-                                            <span class="themes">admin</span>
-                                            / 30 Oct 2018
-                                       </p>
-
-                                    </div>
-
-                                    <div class="post_desc">
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                    </div>
-                                    <div class="read_more">
-                                        <a href="blog-details.html">Continue reading</a>
-                                    </div>
-                                </div>
-                            </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_chose">
+                        <div class="chose_icone">
+                            <img src="assets/img/about/About_icon1.jpg" alt="">
                         </div>
-                        <div class="col-lg-4">
-                            <div class="single_blog">
-                                <div class="blog_thumb">
-                                    <a href="blog-details.html"><img src="assets/img/blog/blog2.jpg" alt=""></a>
-                                </div>
-                                <div class="blog_content">
-                                    <h3><a href="blog-details.html">Post with Gallery</a></h3>
-                                    <div class="author_name">
-                                       <p> 
-                                            <span>by</span>
-                                            <span class="themes">admin</span>
-                                            / 30 Oct 2018
-                                       </p>
+                        <div class="chose_content">
+                            <h3>Creative Design</h3>
+                            <!-- <p>Erat metus sodales eget dolor consectetuer, porta ut purus at et alias, nulla ornare velit amet enim</p> -->
 
-                                    </div>
-                                    <div class="post_desc">
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                    </div>
-                                    <div class="read_more">
-                                        <a href="blog-details.html">Continue reading</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="single_blog">
-                                <div class="blog_thumb">
-                                    <a href="blog-details.html"><img src="assets/img/blog/blog5.jpg" alt=""></a>
-                                </div>
-                                <div class="blog_content">
-                                    <h3><a href="blog-details.html">Post with Video</a></h3>
-                                    <div class="author_name">
-                                       <p> 
-                                            <span>by</span>
-                                            <span class="themes">admin</span>
-                                            / 30 Oct 2018
-                                       </p>
-
-                                    </div>
-                                    <div class="post_desc">
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                    </div>
-                                    <div class="read_more">
-                                        <a href="blog-details.html">Continue reading</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-4">
-                            <div class="single_blog">
-                                <div class="blog_thumb">
-                                    <a href="blog-details.html"><img src="assets/img/blog/blog3.jpg" alt=""></a>
-                                </div>
-                                <div class="blog_content">
-                                    <h3><a href="blog-details.html">Maecenas ultricies</a></h3>
-                                    <div class="author_name">
-                                       <p> 
-                                            <span>by</span>
-                                            <span class="themes">admin</span>
-                                            / 30 Oct 2018
-                                       </p>
-
-                                    </div>
-                                    <div class="post_desc">
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                    </div>
-                                    <div class="read_more">
-                                        <a href="blog-details.html">Continue reading</a>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <!--blog section area end-->
-         
-        <!--indtagram area start-->
-        <div class="instagram_area" style="display:none">
-             <div class="container">
-                 <div class="row">
-                    <div class="col-12">
-                        <div class="instagram_wrapper_new">
-                            <div id="instagramFeed"></div>
-                            <div class="instagram_btn">
-                                <a href="#"><i class="fa fa-instagram"></i> Follow on Instagram</a>
-                            </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_chose">
+                        <div class="chose_icone">
+                            <img src="assets/img/about/About_icon2.jpg" alt="">
                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
-        <!--indtagram area end-->
+                        <div class="chose_content">
+                            <h3>100% Money Back Guarantee</h3>
+                            <!-- <p>Erat metus sodales eget dolor consectetuer, porta ut purus at et alias, nulla ornare velit amet enim</p> -->
 
-         <!--Newsletter area start-->
-        <div class="newsletter_area newsletter_black" >
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="newsletter_content">
-                            <h2>Subscribe for Newsletter</h2>
-                            <p>Get E-mail updates about our latest shop and special offers.</p>
-                            <div class="subscribe_form">
-                                <form id="mc-form" class="mc-form footer-newsletter" >
-                                    <input id="mc-email" type="email" autocomplete="off" placeholder="Email address..." />
-                                    <button id="mc-submit">Subscribe</button>
-                                </form>
-                                <!-- mailchimp-alerts Start -->
-                                <div class="mailchimp-alerts text-centre">
-                                    <div class="mailchimp-submitting"></div><!-- mailchimp-submitting end -->
-                                    <div class="mailchimp-success"></div><!-- mailchimp-success end -->
-                                    <div class="mailchimp-error"></div><!-- mailchimp-error end -->
-                                </div><!-- mailchimp-alerts end -->
-                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <div class="single_chose">
+                        <div class="chose_icone">
+                            <img src="assets/img/about/About_icon3.jpg" alt="">
+                        </div>
+                        <div class="chose_content">
+                            <h3>Online Support 24/7</h3>
+                            <!-- <p>Erat metus sodales eget dolor consectetuer, porta ut purus at et alias, nulla ornare velit amet enim</p> -->
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--Newsletter area start-->
+    </div>
+    <!--chose us area end-->
+ 
 
         <?php $this->load->view('inc_footer'); ?>
         <!--footer area end-->
@@ -683,7 +662,20 @@ $domain_id = $this->domain_id;
 
         <!-- JS ============================================ -->
         <?php $this->load->view('inc_common_footer_js'); ?>
-
+        <script>
+        $('.autoplay').slick({
+            dots: false,
+            infinite: true,
+            speed: 500,
+            slidesToShow: 3,
+            slidesToScroll: 1,
+            arrows: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            prevArrow: '<button class="prev_arrow"><i class="fa fa-angle-left"></i></button>',
+            nextArrow: '<button class="next_arrow"><i class="fa fa-angle-right"></i></button>',
+        });
+        </script>
 
 </body>
 

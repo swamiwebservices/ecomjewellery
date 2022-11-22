@@ -1,9 +1,9 @@
-var myCenter=new google.maps.LatLng(40.7065983,-74.0107104);
+var myCenter=new google.maps.LatLng(43.033406,45.725756);
     function initialize()
     {
         var mapProp = {
             center:myCenter,
-            scrollwheel: false,
+            scrollwheel: true,
             zoom:11,
             mapTypeId:google.maps.MapTypeId.ROADMAP
         };

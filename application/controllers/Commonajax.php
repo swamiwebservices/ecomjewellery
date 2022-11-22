@@ -14,7 +14,7 @@ class Commonajax extends CI_Controller
         //if session not exist
 
     }
-    public function add_wish_list()
+    public function addwishlist()
     {
         //extract($_POST);
         $json = array();
@@ -23,28 +23,30 @@ class Commonajax extends CI_Controller
         } else {
             $product_id = 0;
         }
-        $this->load->model('productmodal');
-
-        $product_info = $this->productmodal->getProduct($product_id);
-
+        //print_r($product_info);
+        $params['product_id'] = $product_id;
+        $product_info = $this->services->getProductDetail($params);
+        //print_r($product_info);
+        $session_user_data = $this->session->userdata('front_user_detail');
         if ($product_info) {
-            $pro_slug = $this->common->getDbValue($product_info['name_slug']);
+            $pro_slug = $this->common->getDbValue($product_info['slug_name']);
             if ($pro_slug == "") {
                 $pro_slug = $product_info['product_id'];
             }
-            if ($this->session->userdata('lux_user_id')) {
-                $this->db->query("DELETE FROM customer_wishlist WHERE customer_id = '" . (int) $this->session->userdata('lux_user_id') . "' AND product_id = '" . (int) $product_id . "'");
+            if (!empty($session_user_data['customer_id'])) {
+                $this->db->query("DELETE FROM customer_wishlist WHERE customer_id = '" . (int) $session_user_data['customer_id'] . "' AND product_id = '" . (int) $product_id . "'");
 
-                $date_added = date('Y-m-d');
-                $this->db->query("INSERT INTO customer_wishlist SET customer_id = '" . (int) $this->session->userdata('lux_user_id') . "', product_id = '" . (int) $product_id . "', date_added = '" . $date_added . "'");
+                $date_added = date('Y-m-d H:i:s');
+                $this->db->query("INSERT INTO customer_wishlist SET customer_id = '" . (int) $session_user_data['customer_id'] . "', product_id = '" . (int) $product_id . "', date_added = '" . $date_added . "'");
 
-                $json['success'] = sprintf('Success: You have added <a href="%s">%s</a> to your <a href="%s">wish list</a>!', site_url('detail/' . $pro_slug . '/' . $product_info['product_id']), $product_info['name'], site_url('my_dashboard/my_wish_list'));
+                $json['success'] = sprintf('Success: You have added <a href="%s">%s</a> to your <a href="%s">wish list</a>!', site_url('product-detail/' . $pro_slug ), $product_info['name'], site_url('account/mywishlist'));
 
-                //$query = $this->db->query("SELECT COUNT(*) AS total FROM customer_wishlist WHERE customer_id = '" .(int)$this->session->userdata('lux_user_id') . "'");
+                 
             } else {
-                $json['success'] = sprintf('You must <a href="%s">login</a> or <a href="%s">create an account</a> to save <a href="%s">%s</a> to your <a href="%s">wish list</a>', site_url('login'), site_url('login'), site_url('detail/' . $pro_slug . '/' . $product_info['product_id']), $product_info['name'], site_url('my_dashboard/my_wish_list'));
+                $json['success'] = sprintf('You must <a href="%s">login</a> or <a href="%s">create an account</a> to save <a href="%s">%s</a> to your <a href="%s">wish list</a>', site_url('login'), site_url('login'), site_url('product-detail/' . $pro_slug ), $product_info['name'], site_url('account/mywishlist'));
 
             }
+            
 
             echo json_encode($json);
             die();

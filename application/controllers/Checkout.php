@@ -63,10 +63,7 @@ class Checkout extends CI_Controller
             die();
         }
 
-        $where_cond = "  ORDER BY name";
-		$data['country_rs'] =  $this->common->getAllRow('m_country',$where_cond);
-       // print_r($data['country_rs']);
-
+      
       
         $customer_info = $this->services->getCustomerInfo();
         $cartinfo = $this->services->getCartinfo();
@@ -106,6 +103,7 @@ class Checkout extends CI_Controller
         $data['shipping_address']['shipping_zone_id'] = $payment_address['zone_id'];
         $data['shipping_address']['shipping_city'] = $payment_address['city'];
         $data['shipping_address']['shipping_postcode'] = $payment_address['postcode'];
+        $data['shipping_address']['shipping_mobile'] = $customer_info['telephone'];
 
         // add order 
         
@@ -255,12 +253,17 @@ class Checkout extends CI_Controller
 
 			$data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
 
-        
+            $where_cond = "  ORDER BY name";
+            $data['country_rs'] =  $this->common->getAllRow('m_country',$where_cond);
+           // print_r($data['country_rs']);
+           $where_cond = "  WHERE country_id='".$payment_address['country_id']."' ORDER BY name";
+           $data['state_rs'] = $state_rs = $this->common->getAllRow('m_zone',$where_cond);
+    
         $this->load->view("checkout", $data);
 
     }
  
- public function success(){
+ public function success($uuid=""){
     $data['acti_id'] = 0;
 		 
 
@@ -292,7 +295,8 @@ class Checkout extends CI_Controller
 		
 		}
  
-
+        
+        $data['order_info'] = $this->services->getOrderUUID($uuid);
 		$this->load->view('checkout_success',$data);
 		 
  }   

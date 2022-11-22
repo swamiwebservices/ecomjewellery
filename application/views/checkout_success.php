@@ -40,12 +40,19 @@
                     <div id="content" class="col-md-8 ">
                     <h1>Your order has been placed!</h1>
                         <p>Your order has been successfully processed!</p>
+                        <?php
+                        if(!empty($order_info['invoice_no'])){
+                        ?>
+                        <h4>Your order No. is <a href="<?php echo site_url('account/orderdetail/'.$order_info['uuid'])?>">#<?php echo $order_info['invoice_prefix'].$order_info['invoice_no']?></a></h4>
+                         <?php }
+                         ?>  
+                          
                         <p>You can view your order history by going to the <a
                                 href="<?php echo site_url("account");?>">my account</a> page and by clicking on
                             <a href="<?php echo site_url("account");?>">history</a>.
                         </p>
                         <p>Please direct any questions you have to the <a
-                                href="<?php echo site_url("contact_us");?>">store owner</a>.</p>
+                                href="<?php echo site_url("contact-us");?>">store owner</a>.</p>
                         <p>Thanks for shopping with us online!</p>
                         <div class="buttons">
                             <div class="pull-right"><a href="<?php echo site_url("home");?>"

@@ -56,7 +56,7 @@ $domain_id = $this->domain_id;
 
                                 <div class="order-id-line">
                                     <p class="order-id"><strong>Order ID:</strong>
-                                        #<?php echo $this->common->getDbValue($value['order_id'])?></p>
+                                        #<?php echo $value['invoice_prefix'].$value['invoice_no']?></p>
                                     <p class="order-id" style="padding-left:100px;"><strong>Status:</strong>
                                         <?php echo $this->common->getDbValue($value['name'])?></p>
                                     <p class="placed-on">Placed on

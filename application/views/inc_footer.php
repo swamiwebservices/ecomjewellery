@@ -15,12 +15,14 @@
                                 <a href="<?php echo site_url("")?>"><img src="<?php echo base_url('assets/img/logo/logo.png')?>" alt=""></a>
                             </div></h3>
                                     <div class="footer_contact">
-                                        <p>Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,</br>
+                                        <p>Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai</br>
 <!-- Karama, Dubai </br>
 +971 559632581</br>
 +971 0543054719. -->
 </p>
-                                        <p>Phone: <a href="tel:+971 4 2968516" class="text-footer">+971 4 2968516</a></p>
+                                        <p>Phone: <a href="tel:+97142968516" class="text-footer">+971 42968516</a></p>
+                                        <p>Phone: <a href="tel:+971559632581" class="text-footer">+971 559632581</a></p>
+                                        <p>Phone: <a href="tel:+9710543054719" class="text-footer">+971 0543054719</a></p>
                                         <p>Email: <a href="mail:info@bondbeyond.ae" class="text-footer">info@bondbeyond.ae</a></p>
                                         <ul>
                                             <!-- <li><a href="#" ><i class="fa fa-facebook"></i></a></li>
@@ -43,8 +45,9 @@
                                             <!-- <li><a href="blog.html">blog</a></li> -->
                                             <li><a href="<?php echo site_url("terms-condition")?>">Terms & Conditions</a></li>
                                             <li><a href="<?php echo site_url("privacy-policy")?>">Privacy Policy</a></li>
-                                            <li><a href="<?php echo site_url("faq")?>">FAQ</a></li>
-                                            <li><a href="<?php echo site_url("disclaimer")?>">Disclaimer</a></li>
+                                            <li><a href="<?php echo site_url("refund")?>">Refund</a></li>
+                                            <li><a href="<?php echo site_url("shipping-policy")?>">Shipping Policy</a></li>
+                                            <!-- <li><a href="<?php echo site_url("faq")?>">FAQ</a></li> -->
                                             <li><a href="<?php echo site_url("contact-us")?>">Contact</a></li>
                                             <!-- <li><a href="services.html">Services</a></li> -->
                                              
@@ -63,7 +66,7 @@
                                     ?>
                                             <li><a href="<?php echo site_url("account")?>">My Account</a></li>
                                             <li><a href="<?php echo site_url("account/address")?>">Address</a></li>
-                                            <li><a href="<?php echo site_url("account/my_wish_list")?>">Wishlist</a></li>
+                                            <li><a href="<?php echo site_url("account/mywishlist")?>">Wishlist</a></li>
                                             <?php    
                                     } else {
                                     ?>
@@ -102,3 +105,5 @@
             </div>     
         </footer>
         <!--footer area end-->
+
+        

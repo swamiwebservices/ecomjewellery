@@ -112,12 +112,28 @@ $domain_id = $this->domain_id;
     <div class="shopping_cart_area">
         <div class="container">
         <?php
+                                $error = $this->session->flashdata('error');
+                                if ($error!='') {
+                            ?>
+                                        <div class="alert bg-danger text-white alert-dismissible">
+                                            <span class="font-weight-bold">Error!</span> <?php echo $error?>
+                                        </div>
+                                        <?php }?>
+
+                                        <?php
+                                 $success = $this->session->flashdata('success');
+                                if ($success!='') {?>
+                                        <div id="err_div" class="alert alert-success ext-white alert-dismissible">
+                                            <?php echo $success?>
+                                        </div>
+                                        <?php } ?>
+        <?php
                         //print_r($record);
                         if(isset($record['items']) && sizeof($record['items']) > 0){
 
                         
                         ?>
-            <form action="<?php echo site_url("checkout")?>" method="post">
+            <form action="<?php echo site_url("cart/update")?>" method="post">
                 <div class="row">
                     <div class="col-12 ">
                        
@@ -137,6 +153,9 @@ $domain_id = $this->domain_id;
                                     <tbody>
                                     <?php
                                 foreach($record['items'] as $key => $value){
+
+                                   // print_r($value);
+
                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
 
                                      $price_json = json_decode($value['price_json'],true);
@@ -155,7 +174,7 @@ $domain_id = $this->domain_id;
                                             <td class="text-center td-qty">
                                                 <div class="input-group btn-block">
                                                     <div class="stepper">
-                                                        <input type="text" name="quantity[<?php echo $value['cart_qty']?>]" value="1" size="1"
+                                                        <input type="text" name="quantity[<?php echo $value['cart_id']?>]" value="<?php echo $value['cart_qty']?>" size="2"
                                                             class="form-control">
                                                         <span>
                                                             <i class="fa fa-angle-up"></i>
@@ -163,10 +182,10 @@ $domain_id = $this->domain_id;
                                                         </span>
                                                     </div>
                                                     <span class="input-group-btn">
-                                                       <!-- <button type="submit" data-toggle="tooltip" title=""
+                                                    <button type="submit" data-toggle="tooltip" title="Update cart qty"
                                                             class="btn btn-update" data-original-title="Update"><i
-                                                                class="fa fa-refresh"></i></button> -->
-                                                        <button type="button" data-toggle="tooltip" title=""
+                                                                class="fa fa-refresh"></i></button>  
+                                                        <button type="button" data-toggle="tooltip" title="remove from cart"
                                                             class="btn btn-remove text-danger"
                                                             onclick="cart.remove('<?php echo $value['product_id']?>');"
                                                             data-original-title="Remove"><i
@@ -230,7 +249,7 @@ $domain_id = $this->domain_id;
                                     ?></p>
                                     </div>
                                     <div class="checkout_btn">
-                                    <button type="submit" name="btnCheckout" id="btnCheckout">Proceed to Checkout</button>
+                                    <a href="<?php echo site_url("checkout");?>"><button type="button" name="btnCheckout" id="btnCheckout">Proceed to Checkout</button></a>
                                     </div>
                                 </div>
                             </div>

@@ -60,7 +60,7 @@
 
                         <div class="card ">
                             <div class="card-body">
-                                <h2>Returning Customer</h2>
+                                <h2> Sign In</h2>
                                 <?php
 						$error = $this->session->flashdata('error');
 						if ($error!='') {
@@ -69,6 +69,15 @@
                                     <span class="font-weight-bold">Error!</span> <?php echo $error?>
                                 </div>
                                 <?php }?>
+                                <?php
+						$success = $this->session->flashdata('success');
+						if ($success!='') {
+					?>
+                                <div class="alert bg-success text-white alert-dismissible">
+                                    <span class="font-weight-bold">Error!</span> <?php echo $success?>
+                                </div>
+                                <?php }?>
+                                
                                 <form id="form-login" action="<?php echo site_url("login")?>" method="post"
                                     data-oc-toggle="ajax">
                                     <input type="hidden" name="mode" id="mode" value="login">
@@ -86,8 +95,11 @@
                                         </div>
                                     </div>
                                     <div class="mb-0 row ">
-                                        <div class="col-lg-12 text-right">
-                                            <button type="submit" class="btn btn-primary">Confirm identity</button>
+                                    <div class="col-lg-6 text-left">
+                                    <a href="<?php echo site_url('login/forgotten')?>" class="text-link" >Forgotten Password</a>
+                                        </div>
+                                        <div class="col-lg-6 text-right">
+                                            <button type="submit" class="btn btn-primary">Login</button>
                                         </div>
                                     </div>
 

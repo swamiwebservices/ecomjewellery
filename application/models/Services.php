@@ -21,7 +21,7 @@ class Services extends CI_Model
     {
         $slug_name = (!empty($params['slug_name'])) ? $params['slug_name'] : '';
         $product_id = (!empty($params['product_id'])) ? $params['product_id'] : '';
-
+        $sql = "select *  from  product_master p where (status_flag='Active')  and product_id='" . $product_id . "'  ";
         $records = [];
         if ($slug_name != "") {
             $sql = "select *  from  product_master p where (status_flag='Active')  and slug_name='" . $slug_name . "'  ";
@@ -116,7 +116,8 @@ class Services extends CI_Model
 
             //where status_flag=1 and  FIND_IN_SET ({$value['category_id']},category_id) > 0
             //and  sub_category_id='{$params['category_id']}'
-            $sql = "select * from product_master where status_flag='Active'    and category_id='{$params['category_id']}' " . $order_by . ' ' . $order_limit;
+            $column_name = (empty($params['parent_id']) && $params['parent_id']==0) ? 'category_id' : 'sub_category_id';
+              $sql = "select * from product_master where status_flag='Active'    and {$column_name} = '{$params['category_id']}' " . $order_by . ' ' . $order_limit;
 
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
@@ -242,6 +243,15 @@ class Services extends CI_Model
         return $query_row['total'];
 
     }
+    public function updatecartqty($cart_id, $quantity) {
+        $session_user_data = $this->session->userdata('front_user_detail');
+
+		     if (isset($session_user_data['customer_id'])) {
+			$this->db->query("UPDATE cart_master SET cart_qty = '" . (int)$quantity . "' WHERE cart_id = '" . (int)$cart_id . "'     AND user_id = '" . (int) $this->getId() . "' ");
+		} else {
+			$this->db->query("UPDATE cart_master SET cart_qty = '" . (int)$quantity . "' WHERE cart_id = '" . (int)$cart_id . "'   and  shopping_session = '" . $this->get_shopping_session() . "'");
+		}
+	}
     public function doRemoveItemCart($params)
     {
 
@@ -316,6 +326,7 @@ class Services extends CI_Model
     }
     //end of cart function
     //order
+ 
     public function addOrder($params = array())
     {
          
@@ -338,10 +349,24 @@ class Services extends CI_Model
        
         $order_data['transaction_id'] = $uuid;
         $order_data['total'] = (!empty($cartSubtotal)) ? $cartSubtotal : '0.00';
+       $domain_id =  $this->services->getDomainId();
+        if($domain_id==1){
+            $invoice_prefix=  "AE";
+        }
+        if($domain_id==2){
+            $invoice_prefix=  "OT";
+        }
+        if($domain_id==3){
+            $invoice_prefix=  "IN";
+        }
+        $params['invoice_prefix'] = $invoice_prefix;
+        //date_added
+        $order_data['date_added'] = date("Y-m-d H:i:s");
         if ($order_query->num_rows() > 0) {
 
             $order_data['store_id'] = $this->services->getDomainId();
-            $order_data['store_name'] = $_SERVER['HTTP_HOST'];
+            $order_data['store_name'] = $_SERVER['SERVER_NAME'];
+            $order_data['store_url'] = base_url();
             $order_data['customer_id'] = $params['customer_id'];
             $order_data['firstname'] = $params['firstname'];
             $order_data['lastname'] = $params['lastname'];
@@ -350,6 +375,7 @@ class Services extends CI_Model
             $order_data['customer_id'] = $params['customer_id'];
             $order_data['payment_method'] = 'COD';
 
+            $order_data['invoice_prefix'] = $params['invoice_prefix'];
             $order_data['payment_firstname'] = $params['payment_firstname'];
             $order_data['payment_lastname'] = $params['payment_lastname'];
             $order_data['payment_company'] = $params['payment_company'];
@@ -390,7 +416,8 @@ class Services extends CI_Model
         } else {
 
             $order_data['store_id'] = $this->services->getDomainId();
-            $order_data['store_name'] = $_SERVER['HTTP_HOST'];
+            $order_data['store_name'] = $_SERVER['SERVER_NAME'];
+            $order_data['store_url'] = base_url();
             $order_data['customer_id'] = $params['customer_id'];
             $order_data['firstname'] = $params['firstname'];
             $order_data['lastname'] = $params['lastname'];
@@ -399,6 +426,7 @@ class Services extends CI_Model
             $order_data['customer_id'] = $params['customer_id'];
             $order_data['payment_method'] = 'COD';
 
+            $order_data['invoice_prefix'] = $params['invoice_prefix'];
             $order_data['payment_firstname'] = $params['payment_firstname'];
             $order_data['payment_lastname'] = $params['payment_lastname'];
             $order_data['payment_company'] = $params['payment_company'];
@@ -429,9 +457,11 @@ class Services extends CI_Model
 
             $order_data['ip'] = $this->input->ip_address();
             $order_data['user_agent'] = $this->input->user_agent();
-            $order_data['user_agent'] = $this->input->user_agent();
+          
 
             $order_id = $this->common->insertRecord('m_order', $order_data);
+
+            
 
         }
 
@@ -534,8 +564,19 @@ class Services extends CI_Model
         $add_in_add['uuid'] = $uuid2;
 
         $params['uuid'] = $uuid;
+       
+        $add_in_cust['uuid'] = (isset($params['uuid'])) ? $params['uuid'] : '';
+        $add_in_cust['store_id'] = (isset($params['store_id'])) ? $params['store_id'] : '';
+        $add_in_cust['firstname'] = (isset($params['firstname'])) ? $params['firstname'] : '';
+        $add_in_cust['lastname'] = (isset($params['lastname'])) ? $params['lastname'] : '';
+        $add_in_cust['email'] = (isset($params['email'])) ? $params['email'] : '';
+        $add_in_cust['telephone'] = (isset($params['telephone'])) ? $params['telephone'] : '';
+        $add_in_cust['password'] = (isset($params['password'])) ? $params['password'] : '';
+        $add_in_cust['newsletter'] = (isset($params['newsletter'])) ? $params['newsletter'] : '';
+        $add_in_cust['ip'] =  $this->input->ip_address();
 
-        $this->common->insertRecord('m_customer', $params);
+        $this->common->insertRecord('m_customer', $add_in_cust);
+        
         //$last_id = $this->db->insert_id();
         $sql = "select * from m_customer where uuid='{$uuid}'";
         $rs_chk = $this->db->query($sql);
@@ -546,24 +587,28 @@ class Services extends CI_Model
             $add_in_add['firstname'] = $customer_info['firstname'];
             $add_in_add['lastname'] = $customer_info['lastname'];
 
-            $add_in_add['company'] = $company = ''; //$this->input->post($_POST['company']);
-            $add_in_add['address_1'] = $address_1 = ''; //$this->input->post($_POST['address_1']);
-            $add_in_add['address_2'] = $address_2 = ''; //$this->input->post($_POST['address_2']);
-            $add_in_add['city'] = $city = ''; //$this->input->post($_POST['city']);
-            $add_in_add['postcode'] = $postcode = ''; //$this->input->post($_POST['postcode']);
-            $add_in_add['country_id'] = $country_id = '221'; //$this->input->post($_POST['country_id']);
-            $add_in_add['zone_id'] = $zone_id = '0'; //$this->input->post($_POST['zone_id']);
-            $add_in_add['default'] = 1;
+            $add_in_add['company'] = (isset($params['company'])) ? $params['company'] : '';
+            $add_in_add['address_1'] = (isset($params['address_1'])) ? $params['address_1'] : '';
+            $add_in_add['address_2'] = (isset($params['address_2'])) ? $params['address_2'] : '';
+            $add_in_add['city'] = (isset($params['city'])) ? $params['city'] : '';
+            $add_in_add['postcode'] = $postcode = (isset($params['postcode'])) ? $params['postcode'] : '';
+            $add_in_add['country_id'] = $country_id = (isset($params['country_id'])) ? $params['country_id'] : '';
+            $add_in_add['zone_id'] = $zone_id = (isset($params['zone_id'])) ? $params['zone_id'] : '';
+            $add_in_add['default'] = (isset($params['default'])) ? $params['default'] : '1';
+         
 
-            if ($domain == 1) {
-                $add_in_add['country_id'] = 99;
+            if($country_id==""){
+                if ($domain == 1) {
+                    $add_in_add['country_id'] = 99;
+                }
+                if ($domain == 2) {
+                    $add_in_add['country_id'] = 221;
+                }
+                if ($domain == 3) {
+                    $add_in_add['country_id'] = 223;
+                }
             }
-            if ($domain == 2) {
-                $add_in_add['country_id'] = 221;
-            }
-            if ($domain == 3) {
-                $add_in_add['country_id'] = 223;
-            }
+            
 
             $this->common->insertRecord('customer_address', $add_in_add);
 
@@ -584,20 +629,19 @@ class Services extends CI_Model
         return $customer_info;
     }
 
-    public function addOrderHistory($order_id, $order_status_id, $comment = '', $notify = false, $override = false)
+    public function addOrderHistory($order_id=0, $order_status_id=1, $comment = '', $notify = false, $override = false)
     {
        
         
-
-            //$customer_info = $this->customercartordermodal->getCustomer($order_info['customer_id']);
-
+        $order_info = $this->getOrder($order_id);
+          
             $status = false;
             if ($status) {
                 $order_status_id = 1 ; //pending
             }
 
             
-            $query_invoice = $this->db->query("SELECT MAX(invoice_no) AS invoice_no FROM `m_order` WHERE order_id = '" . (int) $order_id . "'");
+            $query_invoice = $this->db->query("SELECT MAX(invoice_no) AS invoice_no FROM `m_order` WHERE invoice_prefix = '" . $order_info['invoice_prefix'] . "'");
             $query_invoice_row = $query_invoice->row_array();
             if ($query_invoice_row['invoice_no']) {
                 $invoice_no = $query_invoice_row['invoice_no'] + 1;
@@ -683,6 +727,8 @@ class Services extends CI_Model
 
             return array(
                 'order_id' => $order_query_row['order_id'],
+                'uuid' => $order_query_row['uuid'],
+                'transaction_id' => $order_query_row['transaction_id'],
                 'invoice_no' => $order_query_row['invoice_no'],
                 'invoice_prefix' => $order_query_row['invoice_prefix'],
                 'store_id' => $order_query_row['store_id'],
@@ -712,6 +758,7 @@ class Services extends CI_Model
                 'payment_method' => $order_query_row['payment_method'],
                 'shipping_firstname' => $order_query_row['shipping_firstname'],
                 'shipping_lastname' => $order_query_row['shipping_lastname'],
+                'shipping_mobile' => $order_query_row['shipping_mobile'],
                 'shipping_company' => $order_query_row['shipping_company'],
                 'shipping_address_1' => $order_query_row['shipping_address_1'],
                 'shipping_address_2' => $order_query_row['shipping_address_2'],
@@ -764,16 +811,17 @@ class Services extends CI_Model
 
 		return $query->result_array() ;
 	}
+ 
     public function getOrder($order_id)
     {
         //echo "SELECT * FROM `order` WHERE order_id = '" . (int)$order_id . "' AND customer_id = '" . (int)$this->session->userdata('lux_user_id') . "' AND order_status_id > '0'";
         //$order_query = $this->db->query("SELECT * FROM `order` WHERE order_id = '" . (int)$order_id . "' AND customer_id = '" . (int)$this->session->userdata('lux_user_id') . "' AND order_status_id > '0'");
-        $order_query = $this->db->query("SELECT *, (SELECT os.name FROM `order_status` os WHERE os.order_status_id = o.order_status_id AND os.language_id = o.language_id) AS order_status FROM `order` o WHERE o.order_id = '" . (int) $order_id . "'");
+        $order_query = $this->db->query("SELECT *, (SELECT os.name FROM `m_order_status` os WHERE os.order_status_id = o.order_status_id ) AS order_status FROM `m_order` o WHERE o.order_id = '" . (int) $order_id . "'");
 
         if ($order_query->num_rows() > 0) {
             $order_query_row = $order_query->row_array();
 
-            $country_query = $this->db->query("SELECT * FROM `country` WHERE country_id = '" . (int) $order_query_row['payment_country_id'] . "'");
+            $country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int) $order_query_row['payment_country_id'] . "'");
 
             if ($country_query->num_rows) {
                 $country_query_row = $country_query->row_array();
@@ -784,7 +832,7 @@ class Services extends CI_Model
                 $payment_iso_code_3 = '';
             }
 
-            $zone_query = $this->db->query("SELECT * FROM `zone` WHERE zone_id = '" . (int) $order_query_row['payment_zone_id'] . "'");
+            $zone_query = $this->db->query("SELECT * FROM `m_zone` WHERE zone_id = '" . (int) $order_query_row['payment_zone_id'] . "'");
 
             if ($zone_query->num_rows() > 0) {
 
@@ -794,7 +842,7 @@ class Services extends CI_Model
                 $payment_zone_code = '';
             }
 
-            $country_query = $this->db->query("SELECT * FROM `country` WHERE country_id = '" . (int) $order_query_row['shipping_country_id'] . "'");
+            $country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int) $order_query_row['shipping_country_id'] . "'");
 
             if ($country_query->num_rows() > 0) {
                 $country_query_row = $country_query->row_array();
@@ -806,7 +854,7 @@ class Services extends CI_Model
                 $shipping_iso_code_3 = '';
             }
 
-            $zone_query = $this->db->query("SELECT * FROM `zone` WHERE zone_id = '" . (int) $order_query_row['shipping_zone_id'] . "'");
+            $zone_query = $this->db->query("SELECT * FROM `m_zone` WHERE zone_id = '" . (int) $order_query_row['shipping_zone_id'] . "'");
 
             if ($zone_query->num_rows() > 0) {
                 $zone_query_row = $zone_query->row_array();
@@ -817,6 +865,8 @@ class Services extends CI_Model
 
             return array(
                 'order_id' => $order_query_row['order_id'],
+                'uuid' => $order_query_row['uuid'],
+                'transaction_id' => $order_query_row['transaction_id'],
                 'invoice_no' => $order_query_row['invoice_no'],
                 'invoice_prefix' => $order_query_row['invoice_prefix'],
                 'store_id' => $order_query_row['store_id'],
@@ -826,7 +876,7 @@ class Services extends CI_Model
                 'firstname' => $order_query_row['firstname'],
                 'lastname' => $order_query_row['lastname'],
                 'telephone' => $order_query_row['telephone'],
-                'fax' => $order_query_row['fax'],
+               
                 'email' => $order_query_row['email'],
                 'payment_firstname' => $order_query_row['payment_firstname'],
                 'payment_lastname' => $order_query_row['payment_lastname'],
@@ -846,6 +896,7 @@ class Services extends CI_Model
                 'payment_method' => $order_query_row['payment_method'],
                 'shipping_firstname' => $order_query_row['shipping_firstname'],
                 'shipping_lastname' => $order_query_row['shipping_lastname'],
+                'shipping_mobile' => $order_query_row['shipping_mobile'],
                 'shipping_company' => $order_query_row['shipping_company'],
                 'shipping_address_1' => $order_query_row['shipping_address_1'],
                 'shipping_address_2' => $order_query_row['shipping_address_2'],
@@ -866,12 +917,11 @@ class Services extends CI_Model
 
                 'currency_id' => $order_query_row['currency_id'],
                 'currency_code' => $order_query_row['currency_code'],
-                'currency_value' => $order_query_row['currency_value'],
+              
                 'date_modified' => $order_query_row['date_modified'],
                 'date_added' => $order_query_row['date_added'],
                 'ip' => $order_query_row['ip'],
-                'billing_mobile' => $order_query_row['billing_mobile'],
-                'shipping_mobile' => $order_query_row['shipping_mobile'],
+               
             );
         } else {
             return false;

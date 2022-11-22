@@ -68,6 +68,7 @@ class Category extends CI_Controller
 
         if($categoryids==""){
             $categoryids_arra = $this->services->getCategoryId($categoryname);
+          //  print_r($categoryids_arra);
             $params['parent_id'] = $categoryids_arra['parent_id'];
             $params['category_id'] = $categoryids_arra['category_id'];
         } else {
@@ -75,13 +76,15 @@ class Category extends CI_Controller
             $params['parent_id'] = $categoryids_exp[0];
             $params['category_id'] = $categoryids_exp[1];
         }
+
+        //print_r($params);
         $data['categoryProduct_total'] =  $categoryProduct_total = $this->services->getProductList($params);
 
         
         $data['controller'] = $this->controller;
-        $data['maxm'] = $maxm = 9;
+        $data['maxm'] = $maxm = 90;
         $fun_name = $funname.'/'.$categoryname.'/'.$categoryids;
-         $data['start'] = 0;
+        $data['start'] = 0;
  
         if (isset($_GET['page']) && $_GET['page'] != '') {
             $page = filter_var($_GET['page'], FILTER_SANITIZE_STRING);

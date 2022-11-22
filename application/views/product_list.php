@@ -109,8 +109,8 @@ $domain_id = $this->domain_id;
                                        <a href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
                                    </div>
                                     <div class="Featured_info">
-                                        <h3><a href="#"><?php echo $value['name']?></a></h3>   
-                                        <div class="product_ratings">
+                                        <h3><a href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a></h3>   
+                                        <!-- <div class="product_ratings">
                                             <ul>
                                                 <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                                 <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
@@ -118,7 +118,7 @@ $domain_id = $this->domain_id;
                                                 <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                                 <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                         <div class="price_box">
                                         <?php
                                         if($sellprice<$mrp){
@@ -166,7 +166,9 @@ $domain_id = $this->domain_id;
                                 <h3>Sort By : </h3>
                                 <div class=" niceselect_option">
 
-                                     
+                                     <?php
+                                     $sort = (!empty($sort)) ? $sort : '';
+                                     ?>
                                         <select name="orderby"  id="orderby" class="form-select"  onchange="document.location.href=this.value">
                                         <option value="<?php echo site_url($fun_name)?>"  <?php if($sort==""){ echo " selected";}?>>Default</option>
                                         <option value="<?php echo site_url($fun_name)?>&amp;sort=name&amp;order=ASC"  <?php if($sort=="name"  && $order=="ASC"){ echo " selected";}?>>Name (A - Z)</option>
@@ -234,7 +236,7 @@ $domain_id = $this->domain_id;
                                                         ?>
                                                 </div>
                                                 <div class="product_hover">
-                                                    <div class="product_ratings">
+                                                    <!-- <div class="product_ratings">
                                                         <ul>
                                                             <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                                             <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
@@ -242,13 +244,13 @@ $domain_id = $this->domain_id;
                                                             <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                                             <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                                         </ul>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="product_desc">
                                                         <p><?php echo $this->common->pdesc($value['description'])?></p>
                                                     </div>
                                                     <div class="action_links">
                                                         <ul>
-                                                            <!-- <li><a href="#wishlist.html" data-placement="top" title="Add to Wishlist" data-bs-toggle="tooltip"><span class="icon icon-Heart"></span></a></li> -->
+                                                             <li><a href="javascript:void(0);"  onclick="mgk_wishlist.add('<?php echo $value['product_id']?>');" data-placement="top" title="Add to Wishlist" data-bs-toggle="tooltip"><span class="icon icon-Heart"></span></a></li> 
                                                             <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCart" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
                                                            <!--  <li><a href="compare.html" title="compare"><i class="ion-ios-settings-strong"></i></a></li> -->
                                                         </ul>
@@ -286,7 +288,7 @@ $domain_id = $this->domain_id;
                                        <div class="col-lg-8 col-md-7">
                                             <div class="product_content">               
                                               <h3><a href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a></h3>
-                                              <div class="product_ratings">
+                                                <!-- <div class="product_ratings">
                                                     <ul>
                                                         <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                                         <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
@@ -294,12 +296,12 @@ $domain_id = $this->domain_id;
                                                         <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                                         <li><a href="#"><i class="ion-ios-star-outline"></i></a></li>
                                                     </ul>
-                                                </div>
+                                                </div> -->
                                                 <div class="product_desc">
                                                     <p><?php echo $this->common->pdesc($value['description'])?> </p>
                                                 </div>
                                                <div class="price_box">
-                                               <?php
+                                                <?php
                                                         if($sellprice<$mrp){
                                                         ?>
                                                             <span
@@ -319,7 +321,7 @@ $domain_id = $this->domain_id;
                                                 <div class="action_links">
                                                     <ul>
                                                         <li class="add_to_cart"><a href="javascript:void(0);" class="btnAddCart" data-product_id='<?php echo $value['product_id']?>'   data-qty='1'  title="add to cart">add to cart</a></li>
-                                                        <!-- <li><a href="wishlist.html" title="Wishlist"><span class="icon icon-Heart"></span></a></li> -->
+                                                          <li><a  href="javascript:void(0);"  onclick="mgk_wishlist.add('<?php echo $value['product_id']?>');" title="Wishlist"><span class="icon icon-Heart"></span></a></li> 
                                                         
                                                         <!-- <li><a href="compare.html" title="compare"><i class="ion-ios-settings-strong"></i></a></li> -->
                                                     </ul>

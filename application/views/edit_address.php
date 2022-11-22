@@ -128,7 +128,7 @@ $domain_id = $this->domain_id;
                                             <label class="col-sm-12 control-label" for="input-country">Country</label>
                                             <div class="col-sm-12">
                                                 <select name="country_id" id="input-country" class="form-control">
-                                                    <option value="0"> Please select</option>
+                                                    <option value=""> Please select</option>
                                                     <?php foreach($country_rs as $det){?>
                                                     <option value="<?php echo stripslashes($det['country_id'])?>"
                                                         <?php if($country_id==$det['country_id']){?>selected<?php } ?>>
@@ -142,11 +142,10 @@ $domain_id = $this->domain_id;
                                             <label class="col-sm-12 control-label" for="input-zone">Region /
                                                 State</label>
                                             <div class="col-sm-12">
-                                                <select name="zone_id" id="zone_id" class="form-control" required>
+                                                <select name="zone_id" id="input-zone" class="form-control" required>
                                                     <option value="0"> Please select</option>
                                                     <?php foreach($state_rs as $det){?>
-                                                    <option value="<?php echo stripslashes($det['zone_id'])?>"
-                                                        <?php if($zone_id==$det['zone_id']){?>selected<?php } ?>>
+                                                    <option value="<?php echo stripslashes($det['zone_id'])?>" <?php if($zone_id==$det['zone_id']){?>selected<?php } ?>>
                                                         <?php echo stripslashes($det['name'])?></option>
                                                     <?php } ?>
                                                 </select>

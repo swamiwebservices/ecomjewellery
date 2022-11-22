@@ -12,7 +12,7 @@
     <!-- <li><a href="<?php echo site_url('account/edit_account')?>" class="nav-link active1">Edit Account</a> </li> -->
     <li><a href="<?php echo site_url('account/change_password')?>" class="nav-link active1">Password</a></li>
     <li><a href="<?php echo site_url('account/address')?>" class="nav-link active1">Address Book</a> </li>
-    <li><a href="<?php echo site_url('account/my_wish_list')?>" class="nav-link active1">Wish List</a> </li>
+    <li><a href="<?php echo site_url('account/mywishlist')?>" class="nav-link active1">Wish List</a> </li>
     <li><a href="<?php echo site_url('account')?>" class="nav-link active1">Order History</a> </li>
     <!--<li><a href="<?php echo site_url('account/returnlist')?>" class="nav-link active1">Returns</a> </li>-->
     <li><a href="<?php echo site_url('account/edit_account')?>" class="nav-link active1">Logout</a></li>

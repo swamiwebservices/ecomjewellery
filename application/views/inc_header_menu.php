@@ -84,7 +84,7 @@ $session_user_data = $this->session->userdata('front_user_detail');
                         </ul>
                     </div>
                     <div class="Offcanvas_footer">
-                        <span><a href="#"><i class="fa fa-envelope-o"></i> demo@example.com</a></span>
+                        <span><a href="#"><i class="fa fa-envelope-o"></i> info@bondbeyond.ae</a></span>
                         <ul>
                             <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
                             <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
@@ -151,7 +151,7 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                          } 
                                         }
                                         ?>
-                                    <li><a href="<?php echo site_url('home');?>" class="text-uppercase">Contact Us</a></li>
+                                    <!-- <li><a href="<?php echo site_url('home');?>" class="text-uppercase">Contact Us</a></li> -->
                                 </ul>
                             </nav> 
                         </div>
@@ -160,9 +160,9 @@ $session_user_data = $this->session->userdata('front_user_detail');
                         <div class="search_btn">
                             <a href="#"><i class="ion-ios-search-strong"></i></a>
                             <div class="dropdown_search">
-                            <form action="#">
-                                    <input placeholder="Search product..." name="keyword_search" id="top_keyword_search" type="text">
-                                    <button type="button" name="btn_keyword_search" id="top_btn_keyword_search"><i class="ion-ios-search-strong"></i></button>
+                            <form action="<?php echo site_url('product/search')?>" method="get">
+                                    <input placeholder="Search product..."   name="search" id="search" type="text">
+                                    <button type="submit" name="submit-button-search-header" id="submit-button-search-header"><i class="ion-ios-search-strong"></i></button>
                             </form>
                                 
                             </div>

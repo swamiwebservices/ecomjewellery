@@ -48,6 +48,7 @@ class Cod extends CI_Controller
       
         
         $order_id = (int) $this->session->userdata('order_id_ki');
+        $order_info = $this->services->getOrder($order_id);
 
         $order_data['shipping_firstname'] = $this->input->post('shipping_firstname');
         $order_data['shipping_lastname'] = $this->input->post('shipping_lastname');
@@ -58,6 +59,7 @@ class Cod extends CI_Controller
         $order_data['shipping_zone_id'] = $this->input->post('shipping_zone_id');
         $order_data['shipping_city'] = $this->input->post('shipping_city');
         $order_data['shipping_postcode'] = $this->input->post('shipping_postcode');
+        $order_data['shipping_mobile'] = $this->input->post('shipping_mobile');
         
         $order_data['comment'] = $this->input->post('comment');
         
@@ -81,5 +83,10 @@ class Cod extends CI_Controller
         // if (isset($payment_method) && $payment_method['code'] == 'cod') {
         //     //$this->load->model('customercartordermodal');
         // }
+        $return_result['status'] =1;
+        $return_result['msg'] = "";
+        $return_result['uuid'] = $order_info['uuid'];
+        echo json_encode($return_result);
+
     }
 }
