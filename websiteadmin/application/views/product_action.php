@@ -423,7 +423,7 @@
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input-styled-success" value="1"
                                                 name="featured" id="featured"
-                                                <?php if (isset($records['featured']) && $records['featured'] == 1)  {  echo 'checked'; } ?>>
+                                                <?php if (isset($records['featured']) && $records['featured'] == 1)  {  echo 'checked'; } ?> checked>
                                             Featured (Show In home Page)
                                         </label>
                                     </div>
@@ -466,7 +466,7 @@
                                             class="form-control cost mrp mrp_<?php echo $domain_id?>  auto_mrp_<?php echo $domain_id?> numbersOnly1"
                                             id="mrp<?php echo $domain_id?>" data-domain="<?php echo $domain_id?>"
                                             name="mrp[<?php echo $domain_id?>]" placeholder="MRP"
-                                            value="<?php echo isset($mrp[$domain_id])?$this->common->getDbValue($mrp[$domain_id]):''; ?>"
+                                            value="<?php echo isset($mrp[$domain_id])?$this->common->getDbValue($mrp[$domain_id]):'0'; ?>"
                                             required>
                                     </div>
                                     <label class="col-form-label col-lg-1 " for="sellprice_<?php echo $domain?>">Sell
@@ -475,7 +475,7 @@
                                             class="form-control cost sellprice sellprice_<?php echo $domain_id?> auto_sellprice_<?php echo $domain_id?> numbersOnly1"
                                             id="sellprice_<?php echo $domain?>" data-domain="<?php echo $domain_id?>"
                                             name="sellprice[<?php echo $domain_id?>]" placeholder="Sell Price"
-                                            value="<?php echo isset($sellprice[$domain_id])?$this->common->getDbValue($sellprice[$domain_id]):''; ?>"
+                                            value="<?php echo isset($sellprice[$domain_id])?$this->common->getDbValue($sellprice[$domain_id]):'0'; ?>"
                                             required>
                                     </div>
                                     <label class="col-form-label col-lg-1 text-right text-success ">Dicount: </label>

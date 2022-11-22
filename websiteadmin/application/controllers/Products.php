@@ -131,7 +131,7 @@ class Products extends CI_Controller
     
            
 
-            if ($id == "") {
+            if ($id == "" && $item_code!='') {
                 $chkUserInfo = $this->common->getSingleInfoBy('product_master', 'item_code', $item_code);
                 if (sizeof($chkUserInfo) > 0) {
                     $error = $item_code . "   is already added";
