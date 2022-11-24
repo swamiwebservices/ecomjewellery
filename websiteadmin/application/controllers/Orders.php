@@ -1,7 +1,8 @@
 <?php if (!defined('BASEPATH')) {
     exit('No direct script access allowed');
 }
-
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 class Orders extends CI_Controller
 {
     public $db;
@@ -317,6 +318,92 @@ class Orders extends CI_Controller
 
             if ($notify == "1") {
 
+                $subject = sprintf('%s - Order Update %s', $order_info['store_name'], $order_info['invoice_prefix'] . $order_info['invoice_no'] );
+
+                $message  = 'Order ID:' . ' ' . $order_info['invoice_prefix'] . $order_info['invoice_no']  . "\n";
+                $message .= 'Date Ordered:' . ' ' . date('d-m-Y', strtotime($order_info['date_added'])) . "\n\n";
+    
+                $order_status_query = $this->db->query("SELECT * FROM m_order_status WHERE order_status_id = '" . (int)$order_status_id . "' ");
+    
+                if ($order_status_query->num_rows()>0) {
+                    $order_status_query_row = $order_status_query->row_array();
+                    $message .= 'Your order has been updated to the following status:' . "\n";
+                    $message .= $order_status_query_row['name'] . "\n\n";
+                }
+    
+                if ($order_info['customer_id']) {
+                    $message .= 'To view your order click on the link below:' . "\n";
+                    $message .= html_entity_decode($order_info['store_url'] . 'index.php/account/orderdetail/'.$order_uuid, ENT_QUOTES, 'UTF-8') . "\n\n";
+                }
+    
+                if ($comment!="") {
+                    $message .= 'The comments for your order are:' . "\n\n";
+                    $message .= strip_tags(html_entity_decode($comment, ENT_QUOTES, 'UTF-8')) . "\n\n";
+                }
+    
+                $message .= 'Please reply to this email if you have any questions.';
+
+                $getDomainAddress = $this->services->getDomainAddress();
+
+                $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
+
+                $query = $this->db->query($sql);
+                if ($query->num_rows() > 0) {
+                    $m_setting = $query->result_array();
+        
+                    foreach ($m_setting as $key => $val) {
+                        $config_site_mail[$val['key_name']] = $val['value'];
+                    }
+
+                   // $mail = new Mail();
+                  
+                      
+                            $this->email->from($config_site_mail['config_site_mail']);
+							$this->email->to($order_info['email']);
+							$this->email->subject($subject);
+							$this->email->message($message);
+							$this->email->send();
+
+                    // try {
+                    //     //Server settings
+        
+                    //     $mail = new PHPMailer(true);
+        
+                    //     $mail->SMTPDebug = 0; // Enable verbose debug output
+                    //     $mail->isMail(); // Send using SMTP
+                        
+                    //     //Recipients
+                    //     $admin_mail_id = $config_site_mail['config_site_mail'];
+        
+                    //     $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
+                    //     $contact_name  = $order_info['firstname']. " ".$order_info['lastname'];
+                    //     $mail->addAddress($order_info['email'], $contact_name); // Add a recipient
+                    //     //  $mail->addReplyTo($admin_mail_id, $contact_name);
+                    //     /*
+                    //     $config_alert_emails = $config_site_mail['config_alert_emails'];
+                    //     $config_alert_emails_exp = explode(",",$config_alert_emails);
+                    //     foreach($config_alert_emails_exp as $key => $alertemails){
+                    //     $mail->addCC($alertemails);
+                    //     }
+                    //      */
+                    //     // Attachments
+        
+                    //     // Content
+                    //     $mail->isHTML(false); // Set email format to HTML
+                    //     $mail->Subject = $subject;
+                    //     $mail->Body = $message;
+                    //     //  $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+        
+                    //     $mail->send();
+                    //     // echo 'Message has been sent';
+                    // } catch (Exception $e) {
+                    //     //  $error_msg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        
+                    // }
+                }
+                  
+                   
+                 
             }
 
             $this->session->set_flashdata('success', 'Order updatated succssfully!');

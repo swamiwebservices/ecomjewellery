@@ -3,7 +3,8 @@ error_reporting(E_ALL);
 //use Ifsnop\Mysqldump as IMysqldump;
 use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
 use Ramsey\Uuid\Uuid;
-
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 class Services extends CI_Model
 {
     public function __construct()
@@ -116,8 +117,8 @@ class Services extends CI_Model
 
             //where status_flag=1 and  FIND_IN_SET ({$value['category_id']},category_id) > 0
             //and  sub_category_id='{$params['category_id']}'
-            $column_name = (empty($params['parent_id']) && $params['parent_id']==0) ? 'category_id' : 'sub_category_id';
-              $sql = "select * from product_master where status_flag='Active'    and {$column_name} = '{$params['category_id']}' " . $order_by . ' ' . $order_limit;
+            $column_name = (empty($params['parent_id']) && $params['parent_id'] == 0) ? 'category_id' : 'sub_category_id';
+            $sql = "select * from product_master where status_flag='Active'    and {$column_name} = '{$params['category_id']}' " . $order_by . ' ' . $order_limit;
 
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
@@ -160,9 +161,30 @@ class Services extends CI_Model
         }
         return $domain_id;
     }
+    public function getDomainAddress()
+    {
+        $date1 = date("Y");
+        $date2 = date("Y") + 1;
+        $domain_name = $_SERVER['HTTP_HOST'];
+        $domain_list = $this->config->item("DOMAINs");
+        $domain_id = array_search($domain_name, $domain_list);
+        if (!$domain_id) {
+            $domain_id = 1;
+        }
+        $HTTP_DOMAIN_URL = site_url();
+        $LOGO_URL = "https://bondbeyond.ae/assets/img/logo/logo.png";
+        $address[1] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondbeyond.ae<br /> Web <a href='http://bondbeyond.ae/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+
+        $address[2] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondforu.com<br /> Web <a href='http://bondforu.com/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+
+        $address[3] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondbeyond.in<br /> Web <a href='http://bondbeyond.in/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+
+        $address_single = $address[$domain_id];
+        return $address_single;
+    }
     public function getCurrency()
     {
-        
+
         $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
         $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
         $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
@@ -243,15 +265,16 @@ class Services extends CI_Model
         return $query_row['total'];
 
     }
-    public function updatecartqty($cart_id, $quantity) {
+    public function updatecartqty($cart_id, $quantity)
+    {
         $session_user_data = $this->session->userdata('front_user_detail');
 
-		     if (isset($session_user_data['customer_id'])) {
-			$this->db->query("UPDATE cart_master SET cart_qty = '" . (int)$quantity . "' WHERE cart_id = '" . (int)$cart_id . "'     AND user_id = '" . (int) $this->getId() . "' ");
-		} else {
-			$this->db->query("UPDATE cart_master SET cart_qty = '" . (int)$quantity . "' WHERE cart_id = '" . (int)$cart_id . "'   and  shopping_session = '" . $this->get_shopping_session() . "'");
-		}
-	}
+        if (isset($session_user_data['customer_id'])) {
+            $this->db->query("UPDATE cart_master SET cart_qty = '" . (int) $quantity . "' WHERE cart_id = '" . (int) $cart_id . "'     AND user_id = '" . (int) $this->getId() . "' ");
+        } else {
+            $this->db->query("UPDATE cart_master SET cart_qty = '" . (int) $quantity . "' WHERE cart_id = '" . (int) $cart_id . "'   and  shopping_session = '" . $this->get_shopping_session() . "'");
+        }
+    }
     public function doRemoveItemCart($params)
     {
 
@@ -326,10 +349,10 @@ class Services extends CI_Model
     }
     //end of cart function
     //order
- 
+
     public function addOrder($params = array())
     {
-         
+
         $cartinfo = $this->getCartinfo();
         $cartSubtotal = $this->getCartSubtotal();
 
@@ -344,20 +367,20 @@ class Services extends CI_Model
         }
         $order_data['uuid'] = $uuid;
 
-         $order_id = (int) $this->session->userdata('order_id_ki');
-          $order_query = $this->db->query("select * from `m_order` where order_id = '" . (int) $order_id . "'");
-       
+        $order_id = (int) $this->session->userdata('order_id_ki');
+        $order_query = $this->db->query("select * from `m_order` where order_id = '" . (int) $order_id . "'");
+
         $order_data['transaction_id'] = $uuid;
         $order_data['total'] = (!empty($cartSubtotal)) ? $cartSubtotal : '0.00';
-       $domain_id =  $this->services->getDomainId();
-        if($domain_id==1){
-            $invoice_prefix=  "AE";
+        $domain_id = $this->services->getDomainId();
+        if ($domain_id == 1) {
+            $invoice_prefix = "AE";
         }
-        if($domain_id==2){
-            $invoice_prefix=  "OT";
+        if ($domain_id == 2) {
+            $invoice_prefix = "OT";
         }
-        if($domain_id==3){
-            $invoice_prefix=  "IN";
+        if ($domain_id == 3) {
+            $invoice_prefix = "IN";
         }
         $params['invoice_prefix'] = $invoice_prefix;
         //date_added
@@ -457,42 +480,38 @@ class Services extends CI_Model
 
             $order_data['ip'] = $this->input->ip_address();
             $order_data['user_agent'] = $this->input->user_agent();
-          
 
             $order_id = $this->common->insertRecord('m_order', $order_data);
-
-            
 
         }
 
         $totals[] = array(
-            'code'       => 'sub_total',
-            'title'      => 'Sub-Total:',
-            'value'      => $order_data['total'],
-            'sort_order' => 1
+            'code' => 'sub_total',
+            'title' => 'Sub-Total:',
+            'value' => $order_data['total'],
+            'sort_order' => 1,
         );
 
         //total module
         $totals[] = array(
-            'code'       => 'total',
-            'title'      => 'Total',
-            'value'      => max(0, $order_data['total']),
-            'sort_order' => 100
+            'code' => 'total',
+            'title' => 'Total',
+            'value' => max(0, $order_data['total']),
+            'sort_order' => 100,
         );
         $sort_order = array();
-			 
+
         foreach ($totals as $key => $value) {
-             
-            if(sizeof($value)>0){
-                    $sort_order[$key] = $value['sort_order'];
+
+            if (sizeof($value) > 0) {
+                $sort_order[$key] = $value['sort_order'];
             } else {
-                    $sort_order[$key] = '';
+                $sort_order[$key] = '';
             }
-        
-            
+
         }
         array_multisort($sort_order, SORT_ASC, $totals);
-        
+
         $order_data['totals'] = $totals;
 
         $sql = "delete from order_product where order_id='" . (int) $order_id . "'";
@@ -505,7 +524,7 @@ class Services extends CI_Model
             $sellprice = $product['price'];
             $sellprice_total = $sellprice * $product['cart_qty'];
 
-            $this->db->query("INSERT INTO order_product SET order_id = '" . (int) $order_id . "', product_id = '" . (int) $product['product_id'] . "', name = '" . $this->common->getDbValue($product['name']) . "', model = '" . $this->common->getDbValue($product['item_code']) . "', quantity = '" . (int) $product['cart_qty'] . "', price = '" . (float) $sellprice . "', total = '" .   $sellprice_total . "' ");
+            $this->db->query("INSERT INTO order_product SET order_id = '" . (int) $order_id . "', product_id = '" . (int) $product['product_id'] . "', name = '" . $this->common->getDbValue($product['name']) . "', model = '" . $this->common->getDbValue($product['item_code']) . "', quantity = '" . (int) $product['cart_qty'] . "', price = '" . (float) $sellprice . "', total = '" . $sellprice_total . "' ");
 
         }
 
@@ -518,7 +537,7 @@ class Services extends CI_Model
             }
         }
 
-       return (int) $order_id;
+        return (int) $order_id;
 
     }
     //end of order
@@ -564,7 +583,7 @@ class Services extends CI_Model
         $add_in_add['uuid'] = $uuid2;
 
         $params['uuid'] = $uuid;
-       
+
         $add_in_cust['uuid'] = (isset($params['uuid'])) ? $params['uuid'] : '';
         $add_in_cust['store_id'] = (isset($params['store_id'])) ? $params['store_id'] : '';
         $add_in_cust['firstname'] = (isset($params['firstname'])) ? $params['firstname'] : '';
@@ -573,10 +592,10 @@ class Services extends CI_Model
         $add_in_cust['telephone'] = (isset($params['telephone'])) ? $params['telephone'] : '';
         $add_in_cust['password'] = (isset($params['password'])) ? $params['password'] : '';
         $add_in_cust['newsletter'] = (isset($params['newsletter'])) ? $params['newsletter'] : '';
-        $add_in_cust['ip'] =  $this->input->ip_address();
+        $add_in_cust['ip'] = $this->input->ip_address();
 
         $this->common->insertRecord('m_customer', $add_in_cust);
-        
+
         //$last_id = $this->db->insert_id();
         $sql = "select * from m_customer where uuid='{$uuid}'";
         $rs_chk = $this->db->query($sql);
@@ -595,9 +614,8 @@ class Services extends CI_Model
             $add_in_add['country_id'] = $country_id = (isset($params['country_id'])) ? $params['country_id'] : '';
             $add_in_add['zone_id'] = $zone_id = (isset($params['zone_id'])) ? $params['zone_id'] : '';
             $add_in_add['default'] = (isset($params['default'])) ? $params['default'] : '1';
-         
 
-            if($country_id==""){
+            if ($country_id == "") {
                 if ($domain == 1) {
                     $add_in_add['country_id'] = 99;
                 }
@@ -608,7 +626,6 @@ class Services extends CI_Model
                     $add_in_add['country_id'] = 223;
                 }
             }
-            
 
             $this->common->insertRecord('customer_address', $add_in_add);
 
@@ -624,62 +641,437 @@ class Services extends CI_Model
             $this->common->updateRecord('cart_master', $updt_cart, $where_cart);
             //end of update cart
 
+            //send mail
+
+            $getDomainAddress = $this->services->getDomainAddress();
+        $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
+
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $m_setting = $query->result_array();
+
+            foreach ($m_setting as $key => $val) {
+                $config_site_mail[$val['key_name']] = $val['value'];
+            }
+
+            try {
+                //Server settings
+                $fileg = file_get_contents("htmlemails/account_create.html");
+                $dateadded  = date("Y-m-d");
+                $contact_email  = $customer_info['email'];
+                 
+                $contact_name = $customer_info['firstname'] .' '. $customer_info['lastname'];
+            
+                $subject  = 'Thank you for registering';
+                $password = $add_in_cust['password'];
+                
+                $pattern = array('/{DOMAINNAME}/','/{HTTP_DOMAIN_URL}/','/{LOGO_URL}/','/{CONTACTUS_URL}/','/{DOMAIN_ADDRESS_FOOTER}/','/{SUBJECT}/' , '/{FULLNAME}/' , '/{EMAIL}/' ,'/{PASSWORD}/' , '/{DATE}/');
+                $replacement = array($getDomainAddress['DOMAINNAME'],$getDomainAddress['HTTP_DOMAIN_URL'],$getDomainAddress['LOGO_URL'],$getDomainAddress['CONTACTUS_URL'],$getDomainAddress['DOMAIN_ADDRESS_FOOTER'], $subject,$contact_name,$contact_email,$password, $dateadded);
+                $mess_body = preg_replace($pattern, $replacement, $fileg);
+
+                $mail = new PHPMailer(true);
+
+                $mail->SMTPDebug = 0; // Enable verbose debug output
+                $mail->isMail(); // Send using SMTP
+                 
+                //Recipients
+                $admin_mail_id = $config_site_mail['config_site_mail'];
+
+                $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
+                $contact_name  = $customer_info['firstname']. " ".$customer_info['lastname'];
+                $mail->addAddress($customer_info['email'], $contact_name); // Add a recipient
+                //  $mail->addReplyTo($admin_mail_id, $contact_name);
+                /*
+                $config_alert_emails = $config_site_mail['config_alert_emails'];
+                $config_alert_emails_exp = explode(",",$config_alert_emails);
+                foreach($config_alert_emails_exp as $key => $alertemails){
+                $mail->addCC($alertemails);
+                }
+                 */
+                // Attachments
+
+                // Content
+                $mail->isHTML(true); // Set email format to HTML
+                $mail->Subject = $subject;
+                $mail->Body = $mess_body;
+                //  $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+                $mail->send();
+                // echo 'Message has been sent';
+            } catch (Exception $e) {
+                //  $error_msg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+
+            }
+        }
+            //end of send mail
+
         }
 
         return $customer_info;
     }
 
-    public function addOrderHistory($order_id=0, $order_status_id=1, $comment = '', $notify = false, $override = false)
+    public function addOrderHistory($order_id = 0, $order_status_id = 1, $comment = '', $notify = false, $override = false)
     {
-       
-        
+
         $order_info = $this->getOrder($order_id);
-          
-            $status = false;
-            if ($status) {
-                $order_status_id = 1 ; //pending
-            }
 
-            
-            $query_invoice = $this->db->query("SELECT MAX(invoice_no) AS invoice_no FROM `m_order` WHERE invoice_prefix = '" . $order_info['invoice_prefix'] . "'");
-            $query_invoice_row = $query_invoice->row_array();
-            if ($query_invoice_row['invoice_no']) {
-                $invoice_no = $query_invoice_row['invoice_no'] + 1;
-            } else {
-                $invoice_no = 1;
-            }
+        $status = false;
+        if ($status) {
+            $order_status_id = 1; //pending
+        }
 
-            $this->db->query("UPDATE `m_order` SET invoice_no = '" . (int) $invoice_no . "'  WHERE order_id = '" . (int) $order_id . "'");
+        $query_invoice = $this->db->query("SELECT MAX(invoice_no) AS invoice_no FROM `m_order` WHERE invoice_prefix = '" . $order_info['invoice_prefix'] . "'");
+        $query_invoice_row = $query_invoice->row_array();
+        if ($query_invoice_row['invoice_no']) {
+            $invoice_no = $query_invoice_row['invoice_no'] + 1;
+        } else {
+            $invoice_no = 1;
+        }
+        $order_info['invoice_no'] = $invoice_no;
+        
+        $this->db->query("UPDATE `m_order` SET invoice_no = '" . (int) $invoice_no . "'  WHERE order_id = '" . (int) $order_id . "'");
 
-            $this->db->query("INSERT INTO order_history SET order_id = '" . (int) $order_id . "', order_status_id = '" . (int) $order_status_id . "', notify = '1', comment = '" . $this->common->getDbValue($comment) . "', date_added = NOW()");
+        $this->db->query("INSERT INTO order_history SET order_id = '" . (int) $order_id . "', order_status_id = '" . (int) $order_status_id . "', notify = '1', comment = '" . $this->common->getDbValue($comment) . "', date_added = NOW()");
+
+        $order_product_query = $this->db->query("SELECT * FROM order_product WHERE order_id = '" . (int) $order_id . "'");
+        // If order status is 0 then becomes greater than 0 send main html email
+
+        $order_status_query = $this->db->query("SELECT * FROM m_order_status WHERE order_status_id = '" . (int) $order_status_id . "' AND language_id = '1'");
+
+        if ($order_status_query->num_rows() > 0) {
+            $order_status_query_row = $order_status_query->row_array();
+            $order_status = $order_status_query_row['name'];
+        } else {
+            $order_status = '';
+        }
+
+        $subject = sprintf('%s - Order %s', html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8'), $order_info['invoice_prefix'] . $order_info['invoice_no']);
+        //    $text  = sprintf('Thank you for your interest in %s products. Your order has been received and will be processed once payment has been confirmed.', html_entity_decode($order_info['store_name'], ENT_QUOTES, 'UTF-8')) . "\n\n";
+        //    @mail("swamiwebservices@gmail.com","simple1".$subject,$text);
+
+        // HTML Mail
+
+        $getDomainAddress = $this->services->getDomainAddress();
+
+        $data = array();
+        $data['TOP_SUBJECT'] = $subject;
+        $data['DOMAINNAME'] = $getDomainAddress['DOMAINNAME'];
+        $data['HTTP_DOMAIN_URL'] = $getDomainAddress['HTTP_DOMAIN_URL'];
+        $data['LOGO_URL'] = $getDomainAddress['LOGO_URL'];
+        $data['CONTACTUS_URL'] = $getDomainAddress['CONTACTUS_URL'];
+        $data['DOMAIN_ADDRESS_FOOTER'] = $getDomainAddress['DOMAIN_ADDRESS_FOOTER'];
+
+        $data['title'] = sprintf('%s - Order %s', $order_info['store_name'], $order_info['invoice_prefix'] . $order_info['invoice_no']);
+
+        $data['text_greeting'] = sprintf('Thank you for your interest in %s products. Your order has been received and will be processed once payment has been confirmed.', $order_info['store_name']);
+        $data['text_link'] = 'To view your order click on the link below:';
+        $data['text_download'] = '';
+        $data['text_order_detail'] = 'Order Details';
+        $data['text_instruction'] = 'Instructions';
+        $data['text_order_id'] = 'Order ID:';
+        $data['text_date_added'] = 'Date Added:';
+        $data['text_payment_method'] = 'Payment Method:';
+        $data['text_shipping_method'] = 'Shipping Method:';
+        $data['text_email'] = 'Email:';
+        $data['text_telephone'] = 'Telephone:';
+        $data['text_ip'] = 'IP Address:';
+        $data['text_order_status'] = 'Order Status:';
+        $data['text_payment_address'] = 'Payment Address';
+        $data['text_shipping_address'] = 'Shipping Address';
+        $data['text_product'] = 'Product';
+        $data['text_model'] = 'Model';
+        $data['text_quantity'] = 'Quantity';
+        $data['text_price'] = 'Price';
+        $data['text_total'] = 'Order Totals';
+        $data['text_footer'] = 'Please reply to this email if you have any questions.';
+
+        $data['logo'] = $getDomainAddress['LOGO_URL'];
+        $data['store_name'] = $order_info['store_name'];
+        $data['store_url'] = $order_info['store_url'];
+        $data['customer_id'] = $order_info['customer_id'];
+        $data['link'] = site_url('account/orderdetail/' . $order_info['uuid']);
+
+        $data['download'] = '';
+
+        $data['invoice_no'] = $order_info['invoice_prefix'] . $order_info['invoice_no'];
+        $data['date_added'] = $order_info['date_added'];
+        $data['payment_method'] = $order_info['payment_method'];
+        $data['shipping_method'] = $order_info['shipping_method'];
+        $data['email'] = $order_info['email'];
+        $data['telephone'] = $order_info['telephone'];
+        $data['ip'] = $order_info['ip'];
+        $data['order_status'] = $order_status;
+
+        if ($comment && $notify) {
+            $data['comment'] = nl2br($comment);
+        } else {
+            $data['comment'] = '';
+        }
+
+        if ($order_info['payment_address_format']) {
+            $format = $order_info['payment_address_format'];
+        } else {
+            $format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}' . "\n" . '{mobile}';
+        }
+
+        $find = array(
+            '{firstname}',
+            '{lastname}',
+            '{company}',
+            '{address_1}',
+            '{address_2}',
+            '{city}',
+            '{postcode}',
+            '{zone}',
+            '{zone_code}',
+            '{country}',
+            '{mobile}',
+        );
+
+        $replace = array(
+            'firstname' => $order_info['payment_firstname'],
+            'lastname' => $order_info['payment_lastname'],
+            'company' => $order_info['payment_company'],
+            'address_1' => $order_info['payment_address_1'],
+            'address_2' => $order_info['payment_address_2'],
+            'city' => $order_info['payment_city'],
+            'postcode' => $order_info['payment_postcode'],
+            'zone' => $order_info['payment_zone'],
+            'zone_code' => $order_info['payment_zone_code'],
+            'country' => $order_info['payment_country'],
+            'mobile' => $order_info['telephone'],
+        );
+
+        $data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+        if ($order_info['shipping_address_format']) {
+            $format = $order_info['shipping_address_format'];
+        } else {
+            $format = '{firstname} {lastname}' . "\n" . '{company}' . "\n" . '{address_1}' . "\n" . '{address_2}' . "\n" . '{city} {postcode}' . "\n" . '{zone}' . "\n" . '{country}' . "\n" . '{mobile}';
+        }
+
+        $find = array(
+            '{firstname}',
+            '{lastname}',
+            '{company}',
+            '{address_1}',
+            '{address_2}',
+            '{city}',
+            '{postcode}',
+            '{zone}',
+            '{zone_code}',
+            '{country}',
+            '{mobile}',
+        );
+
+        $replace = array(
+            'firstname' => $order_info['shipping_firstname'],
+            'lastname' => $order_info['shipping_lastname'],
+            'company' => $order_info['shipping_company'],
+            'address_1' => $order_info['shipping_address_1'],
+            'address_2' => $order_info['shipping_address_2'],
+            'city' => $order_info['shipping_city'],
+            'postcode' => $order_info['shipping_postcode'],
+            'zone' => $order_info['shipping_zone'],
+            'zone_code' => $order_info['shipping_zone_code'],
+            'country' => $order_info['shipping_country'],
+            'mobile' => $order_info['shipping_mobile'],
+        );
+
+        $data['shipping_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+        // Products
+        $data['products'] = array();
+
+        foreach ($order_product_query->result_array() as $product) {
 
             // Stock subtraction
+            //  $this->db->query("UPDATE product_master SET quantity = (quantity - " . (int) $product['quantity'] . ") WHERE product_id = '" . (int) $product['product_id'] . "' ");
 
-            // $order_product_query = $this->db->query("SELECT * FROM order_product WHERE order_id = '" . (int) $order_id . "'");
+            $data['products'][] = array(
+                'name' => $product['name'],
+                'model' => $product['model'],
+                'quantity' => $product['quantity'],
+                'price' => $product['price'],
+                'total' => $product['total'],
+            );
+        }
 
-            // foreach ($order_product_query->result_array() as $order_product) {
-            //   //  $this->db->query("UPDATE product_master SET quantity = (quantity - " . (int) $order_product['quantity'] . ") WHERE product_id = '" . (int) $order_product['product_id'] . "' AND subtract = '1'");
+        // Order Totals
+        $data['totals'] = array();
 
-             
-            // }
+        $order_total_query = $this->db->query("SELECT * FROM `order_total` WHERE order_id = '" . (int) $order_id . "' ORDER BY sort_order ASC");
+        if ($order_total_query->num_rows()) {
+            $order_total_query_rows = $order_total_query->result_array();
+            foreach ($order_total_query_rows as $total) {
+                $data['totals'][] = array(
+                    'title' => $total['title'],
+                    'text' => $total['value'],
+                );
+            }
+        }
 
- 
+        $getDomainAddress = $this->services->getDomainAddress();
+        $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
 
-        
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $m_setting = $query->result_array();
 
-          
+            foreach ($m_setting as $key => $val) {
+                $config_site_mail[$val['key_name']] = $val['value'];
+            }
 
-        
+            try {
+                //Server settings
+
+                $mail = new PHPMailer(true);
+
+                $mail->SMTPDebug = 0; // Enable verbose debug output
+                $mail->isMail(); // Send using SMTP
+                /*
+                $mail->isSMTP();                                            // Send using SMTP
+
+                $mail->Host       = $config_site_mail['config_smtp_host'];                    // Set the SMTP server to send through
+                $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+                $mail->Username   = $config_site_mail['config_smtp_username'];                      // SMTP username
+                $mail->Password   = $config_site_mail['config_smtp_password'];                               // SMTP password
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+                $mail->Port       = $config_site_mail['config_smtp_port']; // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+                 */
+                //Recipients
+                $admin_mail_id = $config_site_mail['config_site_mail'];
+
+                $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
+                $contact_name  = $order_info['firstname']. " ".$order_info['lastname'];
+                $mail->addAddress($order_info['email'], $contact_name); // Add a recipient
+                //  $mail->addReplyTo($admin_mail_id, $contact_name);
+                /*
+                $config_alert_emails = $config_site_mail['config_alert_emails'];
+                $config_alert_emails_exp = explode(",",$config_alert_emails);
+                foreach($config_alert_emails_exp as $key => $alertemails){
+                $mail->addCC($alertemails);
+                }
+                 */
+                // Attachments
+
+                // Content
+                $mail->isHTML(true); // Set email format to HTML
+                $mail->Subject = $subject;
+                $mail->Body = $this->load->view('mail/order', $data,true);
+                //  $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+                $mail->send();
+                // echo 'Message has been sent';
+            } catch (Exception $e) {
+                //  $error_msg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+
+            }
+            //@mail("swamiwebservices@gmail.com","simple3".$subject,$text);
+
+            // Admin Alert Mail
+            if ($config_site_mail['config_site_mail'] != '') {
+                $subject = sprintf('%s - Order %s', html_entity_decode($getDomainAddress['DOMAINNAME']), $order_info['invoice_prefix'] . $order_info['invoice_no']);
+                $data['text_greeting'] = 'You have received an order';
+                $data['link'] = base_url() . "websiteadmin/index.php/orders/orderdetail/" . $order_info['uuid'];
+
+                // Text
+                $text = 'You have received an order.' . "\n\n";
+                $text .= 'Order ID:' . ' ' . $order_info['invoice_prefix'] . $order_info['invoice_no'] . "\n";
+                $text .= 'Date Added:' . ' ' . date('d/m/Y', strtotime($order_info['date_added'])) . "\n";
+                $text .= 'Order Status:' . ' ' . $order_status . "\n\n";
+                $text .= 'Products' . "\n";
+
+                foreach ($order_product_query->result_array() as $product) {
+                    $text .= $product['quantity'] . 'x ' . $product['name'] . ' (' . $product['model'] . ') ' . html_entity_decode($product['total']) . "\n";
+
+                }
+
+                $text .= "\n";
+
+                $text .= 'Order Totals' . "\n";
+                foreach ($order_total_query->result_array() as $total) {
+                    $text .= $total['title'] . ': ' . html_entity_decode($total['value']) . "\n";
+                }
+                foreach ($order_total_query->result_array() as $total) {
+                    //$text .= $total['title'] . ': ' . html_entity_decode($total['text'], ENT_NOQUOTES, 'UTF-8') . "\n";
+                }
+
+                $text .= "\n";
+
+                if ($order_info['comment']) {
+                    $text .= 'The comments for your order are:' . "\n\n";
+                    $text .= $order_info['comment'] . "\n\n";
+                }
+
+                // Send to additional alert emails
+                try {
+                    //Server settings
+    
+                    $mail = new PHPMailer(true);
+    
+                    $mail->SMTPDebug = 0; // Enable verbose debug output
+                    $mail->isMail(); // Send using SMTP
+                    /*
+                    $mail->isSMTP();                                            // Send using SMTP
+    
+                    $mail->Host       = $config_site_mail['config_smtp_host'];                    // Set the SMTP server to send through
+                    $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+                    $mail->Username   = $config_site_mail['config_smtp_username'];                      // SMTP username
+                    $mail->Password   = $config_site_mail['config_smtp_password'];                               // SMTP password
+                    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` encouraged
+                    $mail->Port       = $config_site_mail['config_smtp_port']; // TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
+                     */
+                    //Recipients
+                    $admin_mail_id = $config_site_mail['config_site_mail'];
+    
+                    $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
+                   
+                    $mail->addAddress($admin_mail_id, $config_site_mail['config_site_from_name']); // Add a recipient
+                    //  $mail->addReplyTo($admin_mail_id, $contact_name);
+                    /*
+                    $config_alert_emails = $config_site_mail['config_alert_emails'];
+                    $config_alert_emails_exp = explode(",",$config_alert_emails);
+                    foreach($config_alert_emails_exp as $key => $alertemails){
+                    $mail->addCC($alertemails);
+                    }
+                     */
+                    // Attachments
+    
+                    // Content
+                    $mail->isHTML(true); // Set email format to HTML
+                    $mail->Subject = $subject;
+                    $mail->Body = $this->load->view('mail/order', $data,true);
+                    //  $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+    
+                    $config_alert_emails = $config_site_mail['config_alert_emails'];
+                    if($config_alert_emails!=""){
+                        $config_alert_emails_exp = explode(",",$config_alert_emails);
+                        foreach($config_alert_emails_exp as $key => $alertemails){
+                        $mail->addCC($alertemails);
+                        }
+                    }
+                   
+
+                    $mail->send();
+                    // echo 'Message has been sent';
+                } catch (Exception $e) {
+                    //  $error_msg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    
+                }
+
+            }
+
+        }
 
     }
     public function getOrderUUID($order_UUID)
     {
         //echo "SELECT * FROM `order` WHERE order_id = '" . (int)$order_id . "' AND customer_id = '" . (int)$this->session->userdata('lux_user_id') . "' AND order_status_id > '0'";
         //$order_query = $this->db->query("SELECT * FROM `order` WHERE order_id = '" . (int)$order_id . "' AND customer_id = '" . (int)$this->session->userdata('lux_user_id') . "' AND order_status_id > '0'");
-         $sql = "SELECT *, (SELECT os.name FROM `m_order_status` os WHERE os.order_status_id = o.order_status_id ) AS order_status FROM `m_order` o WHERE o.uuid = '" . $order_UUID . "'";
+        $sql = "SELECT *, (SELECT os.name FROM `m_order_status` os WHERE os.order_status_id = o.order_status_id ) AS order_status FROM `m_order` o WHERE o.uuid = '" . $order_UUID . "'";
         $order_query = $this->db->query($sql);
-        
-        
+
         if ($order_query->num_rows() > 0) {
             $order_query_row = $order_query->row_array();
 
@@ -738,7 +1130,7 @@ class Services extends CI_Model
                 'firstname' => $order_query_row['firstname'],
                 'lastname' => $order_query_row['lastname'],
                 'telephone' => $order_query_row['telephone'],
-               
+
                 'email' => $order_query_row['email'],
                 'payment_firstname' => $order_query_row['payment_firstname'],
                 'payment_lastname' => $order_query_row['payment_lastname'],
@@ -779,39 +1171,43 @@ class Services extends CI_Model
 
                 'currency_id' => $order_query_row['currency_id'],
                 'currency_code' => $order_query_row['currency_code'],
-              
+
                 'date_modified' => $order_query_row['date_modified'],
                 'date_added' => $order_query_row['date_added'],
                 'ip' => $order_query_row['ip'],
-               
+
             );
         } else {
             return false;
         }
     }
-	public function getOrderProducts($order_id) {
-		$query = $this->db->query("SELECT op.*, p.main_image,p.slug_name FROM order_product op 
+    public function getOrderProducts($order_id)
+    {
+        $query = $this->db->query("SELECT op.*, p.main_image,p.slug_name FROM order_product op
 								left join 	product_master p on op.product_id = p.product_id
-							 WHERE order_id = '" . (int)$order_id . "'");
+							 WHERE order_id = '" . (int) $order_id . "'");
 
-		return $query->result_array() ;
-	}
-	public function getOrderTotals($order_id) {
-		$query = $this->db->query("SELECT * FROM order_total WHERE order_id = '" . (int)$order_id . "' ORDER BY sort_order");
+        return $query->result_array();
+    }
+    public function getOrderTotals($order_id)
+    {
+        $query = $this->db->query("SELECT * FROM order_total WHERE order_id = '" . (int) $order_id . "' ORDER BY sort_order");
 
-		return $query->result_array() ;
-	}
-    public function getOrderStatus($order_status_id) {
-		$query = $this->db->query("SELECT * FROM m_order_status WHERE order_status_id = '" . (int)$order_status_id . "'   ");
-		$row = $query->row_array();
-		return $row;
-	}	
-    public function getOrderHistories($order_id) {
-		$query = $this->db->query("SELECT date_added, os.name AS status, oh.comment, oh.notify FROM order_history oh LEFT JOIN m_order_status os ON oh.order_status_id = os.order_status_id WHERE oh.order_id = '" . (int)$order_id . "'   ORDER BY oh.date_added");
+        return $query->result_array();
+    }
+    public function getOrderStatus($order_status_id)
+    {
+        $query = $this->db->query("SELECT * FROM m_order_status WHERE order_status_id = '" . (int) $order_status_id . "'   ");
+        $row = $query->row_array();
+        return $row;
+    }
+    public function getOrderHistories($order_id)
+    {
+        $query = $this->db->query("SELECT date_added, os.name AS status, oh.comment, oh.notify FROM order_history oh LEFT JOIN m_order_status os ON oh.order_status_id = os.order_status_id WHERE oh.order_id = '" . (int) $order_id . "'   ORDER BY oh.date_added");
 
-		return $query->result_array() ;
-	}
- 
+        return $query->result_array();
+    }
+
     public function getOrder($order_id)
     {
         //echo "SELECT * FROM `order` WHERE order_id = '" . (int)$order_id . "' AND customer_id = '" . (int)$this->session->userdata('lux_user_id') . "' AND order_status_id > '0'";
@@ -876,7 +1272,7 @@ class Services extends CI_Model
                 'firstname' => $order_query_row['firstname'],
                 'lastname' => $order_query_row['lastname'],
                 'telephone' => $order_query_row['telephone'],
-               
+
                 'email' => $order_query_row['email'],
                 'payment_firstname' => $order_query_row['payment_firstname'],
                 'payment_lastname' => $order_query_row['payment_lastname'],
@@ -917,11 +1313,11 @@ class Services extends CI_Model
 
                 'currency_id' => $order_query_row['currency_id'],
                 'currency_code' => $order_query_row['currency_code'],
-              
+
                 'date_modified' => $order_query_row['date_modified'],
                 'date_added' => $order_query_row['date_added'],
                 'ip' => $order_query_row['ip'],
-               
+
             );
         } else {
             return false;
@@ -930,137 +1326,139 @@ class Services extends CI_Model
 
     //other
 
-    public function getAddress($customer_id=0) {
+    public function getAddress($customer_id = 0)
+    {
 
-		$address_query = $this->db->query("SELECT DISTINCT * FROM customer_address WHERE customer_id = '" . (int)$customer_id . "' ");
+        $address_query = $this->db->query("SELECT DISTINCT * FROM customer_address WHERE customer_id = '" . (int) $customer_id . "' ");
 
-		if ($address_query->num_rows() > 0 ) {
-			$address_query_row = $address_query->row_array(); 
-			$country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int)$address_query_row['country_id'] . "'");
+        if ($address_query->num_rows() > 0) {
+            $address_query_row = $address_query->row_array();
+            $country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int) $address_query_row['country_id'] . "'");
 
-			if ($country_query->num_rows() > 0 ) {
-				$country_query_row = $country_query->row_array(); 
-				$country = $country_query_row['name'];
-				$iso_code_2 = $country_query_row['iso_code_2'];
-				$iso_code_3 = $country_query_row['iso_code_3'];
-			 
-				 $geo_zone_id= 0;//$country_query_row['geo_zone_id'];
-			} else {
-				$country = '';
-				$iso_code_2 = '';
-				$iso_code_3 = '';
-				$address_format = '';
-				$geo_zone_id = "0";
-			}
+            if ($country_query->num_rows() > 0) {
+                $country_query_row = $country_query->row_array();
+                $country = $country_query_row['name'];
+                $iso_code_2 = $country_query_row['iso_code_2'];
+                $iso_code_3 = $country_query_row['iso_code_3'];
 
-			$zone_query = $this->db->query("SELECT * FROM `m_zone` WHERE zone_id = '" . (int)$address_query_row['zone_id'] . "'");
-			
-			if ($zone_query->num_rows() > 0 ) {
-				$zone_query_row = $zone_query->row_array(); 
-				$zone = $zone_query_row['name'];
-				$zone_code = $zone_query_row['code'];
-			} else {
-				$zone = '';
-				$zone_code = '';
-			}
+                $geo_zone_id = 0; //$country_query_row['geo_zone_id'];
+            } else {
+                $country = '';
+                $iso_code_2 = '';
+                $iso_code_3 = '';
+                $address_format = '';
+                $geo_zone_id = "0";
+            }
 
-			$address_data = array(
-				'address_id'     => $address_query_row['address_id'],
-				'firstname'      => $address_query_row['firstname'],
-				'lastname'       => $address_query_row['lastname'],
-				//'mobile'       => $address_query_row['mobile'],
-				'company'        => $address_query_row['company'],
-				'address_1'      => $address_query_row['address_1'],
-				'address_2'      => $address_query_row['address_2'],
-				'postcode'       => $address_query_row['postcode'],
-				'city'           => $address_query_row['city'],
-				'zone_id'        => $address_query_row['zone_id'],
-				'zone_id'        => $address_query_row['zone_id'],
-				'zone'           => $zone,
-				'zone_code'      => $zone_code,
-				'country_id'     => $address_query_row['country_id'],
-				'country'        => $country,
-				'iso_code_2'     => $iso_code_2,
-				'iso_code_3'     => $iso_code_3,
-				//'address_format' => $address_format,
-				'geo_zone_id'	 => $geo_zone_id
-				 
-			);
+            $zone_query = $this->db->query("SELECT * FROM `m_zone` WHERE zone_id = '" . (int) $address_query_row['zone_id'] . "'");
 
-			return $address_data;
-		} else {
-			return false;
-		}
-	}
-	public function getAddresses($customer_id=0) {
-		$address_data = array();
+            if ($zone_query->num_rows() > 0) {
+                $zone_query_row = $zone_query->row_array();
+                $zone = $zone_query_row['name'];
+                $zone_code = $zone_query_row['code'];
+            } else {
+                $zone = '';
+                $zone_code = '';
+            }
 
-		$query = $this->db->query("SELECT * FROM customer_address WHERE customer_id = '" . (int)$customer_id . "'");
+            $address_data = array(
+                'address_id' => $address_query_row['address_id'],
+                'firstname' => $address_query_row['firstname'],
+                'lastname' => $address_query_row['lastname'],
+                //'mobile'       => $address_query_row['mobile'],
+                'company' => $address_query_row['company'],
+                'address_1' => $address_query_row['address_1'],
+                'address_2' => $address_query_row['address_2'],
+                'postcode' => $address_query_row['postcode'],
+                'city' => $address_query_row['city'],
+                'zone_id' => $address_query_row['zone_id'],
+                'zone_id' => $address_query_row['zone_id'],
+                'zone' => $zone,
+                'zone_code' => $zone_code,
+                'country_id' => $address_query_row['country_id'],
+                'country' => $country,
+                'iso_code_2' => $iso_code_2,
+                'iso_code_3' => $iso_code_3,
+                //'address_format' => $address_format,
+                'geo_zone_id' => $geo_zone_id,
 
-		foreach ($query->result_array() as $result) {
-			$country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int)$result['country_id'] . "'");
+            );
 
-			if ($country_query->num_rows() > 0) {
-				$country_query_row = $country_query->row_array(); 
-				$country = $country_query_row['name'];
-				$iso_code_2 = $country_query_row['iso_code_2'];
-				$iso_code_3 = $country_query_row['iso_code_3'];
-				 
-				$geo_zone_id= $country_query_row['geo_zone_id'];
-				
-			} else {
-				$country = '';
-				$iso_code_2 = '';
-				$iso_code_3 = '';
-				$address_format = '';
-				$geo_zone_id = "0";
-			}
+            return $address_data;
+        } else {
+            return false;
+        }
+    }
+    public function getAddresses($customer_id = 0)
+    {
+        $address_data = array();
 
-			$zone_query = $this->db->query("SELECT * FROM `m_zone` WHERE zone_id = '" . (int)$result['zone_id'] . "'");
+        $query = $this->db->query("SELECT * FROM customer_address WHERE customer_id = '" . (int) $customer_id . "'");
 
-			if ($zone_query->num_rows() > 0 ) {
-				$zone_query_row = $zone_query->row_array(); 
-				$zone = $zone_query_row['name'];
-				$zone_code = $zone_query_row['code'];
-			} else {
-				$zone = '';
-				$zone_code = '';
-			}
+        foreach ($query->result_array() as $result) {
+            $country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int) $result['country_id'] . "'");
 
-			$address_data[$result['address_id']] = array(
-				'address_id'     => $result['address_id'],
-				'firstname'      => $result['firstname'],
-				'lastname'       => $result['lastname'],
-				'mobile'       => $result['mobile'],
-				'company'        => $result['company'],
-				'address_1'      => $result['address_1'],
-				'address_2'      => $result['address_2'],
-				'postcode'       => $result['postcode'],
-				'city'           => $result['city'],
-				'zone_id'        => $result['zone_id'],
-				'zone'           => $zone,
-				'zone_code'      => $zone_code,
-				'country_id'     => $result['country_id'],
-				'country'        => $country,
-				'iso_code_2'     => $iso_code_2,
-				'iso_code_3'     => $iso_code_3,
-				'address_format' => $address_format,
-				'geo_zone_id'	 => $geo_zone_id
-				 
+            if ($country_query->num_rows() > 0) {
+                $country_query_row = $country_query->row_array();
+                $country = $country_query_row['name'];
+                $iso_code_2 = $country_query_row['iso_code_2'];
+                $iso_code_3 = $country_query_row['iso_code_3'];
 
-			);
-		}
+                $geo_zone_id = $country_query_row['geo_zone_id'];
 
-		return $address_data;
-	}
+            } else {
+                $country = '';
+                $iso_code_2 = '';
+                $iso_code_3 = '';
+                $address_format = '';
+                $geo_zone_id = "0";
+            }
 
-	public function getTotalAddresses() {
-		$query = $this->db->query("SELECT COUNT(*) AS total FROM customer_address WHERE customer_id = '" . (int)$this->session->userdata('lux_address_id') . "'");
+            $zone_query = $this->db->query("SELECT * FROM `m_zone` WHERE zone_id = '" . (int) $result['zone_id'] . "'");
 
-		$row = $query->row_array();
+            if ($zone_query->num_rows() > 0) {
+                $zone_query_row = $zone_query->row_array();
+                $zone = $zone_query_row['name'];
+                $zone_code = $zone_query_row['code'];
+            } else {
+                $zone = '';
+                $zone_code = '';
+            }
 
-		return $row['total'];
-	}
+            $address_data[$result['address_id']] = array(
+                'address_id' => $result['address_id'],
+                'firstname' => $result['firstname'],
+                'lastname' => $result['lastname'],
+                'mobile' => $result['mobile'],
+                'company' => $result['company'],
+                'address_1' => $result['address_1'],
+                'address_2' => $result['address_2'],
+                'postcode' => $result['postcode'],
+                'city' => $result['city'],
+                'zone_id' => $result['zone_id'],
+                'zone' => $zone,
+                'zone_code' => $zone_code,
+                'country_id' => $result['country_id'],
+                'country' => $country,
+                'iso_code_2' => $iso_code_2,
+                'iso_code_3' => $iso_code_3,
+                'address_format' => $address_format,
+                'geo_zone_id' => $geo_zone_id,
+
+            );
+        }
+
+        return $address_data;
+    }
+
+    public function getTotalAddresses()
+    {
+        $query = $this->db->query("SELECT COUNT(*) AS total FROM customer_address WHERE customer_id = '" . (int) $this->session->userdata('lux_address_id') . "'");
+
+        $row = $query->row_array();
+
+        return $row['total'];
+    }
 
     public function getCountryNew($country_id)
     {
@@ -1076,7 +1474,8 @@ class Services extends CI_Model
 
         return $zone_data;
     }
-    public function clear() {
+    public function clear()
+    {
 
         $session_user_data = $this->session->userdata('front_user_detail');
         //print_r($session_user_data);
@@ -1086,14 +1485,15 @@ class Services extends CI_Model
             $this->db->query("DELETE FROM cart_master WHERE   shopping_session = '" . $this->get_shopping_session() . "'  ");
         }
 
-	}
+    }
 
-    public function getTotalOrderProductsByOrderId($order_id) {
-		 
-		$query = $this->db->query("SELECT COUNT('') AS total FROM order_product WHERE order_id = '" . (int)$order_id . "'");
+    public function getTotalOrderProductsByOrderId($order_id)
+    {
 
-		 $row = $query->row_array();
+        $query = $this->db->query("SELECT COUNT('') AS total FROM order_product WHERE order_id = '" . (int) $order_id . "'");
 
-		return $row['total'];
-	}
+        $row = $query->row_array();
+
+        return $row['total'];
+    }
 }

@@ -18,13 +18,14 @@
 namespace Google\Cloud\Core;
 
 use Google\Auth\FetchAuthTokenInterface;
+use Google\Auth\GetQuotaProjectInterface;
 use Google\Auth\HttpHandler\Guzzle5HttpHandler;
 use Google\Auth\HttpHandler\Guzzle6HttpHandler;
 use Google\Auth\HttpHandler\HttpHandlerFactory;
 use Google\Cloud\Core\RequestWrapperTrait;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\PromiseInterface;
-use GuzzleHttp\Psr7;
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
@@ -220,7 +221,7 @@ class RequestWrapper
      *           **Defaults to** `3`.
      *     @type callable $restRetryFunction Sets the conditions for whether or
      *           not a request should attempt to retry. Function signature should
-     *           match: `function (\Exception $ex) : bool`.
+     *           match: `function (\Exception $ex, int $retryAttempt) : bool`.
      *     @type callable $restDelayFunction Executes a delay, defaults to
      *           utilizing `usleep`. Function signature should match:
      *           `function (int $delay) : void`.
@@ -251,7 +252,7 @@ class RequestWrapper
                 $this->applyHeaders($request),
                 $this->getRequestOptions($options)
             )->then(null, function (\Exception $ex) use ($fn, $retryAttempt, $retryOptions) {
-                $shouldRetry = $retryOptions['retryFunction']($ex);
+                $shouldRetry = $retryOptions['retryFunction']($ex, $retryAttempt);
 
                 if ($shouldRetry === false || $retryAttempt >= $retryOptions['retries']) {
                     throw $this->convertToGoogleException($ex);
@@ -282,39 +283,50 @@ class RequestWrapper
         ];
 
         if ($this->shouldSignRequest) {
-            $headers['Authorization'] = 'Bearer ' . $this->getToken();
+            $quotaProject = $this->quotaProject;
+            $token = null;
+
+            if ($this->accessToken) {
+                $token = $this->accessToken;
+            } else {
+                $credentialsFetcher = $this->getCredentialsFetcher();
+                $token = $this->fetchCredentials($credentialsFetcher)['access_token'];
+
+                if ($credentialsFetcher instanceof GetQuotaProjectInterface) {
+                    $quotaProject = $credentialsFetcher->getQuotaProject();
+                }
+            }
+
+            $headers['Authorization'] = 'Bearer ' . $token;
+
+            if ($quotaProject) {
+                $headers['X-Goog-User-Project'] = [$quotaProject];
+            }
         }
 
-        return Psr7\modify_request($request, ['set_headers' => $headers]);
-    }
-
-    /**
-     * Gets the access token.
-     *
-     * @return string
-     */
-    private function getToken()
-    {
-        if ($this->accessToken) {
-            return $this->accessToken;
-        }
-
-        return $this->fetchCredentials()['access_token'];
+        return Utils::modifyRequest($request, ['set_headers' => $headers]);
     }
 
     /**
      * Fetches credentials.
      *
+     * @param FetchAuthTokenInterface $credentialsFetcher
      * @return array
      */
-    private function fetchCredentials()
+    private function fetchCredentials(FetchAuthTokenInterface $credentialsFetcher)
     {
         $backoff = new ExponentialBackoff($this->retries, $this->getRetryFunction());
 
         try {
             return $backoff->execute(
-                [$this->getCredentialsFetcher(), 'fetchAuthToken'],
-                [$this->authHttpHandler]
+                function () use ($credentialsFetcher) {
+                    if ($token = $credentialsFetcher->fetchAuthToken($this->authHttpHandler)) {
+                        return $token;
+                    }
+                    // As we do not know the reason the credentials fetcher could not fetch the
+                    // token, we should not retry.
+                    throw new \RuntimeException('Unable to fetch token');
+                }
             );
         } catch (\Exception $ex) {
             throw $this->convertToGoogleException($ex);

@@ -110,6 +110,72 @@ class Services extends CI_Model
  
     //end of ecom  market place section 
 
+    public function getDomainId()
+    {
+        $domain_name = $_SERVER['HTTP_HOST'];
+
+        $domain_list = $this->config->item("DOMAINs");
+        $domain_id = array_search($domain_name, $domain_list);
+        if (!$domain_id) {
+            $domain_id = 1;
+        }
+        return $domain_id;
+    }
+    public function getDomainAddress()
+    {
+        $date1 = date("Y");
+        $date2 = date("Y") + 1;
+        $domain_name = $_SERVER['HTTP_HOST'];
+        $domain_list = $this->config->item("DOMAINs");
+        $domain_id = array_search($domain_name, $domain_list);
+        if (!$domain_id) {
+            $domain_id = 1;
+        }
+        $HTTP_DOMAIN_URL = site_url();
+        $LOGO_URL = "https://bondbeyond.ae/assets/img/logo/logo.png";
+        $address[1] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondbeyond.ae<br /> Web <a href='http://bondbeyond.ae/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+
+        $address[2] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondforu.com<br /> Web <a href='http://bondforu.com/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+
+        $address[3] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondbeyond.in<br /> Web <a href='http://bondbeyond.in/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+
+        $address_single = $address[$domain_id];
+        return $address_single;
+    }
+    public function getCurrency()
+    {
+
+        $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
+        $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
+        $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
+        $getDomainId = $this->getDomainId();
+
+        $currentCurrency = $currencyarr[$getDomainId];
+        return $currentCurrency;
+    }
+    public function format($number)
+    {
+        $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
+        $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
+        $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
+
+        $getDomainId = $this->getDomainId();
+
+        $currentCurrency = $currencyarr[$getDomainId];
+        $symbol_left = $currentCurrency['symbol_left'];
+        $symbol_right = $currentCurrency['symbol_right'];
+        $decimal_place = $currentCurrency['decimal_place'];
+
+        $string = '';
+        if ($symbol_left) {
+            $string .= $symbol_left . "";
+        }
+        $string .= number_format($number, (int) $decimal_place, '.', ',');
+        if ($symbol_right) {
+            $string .= $symbol_right;
+        }
+        return $string;
+    }
 
   
 }

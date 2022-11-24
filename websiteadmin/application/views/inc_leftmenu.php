@@ -59,8 +59,8 @@ if($user_data['access_ids']!=''){
                     <li class="nav-item"><a href="<?php echo site_url('orders/new_orders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_1'){ echo 'active';}?>">New Orders</a></li>
                     <li class="nav-item"><a href="<?php echo site_url('orders/confirmed_orders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_2'){ echo 'active';}?>">Confirmed Orders</a></li>
                     <li class="nav-item"><a href="<?php echo site_url('orders/delivered') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_3'){ echo 'active';}?>">Delivered</a></li>
-                    <li class="nav-item"><a href="<?php echo site_url('orders/reviewpending') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_4'){ echo 'active';}?>">Review Pending</a></li>
-                    <li class="nav-item"><a href="<?php echo site_url('orders/reviewlist') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_5'){ echo 'active';}?>">Review List</a></li>
+                    <!-- <li class="nav-item"><a href="<?php echo site_url('orders/reviewpending') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_4'){ echo 'active';}?>">Review Pending</a></li>
+                    <li class="nav-item"><a href="<?php echo site_url('orders/reviewlist') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_5'){ echo 'active';}?>">Review List</a></li> -->
                     <li class="nav-item"><a href="<?php echo site_url('orders/allorders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_6'){ echo 'active';}?>">All Order</a></li>
                         
                     </ul>

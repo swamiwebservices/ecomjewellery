@@ -180,7 +180,7 @@ class Pages extends CI_Controller
             }
 
             if ($error_msg == "") {
-                $dateadded = date('Y-m-d h:i:s');
+                $dateadded = date('Y-m-d H:i:s');
 
                 $add_in['contact_fname'] = $contact_fname;
              //   $add_in['contact_lname'] = $contact_lname;
@@ -189,10 +189,11 @@ class Pages extends CI_Controller
                 $add_in['contact_message'] = $contact_message;
                 $add_in['contact_subject'] = $contact_subject;
                 $add_in['add_date'] = $dateadded;
-
+                $add_in['domainname'] = $_SERVER['SERVER_NAME'];
                 $this->db->insert('wti_t_contactus', $add_in);
 
-                $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail'";
+                $getDomainAddress = $this->services->getDomainAddress();
+                $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
                 $query = $this->db->query($sql);
                 if ($query->num_rows() > 0) {
                     $m_setting = $query->result_array();
@@ -205,11 +206,14 @@ class Pages extends CI_Controller
 
                     $fileg = file_get_contents("htmlemails/mail_contactus.html");
 
-                    $pattern = array('/{fname}/',  '/{email}/', '/{subject}/','/{message}/', '/{DATE}/');
-                    $replacement = array( $contact_fname, $contact_email,$contact_subject, $contact_message, $dateadded);
+                   
+                    
+                    $pattern = array('/{DOMAINNAME}/','/{HTTP_DOMAIN_URL}/','/{LOGO_URL}/','/{CONTACTUS_URL}/','/{DOMAIN_ADDRESS_FOOTER}/','/{SUBJECT}/', '/{fname}/',  '/{email}/', '/{contact_subject}/','/{message}/', '/{DATE}/');
+                    $replacement = array($getDomainAddress['DOMAINNAME'],$getDomainAddress['HTTP_DOMAIN_URL'],$getDomainAddress['LOGO_URL'],$getDomainAddress['CONTACTUS_URL'],$getDomainAddress['DOMAIN_ADDRESS_FOOTER'],$subject,$contact_fname, $contact_email,$contact_subject, $contact_message, $dateadded);
                     $mess_body = preg_replace($pattern, $replacement, $fileg);
+                    
                     $contact_name = $contact_fname;
-
+                  
                     try {
                         //Server settings
 

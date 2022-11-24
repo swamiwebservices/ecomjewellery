@@ -74,7 +74,7 @@
 						if ($success!='') {
 					?>
                                 <div class="alert bg-success text-white alert-dismissible">
-                                    <span class="font-weight-bold">Error!</span> <?php echo $success?>
+                                    <span class="font-weight-bold">Success!</span> <?php echo $success?>
                                 </div>
                                 <?php }?>
                                 
