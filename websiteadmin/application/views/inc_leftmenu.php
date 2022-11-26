@@ -77,7 +77,7 @@ if($user_data['access_ids']!=''){
                 </li>
                 <?php }?>
                 <?php if (in_array("26", $permission) || in_array("27", $permission) || in_array("28", $permission) || in_array("29", $permission) || in_array("30", $permission) || in_array("31", $permission) || in_array("32", $permission)){?>
-                <li class="nav-item nav-item-submenu <?php if(isset($activaation_id) && $activaation_id==8){ echo ' nav-item-expanded nav-item-open';}?>">
+                <!-- <li class="nav-item nav-item-submenu <?php if(isset($activaation_id) && $activaation_id==8){ echo ' nav-item-expanded nav-item-open';}?>">
                     <a href="#" class="nav-link"><i class="icon-graph"></i> <span>Reports</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
                     <?php if (in_array("26", $permission)){?>
@@ -92,7 +92,7 @@ if($user_data['access_ids']!=''){
                     
                        
                     </ul>
-                </li>
+                </li> -->
 
                 <?php }?>
                 <?php if (in_array("33", $permission)){?>

@@ -5,6 +5,7 @@ $getDomainId = $this->services->getDomainId();
 ?>
 <!doctype html>
 <html class="no-js" lang="en">
+
 <head>
     <?php $this->load->view('inc_metacss'); ?>
     <style>
@@ -25,8 +26,18 @@ $getDomainId = $this->services->getDomainId();
         margin-left: 20px;
         border-radius: 20px;
     }
+
+    .paymentselctedki {
+        border: 0px solid #ebebeb !important;
+        background: none !important;
+        height: unset !important;
+        width: unset !important;
+        padding: 0 10px !important;
+
+    }
     </style>
 </head>
+
 <body>
     <?php $this->load->view('inc_header_menu'); ?>
     <!--breadcrumbs area start-->
@@ -37,7 +48,9 @@ $getDomainId = $this->services->getDomainId();
                     <div class="breadcrumb_content">
                         <h1>Checkout</h1>
                         <ul>
-                            <li><a href="<?php site_url("home")?>">home</a></li>
+                            <li><a href="<?php echo site_url("home")?>">home</a></li>
+                            <li>></li>
+                            <li><a href="<?php echo site_url("cart")?>">Shopping Cart</a></li>
                             <li>></li>
                             <li>Checkout</li>
                         </ul>
@@ -60,7 +73,7 @@ $getDomainId = $this->services->getDomainId();
             </div>
             <?php }?>
             <form id="form-checkout" class="form-horizontal" action="<?php echo site_url('checkout');?>" method="post">
-            <input type="hidden" name="shipping_payment_error" id="shipping_payment_error" value="">
+                <input type="hidden" name="shipping_payment_error" id="shipping_payment_error" value="">
                 <input type="hidden" name="mode" value="checkout">
                 <div class="checkout_form">
                     <div class="row">
@@ -91,11 +104,10 @@ $getDomainId = $this->services->getDomainId();
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="input-shipping_mobile" class="form-label">Mobile
-                                            </label>
+                                        </label>
                                         <input type="text" name="shipping_mobile"
                                             value="<?php echo (isset($shipping_address['shipping_mobile'])) ? $shipping_address['shipping_mobile'] : ''?>"
-                                            placeholder="Mobile)" id="input-shipping_mobile"
-                                            class="form-control">
+                                            placeholder="Mobile)" id="input-shipping_mobile" class="form-control">
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="input-shipping-company" class="form-label">Company
@@ -105,7 +117,7 @@ $getDomainId = $this->services->getDomainId();
                                             placeholder="Company (optional)" id="input-shipping-company"
                                             class="form-control">
                                     </div>
-                                   
+
                                     <div class="col-md-12 mb-3 required">
                                         <label for="input-shipping-address-1" class="form-label">Address 1</label>
                                         <input type="text" name="shipping_address_1"
@@ -141,14 +153,15 @@ $getDomainId = $this->services->getDomainId();
                                        // print_r($shipping_address);
                                         ?>
                                         <label for="input-shipping-zone" class="form-label">Region /
-                                                State</label>
+                                            State</label>
                                         <select name="shipping_zone_id" id="input-shipping-zone" class="form-select"
                                             required>
                                             <option value=""> --- Please Select --- </option>
                                             <?php foreach($state_rs as $det){?>
-                                                    <option value="<?php echo stripslashes($det['zone_id'])?>" <?php if($shipping_address['shipping_zone_id']==$det['zone_id']){?>selected<?php } ?>>
-                                                        <?php echo stripslashes($det['name'])?></option>
-                                                    <?php } ?>
+                                            <option value="<?php echo stripslashes($det['zone_id'])?>"
+                                                <?php if($shipping_address['shipping_zone_id']==$det['zone_id']){?>selected<?php } ?>>
+                                                <?php echo stripslashes($det['name'])?></option>
+                                            <?php } ?>
                                         </select>
                                         <div id="error-shipping-zone" class="invalid-feedback"></div>
                                     </div>
@@ -212,29 +225,79 @@ $getDomainId = $this->services->getDomainId();
                                             <?php } ?>
                                         </tbody>
                                         <tfoot>
+                                            <?php foreach ($totals as $total) { ?>
+
                                             <tr>
-                                                <td class="text-end"><strong>Sub-Total</strong></td>
-                                                <td class="text-end"><?php $subtotal = (!empty($record['subtotal'])) ? $record['subtotal'] : '0.00';
-                                                echo $this->services->format($subtotal); ?></td>
+                                                <td class="text-end"><strong><?php echo $total['title']; ?></strong>
+                                                </td>
+                                                <td class="text-end"><?php echo $total['text']; ?></td>
                                             </tr>
+                                            <?php } ?>
+
                                             <!-- <tr>
                                             <td class="text-end"><strong>Free Shipping</strong></td>
                                             <td class="text-end">$0.00</td>
                                         </tr> -->
-                                            <tr>
+                                            <!-- <tr>
                                                 <td class="text-end"><strong>Total</strong></td>
-                                                <td class="text-end"><?php $subtotal = (!empty($record['subtotal'])) ? $record['subtotal'] : '0.00';
-                                                echo $this->services->format($subtotal); ?></td>
-                                            </tr>
+                                                <td class="text-end"><?php //$subtotal = (!empty($record['subtotal'])) ? $record['subtotal'] : '0.00';
+                                               // echo $this->services->format($subtotal); ?></td>
+                                            </tr> -->
                                         </tfoot>
                                     </table>
                                 </div>
-                                <div id="checkout-payment">
-                                    <div class="d-inline-block pt-2 pd-2 w-100 text-end">
-                                        <button type="button" id="button-confirm" class="btn btn-primary">Confirm
-                                            Order</button>
+                                <?php
+                                if ($payment_methods) {
+                                
+                                ?>
+                                <div class="col-md-12 mb-2">
+                                    <h3>PAYMENT OPTIONS</h3>
+
+                                </div>
+                                <div class="table-responsive">
+                                    <div class="panel-body">
+                                        <p>Please select the preferred payment method to use on this order.</p>
+                                         
+                                            <?php foreach ($payment_methods as $payment_method) { ?>
+                                            <div>
+                                                <?php if ($payment_method['code'] == $code || !$code) { ?>
+                                                <?php $code = $payment_method['code']; ?>
+                                                <label for="<?php echo $payment_method['code']; ?>"><input type="radio"
+                                                        name="payment_method"
+                                                        value="<?php echo $payment_method['code']; ?>"
+                                                        class="paymentselctedki"
+                                                        id="<?php echo $payment_method['code']; ?>" checked="checked" />
+                                                    <?php } else { ?>
+                                                    <label for="<?php echo $payment_method['code']; ?>"><input
+                                                            type="radio" name="payment_method" class="paymentselctedki"
+                                                            id="<?php echo $payment_method['code']; ?>"
+                                                            value="<?php echo $payment_method['code']; ?>" />
+                                                        <?php } ?>
+                                                        <?php echo $payment_method['title']; ?>
+                                                    </label>
+
+
+                                            </div>
+                                            <?php } ?>
+                                         
+                                    </div>
+                                    <br />
+
+                                    <div class="extrainfoaboutpayment" id="extrainfoaboutpayment">
+                                        <div class="alert alert-danger" style="display:none">
+                                            Please select payment option
+                                        </div>
+
+                                         
                                     </div>
                                 </div>
+                                <?php }?>
+                                <!-- <div id="checkout-payment">
+                                    <div class="d-inline-block pt-2 pd-2 w-100 text-end">
+                                        <button type="button" id="button-confirm" class="btn btn-primary">Confirm
+                                            Order</button>  
+                                    </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -291,12 +354,11 @@ $getDomainId = $this->services->getDomainId();
     $('#input-shipping-country').trigger('change');
     </script>
     <script type="text/javascript">
- 
     $('#button-confirm').on('click', function(e) {
-       // e.preventDefault();
+        // e.preventDefault();
 
-       //form-checkout
-       var dataString = $("#form-checkout").serialize();
+        //form-checkout
+        var dataString = $("#form-checkout").serialize();
         var shipping_payment_error = $("#shipping_payment_error").val();
         if (shipping_payment_error != "") {
             $("#div_shipping_payment_error").html(shipping_payment_error);
@@ -327,13 +389,69 @@ $getDomainId = $this->services->getDomainId();
 
                     $.unblockUI();
 
-                    location = '<?php echo site_url('checkout/success/')?>'+dataresp.uuid;
+                    location = '<?php echo site_url('checkout/success/')?>' + dataresp.uuid;
                 }
             });
         }
     });
-    //
-  
+
+    $(document).ready(function() {
+        $('.paymentselctedki').on('click', function() {
+            var paymentmothod_id = $(this).attr('id')
+            var payment_url = '<?php echo site_url()?>/' + paymentmothod_id + '/information';
+
+            $.ajax({
+                type: 'get',
+                url: payment_url,
+                cache: false,
+                beforeSend: function() {
+
+                },
+                complete: function() {
+
+                },
+                success: function(htmldata) {
+                    //location = 'http://localhost/opencart/index.php?route=checkout/success';
+                    //alert(htmldata);
+                    console.log(htmldata);
+                    $("#extrainfoaboutpayment").html(htmldata);
+                }
+            });
+        });
+    })
     </script>
+    <script>
+    $(document).ready(function() {
+        //	$(".mega-menu-category").hide();
+
+        var form = $('#form-checkout');
+        var checkedValue = form.find('input[name=payment_method]:checked').val();
+        // alert(checkedValue);
+        // load default payment module
+        if (typeof(checkedValue) !== "undefined") {
+           // alert(checkedValue);
+            //bank_transfer
+            var payment_url_temp = '<?php echo site_url()?>' + checkedValue + '/information';
+            //alert(payment_url_temp)
+            //$("#extrainfoaboutpayment").load(payment_url_temp);
+
+            $.ajax({
+                url: payment_url_temp,
+                dataType: "html",
+                success: function(html) {
+                    $("#extrainfoaboutpayment").html(html)
+                }
+            });
+
+        } else {
+
+            //$("#extrainfoaboutpayment").hml("Please select payment option");
+            //$("#extrainfoaboutpayment").show();
+        }
+
+    });
+    </script>
+
 </body>
+
 </html>

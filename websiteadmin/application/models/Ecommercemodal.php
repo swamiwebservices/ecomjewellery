@@ -669,6 +669,9 @@ return $query->result_array() ;
     public function format($number,$domain_id=1)
     {
 
+        if($domain_id==0){
+            $domain_id = $this->services->getDomainId();
+        }
         $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '3');
         $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
         $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '1');

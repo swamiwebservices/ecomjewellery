@@ -282,7 +282,12 @@ class Orders extends CI_Controller
         $data['back_link'] = $this->ctrl_name;
         $data['sub_heading'] = 'Order Information';
         $data['activaation_id'] = 21;
-        $data['sub_activaation_id'] = $l_s_act = (isset($_GET['l_s_act'])) ? filter_var($_GET['l_s_act'], FILTER_SANITIZE_STRING) : '1';
+        $data['sub_activaation_id'] = $l_s_act = (isset($_GET['activaation_id'])) ? filter_var($_GET['activaation_id'], FILTER_SANITIZE_STRING) : '1';
+        
+        $data['activaation_id'] = 22;
+        $data['sub_activaation_id'] = '22_1';
+
+
 
         $order_uuid = filter_var($order_uuid, FILTER_SANITIZE_STRING);
 
@@ -430,8 +435,8 @@ class Orders extends CI_Controller
                 'main_image' => $product['main_image'],
                 'quantity' => $product['quantity'],
                 'order_status_name' => isset($product['order_status_name']) ? $product['order_status_name'] : '',
-                'price' => $this->currencymodal->format($product['price'], currency_code, 1),
-                'total' => $this->currencymodal->format($product['total'], currency_code, 1),
+                'price' => $this->ecommercemodal->format($product['price'],$order_info['store_id']),
+                'total' => $this->ecommercemodal->format($product['total'],$order_info['store_id']),
                 'href' => '',
             );
         }
@@ -440,7 +445,7 @@ class Orders extends CI_Controller
         foreach ($totals as $total) {
             $data['totals'][] = array(
                 'title' => $total['title'],
-                'text' => $this->currencymodal->format($total['value'], currency_code, 1),
+                'text' => $this->ecommercemodal->format($total['value'],$order_info['store_id']),
             );
         }
 

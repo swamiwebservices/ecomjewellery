@@ -162,6 +162,17 @@ if ($warning) {
                                                 <?php }
 			}
 			 ?>
+             <?php
+             	if(isset($totals)){
+				foreach ($totals as $total) { ?>
+                                                        <tr>
+                                                            <td colspan="4" class="text-right">
+                                                                <?php echo $total['title']; ?></td>
+                                                            <td class="text-right"><?php echo $total['text']; ?></td>
+                                                            <td class="text-right"> &nbsp;</td>
+                                                        </tr>
+                                                        <?php } ?>
+                                                        <?php } ?>
 
                                             </tbody>
                                         </table>

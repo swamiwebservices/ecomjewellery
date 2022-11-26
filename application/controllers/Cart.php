@@ -20,6 +20,7 @@ class Cart extends CI_Controller
      */
     public $controller = "cart";
     public $domain_id = 1;
+    private $error = array();
     public function __construct()
     {
         parent::__construct();
@@ -60,6 +61,158 @@ class Cart extends CI_Controller
         $cartinfo = $this->services->getCartinfo();
         $cartSubtotal = $this->services->getCartSubtotal();
         //print_r($cartinfo);
+
+        // Coupon
+        //$coupon = $this->common->mysql_safe_string($_POST['coupon']);
+        if (isset($_POST['coupon']) && $this->validateCoupon()) {
+            $coupon = $this->input->post('coupon');
+            $coupon_sess = array('coupon' => $coupon);
+            $this->session->set_userdata($coupon_sess);
+
+            $success_sess = array('success' => 'Success: Your coupon discount has been applied! ');
+
+            $this->session->set_userdata($success_sess);
+
+            redirect(site_url('cart'));
+        }
+
+        //coupon
+        $coupon_temp = $this->session->userdata('coupon');
+        if (isset($_POST['coupon'])) {
+            $data['coupon'] = $this->input->post('coupon');
+
+        } elseif (isset($coupon_temp)) {
+            $data['coupon'] = $this->session->userdata('coupon');
+        } else {
+            $data['coupon'] = '';
+        }
+        //coupon
+
+        $success  = $this->session->userdata('success');
+        if (isset($success) ) {
+            $data['success'] = $success;
+
+            $this->session->unset_userdata('success');
+        } else {
+            $data['success'] = '';
+        }
+
+        $totals = array();
+        $taxes = $this->services->getTaxes();
+        $total = 0;
+
+        // Because __call can not keep var references so we put them into an array.
+        $total_data = array(
+            'totals' => &$totals,
+            'taxes' => &$taxes,
+            'total' => &$total,
+        );
+
+        //sub_total
+
+        $totals[] = array(
+            'code' => 'sub_total',
+            'class' => '',
+            'title' => 'Sub-Total',
+            'value' => $cartSubtotal,
+            'sort_order' => 1,
+        );
+
+        $total_data['total'] = $cartSubtotal;
+
+        //coupon
+        $coupon_temp = $this->session->userdata('coupon');
+        if (isset($coupon_temp)) {
+
+            $coupon_info = $this->services->getCoupon($coupon_temp);
+
+            if ($coupon_info) {
+                $discount_total = 0;
+
+                if (!$coupon_info['product']) {
+                    $sub_total = $cartSubtotal;
+                } else {
+                    $sub_total = 0;
+
+                    // foreach ($this->services->getProducts()  as $product) {
+                    //     if (in_array($product['product_id'], $coupon_info['product'])) {
+                    //         $sub_total += $product['total'];
+                    //     }
+                    // }
+                }
+
+                if ($coupon_info['type'] == 'F') {
+                    $coupon_info['discount'] = min($coupon_info['discount'], $sub_total);
+                }
+
+                if ($coupon_info['type'] == 'F') {
+                    $discount = $coupon_info['discount'];
+                } elseif ($coupon_info['type'] == 'P') {
+                    $discount = $cartSubtotal / 100 * $coupon_info['discount'];
+                }
+                $discount_total = $discount;
+
+                //$totals['total'] += $sub_total;
+                //$total = $sub_total;
+                //end of sub_total
+
+                $total_data['total'] = $sub_total;
+
+                $totals[] = array(
+                    'code' => 'coupon',
+                    'class' => '',
+                    'title' => sprintf('Coupon(%s)', $coupon_temp),
+                    'text' => $this->services->format($discount_total),
+                    'value' => -$discount_total,
+                    'sort_order' => 2,
+                );
+
+                //$total -= $discount_total;
+                $total_data['total'] -= $discount_total;
+            }
+        }
+        //end of coupon
+
+            //total module
+			$totals[] = array(
+				'code'       => 'total',
+				'class'       => 'total-pay',
+				'title'      => 'Total',
+				'value'      => max(0, $total),
+				'sort_order' => 100
+			);
+			//end of total module
+			
+			$sort_order = array();
+			 
+			foreach ($totals as $key => $value) {
+				 
+				if(sizeof($value)>0){
+						$sort_order[$key] = $value['sort_order'];
+				} else {
+						$sort_order[$key] = '';
+				}
+			
+				
+			}
+			//echo "<pre>";
+			 //	print_r($totals);
+			array_multisort($sort_order, SORT_ASC, $totals);
+			
+          
+
+			$data['totals'] = array();
+
+			foreach ($totals as $total) {
+				$data['totals'][] = array(
+					'class' => $total['class'],
+					'title' => $total['title'],
+					'text'  => $this->services->format($total['value'])
+				);
+			}
+			//print_r($totals);
+
+        //print_r($total_data) ;
         $data['record']['items'] = $cartinfo;
         $data['record']['shipping_carges'] = 100;
         $data['record']['subtotal'] = $cartSubtotal;
@@ -179,4 +332,48 @@ class Cart extends CI_Controller
         }
 
     }
+    public function coupon()
+    {
+
+        //coupon
+        $json['redirect'] = site_url('cart');
+
+        //$coupon = $this->common->mysql_safe_string($_POST['coupon']);
+        if (isset($_POST['coupon']) && $this->validateCoupon()) {
+            $coupon = $this->input->post('coupon');
+            $coupon_sess = array('coupon' => $coupon);
+            $this->session->set_userdata($coupon_sess);
+
+            $success_sess = array('success' => 'Success: Your coupon discount has been applied! ');
+
+            $this->session->set_userdata($success_sess);
+            $json['error'] =false;
+            $json['redirect'] = site_url('cart');
+            //redirect(site_url('cart'));
+
+        } else {
+                $warning_sess = array('warning' => 'Warning: Coupon is either invalid, expired or reached it\'s usage limit! ');
+                $this->session->set_userdata($warning_sess);
+                $json['error'] =true;
+                $json['msg'] = 'Warning: Coupon is either invalid, expired or reached it\'s usage limit! ';
+        }
+        echo json_encode($json);
+    }
+    protected function validateCoupon()
+    {
+        $coupon_info = $this->services->getCoupon($this->input->post('coupon'));
+        //print_r($coupon_info);
+        if (!$coupon_info) {
+            $warning_sess = array('warning' => 'Warning: Coupon is either invalid, expired or reached it\'s usage limit! ');
+            $this->session->set_userdata($warning_sess);
+            $this->error['warning'] = 'Warning: Coupon is either invalid, expired or reached it\'s usage limit!';
+        }
+
+        if (!$this->error) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

@@ -1,10 +1,11 @@
 <?php
 error_reporting(E_ALL);
 //use Ifsnop\Mysqldump as IMysqldump;
-use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
-use Ramsey\Uuid\Uuid;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Uuid;
+
 class Services extends CI_Model
 {
     public function __construct()
@@ -87,11 +88,11 @@ class Services extends CI_Model
         }
         $result_array = [];
         if ($params['type'] == "latestProduct") {
-            $order_limit = (isset($params['limit'])) ? " limit 0," . $params['limit'] : '';
+            $order_limit = (isset($params['limit'])) ? " limit 0," . $params['limit'] : ' limit 0,10';
             $sort = (isset($params['sort'])) ? $params['sort'] : 'sort_order';
             $sort = ($sort == 'price') ? 'sellprice' : $sort;
             $order = (isset($params['order'])) ? $params['order'] : 'asc';
-            $order_by = "order by {$sort} {$order}, name asc";
+            $order_by = " order by  rand(), {$sort} {$order}, name asc";
 
             $sql = "select * from product_master where status_flag='Active' and featured=1  " . $order_by . ' ' . $order_limit;
             if (ZEROQTYALLOW == 1) {
@@ -193,13 +194,18 @@ class Services extends CI_Model
         $currentCurrency = $currencyarr[$getDomainId];
         return $currentCurrency;
     }
-    public function format($number)
+    
+    public function format($number,$getDomainId=0)
     {
+        if($getDomainId==0){
+            $getDomainId = $this->getDomainId();
+        }
+
         $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
         $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
         $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
 
-        $getDomainId = $this->getDomainId();
+       
 
         $currentCurrency = $currencyarr[$getDomainId];
         $symbol_left = $currentCurrency['symbol_left'];
@@ -208,9 +214,17 @@ class Services extends CI_Model
 
         $string = '';
         if ($symbol_left) {
-            $string .= $symbol_left . "";
+            
         }
-        $string .= number_format($number, (int) $decimal_place, '.', ',');
+        if($number<0){
+            $string .= "-".$symbol_left . " ";
+            $number = abs($number);
+            $string .= number_format($number, (int) $decimal_place, '.', ',');
+        } else {
+            $string .= $symbol_left . " ";
+            $string .= number_format($number, (int) $decimal_place, '.', ',');
+        }
+       
         if ($symbol_right) {
             $string .= $symbol_right;
         }
@@ -353,8 +367,8 @@ class Services extends CI_Model
     public function addOrder($params = array())
     {
 
-        $cartinfo = $this->getCartinfo();
-        $cartSubtotal = $this->getCartSubtotal();
+        $cartinfo = $params['cartinfo'];
+        $cartSubtotal = $params['cartSubtotal'];
 
         $uuid = "";
         try {
@@ -371,7 +385,8 @@ class Services extends CI_Model
         $order_query = $this->db->query("select * from `m_order` where order_id = '" . (int) $order_id . "'");
 
         $order_data['transaction_id'] = $uuid;
-        $order_data['total'] = (!empty($cartSubtotal)) ? $cartSubtotal : '0.00';
+        
+        $order_data['total'] = $params['total'];
         $domain_id = $this->services->getDomainId();
         if ($domain_id == 1) {
             $invoice_prefix = "AE";
@@ -385,18 +400,28 @@ class Services extends CI_Model
         $params['invoice_prefix'] = $invoice_prefix;
         //date_added
         $order_data['date_added'] = date("Y-m-d H:i:s");
+        $order_data['return_payment_status'] = 'initiated';
+        $order_data['store_id'] = $this->services->getDomainId();
+        $order_data['store_name'] = $_SERVER['SERVER_NAME'];
+        $order_data['store_url'] = base_url();
+
+        //coupon_code coupon_type coupon_discount
+            if(!empty($params['coupon_info'])){
+                
+                $order_data['coupon_code'] = $params['coupon_info']['code'];
+                $order_data['coupon_type'] = $params['coupon_info']['type'];
+                $order_data['coupon_discount'] = $params['coupon_info']['discount'];
+            }
         if ($order_query->num_rows() > 0) {
 
-            $order_data['store_id'] = $this->services->getDomainId();
-            $order_data['store_name'] = $_SERVER['SERVER_NAME'];
-            $order_data['store_url'] = base_url();
+           
             $order_data['customer_id'] = $params['customer_id'];
             $order_data['firstname'] = $params['firstname'];
             $order_data['lastname'] = $params['lastname'];
             $order_data['email'] = $params['email'];
             $order_data['telephone'] = $params['telephone'];
             $order_data['customer_id'] = $params['customer_id'];
-            $order_data['payment_method'] = 'COD';
+            $order_data['payment_method'] = 'cod';
 
             $order_data['invoice_prefix'] = $params['invoice_prefix'];
             $order_data['payment_firstname'] = $params['payment_firstname'];
@@ -431,23 +456,20 @@ class Services extends CI_Model
 
             $order_data['ip'] = $this->input->ip_address();
             $order_data['user_agent'] = $this->input->user_agent();
-            $order_data['user_agent'] = $this->input->user_agent();
-
+ 
             $where_cart = "order_id = '" . $order_id . "' ";
             $this->common->updateRecord('m_order', $order_data, $where_cart);
 
         } else {
 
-            $order_data['store_id'] = $this->services->getDomainId();
-            $order_data['store_name'] = $_SERVER['SERVER_NAME'];
-            $order_data['store_url'] = base_url();
+          
             $order_data['customer_id'] = $params['customer_id'];
             $order_data['firstname'] = $params['firstname'];
             $order_data['lastname'] = $params['lastname'];
             $order_data['email'] = $params['email'];
             $order_data['telephone'] = $params['telephone'];
             $order_data['customer_id'] = $params['customer_id'];
-            $order_data['payment_method'] = 'COD';
+            $order_data['payment_method'] = 'cod';
 
             $order_data['invoice_prefix'] = $params['invoice_prefix'];
             $order_data['payment_firstname'] = $params['payment_firstname'];
@@ -485,34 +507,34 @@ class Services extends CI_Model
 
         }
 
-        $totals[] = array(
-            'code' => 'sub_total',
-            'title' => 'Sub-Total:',
-            'value' => $order_data['total'],
-            'sort_order' => 1,
-        );
+        // $totals[] = array(
+        //     'code' => 'sub_total',
+        //     'title' => 'Sub-Total:',
+        //     'value' => $order_data['total'],
+        //     'sort_order' => 1,
+        // );
 
-        //total module
-        $totals[] = array(
-            'code' => 'total',
-            'title' => 'Total',
-            'value' => max(0, $order_data['total']),
-            'sort_order' => 100,
-        );
-        $sort_order = array();
+        // //total module
+        // $totals[] = array(
+        //     'code' => 'total',
+        //     'title' => 'Total',
+        //     'value' => max(0, $order_data['total']),
+        //     'sort_order' => 100,
+        // );
+        // $sort_order = array();
 
-        foreach ($totals as $key => $value) {
+        // foreach ($totals as $key => $value) {
 
-            if (sizeof($value) > 0) {
-                $sort_order[$key] = $value['sort_order'];
-            } else {
-                $sort_order[$key] = '';
-            }
+        //     if (sizeof($value) > 0) {
+        //         $sort_order[$key] = $value['sort_order'];
+        //     } else {
+        //         $sort_order[$key] = '';
+        //     }
 
-        }
-        array_multisort($sort_order, SORT_ASC, $totals);
+        // }
+        // array_multisort($sort_order, SORT_ASC, $totals);
 
-        $order_data['totals'] = $totals;
+        // $order_data['totals'] = $totals;
 
         $sql = "delete from order_product where order_id='" . (int) $order_id . "'";
         $this->db->query($sql);
@@ -527,11 +549,11 @@ class Services extends CI_Model
             $this->db->query("INSERT INTO order_product SET order_id = '" . (int) $order_id . "', product_id = '" . (int) $product['product_id'] . "', name = '" . $this->common->getDbValue($product['name']) . "', model = '" . $this->common->getDbValue($product['item_code']) . "', quantity = '" . (int) $product['cart_qty'] . "', price = '" . (float) $sellprice . "', total = '" . $sellprice_total . "' ");
 
         }
-
-        if (isset($order_data['totals'])) {
-            $sql = "delete from order_total where order_id='" . (int) $order_id . "'";
+       // print_r($params);
+        if (isset($params['totals'])) {
+             $sql = "delete from order_total where order_id='" . (int) $order_id . "'";
             $this->db->query($sql);
-            foreach ($order_data['totals'] as $total) {
+            foreach ($params['totals'] as $total) {
                 $this->db->query("INSERT INTO order_total SET order_id = '" . (int) $order_id . "', code = '" . $this->common->getDbValue($total['code']) . "', title = '" . $this->common->getDbValue($total['title']) . "', `value` = '" . (float) $total['value'] . "', sort_order = '" . (int) $total['sort_order'] . "'");
 
             }
@@ -644,65 +666,65 @@ class Services extends CI_Model
             //send mail
 
             $getDomainAddress = $this->services->getDomainAddress();
-        $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
+            $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
 
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $m_setting = $query->result_array();
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                $m_setting = $query->result_array();
 
-            foreach ($m_setting as $key => $val) {
-                $config_site_mail[$val['key_name']] = $val['value'];
-            }
-
-            try {
-                //Server settings
-                $fileg = file_get_contents("htmlemails/account_create.html");
-                $dateadded  = date("Y-m-d");
-                $contact_email  = $customer_info['email'];
-                 
-                $contact_name = $customer_info['firstname'] .' '. $customer_info['lastname'];
-            
-                $subject  = 'Thank you for registering';
-                $password = $add_in_cust['password'];
-                
-                $pattern = array('/{DOMAINNAME}/','/{HTTP_DOMAIN_URL}/','/{LOGO_URL}/','/{CONTACTUS_URL}/','/{DOMAIN_ADDRESS_FOOTER}/','/{SUBJECT}/' , '/{FULLNAME}/' , '/{EMAIL}/' ,'/{PASSWORD}/' , '/{DATE}/');
-                $replacement = array($getDomainAddress['DOMAINNAME'],$getDomainAddress['HTTP_DOMAIN_URL'],$getDomainAddress['LOGO_URL'],$getDomainAddress['CONTACTUS_URL'],$getDomainAddress['DOMAIN_ADDRESS_FOOTER'], $subject,$contact_name,$contact_email,$password, $dateadded);
-                $mess_body = preg_replace($pattern, $replacement, $fileg);
-
-                $mail = new PHPMailer(true);
-
-                $mail->SMTPDebug = 0; // Enable verbose debug output
-                $mail->isMail(); // Send using SMTP
-                 
-                //Recipients
-                $admin_mail_id = $config_site_mail['config_site_mail'];
-
-                $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
-                $contact_name  = $customer_info['firstname']. " ".$customer_info['lastname'];
-                $mail->addAddress($customer_info['email'], $contact_name); // Add a recipient
-                //  $mail->addReplyTo($admin_mail_id, $contact_name);
-                /*
-                $config_alert_emails = $config_site_mail['config_alert_emails'];
-                $config_alert_emails_exp = explode(",",$config_alert_emails);
-                foreach($config_alert_emails_exp as $key => $alertemails){
-                $mail->addCC($alertemails);
+                foreach ($m_setting as $key => $val) {
+                    $config_site_mail[$val['key_name']] = $val['value'];
                 }
-                 */
-                // Attachments
 
-                // Content
-                $mail->isHTML(true); // Set email format to HTML
-                $mail->Subject = $subject;
-                $mail->Body = $mess_body;
-                //  $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+                try {
+                    //Server settings
+                    $fileg = file_get_contents("htmlemails/account_create.html");
+                    $dateadded = date("Y-m-d");
+                    $contact_email = $customer_info['email'];
 
-                $mail->send();
-                // echo 'Message has been sent';
-            } catch (Exception $e) {
-                //  $error_msg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+                    $contact_name = $customer_info['firstname'] . ' ' . $customer_info['lastname'];
 
+                    $subject = 'Thank you for registering';
+                    $password = $add_in_cust['password'];
+
+                    $pattern = array('/{DOMAINNAME}/', '/{HTTP_DOMAIN_URL}/', '/{LOGO_URL}/', '/{CONTACTUS_URL}/', '/{DOMAIN_ADDRESS_FOOTER}/', '/{SUBJECT}/', '/{FULLNAME}/', '/{EMAIL}/', '/{PASSWORD}/', '/{DATE}/');
+                    $replacement = array($getDomainAddress['DOMAINNAME'], $getDomainAddress['HTTP_DOMAIN_URL'], $getDomainAddress['LOGO_URL'], $getDomainAddress['CONTACTUS_URL'], $getDomainAddress['DOMAIN_ADDRESS_FOOTER'], $subject, $contact_name, $contact_email, $password, $dateadded);
+                    $mess_body = preg_replace($pattern, $replacement, $fileg);
+
+                    $mail = new PHPMailer(true);
+
+                    $mail->SMTPDebug = 0; // Enable verbose debug output
+                    $mail->isMail(); // Send using SMTP
+
+                    //Recipients
+                    $admin_mail_id = $config_site_mail['config_site_mail'];
+
+                    $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
+                    $contact_name = $customer_info['firstname'] . " " . $customer_info['lastname'];
+                    $mail->addAddress($customer_info['email'], $contact_name); // Add a recipient
+                    //  $mail->addReplyTo($admin_mail_id, $contact_name);
+                    /*
+                    $config_alert_emails = $config_site_mail['config_alert_emails'];
+                    $config_alert_emails_exp = explode(",",$config_alert_emails);
+                    foreach($config_alert_emails_exp as $key => $alertemails){
+                    $mail->addCC($alertemails);
+                    }
+                     */
+                    // Attachments
+
+                    // Content
+                    $mail->isHTML(true); // Set email format to HTML
+                    $mail->Subject = $subject;
+                    $mail->Body = $mess_body;
+                    //  $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+                    $mail->send();
+                    // echo 'Message has been sent';
+                } catch (Exception $e) {
+                    //  $error_msg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+
+                }
             }
-        }
             //end of send mail
 
         }
@@ -710,7 +732,7 @@ class Services extends CI_Model
         return $customer_info;
     }
 
-    public function addOrderHistory($order_id = 0, $order_status_id = 1, $comment = '', $notify = false, $override = false)
+    public function addOrderHistory($order_id = 0, $order_status_id = 1, $comment = '', $notify = 0, $override = false)
     {
 
         $order_info = $this->getOrder($order_id);
@@ -728,10 +750,10 @@ class Services extends CI_Model
             $invoice_no = 1;
         }
         $order_info['invoice_no'] = $invoice_no;
-        
+
         $this->db->query("UPDATE `m_order` SET invoice_no = '" . (int) $invoice_no . "'  WHERE order_id = '" . (int) $order_id . "'");
 
-        $this->db->query("INSERT INTO order_history SET order_id = '" . (int) $order_id . "', order_status_id = '" . (int) $order_status_id . "', notify = '1', comment = '" . $this->common->getDbValue($comment) . "', date_added = NOW()");
+        $this->db->query("INSERT INTO order_history SET order_id = '" . (int) $order_id . "', order_status_id = '" . (int) $order_status_id . "', notify = $notify, comment = '" . $this->common->getDbValue($comment) . "', date_added = NOW()");
 
         $order_product_query = $this->db->query("SELECT * FROM order_product WHERE order_id = '" . (int) $order_id . "'");
         // If order status is 0 then becomes greater than 0 send main html email
@@ -892,8 +914,8 @@ class Services extends CI_Model
                 'name' => $product['name'],
                 'model' => $product['model'],
                 'quantity' => $product['quantity'],
-                'price' => $product['price'],
-                'total' => $product['total'],
+                'price' => $this->services->format($product['price'],$order_info['store_id']),
+                'total' => $this->services->format($product['total'],$order_info['store_id']),
             );
         }
 
@@ -906,7 +928,7 @@ class Services extends CI_Model
             foreach ($order_total_query_rows as $total) {
                 $data['totals'][] = array(
                     'title' => $total['title'],
-                    'text' => $total['value'],
+                    'text' =>  $this->services->format($total['value'],$order_info['store_id']),
                 );
             }
         }
@@ -943,7 +965,7 @@ class Services extends CI_Model
                 $admin_mail_id = $config_site_mail['config_site_mail'];
 
                 $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
-                $contact_name  = $order_info['firstname']. " ".$order_info['lastname'];
+                $contact_name = $order_info['firstname'] . " " . $order_info['lastname'];
                 $mail->addAddress($order_info['email'], $contact_name); // Add a recipient
                 //  $mail->addReplyTo($admin_mail_id, $contact_name);
                 /*
@@ -958,7 +980,7 @@ class Services extends CI_Model
                 // Content
                 $mail->isHTML(true); // Set email format to HTML
                 $mail->Subject = $subject;
-                $mail->Body = $this->load->view('mail/order', $data,true);
+                $mail->Body = $this->load->view('mail/order', $data, true);
                 //  $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
 
                 $mail->send();
@@ -1007,14 +1029,14 @@ class Services extends CI_Model
                 // Send to additional alert emails
                 try {
                     //Server settings
-    
+
                     $mail = new PHPMailer(true);
-    
+
                     $mail->SMTPDebug = 0; // Enable verbose debug output
                     $mail->isMail(); // Send using SMTP
                     /*
                     $mail->isSMTP();                                            // Send using SMTP
-    
+
                     $mail->Host       = $config_site_mail['config_smtp_host'];                    // Set the SMTP server to send through
                     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
                     $mail->Username   = $config_site_mail['config_smtp_username'];                      // SMTP username
@@ -1024,9 +1046,9 @@ class Services extends CI_Model
                      */
                     //Recipients
                     $admin_mail_id = $config_site_mail['config_site_mail'];
-    
+
                     $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
-                   
+
                     $mail->addAddress($admin_mail_id, $config_site_mail['config_site_from_name']); // Add a recipient
                     //  $mail->addReplyTo($admin_mail_id, $contact_name);
                     /*
@@ -1037,27 +1059,26 @@ class Services extends CI_Model
                     }
                      */
                     // Attachments
-    
+
                     // Content
                     $mail->isHTML(true); // Set email format to HTML
                     $mail->Subject = $subject;
-                    $mail->Body = $this->load->view('mail/order', $data,true);
+                    $mail->Body = $this->load->view('mail/order', $data, true);
                     //  $mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
-    
+
                     $config_alert_emails = $config_site_mail['config_alert_emails'];
-                    if($config_alert_emails!=""){
-                        $config_alert_emails_exp = explode(",",$config_alert_emails);
-                        foreach($config_alert_emails_exp as $key => $alertemails){
-                        $mail->addCC($alertemails);
+                    if ($config_alert_emails != "") {
+                        $config_alert_emails_exp = explode(",", $config_alert_emails);
+                        foreach ($config_alert_emails_exp as $key => $alertemails) {
+                            $mail->addCC($alertemails);
                         }
                     }
-                   
 
                     $mail->send();
                     // echo 'Message has been sent';
                 } catch (Exception $e) {
                     //  $error_msg = "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-    
+
                 }
 
             }
@@ -1077,7 +1098,7 @@ class Services extends CI_Model
 
             $country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int) $order_query_row['payment_country_id'] . "'");
 
-            if ($country_query->num_rows) {
+            if ($country_query->num_rows()) {
                 $country_query_row = $country_query->row_array();
                 $payment_iso_code_2 = $country_query_row['iso_code_2'];
                 $payment_iso_code_3 = $country_query_row['iso_code_3'];
@@ -1219,7 +1240,7 @@ class Services extends CI_Model
 
             $country_query = $this->db->query("SELECT * FROM `m_country` WHERE country_id = '" . (int) $order_query_row['payment_country_id'] . "'");
 
-            if ($country_query->num_rows) {
+            if ($country_query->num_rows()) {
                 $country_query_row = $country_query->row_array();
                 $payment_iso_code_2 = $country_query_row['iso_code_2'];
                 $payment_iso_code_3 = $country_query_row['iso_code_3'];
@@ -1480,7 +1501,7 @@ class Services extends CI_Model
         $session_user_data = $this->session->userdata('front_user_detail');
         //print_r($session_user_data);
         if (!isset($session_user_data['customer_id'])) {
-            $this->db->query("DELETE FROM cart_master WHERE  user_id = '" . (int) $this->getId() . "'    ");
+            $this->db->query("DELETE FROM cart_master WHERE  user_id = '" . (int) $session_user_data['customer_id'] . "'    ");
         } else {
             $this->db->query("DELETE FROM cart_master WHERE   shopping_session = '" . $this->get_shopping_session() . "'  ");
         }
@@ -1496,4 +1517,164 @@ class Services extends CI_Model
 
         return $row['total'];
     }
+
+    //copun
+    public function getCoupon($code)
+    {
+        $session_user_data = $this->session->userdata('front_user_detail');
+        $coupon_info = [];
+        $status = true;
+        $code = $this->common->mysql_safe_string($code);
+        
+        $coupon_query = $this->db->query("SELECT * FROM `coupon` WHERE code = '" . $code . "' AND ((date_start IS NULL or  date_start = '0000-00-00' OR date_start < NOW()) AND (date_end IS NULL or date_end = '0000-00-00' OR date_end > NOW())) AND status = 'Active'");
+
+        if ($coupon_query->num_rows()) {
+            $coupon_query_row = $coupon_query->row_array();
+            $sub_total = $this->services->getCartSubtotal();
+            if ($coupon_query_row['total'] >= $sub_total) {
+                $status = false;
+            }
+
+            $coupon_history_query = $this->db->query("SELECT COUNT(*) AS total FROM `coupon_history` ch WHERE ch.coupon_id = '" . (int) $coupon_query_row['coupon_id'] . "'");
+            $coupon_history_query_row = $coupon_history_query->row_array();
+            if ($coupon_query_row['uses_total'] > 0 && ($coupon_history_query_row['total'] >= $coupon_query_row['uses_total'])) {
+                $status = false;
+            }
+
+            if (empty($session_user_data['customer_id'])) {
+                $status = false;
+            }
+
+            if (!empty($session_user_data['customer_id'])) {
+                $coupon_history_query = $this->db->query("SELECT COUNT(*) AS total FROM `coupon_history` ch WHERE ch.coupon_id = '" . (int) $coupon_query_row['coupon_id'] . "' AND ch.customer_id = '" . (int) $session_user_data['customer_id'] . "'");
+
+                if ($coupon_query_row['uses_customer'] > 0 && ($coupon_history_query_row['total'] >= $coupon_query_row['uses_customer'])) {
+                    $status = false;
+                }
+            }
+
+            // Products
+            $coupon_product_data = array();
+
+            // $coupon_product_query = $this->db->query("SELECT * FROM `coupon_product` WHERE coupon_id = '" . (int) $coupon_query_row['coupon_id'] . "'");
+            // $coupon_product_query_rows = $coupon_product_query->result_array();
+            // foreach ($coupon_product_query_rows as $product) {
+            //     $coupon_product_data[] = $product['product_id'];
+            // }
+
+            // Categories
+            $coupon_category_data = array();
+
+            // $coupon_category_query = $this->db->query("SELECT * FROM `coupon_category` cc  where 1=2");
+            // $coupon_category_query_rows = $coupon_category_query->result_array();
+            // foreach ($coupon_category_query_rows as $category) {
+            //     $coupon_category_data[] = $category['category_id'];
+            // }
+
+            $product_data = array();
+
+            // if ($coupon_product_data || $coupon_category_data) {
+            //     foreach ($this->getProducts() as $product) {
+            //         if (in_array($product['product_id'], $coupon_product_data)) {
+            //             $product_data[] = $product['product_id'];
+
+            //             continue;
+            //         }
+
+            //         foreach ($coupon_category_data as $category_id) {
+            //             $coupon_category_query = $this->db->query("SELECT COUNT(*) AS total FROM `product_to_category` WHERE `product_id` = '" . (int) $product['product_id'] . "' AND category_id = '" . (int) $category_id . "'");
+            //             $coupon_category_query_row = $coupon_category_query->row_array();
+            //             if ($coupon_category_query_row['total']) {
+            //                 $product_data[] = $product['product_id'];
+
+            //                 continue;
+            //             }
+            //         }
+            //     }
+
+            //     if (!$product_data) {
+            //         $status = false;
+            //     }
+            // }
+        } else {
+            $status = false;
+        }
+
+        if ($status) {
+            $coupon_info =  array(
+                'coupon_id' => $coupon_query_row['coupon_id'],
+                'code' => $coupon_query_row['code'],
+                'name' => $coupon_query_row['name'],
+                'type' => $coupon_query_row['type'],
+                'discount' => $coupon_query_row['discount'],
+                'shipping' => $coupon_query_row['shipping'],
+                'total' => $coupon_query_row['total'],
+                'product' => $product_data,
+                'date_start' => $coupon_query_row['date_start'],
+                'date_end' => $coupon_query_row['date_end'],
+                'uses_total' => $coupon_query_row['uses_total'],
+                'uses_customer' => $coupon_query_row['uses_customer'],
+                'status' => $coupon_query_row['status'],
+                'date_added' => $coupon_query_row['added_date'],
+            );
+           
+        }
+        //print_r($coupon_info);
+        return $coupon_info;
+    }
+	public function getTaxes() {
+		$tax_data = array();
+
+		// foreach ($this->getProducts() as $product) {
+		// 	if ($product['tax_class_id']) {
+		// 		$tax_rates = $this->tax->getRates($product['price'], $product['tax_class_id']);
+
+		// 		foreach ($tax_rates as $tax_rate) {
+		// 			if (!isset($tax_data[$tax_rate['tax_rate_id']])) {
+		// 				$tax_data[$tax_rate['tax_rate_id']] = ($tax_rate['amount'] * $product['quantity']);
+		// 			} else {
+		// 				$tax_data[$tax_rate['tax_rate_id']] += ($tax_rate['amount'] * $product['quantity']);
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		return $tax_data;
+	}
+    public function getTotal($total)
+    {
+
+    }
+
+    public function confirm($order_info, $order_total)
+    {
+        $code = '';
+
+        $start = strpos($order_total['title'], '(') + 1;
+        $end = strrpos($order_total['title'], ')');
+
+        if ($start && $end) {
+            $code = substr($order_total['title'], $start, $end - $start);
+        }
+
+        if ($code) {
+            $coupon_info = $this->getCoupon($code);
+
+            if ($coupon_info) {
+                $this->db->query("INSERT INTO `coupon_history` SET coupon_id = '" . (int) $coupon_info['coupon_id'] . "', order_id = '" . (int) $order_info['order_id'] . "', customer_id = '" . (int) $order_info['customer_id'] . "', amount = '" . (float) $order_total['value'] . "', date_added = NOW()");
+            } else {
+                return $this->configmodal->get('config_fraud_status_id');
+            }
+        }
+    }
+
+    public function unconfirm($order_id)
+    {
+        $this->db->query("DELETE FROM `coupon_history` WHERE order_id = '" . (int) $order_id . "'");
+    }
+    public function redeem($coupon_id, $order_id, $customer_id, $amount)
+    {
+        $this->db->query("INSERT INTO `coupon_history` SET coupon_id = '" . (int) $coupon_id . "', order_id = '" . (int) $order_id . "', customer_id = '" . (int) $customer_id . "', amount = '" . (float) $amount . "', date_added = NOW()");
+    }
+    //copun
 }

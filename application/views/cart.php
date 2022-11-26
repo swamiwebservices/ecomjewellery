@@ -111,23 +111,36 @@ $domain_id = $this->domain_id;
     <!--shopping cart area start -->
     <div class="shopping_cart_area">
         <div class="container">
-        <?php
+            <?php
                                 $error = $this->session->flashdata('error');
                                 if ($error!='') {
                             ?>
-                                        <div class="alert bg-danger text-white alert-dismissible">
-                                            <span class="font-weight-bold">Error!</span> <?php echo $error?>
-                                        </div>
-                                        <?php }?>
+            <div class="alert bg-danger text-white alert-dismissible">
+                <span class="font-weight-bold">Error!</span> <?php echo $error?>
+            </div>
+            <?php }?>
+            <?php
+                                $error2 = $this->session->unset_userdata('error');
+                                if ($error2!='') {
+                            ?>
+            <div class="alert bg-danger text-white alert-dismissible">
+                <span class="font-weight-bold">Error!</span> <?php echo $error2?>
+            </div>
+            <?php }?>
+            <?php
+                $successflashdata = $this->session->flashdata('success');
+            if ($successflashdata!='') {?>
+            <div id="err_div" class="alert alert-success ext-white alert-dismissible">
+                <?php echo $successflashdata?>
+            </div>
+            <?php } ?>
+            <?php if ($success) { ?>
+            <div class="alert alert-success ext-white alert-dismissible"><i class="fa fa-check-circle"></i>
+                <?php echo $success; ?>
 
-                                        <?php
-                                 $success = $this->session->flashdata('success');
-                                if ($success!='') {?>
-                                        <div id="err_div" class="alert alert-success ext-white alert-dismissible">
-                                            <?php echo $success?>
-                                        </div>
-                                        <?php } ?>
-        <?php
+            </div>
+            <?php } ?>
+            <?php
                         //print_r($record);
                         if(isset($record['items']) && sizeof($record['items']) > 0){
 
@@ -136,7 +149,7 @@ $domain_id = $this->domain_id;
             <form action="<?php echo site_url("cart/update")?>" method="post">
                 <div class="row">
                     <div class="col-12 ">
-                       
+
                         <div class="table_desc ">
                             <div class="cart_page table-responsive">
                                 <table class="table1 table-bordered1">
@@ -151,7 +164,7 @@ $domain_id = $this->domain_id;
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    <?php
+                                        <?php
                                 foreach($record['items'] as $key => $value){
 
                                    // print_r($value);
@@ -163,18 +176,24 @@ $domain_id = $this->domain_id;
                                       
                                       $sellprice = $value['price']; 
                                       $sellprice_total   = $sellprice * $value['cart_qty'];
-                                ?>   
+                                ?>
                                         <tr>
 
-                                            <td class="product_thumb"><a href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
-                                                        src="<?php echo $main_image?>" class="cart-image"
-                                                        alt=""></a></td>
-                                                        <td class="product_name"><a href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a></td>
-                                            <td class="product-price"><?php echo $this->services->format($sellprice)?></td>
+                                            <td class="product_thumb"><a
+                                                    href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
+                                                        src="<?php echo $main_image?>" class="cart-image" alt=""></a>
+                                            </td>
+                                            <td class="product_name"><a
+                                                    href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
+                                            </td>
+                                            <td class="product-price"><?php echo $this->services->format($sellprice)?>
+                                            </td>
                                             <td class="text-center td-qty">
                                                 <div class="input-group btn-block">
                                                     <div class="stepper">
-                                                        <input type="text" name="quantity[<?php echo $value['cart_id']?>]" value="<?php echo $value['cart_qty']?>" size="2"
+                                                        <input type="text"
+                                                            name="quantity[<?php echo $value['cart_id']?>]"
+                                                            value="<?php echo $value['cart_qty']?>" size="2"
                                                             class="form-control">
                                                         <span>
                                                             <i class="fa fa-angle-up"></i>
@@ -182,11 +201,12 @@ $domain_id = $this->domain_id;
                                                         </span>
                                                     </div>
                                                     <span class="input-group-btn">
-                                                    <button type="submit" data-toggle="tooltip" title="Update cart qty"
-                                                            class="btn btn-update" data-original-title="Update"><i
-                                                                class="fa fa-refresh"></i></button>  
-                                                        <button type="button" data-toggle="tooltip" title="remove from cart"
-                                                            class="btn btn-remove text-danger"
+                                                        <button type="submit" data-toggle="tooltip"
+                                                            title="Update cart qty" class="btn btn-update"
+                                                            data-original-title="Update"><i
+                                                                class="fa fa-refresh"></i></button>
+                                                        <button type="button" data-toggle="tooltip"
+                                                            title="remove from cart" class="btn btn-remove text-danger"
                                                             onclick="cart.remove('<?php echo $value['product_id']?>');"
                                                             data-original-title="Remove"><i
                                                                 class="fa fa-trash-o"></i></button>
@@ -194,7 +214,7 @@ $domain_id = $this->domain_id;
                                                 </div>
                                             </td>
                                             <td class="product_total">
-                                            <?php $subtotal = (!empty($record['subtotal'])) ? $record['subtotal'] : '0.00';
+                                                <?php $subtotal = (!empty($record['subtotal'])) ? $record['subtotal'] : '0.00';
                                                 echo $this->services->format($subtotal); ?>
                                             </td>
 
@@ -210,46 +230,46 @@ $domain_id = $this->domain_id;
                                 <button type="submit">update cart</button>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <!--coupon code area start-->
                 <div class="coupon_area">
                     <div class="row">
                         <div class="col-lg-6 col-md-6">
-                            <!-- <div class="coupon_code left">
+                            <div class="coupon_code left">
                                 <h3>Coupon</h3>
                                 <div class="coupon_inner">
                                     <p>Enter your coupon code if you have one.</p>
-                                    <input placeholder="Coupon code" type="text">
-                                    <button type="submit">Apply coupon</button>
+                                    <div id="err_div_coupon" class="alert alert-danger ext-white alert-dismissible">
+
+                                    </div>
+                                    <input placeholder="Enter your coupon here" name="coupon" id="coupon" type="text">
+                                    <input name="next" value="coupon" type="hidden">
+                                    <button type="button" id="button-coupon" data-loading-text="Loading...">Apply
+                                        coupon</button>
                                 </div>
-                            </div> -->
+                            </div>
                         </div>
                         <div class="col-lg-6 col-md-6">
                             <div class="coupon_code right">
                                 <h3>Cart Totals</h3>
                                 <div class="coupon_inner">
-                                    <div class="cart_subtotal">
-                                        <p>Subtotal</p>
-                                        <p class="cart_amount"><?php $subtotal = (!empty($record['subtotal'])) ? $record['subtotal'] : '0.00';
-                                                echo $this->services->format($subtotal);
-                                    ?></p>
-                                    </div>
-                                    <!-- <div class="cart_subtotal ">
-                                        <p>Shipping</p>
-                                        <p class="cart_amount"><span>Flat Rate:</span> £255.00</p>
-                                    </div>
-                                    <a href="#">Calculate shipping</a> -->
 
+                                    <?php foreach ($totals as $total) { ?>
                                     <div class="cart_subtotal">
-                                        <p>Total</p>
-                                        <p class="cart_amount"><?php $subtotal = (!empty($record['subtotal'])) ? $record['subtotal'] : '0.00';
-                                                echo $this->services->format($subtotal);
-                                    ?></p>
+                                        <p><?php echo $total['title']; ?></p>
+                                        <p class="cart_amount"><?php echo $total['text']; ?></p>
                                     </div>
+                                    <?php } ?>
+
+
+
+
+                                    
                                     <div class="checkout_btn">
-                                    <a href="<?php echo site_url("checkout");?>"><button type="button" name="btnCheckout" id="btnCheckout">Proceed to Checkout</button></a>
+                                        <a href="<?php echo site_url("checkout");?>"><button type="button"
+                                                name="btnCheckout" id="btnCheckout">Proceed to Checkout</button></a>
                                     </div>
                                 </div>
                             </div>
@@ -260,16 +280,16 @@ $domain_id = $this->domain_id;
             </form>
             <?php } else {
             ?>
-             <div class="row p-2">
-                    <div class="col-md-12 text-center ">
-                        <div class="alert alert-warning">Your shopping cart is empty!</div>
+            <div class="row p-2">
+                <div class="col-md-12 text-center ">
+                    <div class="alert alert-warning">Your shopping cart is empty!</div>
 
 
-                    </div>
-                    <div class="col-md-12 cart_submit ">
-                     <a href="<?php echo site_url("home")?>" ><button type="button">Continue</button></a> 
-                    </div>
-             </div>
+                </div>
+                <div class="col-md-12 cart_submit ">
+                    <a href="<?php echo site_url("home")?>"><button type="button">Continue</button></a>
+                </div>
+            </div>
             <?php    
                 }?>
         </div>
@@ -284,6 +304,8 @@ $domain_id = $this->domain_id;
     <?php $this->load->view('inc_common_footer_js'); ?>
 
     <script>
+    $("#err_div_coupon").hide();
+
     $('.stepper').each(function() {
         var $this = $(this);
 
@@ -343,7 +365,40 @@ $domain_id = $this->domain_id;
         });
     });
     </script>
+    <script type="text/javascript">
+    <!--
+    $('#button-coupon').on('click', function() {
+        $("#err_div_coupon").html('');
+        $("#err_div_coupon").hide();
+        $.ajax({
+            url: '<?php echo site_url("cart/coupon");?>',
+            type: 'post',
+            data: 'coupon=' + encodeURIComponent($('input[name=\'coupon\']').val()),
+            dataType: 'json',
+            beforeSend: function() {
+                $('#button-coupon').button('loading');
+            },
+            complete: function() {
+                $('#button-coupon').button('reset');
+            },
+            success: function(json) {
+                console.log(json.error);
 
+                if (json.error == true) {
+                    $("#err_div_coupon").html(json.msg);
+                    $("#err_div_coupon").show();
+                } else {
+                    if (json['redirect']) {
+                        location = json['redirect'];
+                    }
+                }
+
+            }
+        });
+    });
+    //
+    -->
+    </script>
 </body>
 
 </html>

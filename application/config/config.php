@@ -538,4 +538,8 @@ $DEFAULT_COUNTRY_DOMAINs = array('1'=>223,'2'=>221, '3'=>99);
 $config['DEFAULT_COUNTRY_DOMAINs'] = $DEFAULT_COUNTRY_DOMAINs;
 $config['config_order_status_id'] = 1;
 
-  
+  //'paypal'=>'Paypal',
+  $payment[] = array('code'=>'cod');
+  $payment[] = array('code'=>'bank_transfer');
+  //$payment[] = array('code'=>'payu');
+ $config['PAYMENT_GETEWAYS'] = $payment;

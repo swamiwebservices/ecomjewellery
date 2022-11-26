@@ -106,15 +106,17 @@ $session_user_data = $this->session->userdata('front_user_detail');
 
     <!--header middel start-->
     <div class="header_middel sticky-header">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row align-items-center">
                 <div class="col-lg-2 col-md-3 col-4">
                     <div class="logo">
                         <a href="<?php echo site_url("home")?>"><img src="<?php echo base_url('assets/img/logo/logo.png')?>" alt=""></a>
                     </div>
+                      <!-- <div class="logo-text">BONDBEYOND
+                    </div>  -->
                 </div>
                 <div class="col-lg-10 col-md-7 col-sm-12 col-6">
-                    <div class="main_menu_inner">
+                    <div class="main_menu_inner" style="text-align:end">
                        <div class="logo_sticky">
                            <a href="<?php echo site_url("home")?>"><img src="<?php echo base_url('assets/img/logo/logo-3.png')?>" alt=""></a>
                        </div>

@@ -21,8 +21,8 @@
 
 <!-- Plugins JS -->
 <!--map js code here-->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdWLY_Y6FL7QGW5vcO3zajUEsrKfQPNzI"></script>
- <script src="<?php echo base_url();?>assets/js/map.js"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdWLY_Y6FL7QGW5vcO3zajUEsrKfQPNzI"></script> -->
+ <!-- <script src="<?php echo base_url();?>assets/js/map.js"></script> -->
 
 
 <script src="<?php echo base_url();?>assets/js/vendor/jquery-3.4.1.min.js"></script>

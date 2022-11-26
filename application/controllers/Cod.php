@@ -8,12 +8,15 @@ class Cod extends CI_Controller
     {
         parent::__construct();
         $this->load->library('session');
+
         $this->load->model('common');
         $this->load->model('services');
+
         $this->load->helper('security');
         $this->load->library('email');
         $this->load->helper('url_helper');
-        // $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
+
+         // $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
         // if($config_maintenance){
         //      redirect("maintenance");
         //       exit;
@@ -31,15 +34,19 @@ class Cod extends CI_Controller
         $data['text_instruction'] = "Cash on delivery";
         $data['text_description'] = "";
         $data['text_payment'] = "";
-        $method_data = array(
-            'code' => 'cod',
-            'title' => 'Cash On Delivery ',
-            'terms' => '',
-            'sort_order' => $this->configmodal->get('cod_sort_order'),
-        );
-        $this->session->set_userdata('payment_method', $method_data);
+
+        // $method_data = array(
+        //     'code' => 'cod',
+        //     'title' => 'Cash On Delivery ',
+        //     'terms' => '',
+        //     'sort_order' => 1,
+        // );
+        // $this->session->set_userdata('payment_method', $method_data);
        
-        $this->db->query("UPDATE `m_order` SET  payment_method = '" . $this->common->getDbValue($this->session->userdata['payment_method']['title']) . "', payment_code = '" . $this->common->getDbValue($this->session->userdata['payment_method']['code']) . "'  WHERE order_id = '" . (int) $this->session->userdata('order_id_ki') . "'");
+        $this->db->query("UPDATE `m_order` SET  payment_method = 'Cash On Delivery', payment_code = 'cod'  WHERE order_id = '" . (int) $this->session->userdata('order_id_ki') . "'");
+
+            
+
         return $this->load->view('payment/cod', $data);
     }
     public function confirm()
@@ -49,7 +56,7 @@ class Cod extends CI_Controller
         
         $order_id = (int) $this->session->userdata('order_id_ki');
         $order_info = $this->services->getOrder($order_id);
-
+       
         $order_data['shipping_firstname'] = $this->input->post('shipping_firstname');
         $order_data['shipping_lastname'] = $this->input->post('shipping_lastname');
         $order_data['shipping_company'] = $this->input->post('shipping_company');
@@ -63,12 +70,7 @@ class Cod extends CI_Controller
         
         $order_data['comment'] = $this->input->post('comment');
         
-        // $order_data = array(
-        //     'code' => 'cod',
-        //     'title' => 'Cash On Delivery ',
-        //     'terms' => '',
-        //     'sort_order' => 1,
-        // );
+        
 
         $order_data['payment_method'] = 'Cash On Delivery';
         $order_data['payment_code'] = 'cod';
@@ -76,17 +78,14 @@ class Cod extends CI_Controller
         $where_cart = "order_id = '" . $order_id . "' ";
         $this->common->updateRecord('m_order', $order_data, $where_cart);
         
-        //print_r($order_data);
-         // $this->session->set_userdata('comment', $comment_temp);
-        //echo $this->configmodal->get('cod_order_status_id');
-        $this->services->addOrderHistory($this->session->userdata('order_id_ki'), 1);
-        // if (isset($payment_method) && $payment_method['code'] == 'cod') {
-        //     //$this->load->model('customercartordermodal');
-        // }
+      
+        $this->services->addOrderHistory($this->session->userdata('order_id_ki'), 1,'',1,false);
+      
         $return_result['status'] =1;
         $return_result['msg'] = "";
         $return_result['uuid'] = $order_info['uuid'];
         echo json_encode($return_result);
+        die();
 
     }
 }

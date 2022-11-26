@@ -22,7 +22,7 @@
                         <div class="breadcrumb_content">
                             <h1>Checkout</h1>
                             <ul>
-                                <li><a href="<?php site_url("home")?>">home</a></li>
+                                <li><a href="<?php echo site_url("home")?>">home</a></li>
                                 <li>></li>
                                 <li>Success</li>
                             </ul>

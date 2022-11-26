@@ -263,7 +263,10 @@ if($user_data['access_ids']!=''){
                                 <div class="d-flex align-items-center float-right">
                                         <div class="mg-l-20">
                                             <div class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10 text-right">Total orders of today</div>
-                                            <div class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1 text-right"><?php echo $today_total_order?></div>
+                                            <div class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1 text-right">
+                                            <?php
+                                            echo $this->ecommercemodal->format($today_total_order,0);?>
+                                        </div>
                                         </div>
                                     </div>
                                 </div>
@@ -279,8 +282,8 @@ if($user_data['access_ids']!=''){
                                         
                                         <div class="mg-l-10">
                                             <div class="tx-10 tx-spacing-1 tx-mont tx-medium tx-uppercase tx-white-8 mg-b-10 text-right">Total revenue of today</div>
-                                            <div class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1 text-right"><?php echo $this->currencymodal->format($today_total_revenue, currency_code, 1);
-?></div>
+                                            <div class="tx-24 tx-white tx-lato tx-bold mg-b-2 lh-1 text-right"><?php
+                                            echo $this->ecommercemodal->format($today_total_revenue,0);?></div>
                                         </div>
                                     </div>
                                 </div>
