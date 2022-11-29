@@ -13,8 +13,8 @@ $session_user_data = $this->session->userdata('front_user_detail');
 //print_r($session_user_data);
 
 ?>
- <!--Offcanvas menu area start-->
- <div class="off_canvars_overlay">
+<!--Offcanvas menu area start-->
+<div class="off_canvars_overlay">
 
 </div>
 <div class="Offcanvas_menu Offcanvas_two Offcanvas_black2">
@@ -24,14 +24,17 @@ $session_user_data = $this->session->userdata('front_user_detail');
                 <div class="canvas_open">
                     <a href="javascript:void(0)"><i class="ion-navicon"></i></a>
                 </div>
+
                 <div class="Offcanvas_menu_wrapper">
                     <div class="canvas_close">
-                          <a href="javascript:void(0)"><i class="ion-android-close"></i></a>  
+                        <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
                     </div>
-                   
-                    
+                    <div class="welcome_text">
+                        <p>Free Shipping On Order Over AED500</span></p>
+                    </div>
+
                     <div id="menu" class="text-left ">
-                    <ul class="offcanvas_main_menu">
+                        <ul class="offcanvas_main_menu">
                             <li class="menu-item-has-children">
                                 <a href="<?php echo site_url('home');?>" class="text-uppercase"> Home</a>
                             </li>
@@ -46,7 +49,8 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                     <?php
                             foreach($menuCategory['sub_category'] as $key2 => $menuCategory2){
                             ?>
-                                    <li><a class="text-uppercase" href="<?php echo site_url('category/'.$menuCategory2['slug_name'].'/'.$menuCategory['category_id'].'-'.$menuCategory2['category_id'])?>"><?php echo $menuCategory2['name']?></a>
+                                    <li><a class="text-uppercase"
+                                            href="<?php echo site_url('category/'.$menuCategory2['slug_name'].'/'.$menuCategory['category_id'].'-'.$menuCategory2['category_id'])?>"><?php echo $menuCategory2['name']?></a>
                                     </li>
                                     <?php
                             }
@@ -56,24 +60,25 @@ $session_user_data = $this->session->userdata('front_user_detail');
                             <?php
                                 } else {
                              ?>
-                             <!-- <li class="menu-item-has-children">
+                            <!-- <li class="menu-item-has-children">
                                 <a href="<?php echo site_url("contact-us")?>" class="text-uppercase"> Contact Us</a>
                             </li> -->
-                            <li><a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>" class="text-uppercase"><?php echo $menuCategory['name']?></a></li>
-                             <?php       
+                            <li><a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>"
+                                    class="text-uppercase"><?php echo $menuCategory['name']?></a></li>
+                            <?php       
                                 }
                             }
                             ?>
                             <li class="menu-item-has-children">
-                            <?php
+                                <?php
                                     if (isset($session_user_data['customer_id'])) {
                                     ?>
                                 <a href="<?php echo site_url("account")?>" class="text-uppercase">My Account</a>
                                 <?php    
                                     } else {
                                     ?>
-                                     <a href="<?php echo site_url("login")?>" class="text-uppercase">Login/register</a>
-                                    <?php }?>
+                                <a href="<?php echo site_url("login")?>" class="text-uppercase">Login/register</a>
+                                <?php }?>
                             </li>
                             <li class="menu-item-has-children">
                                 <a href="<?php echo site_url("about-us")?>" class="text-uppercase">About Us</a>
@@ -84,14 +89,16 @@ $session_user_data = $this->session->userdata('front_user_detail');
                         </ul>
                     </div>
                     <div class="Offcanvas_footer">
-                        <span><a href="#"><i class="fa fa-envelope-o"></i> info@bondbeyond.ae</a></span>
-                        <ul>
+                   
+                             <span><a href="tel:+971559632581"><i class="fa fa-phone"></i> +971 559632581</a></span>
+                        <span><a href="mail:info@bondbeyond.ae"><i class="fa fa-envelope-o"></i> info@bondbeyond.ae</a></span>
+                        <!-- <ul>
                             <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
                             <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
                             <li class="pinterest"><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
                             <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
                             <li class="linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
             </div>
@@ -102,27 +109,51 @@ $session_user_data = $this->session->userdata('front_user_detail');
 
 <!--header area start-->
 <header class="header_area header_black black_two">
- 
 
+    <!--header top start-->
+    <div class="header_top">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <div class="text-right ">
+                    Free Shipping On Order Over AED500
+
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="top_li text-right">
+                        <ul>
+                            <li><a href="tel:+971559632581"><i class="fa fa-phone"></i>
+                            +971 559632581</a></li>
+                            <li><a href="<?php echo site_url('contact-us');?>"><i class="fa fa-envelope-o"></i> Contact us</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--header top start-->
     <!--header middel start-->
     <div class="header_middel sticky-header">
         <div class="container-fluid">
             <div class="row align-items-center">
-                <div class="col-lg-2 col-md-3 col-4">
+                <div class="col-lg-1 col-md-1 col-4">
                     <div class="logo">
-                        <a href="<?php echo site_url("home")?>"><img src="<?php echo base_url('assets/img/logo/logo.png')?>" alt=""></a>
+                        <a href="<?php echo site_url("home")?>"><img
+                                src="<?php echo base_url('assets/img/logo/logo.png')?>" alt=""></a>
                     </div>
-                      <!-- <div class="logo-text">BONDBEYOND
+                    <!-- <div class="logo-text">BONDBEYOND
                     </div>  -->
                 </div>
-                <div class="col-lg-10 col-md-7 col-sm-12 col-6">
-                    <div class="main_menu_inner" style="text-align:end">
-                       <div class="logo_sticky">
-                           <a href="<?php echo site_url("home")?>"><img src="<?php echo base_url('assets/img/logo/logo-3.png')?>" alt=""></a>
-                       </div>
-                        <div class="main_menu"> 
-                            <nav>  
-                            <ul>
+                <div class="col-lg-11 col-md-11 col-sm-12 col-8">
+                    <div class="main_menu_inner" style="text-align:center">
+                        <div class="logo_sticky">
+                            <a href="<?php echo site_url("home")?>"><img
+                                    src="<?php echo base_url('assets/img/logo/logo-3.png')?>" alt=""></a>
+                        </div>
+                        <div class="main_menu">
+                            <nav>
+                                <ul>
                                     <li><a href="<?php echo site_url('home');?>" class="text-uppercase">Home</a></li>
                                     <?php
                                     foreach($product_category as $key => $menuCategory){
@@ -133,12 +164,13 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                         ?>
                                     <li>
                                         <a href="#" class="text-uppercase"><?php echo $menuCategory['name']?></a>
-                                        
+
                                         <ul class="sub_menu">
                                             <?php
                                         foreach($menuCategory['sub_category'] as $key2 => $menuCategory2){
                                         ?>
-                                            <li><a  class="text-uppercase"  href="<?php echo site_url('category/'.$menuCategory2['slug_name'].'/'.$menuCategory['category_id'].'-'.$menuCategory2['category_id'])?>"><?php echo $menuCategory2['name']?></a>
+                                            <li><a class="text-uppercase"
+                                                    href="<?php echo site_url('category/'.$menuCategory2['slug_name'].'/'.$menuCategory['category_id'].'-'.$menuCategory2['category_id'])?>"><?php echo $menuCategory2['name']?></a>
                                             </li>
                                             <?php
                                         }
@@ -148,28 +180,31 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                     <?php
                                          } else{
                                     ?>
-                                    <li><a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>" class="text-uppercase"><?php echo $menuCategory['name']?></a></li>
+                                    <li><a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>"
+                                            class="text-uppercase"><?php echo $menuCategory['name']?></a></li>
                                     <?php        
                                          } 
                                         }
                                         ?>
-                                    <!-- <li><a href="<?php echo site_url('home');?>" class="text-uppercase">Contact Us</a></li> -->
+                                    <li><a href="<?php echo site_url('contact-us');?>" class="text-uppercase">Contact
+                                            Us</a></li>
                                 </ul>
-                            </nav> 
+                            </nav>
                         </div>
-                    </div> 
+                    </div>
                     <div class="middel_right">
                         <div class="search_btn">
                             <a href="#"><i class="ion-ios-search-strong"></i></a>
                             <div class="dropdown_search">
-                            <form action="<?php echo site_url('product/search')?>" method="get">
-                                    <input placeholder="Search product..."   name="search" id="search" type="text">
-                                    <button type="submit" name="submit-button-search-header" id="submit-button-search-header"><i class="ion-ios-search-strong"></i></button>
-                            </form>
-                                
+                                <form action="<?php echo site_url('product/search')?>" method="get">
+                                    <input placeholder="Search product..." name="search" id="search" type="text">
+                                    <button type="submit" name="submit-button-search-header"
+                                        id="submit-button-search-header"><i class="ion-ios-search-strong"></i></button>
+                                </form>
+
                             </div>
                         </div>
-                       
+
                         <!-- <div class="wishlist_btn">
                             <a href="wishlist.html"><i class="ion-heart"></i></a>
                         </div> -->
@@ -191,7 +226,7 @@ $session_user_data = $this->session->userdata('front_user_detail');
 
                                     </div>
                                 </div>
-                                 
+
                             </div>
                             <!--mini cart end-->
                         </div>
@@ -204,17 +239,17 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                     ?>
                                     <li><a href="<?php echo site_url("account")?>">My Account </a></li>
                                     <li><a href="<?php echo site_url("account/logout")?>">Logout</a></li>
-                                     
+
                                     <?php    
                                     } else {
                                     ?>
                                     <li><a href="<?php echo site_url("login")?>">Login </a></li>
                                     <li><a href="<?php echo site_url("login/register")?>">Register</a></li>
-                                    
+
                                     <?php    
                                     }
                                     ?>
-                                    
+
                                 </ul>
                             </div>
                         </div>
@@ -225,6 +260,6 @@ $session_user_data = $this->session->userdata('front_user_detail');
     </div>
     <!--header middel end-->
 
-     
+
 </header>
 <!--header area end-->

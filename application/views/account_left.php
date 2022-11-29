@@ -21,7 +21,7 @@
      <li><a href="<?php echo site_url('login')?>" class="nav-link active1">Login</a></li>
     <li><a href="<?php echo site_url('login/register')?>" class="nav-link active1">Register</a> </li>
     <li><a href="<?php echo site_url('login/forgotten')?>" class="nav-link active1">Forgotten Password</a></li>
-    <li><a href="<?php echo site_url('account/my_account')?>" class="nav-link active1">My Account</a></li>
+    <li><a href="<?php echo site_url('account')?>" class="nav-link active1">My Account</a></li>
     <?php	
 	}?>
 

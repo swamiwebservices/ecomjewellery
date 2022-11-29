@@ -96,6 +96,7 @@
                                     <th>Name</th>
 
                                     <th width="20%">Category</th>
+                                    <th width="20%">Sub-Cate</th>
                                     <th width="27%">Price</th>
 
                                     <th width="18%">Image</th>
@@ -120,8 +121,8 @@
                                         <strong><?php echo $this->common->getDbValue($value['name']); ?></strong></td>
 
                                     <td><?php echo isset($main_cat['name'])?$this->common->getDbValue($main_cat['name']):''; ?>
-                                        ->
-                                        <?php echo isset($sub_cat['name'])?$this->common->getDbValue($sub_cat['name']):''; ?>
+                                                                            </td>
+                                    <td><?php echo isset($sub_cat['name'])?$this->common->getDbValue($sub_cat['name']):''; ?>
                                     </td>
                                     <td valign="top">
                                         <?php

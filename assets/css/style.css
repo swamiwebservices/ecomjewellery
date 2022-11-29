@@ -178,11 +178,11 @@ ul {
 .header_black .main_menu nav > ul > li ul.sub_menu li a{font-family: 'ibm_plex_sansregular' !important;}
 .header_black .main_menu nav > ul > li ul.mega_menu > li > a{font-family: 'ibm_plex_sansregular' !important;}
 .header_black .main_menu nav > ul > li.active > a{color:#FEC210 !important;}
-.header_top{display: none;}
+/* .header_top{display: none;} */
 .main_menu_inner{
     text-align: center;
     float: left !important;
-    width: 70% !important;
+    width: 90% !important;
 }
 .main_menu nav > ul > li > a{padding: 10px 10px !important;}
 .header_black .header_middel {
@@ -206,7 +206,7 @@ ul {
     background-size: cover !important;
 }
 
-.logo img{width:70% !important;}
+.logo img{width:100% !important;}
 .footer_black{background-color: #05535A !important;}
 .shipping_black .single-shipping {background: #FEC210 !important;border-radius: 50px !important;}
 .shipping_black .single-shipping h3{color:#000 !important;}
@@ -1929,13 +1929,23 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
 .social_icone {
   text-align: right;
 }
+.top_li {
+  text-align: right;
+}
 @media only screen and (min-width: 768px) and (max-width: 991px) {
   .social_icone {
+    display: none;
+  }
+  .top_li {
     display: none;
   }
 }
 @media only screen and (max-width: 767px) {
   .social_icone {
+    text-align: center !important;
+    display: none;
+  }
+  .top_li {
     text-align: center !important;
     display: none;
   }
@@ -1961,6 +1971,20 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   background: #c09578;
   color: #ffffff;
 }
+
+.top_li ul li {
+  display: inline-block;
+  margin-left: 5px;
+}
+.top_li ul li:first-child {
+  margin-left: 0;
+}
+
+.top_li ul li a:hover {
+  color: #ffffff;
+}
+
+
 
 .box_setting {
   position: relative;
@@ -2620,7 +2644,9 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   }
 }
 .header_black .header_top {
-  border-bottom: 1px solid #2d2d2d;
+  border-bottom: 1px solid #fac301;
+  background-color: #fec210;
+  color: #05535A ;
 }
 @media only screen and (max-width: 767px) {
   .header_black .header_top {
@@ -2971,7 +2997,7 @@ input:-ms-input-placeholder, textarea:-ms-input-placeholder {
   }
 }
 .header_black.black_two .logo {
-  padding: 0 40px 0 0;
+  padding: 0 0 0 0;
 }
 @media only screen and (max-width: 767px) {
   .header_black.black_two .logo {
@@ -5636,7 +5662,7 @@ div.product_thumb img{
   text-transform: capitalize;
   padding-right: 20px;
   background: #fff;
-  color: #242424;
+  color: #00535a;
   font-size: 24px;
   font-weight: 700;
 }

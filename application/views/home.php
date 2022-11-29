@@ -74,16 +74,13 @@ $domain_id = $this->domain_id;
             $main_image = (isset($menuCategory['main_image']) && $menuCategory['main_image']!="" ) ? base_url().'uploads/category/350-'.$menuCategory['main_image']:'https://via.placeholder.com/150x100';
               
           ?>
-                <div class="col-lg-4 col-md-6 mt-2">
-                   <div class="single_banner">
+                <div class="col-lg-3 col-md-6 mt-2">
+                   <div class="single_banner" style="text-align:center;" >
                        <div class="banner_thumb">
-                            <a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>"><img src="<?php echo $main_image?>" alt="" style="width:300x;height:200px"></a>
-                            <div class="banner_content">
-                            <p>Design Creative</p>
-                                <h2><?php echo $menuCategory['name']?></h2>
-                                
-                            </div>
+                            <a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>"><img src="<?php echo $main_image?>" alt="" style="width:250px;height:250px"></a>
+                            
                         </div>
+                        <h2 style="text-align:center;  color: #00535a;font-weight:600"><?php echo $menuCategory['name']?></h2>
                    </div>
                     
                 </div>
@@ -102,13 +99,13 @@ $domain_id = $this->domain_id;
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
                         <div class="single-shipping">
-                            <h3>Money Return Guarantee</h3>
-                            <p>Back guarantee under 30 days</p>
+                           <h3>Quality is our Guarantee!</h3>
+                            <p>100%</p>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="single-shipping">
-                            <h3>Free Shipping On Order Over 11120</h3>
+                            <h3>Free Shipping On Order Over AED500</h3>
                             <p>Free shipping on all order</p>
                         </div>
                     </div>
@@ -499,10 +496,10 @@ $domain_id = $this->domain_id;
                 <div class="col-lg-4 col-md-6">
                     <div class="single_chose">
                         <div class="chose_icone">
-                            <img src="assets/img/about/About_icon2.jpg" alt="">
+                            <img src="assets/img/about/quality.png" style="width:100px;height:100px" alt="">
                         </div>
                         <div class="chose_content">
-                            <h3>100% Money Back Guarantee</h3>
+                            <h3>100% Guarantee!</h3>
                             <!-- <p>Erat metus sodales eget dolor consectetuer, porta ut purus at et alias, nulla ornare velit amet enim</p> -->
 
                         </div>

@@ -78,7 +78,7 @@
                         <ul>
                             <li><a href="index.html">home</a></li>
                             <li>></li>
-                            <li>about us</li>
+                            <li>contact us</li>
                         </ul>
                     </div>
                 </div>

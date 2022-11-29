@@ -1,4 +1,5 @@
 .DS_Store
+/uploads/*
 
 application/cache/*
 !application/cache/<?php echo site_url('home')?>
@@ -15,7 +16,7 @@ user_guide_src/cilexer/build/*
 user_guide_src/cilexer/dist/*
 user_guide_src/cilexer/pycilexer.egg-info/*
 /vendor/
-
+websiteadmin/vendor/
 # IDE Files
 #-------------------------
 /nbproject/
