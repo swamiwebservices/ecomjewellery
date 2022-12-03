@@ -718,7 +718,202 @@ class Cms extends CI_Controller
         $this->session->unset_userdata('error');
     } 
     
+    public function refund($id=3)
+    {
 
+        $session_user_data = $this->session->userdata('user_data');
+        $id = isset($id)?filter_var($id, FILTER_SANITIZE_STRING):3;
+        $data['activaation_id'] = 101;
+        $data['sub_activaation_id'] = '101_6';
+        
+        $data['title'] = 'CMS ';
+        $data['sub_heading'] = 'Refund edit';
+        $data['controller'] = $this->controller;
+        $data['id'] = $id;
+        $error = '';
+        $data['fun_name'] = "refund";
+        if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
+
+            $add_in = array();
+            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '';
+            $add_in['section'] = $section = (isset($_POST['section'])) ? $this->common->mysql_safe_string($_POST['section']) : '';
+          
+            $add_in['heading'] = $heading = (isset($_POST['heading'])) ? $this->common->mysql_safe_string($_POST['heading']) : '';
+            $add_in['detail_mini'] = $detail_mini = (isset($_POST['detail_mini'])) ? $this->common->mysql_safe_string($_POST['detail_mini']) : '';
+            $add_in['details'] = $details = (isset($_POST['details'])) ? $this->common->mysql_safe_string_descriptive($_POST['details']) : '';
+          
+              
+            if ($details == '') {
+                $error .= "Please enter details<br>";
+            }
+            
+            if ($error == '' && $_FILES['main_image']['name'] != '') {
+
+                //  $image_replace_name = $_FILES["main_image"]['name'];
+                $filename = "about-us-" . $this->common->gen_key(4);
+
+                $upload = $this->common->UploadImage('main_image', '../uploads/cms/', 0, $height_thumb = '', $width_thumb = '', $filename);
+
+                if ($upload['uploaded'] == 'false') {
+                    $error = $upload['uploadMsg'];
+                } else {
+
+                    $add_in['main_image'] = $upload['imageFile'];
+                   
+                   
+                }
+
+            }
+
+            if ($error == '') {
+                $add_in['date_added'] = date("Y-m-d H:i:s");
+
+                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $query = $this->db->query($sql);
+                if($query->num_rows()>0){
+                    $this->db->where('domains', $domains);
+                    $this->db->where('section', $section);
+                    $this->db->update('wti_cms_pages', $add_in);
+  
+                }    else {
+                    $this->db->insert('wti_cms_pages', $add_in);
+                   
+                }
+                
+               
+
+
+               $this->session->set_flashdata('success', 'Information updated succssfully!');
+               redirect($this->controller . '/refund');
+            } else {
+                $this->session->set_flashdata('error', $error);
+            }
+
+            $data_info = $_POST;
+        } else {
+
+            $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='refund' ", 0, 0);
+            $data_info_temp = [];
+            foreach($data_info as $key => $dataAddress){
+                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+
+            }
+            $data_info = $data_info_temp;
+        }
+
+        //print_r($data_info);
+        if (sizeof($data_info) == 0) {
+            $newdata = array('warning' => 'Please select data!');
+            $this->session->set_flashdata($newdata);
+            redirect($this->controller);
+        }
+        $data['records'] = $data_info;
+        $data['records']['section'] = "refund";
+        $this->load->view('cms_aboutus', $data);
+
+        $this->session->unset_userdata('success');
+        $this->session->unset_userdata('warning');
+        $this->session->unset_userdata('error');
+    } 
+
+
+    public function shippingpolicy($id=3)
+    {
+
+        $session_user_data = $this->session->userdata('user_data');
+        $id = isset($id)?filter_var($id, FILTER_SANITIZE_STRING):3;
+        $data['activaation_id'] = 101;
+        $data['sub_activaation_id'] = '101_7';
+        
+        $data['title'] = 'CMS ';
+        $data['sub_heading'] = 'shippingpolicy edit';
+        $data['controller'] = $this->controller;
+        $data['id'] = $id;
+        $error = '';
+        $data['fun_name'] = "shippingpolicy";
+        if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
+
+            $add_in = array();
+            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '';
+            $add_in['section'] = $section = (isset($_POST['section'])) ? $this->common->mysql_safe_string($_POST['section']) : '';
+          
+            $add_in['heading'] = $heading = (isset($_POST['heading'])) ? $this->common->mysql_safe_string($_POST['heading']) : '';
+            $add_in['detail_mini'] = $detail_mini = (isset($_POST['detail_mini'])) ? $this->common->mysql_safe_string($_POST['detail_mini']) : '';
+            $add_in['details'] = $details = (isset($_POST['details'])) ? $this->common->mysql_safe_string_descriptive($_POST['details']) : '';
+          
+              
+            if ($details == '') {
+                $error .= "Please enter details<br>";
+            }
+            
+            if ($error == '' && $_FILES['main_image']['name'] != '') {
+
+                //  $image_replace_name = $_FILES["main_image"]['name'];
+                $filename = "about-us-" . $this->common->gen_key(4);
+
+                $upload = $this->common->UploadImage('main_image', '../uploads/cms/', 0, $height_thumb = '', $width_thumb = '', $filename);
+
+                if ($upload['uploaded'] == 'false') {
+                    $error = $upload['uploadMsg'];
+                } else {
+
+                    $add_in['main_image'] = $upload['imageFile'];
+                   
+                   
+                }
+
+            }
+
+            if ($error == '') {
+                $add_in['date_added'] = date("Y-m-d H:i:s");
+
+                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $query = $this->db->query($sql);
+                if($query->num_rows()>0){
+                    $this->db->where('domains', $domains);
+                    $this->db->where('section', $section);
+                    $this->db->update('wti_cms_pages', $add_in);
+  
+                }    else {
+                    $this->db->insert('wti_cms_pages', $add_in);
+                   
+                }
+                
+               
+
+
+               $this->session->set_flashdata('success', 'Information updated succssfully!');
+               redirect($this->controller . '/shippingpolicy');
+            } else {
+                $this->session->set_flashdata('error', $error);
+            }
+
+            $data_info = $_POST;
+        } else {
+
+            $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='shippingpolicy' ", 0, 0);
+            $data_info_temp = [];
+            foreach($data_info as $key => $dataAddress){
+                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+
+            }
+            $data_info = $data_info_temp;
+        }
+
+        //print_r($data_info);
+        if (sizeof($data_info) == 0) {
+            $newdata = array('warning' => 'Please select data!');
+            $this->session->set_flashdata($newdata);
+            redirect($this->controller);
+        }
+        $data['records'] = $data_info;
+        $data['records']['section'] = "shippingpolicy";
+        $this->load->view('cms_aboutus', $data);
+
+        $this->session->unset_userdata('success');
+        $this->session->unset_userdata('warning');
+        $this->session->unset_userdata('error');
+    } 
     public function aboutus($id=1)
     {
 
@@ -736,6 +931,7 @@ class Cms extends CI_Controller
         if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
 
             $add_in = array();
+            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '';
             $add_in['section'] = $section = (isset($_POST['section'])) ? $this->common->mysql_safe_string($_POST['section']) : '';
           
             $add_in['heading'] = $heading = (isset($_POST['heading'])) ? $this->common->mysql_safe_string($_POST['heading']) : '';
@@ -775,10 +971,19 @@ class Cms extends CI_Controller
 
             if ($error == '') {
                
-                $this->db->where('id', $id);
-                $this->db->update('wti_cms_pages', $add_in);
-            //    $this->common->createjson('aboutus','cms',"select * from  wti_cms_pages c      where     id=1 ",'single');
+                $add_in['date_added'] = date("Y-m-d H:i:s");
 
+                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $query = $this->db->query($sql);
+                if($query->num_rows()>0){
+                    $this->db->where('domains', $domains);
+                    $this->db->where('section', $section);
+                    $this->db->update('wti_cms_pages', $add_in);
+  
+                }    else {
+                    $this->db->insert('wti_cms_pages', $add_in);
+                   
+                }
                 $this->session->set_flashdata('success', 'Information updated succssfully!');
                 redirect($this->controller . '/aboutus');
             } else {
@@ -788,10 +993,16 @@ class Cms extends CI_Controller
             $data_info = $_POST;
         } else {
 
-            $data_info = $this->common->getSingleInfoBy('wti_cms_pages', 'id', $id, '*');
+            $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='aboutus' ", 0, 0);
+            $data_info_temp = [];
+            foreach($data_info as $key => $dataAddress){
+                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+
+            }
+            $data_info = $data_info_temp;
         }
 
-        //print_r($data_info);
+       // print_r($data_info);
         if (sizeof($data_info) == 0) {
             $newdata = array('warning' => 'Please select data!');
             $this->session->set_flashdata($newdata);
@@ -799,7 +1010,7 @@ class Cms extends CI_Controller
         }
         $data['records'] = $data_info;
         $data['records']['section'] = "aboutus";
-        $this->load->view('cms_aboutus', $data);
+        $this->load->view('cms_aboutus_only', $data);
 
         $this->session->unset_userdata('success');
         $this->session->unset_userdata('warning');
@@ -908,7 +1119,7 @@ class Cms extends CI_Controller
         //     $resultdata = $query->row_array();
 
         //$data['num_row'] = $resultdata['numrows'] ;//= $this->common->numRow($this->tablename,$where_cond);
-        //$this->common->createjson('wti_meta_tags','',"select * from  wti_meta_tags c order by id ");
+        $this->common->createjson('wti_meta_tags','',"select * from  wti_meta_tags c order by id ",'single');
 
         $this->load->view('mtetatags_list', $data);
         $this->session->unset_userdata('success');

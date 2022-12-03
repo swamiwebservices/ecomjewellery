@@ -17,7 +17,24 @@
   </div>
 </div>
 
-
+<!-- Modal add cart -->
+<div class="modal fade" id="addToCartModal" tabindex="-1" aria-labelledby="addToCartModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addToCartModalLabel">Shopping cart!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="addToCartModal_body">
+        
+      </div>
+      <div class="modal-footer">
+      <a href="<?php echo site_url('cart');?>"><button type="button" class="btn btn-midi btn-primary " >Vew Cart</button></a>
+        <a href="<?php echo site_url('checkout');?>"><button type="button" class="btn btn-midi btn-primary " >Checkout</button></a>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Plugins JS -->
 <!--map js code here-->

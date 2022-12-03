@@ -279,7 +279,7 @@ class Cart extends CI_Controller
         $productdetail['product_id'] = 10;
         $productdetail['name'] = $productdetail['name'];
 
-        $json['success'] = sprintf('Success: You have added <a href="%s">%s</a> to your <a href="%s">Shopping cart</a>!', site_url('product-detail/' . $productdetail['slug_name'] . '/' . $productdetail['product_id']), $productdetail['name'], site_url('cart'));
+        $json['success'] = sprintf('Success: You have added <a href="%s">%s</a> to your <a href="%s">Shopping cart</a>!', site_url('product-detail/' . $productdetail['slug_name'] ), $productdetail['name'], site_url('cart'));
         $json['productdetail'] = $productdetail;
         echo json_encode($json);
         die();

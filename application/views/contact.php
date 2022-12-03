@@ -110,10 +110,16 @@
                         <h3>contact us</h3>    
                         <p>Have questions regarding your purchase, need technical clarifications or advices while choosing any products?</p>
                         <ul>
-                            <li><i class="fa fa-fax"></i>  Address : Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai</li>
-                            <li><i class="fa fa-envelope"></i> <a href="mail:info@bondbeyond.ae">info@bondbeyond.ae</a></li>
-                            <li><i class="fa fa-phone"></i> <a href="tel:+971 559632581">+971 559632581</a></li>
-                            <li><i class="fa fa-phone"></i> <a href="tel:+971 0543054719">+971 0543054719</a></li>
+                            <li><i class="fa fa-fax"></i>  Address : <?php echo (!empty($wti_m_address['address'])) ? $wti_m_address['address']:''?></li>
+                            <li><i class="fa fa-envelope"></i> <a href="mail:<?php echo (!empty($wti_m_address['email1'])) ? $wti_m_address['email1']:''?>"><?php echo (!empty($wti_m_address['email1'])) ? $wti_m_address['email1']:''?></a></li>
+                             
+                            <?php $phone1 =  (isset($wti_m_address['phone1'])) ? $wti_m_address['phone1']:''; 
+                                $phone1_exp = explode(",",$phone1);
+                                foreach($phone1_exp as $key => $phone1_data){
+                            ?>
+                           
+                            <li><i class="fa fa-phone"></i> <a href="tel:+<?php echo (!empty($phone1_data)) ? trim($phone1_data):''?>"><?php echo (!empty($phone1_data)) ? trim($phone1_data):''?></a></li>
+                            <?php }?>        
                         </ul>             
                     </div> 
                 </div>

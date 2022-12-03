@@ -92,7 +92,7 @@ if (isset($results) && sizeof($results) > 0) {
                                     <th>Email</th>
                                     <th>Mobile</th>
                                     <th>Date</th>
-                                    <th  class="text-center">Module Access</th>
+                                    <!-- <th  class="text-center">Module Access</th> -->
                                     <th>Status</th>
                                     <th>Actions</th>
                                 </tr>
@@ -117,7 +117,7 @@ if (isset($results) && sizeof($results) > 0) {
                                     <td><?php echo $this->common->getDbValue($value['email']); ?></td>
                                     <td><?php echo $this->common->getDbValue($value['mobile']); ?></td>
                                     <td><?php echo isset($value['date_added']) ? $this->common->getDateFormat($value['date_added'], DATE_FORMAT_PHP) : ''; ?></td>
-                                    <td class="text-center"><strong><a href="<?php echo site_url($controller.'/access_modules/'.$value['user_id'])?>">Module Access</a></strong></td>
+                                    <!-- <td class="text-center"><strong><a href="<?php echo site_url($controller.'/access_modules/'.$value['user_id'])?>">Module Access</a></strong></td> -->
                                     <td><?php $user_status = $this->common->getDbValue($value['user_status']);?>
                                         <?php
 if ($user_status == "Active") {echo '<span class="badge badge-success">Active</span>';}

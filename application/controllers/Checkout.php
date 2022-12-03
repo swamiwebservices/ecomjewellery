@@ -329,17 +329,19 @@ class Checkout extends CI_Controller
 
             $method_data = array();
           
-            $payment_geteways = $this->config->item("PAYMENT_GETEWAYS");
+          //  $payment_geteways = $this->config->item("PAYMENT_GETEWAYS");
             //print_r($payment_geteways);
-            
+            $payment_geteways = $this->services->getExtensions('payment');
+
             foreach ($payment_geteways as $result) {
+                if ($this->services->getold($result['code'] . '_status')) {
+                    $this->load->model('extension/payment/' . $result['code']);
 
-                $this->load->model('extension/payment/' . $result['code']);
+                    $method = $this->{$result['code']}->getMethod($data['shipping_address'], $cartSubtotal);
 
-                $method = $this->{$result['code']}->getMethod($data['shipping_address'], $cartSubtotal);
-
-                if ($method) {
-                    $method_data[$result['code']] = $method;
+                    if ($method) {
+                        $method_data[$result['code']] = $method;
+                    }
                 }
             }
             //print_r($method_data);

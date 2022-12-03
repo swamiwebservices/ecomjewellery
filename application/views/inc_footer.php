@@ -3,6 +3,18 @@
       $session_user_data = $this->session->userdata('front_user_detail');
       
       $product_category  = json_decode(file_get_contents('uploads/jsondata/product_category.json'), true);
+
+      $domains = $this->services->getDomainId();
+      $resultdata = array();
+      $wti_m_address = array();
+    
+      $sql = "select *  from  `wti_m_address` where `domains`='" . $domains . "'  ";
+      $query = $this->db->query($sql);
+      if ($query->num_rows() > 0) {
+          $resultdata = $query->row_array();
+         
+          $wti_m_address = $resultdata;
+      }
       ?>
       <!--footer area start-->
          <footer class="footer_widgets footer_black">
@@ -15,15 +27,14 @@
                                 <a href="<?php echo site_url("")?>"><img src="<?php echo base_url('assets/img/logo/logo.png')?>" alt=""></a>
                             </div></h3>
                                     <div class="footer_contact">
-                                        <p>Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai</br>
-<!-- Karama, Dubai </br>
-+971 559632581</br>
-+971 0543054719. -->
-</p>
-                                        <p>Phone: <a href="tel:+97142968516" class="text-footer">+971 42968516</a></p>
-                                        <p>Phone: <a href="tel:+971559632581" class="text-footer">+971 559632581</a></p>
-                                        <p>Phone: <a href="tel:+9710543054719" class="text-footer">+971 0543054719</a></p>
-                                        <p>Email: <a href="mail:info@bondbeyond.ae" class="text-footer">info@bondbeyond.ae</a></p>
+                                        <p>Address: <?php echo (!empty($wti_m_address['address'])) ? $wti_m_address['address']:''?></p>
+                                        <?php $phone1 =  (isset($wti_m_address['phone1'])) ? $wti_m_address['phone1']:''; 
+                                $phone1_exp = explode(",",$phone1);
+                                foreach($phone1_exp as $key => $phone1_data){
+                            ?>
+                                        <p>Phone: <a href="tel:<?php echo (!empty($phone1_data)) ? trim($phone1_data):''?>" class="text-footer"><?php echo (!empty($phone1_data)) ? trim($phone1_data):''?></a></p>
+                                        <?php }?> 
+                                        <p>Email: <a href="mail:<?php echo (!empty($wti_m_address['email1'])) ? $wti_m_address['email1']:''?>" class="text-footer"><?php echo (!empty($wti_m_address['email1'])) ? $wti_m_address['email1']:''?></a></p>
                                         <ul>
                                             <!-- <li><a href="#" ><i class="fa fa-facebook"></i></a></li>
                                             <li><a href="#"><i class="fa fa-twitter"></i></a></li>

@@ -75,7 +75,15 @@ class Login extends CI_Controller
                 $ar_session_data['front_user_detail']['password'] = "";
                 $this->session->set_userdata($ar_session_data);
 
-                redirect(site_url("account"), 'refresh');
+                if ($this->session->userdata('last_page_visited') == "") {
+                    redirect(site_url("account"), 'refresh');
+                    exit();
+                } else {
+                    $last_page_visited = $this->session->userdata('last_page_visited');
+                    $this->session->unset_userdata('last_page_visited');
+                    redirect($last_page_visited, 'refresh');
+                    exit();
+                };
                 exit();
             } else {
                 $error = array('error' => ' Warning: No match for E-Mail Address and/or Password. ');

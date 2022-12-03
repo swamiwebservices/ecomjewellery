@@ -59,7 +59,7 @@ $domain_id = $this->domain_id;
                 <div class="col-12">
                     <div class="breadcrumb_content">
                         <ul>
-                            <li><a href="index.html">home</a></li>
+                            <li><a href="<?php echo site_url('home')?>">home</a></li>
                             <li>></li>
                             <li><?php echo $this->uri->segment('2')?></li>
                         </ul>

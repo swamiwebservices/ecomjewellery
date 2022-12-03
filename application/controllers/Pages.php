@@ -62,76 +62,7 @@ class Pages extends CI_Controller
     {
         redirect("home");
     }
-    public function aboutus()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
 
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        
-        $section = 'aboutus';
-
-        $data['wti_cms_pages_images'] = array();
-
-        
-
-       
-         
-        $resultdata = array();
-        $data['records'] = array();
-        $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->row_array();
-            $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
-        }
-
-        /* foreach ($resultdata as $key => $value) {
-            $data['records'][$value['section']] = $value['details'];
-
-        } */
-        $this->load->view('about-us', $data);
-    }
-    public function termscondition()
-    {
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $data['canonical'] = site_url($param_page);
-
-        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
-        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
-        if ($param_page == "") {
-            $param_page = "home";
-        }
-        $section = 'termscondition';
-
-        
-        $resultdata = array();
-        $data['records'] = array();
-        $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
-        $query = $this->db->query($sql);
-        if ($query->num_rows() > 0) {
-            $resultdata = $query->row_array();
-            $data['resultdata'] = $resultdata;
-            $data['records'][$resultdata['section']] = $resultdata['details'];
-        }
-        $this->load->view('termscondition', $data);
-    }
- 
     public function contact()
     {
         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
@@ -270,11 +201,56 @@ class Pages extends CI_Controller
             }
 
         }
-        $data['wti_m_address'] = $this->common->getSingleInfoBy('wti_m_address', 'id', 1, '*');
+
+        //domains
+        
+        $domains = $this->services->getDomainId();
+        $resultdata = array();
+        $data['wti_m_address'] = array();
+        $data['resultdata'] = array();
+        $sql = "select *  from  `wti_m_address` where `domains`='" . $domains . "'  ";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->row_array();
+           
+            $data['wti_m_address'] = $resultdata;
+        }
         //print_r($data['wti_m_address']);
         $this->load->view('contact', $data);
     }
 
+    public function aboutus()
+    {
+        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+
+        if ($param_page == "") {
+            $param_page = "home";
+        }
+        $data['canonical'] = site_url($param_page);
+
+        $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
+        //    $param_page2 = $this->uri->segment(2); // n=1 for controller, n=2 for method, etc
+        if ($param_page == "") {
+            $param_page = "home";
+        }
+        
+        $section = 'aboutus';
+        $data['section'] = $section;
+        $domains = $this->services->getDomainId();
+        $resultdata = array();
+        $data['records'] = array();
+        $data['resultdata'] = array();
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->row_array();
+            $data['resultdata'] = $resultdata;
+            $data['records'] = $resultdata['details'];
+        }
+        $this->load->view('about-us', $data);
+    }
+     
+  
     public function privacypolicy()
     {
         $param_page = $this->uri->segment(1); // n=1 for controller, n=2 for method, etc
@@ -291,7 +267,6 @@ class Pages extends CI_Controller
         }
         $resultdata = array();
         $section = 'privacy';
-        
         $data['section'] = $section;
         $domains = $this->services->getDomainId();
         $resultdata = array();
@@ -335,6 +310,7 @@ class Pages extends CI_Controller
             $data['resultdata'] = $resultdata;
             $data['records'] = $resultdata['details'];
         }
+
         $this->load->view('refund', $data);
     }
     public function shippingpolicy()
@@ -354,6 +330,7 @@ class Pages extends CI_Controller
         $resultdata = array();
         $section = 'shippingpolicy';
         
+        $data['section'] = $section;
         $data['section'] = $section;
         $domains = $this->services->getDomainId();
         $resultdata = array();

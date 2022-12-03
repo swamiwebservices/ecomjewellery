@@ -44,46 +44,10 @@
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12">
-                        <div class="unlimited_services_content">
-                            <h1>Welcome Bond-Beyond</h1>
-                            <p>Bond Beyond is a luxury silver collection with fine designs and assured quality is
-                                 last elegance beyond generations.
-                            </p>
-                            <p>
-                                Silver is rare, limited and the investment value it carries drives the importance from
-                                ages. The Unique quality, elegance , and affordability makes it fall in love for any
-                                generation.
-                            </p>
-                            <p>
-                                Bond Beyond iS a one stop destination for silver collections from traditional to modern,
-                                budgeted to Customized articles with certified quality to add value now and beyond.
-                                It offers wine range of silverwares such as plates, bowls, spoons, forks, gloss,
-                                exquisite center pieces, tableware, photo frames, coins, jewelry, decorative items and
-                                many other gift articles which are Unique, elegant and unparallel with a high quality
-                                and assured returns.
-                            </p>
+                    <?php
+                        print_r($records);
 
-
-
-
-                            <h2>All type of Pooja articles – Pooja Thali, Tamhan, Diya, Kalash, Lota,
-                                Ghanti, etc.</h2>
-                            <ul>
-                                <li><i class="fa fa-snowflake-o" aria-hidden="true"></i> All type of God idols</li>
-                                <li><i class="fa fa-snowflake-o" aria-hidden="true"></i> Fancy gift articles from AED 50
-                                    and above</li>
-                                <li><i class="fa fa-snowflake-o" aria-hidden="true"></i> All types of Plates, Glasses,
-                                    Bowls, Spoons, Forks, etc.</li>
-                                <li><i class="fa fa-snowflake-o" aria-hidden="true"></i> Variety of Coins</li>
-                                <li><i class="fa fa-snowflake-o" aria-hidden="true"></i> 24 Karat Gold Chain / Bangles /
-                                    Kada</li>
-                                <li><i class="fa fa-snowflake-o" aria-hidden="true"></i> Authentic Pearls Jewellery</li>
-                            </ul>
-
-                            <!-- <div class="view__work">
-                            <a href="#">MORE INFO  <i class="fa fa-angle-right"></i></a>
-                        </div>   -->
-                        </div>
+                        ?>
                     </div>
                 </div>
             </div>

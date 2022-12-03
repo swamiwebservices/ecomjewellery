@@ -39,16 +39,10 @@
                 <div class="row align-items-center">
 
                     <div class="col-lg-12 col-md-12">
-                        <div class="unlimited_services_content">
-<?php
-print_r($records);
+                        <?php
+                        print_r($records);
 
-?>
-                             
-
-
-                            
-                        </div>
+                        ?>
                     </div>
                 </div>
             </div>
