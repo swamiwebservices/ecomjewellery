@@ -1321,6 +1321,23 @@ class Common extends CI_Model
 
     }
 
+    public function get_product_group($product_group_id = 0)
+    {
+        $sql = "select * from m_product_group where   status_flag !='Deleted' order by id   ";
+        $query_result = $this->db->query($sql);
+        $results = $query_result->result_array();
+
+        $combo = "<option value='0'>Select Group</option>";
+        foreach ($results as $key => $value) {
+            $sel_flag = '';
+            if ($value['id'] == $product_group_id) {$sel_flag = 'selected';}
+            $combo .= "<option value='" . $value['id'] . "' " . $sel_flag . ">" . $value['name'] . ' (' . $value['status_flag'] . ')' . "</option>";
+        }
+
+        echo $combo;
+
+    }
+
     public function ajaxpagingnation_lux_new($page, $num_rows, $per_page, $links = 7, $fun_name = '', $other_para = '')
     {
 

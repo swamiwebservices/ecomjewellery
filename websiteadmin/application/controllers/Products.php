@@ -41,7 +41,7 @@ class Products extends CI_Controller
         $data['sub_activaation_id'] = '1011_2';
         $data['title'] = 'Products';
         $data['start'] = $start;
-        $data['maxm'] = $maxm = 50;
+        $data['maxm'] = $maxm = 1000;
         $data['sub_heading'] = 'List';
         $fun_name = $this->controller . '/productslist';
         $data['fun_name'] = $fun_name;
@@ -113,7 +113,11 @@ class Products extends CI_Controller
             
 
             $add_in_m['item_code'] = $item_code = (isset($_POST['item_code'])) ? $this->common->mysql_safe_string($_POST['item_code']) : '';
-		 
+
+            $add_in_m['product_group_id'] = $product_group_id = (isset($_POST['product_group_id'])) ? $this->common->mysql_safe_string($_POST['product_group_id']) : '0';
+
+            $add_in_m['weight_gms'] = $weight_gms = (isset($_POST['weight_gms'])) ? $this->common->mysql_safe_string($_POST['weight_gms']) : '0';
+
             $add_in_m['description'] = $description = (isset($_POST['description'])) ? $this->common->mysql_safe_string_descriptive($_POST['description']) : '';
 
             $add_in_m['featured'] = $featured = (isset($_POST['featured'])) ? $this->common->mysql_safe_string($_POST['featured']) : '0';
@@ -354,7 +358,181 @@ class Products extends CI_Controller
         redirect($this->ctrl_name);
     }
 
-     
+    public function productgroup($start = 0, $otherparam = "")
+    {
+        
+      
+        $data['activaation_id'] = 1011;
+        $data['sub_activaation_id'] = '1011_4';
+        $data['title'] = 'Product Group';
+        $data['start'] = $start;
+        $data['maxm'] = $maxm = 50;
+        $data['sub_heading'] = 'Product Group List';
+        $fun_name = $this->controller . '/productgroup';
+        $data['fun_name'] = $fun_name;
+        $data['add_link'] = $this->controller . '/productgroup_action';
+        $data['edit_link'] = $this->controller . '/productgroup_action';
+
+        $data['controller'] = $this->controller;
+
+        $limit_qry = " LIMIT " . $start . "," . $maxm;
+
+        $data['other_para'] = "";
+
+        $resultdata = array();
+        $sql = "select *  from  m_product_group b
+		   	where   status_flag!='Deleted'  ";// . $limit_qry;
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->result_array();
+        }
+        $data['results'] = $resultdata;
+
+        $sql = "select count('')  as numrows  from m_product_group b   where    status_flag!='Deleted'  ";
+        $query = $this->db->query($sql);
+        $resultdata = $query->row_array();
+        $data['num_row'] = $resultdata['numrows']; //= $this->common->numRow($this->tablename,$where_cond);
+
+
+        $this->load->view('productgroup', $data);
+        $this->session->unset_userdata('success');
+        $this->session->unset_userdata('warning');
+        $this->session->unset_userdata('error');
+    }
+	
+    public function productgroup_action($id = "")
+    {
+
+        $session_user_data = $this->session->userdata('admin_user_data');
+        $data['controller'] = $this->controller;
+        $data['activaation_id'] = 1011;
+        $data['sub_activaation_id'] = '1011_4';
+        $data['title'] = 'Category';
+        $data['id'] = (isset($id)) ? $this->common->mysql_safe_string($id) : '';
+        $data['sub_heading'] = (isset($id) && $id != "") ? " Edit Product Group" : 'Add Product Group';
+        $data['back_link'] = $this->controller . '/productgroup';
+        $data['fun_name'] = 'productgroup_action/' . $id;
+        $data['controller'] = $this->controller;
+
+        $error = '';
+
+        $data_info = array();
+        // print_r($_POST);exit;
+        if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
+
+            
+           
+            $add_in_m['name'] = $name = (isset($_POST['name'])) ? $this->common->mysql_safe_string($_POST['name']) : '';
+           
+            $add_in_m['price'] = $price = (isset($_POST['price'])) ? $this->common->mysql_safe_string_descriptive($_POST['price']) : '';
+          
+            
+             
+ 
+
+            if ($name == '') {$error .= "Please enter Name/Title  <br>";}
+            if ($price == '') {$error .= "Please select price <br>";}
+
+            if ($error == '') {
+
+                
+
+                if ($id != "") {
+                    
+                    $where = "id = '" . $id . "'";
+                    $update_status = $this->common->updateRecord('m_product_group', $add_in_m, $where);
+
+
+                    $sql = "update product_master set mrp = ROUND(weight_gms * {$price}),sellprice = ROUND(weight_gms * {$price}) where product_group_id='{$id}' ";
+                    $this->db->query($sql);
+
+                    $sql  ="select * from product_master where product_group_id='{$id}'";
+                    $rs_product = $this->db->query($sql);;
+                    if($rs_product->num_rows()>0){
+                        $result_product = $rs_product->result_array();
+                        foreach($result_product as $key => $value){
+
+                            $domain_list = $this->config->item("DOMAINs");
+                            foreach($domain_list as $domain_id => $domain){
+                            $price_json['quantity'][$domain_id] = 1;
+                            $price_json['mrp'][$domain_id] = round($value['mrp']);
+                            $price_json['sellprice'][$domain_id] = round($value['sellprice']);
+                            $add_in_price['price_json'] = json_encode($price_json);
+                            $where_product = "product_id = '" . $value['product_id'] . "'";
+                            $update_status = $this->common->updateRecord('product_master', $add_in_price, $where_product);
+        
+
+                            $where_price = "product_id='{$value['product_id']}' and domain_id='{$domain_id}' ";
+                           
+                            $add_in_m_price['mrp'] = ROUND($value['mrp']);
+                            $add_in_m_price['sellprice'] = ROUND($value['sellprice']);
+                           
+                            $this->common->updateRecord('product_master_price', $add_in_m_price,$where_price);
+                       
+                            
+                            }
+                            
+                        }
+                    }
+                   
+
+                    $this->session->set_flashdata('success', 'Information updated successfully.');
+
+                } else {
+                     
+                    
+
+                   
+                    $blogs_id = $this->common->insertRecord('m_product_group', $add_in_m);
+
+                   
+
+                    $this->session->set_flashdata('success', 'Information added successfully.');
+
+                }
+
+                
+                redirect($this->controller . '/productgroup');
+
+            } else {
+                //$this->session->set_userdata('error', $error);
+                $data['error_msg'] = $error;
+            }
+        }
+
+        //  $where_cond = "where delete_status=0  ORDER BY cate_name  ";
+        //  $data['mst_category_blogs'] = $mst_category_blogs = $this->common->getAllRow('m_newsblog_cat', $where_cond);
+
+        $data_info = array();
+        $data['records'] = $data_info;
+        if ($id != "") {
+            $sql = "select *  from  m_product_group b where     b.id='" . $id . "'  ";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                $data_info = $query->row_array();
+                $data['records'] = $data_info;
+                
+            }
+        } else {
+            if (isset($add_in_m) && sizeof($add_in_m) > 0) {
+                $data_info = (isset($_POST)) ? $_POST : '';
+                $data['records'] = $data_info;
+            } else {
+
+                $sql = "select count('')  as numrows  from m_product_group     ";
+                $query = $this->db->query($sql);
+                $resultdata = $query->row_array();
+                $data['records']['sort_order'] = $resultdata['numrows'] + 1;
+            }
+        }
+         
+        $this->load->view('productgroup_action', $data);
+        $this->session->unset_userdata('success');
+        $this->session->unset_userdata('warning');
+        $this->session->unset_userdata('error');
+
+    }
+ 
     //category
     public function categorylistall($start = 0, $otherparam = "")
     {

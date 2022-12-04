@@ -119,6 +119,9 @@ if($user_data['access_ids']!=''){
                         <?php if (in_array("35", $permission)){?> 
                         <li class="nav-item"><a href="<?php echo site_url('products') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='1011_2'){ echo 'active';}?>">Products</a></li>
                         <?php }?>
+                        <?php if (in_array("34", $permission)){?> 
+                        <li class="nav-item"><a href="<?php echo site_url('products/productgroup') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='1011_4'){ echo 'active';}?>">Product Group</a></li>
+                        <?php }?>
                         <?php if (in_array("36", $permission)){?> 
                         <li class="nav-item"><a href="<?php echo site_url('coupon') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='1011_3'){ echo 'active';}?>">Coupon</a></li>
                         <?php }?>

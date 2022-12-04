@@ -226,20 +226,18 @@
 
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-2" for="category_id">Category:<span
-                                        class="text-danger">*</span><span class="text-danger">*</span></label>
+                                        class="text-danger">*</span></label>
                                 <div class="col-lg-4">
                                     <select class="form-control" name="category_id" id="category_id" required>
                                         <?php  $this->common->get_categorylist_parent_sub((isset($records['category_id']))?$records['category_id']:'0')?>
                                     </select>
 
                                 </div>
-                                <label class="col-form-label col-lg-2 text-right" for="item_code">Item Code:<span
-                                        class="text-danger"></span></label>
+                                <label class="col-form-label col-lg-2 text-right" for="product_group_id">Product Group:</label>
                                 <div class="col-lg-4">
-                                    <input type="text" class="form-control maxlength-textarea " maxlength="150"
-                                        id="item_code" name="item_code" placeholder="Item Code"
-                                        value="<?php echo isset($records['item_code'])?$this->common->getDbValue($records['item_code']):''; ?>"
-                                        required1>
+                                    <select class="form-control" name="product_group_id" id="product_group_id" required>
+                                        <?php  $this->common->get_product_group((isset($records['product_group_id']))?$records['product_group_id']:'0')?>
+                                    </select>
 
                                 </div>
                             </div>
@@ -249,11 +247,28 @@
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-2" for="name">Name:<span
                                         class="text-danger">*</span></label>
-                                <div class="col-lg-9"><input type="text" class="form-control maxlength-textarea "
+                                <div class="col-lg-4"><input type="text" class="form-control maxlength-textarea "
                                         maxlength="256" id="name" name="name" placeholder="Name"
                                         value="<?php echo isset($records['name'])?$this->common->getDbValue($records['name']):''; ?>"
                                         required>
                                     <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
+                                </div>
+                                <label class="col-form-label col-lg-2 text-right" for="item_code">Item Code:<span
+                                        class="text-danger"></span></label>
+                                <div class="col-lg-1">
+                                    <input type="text" class="form-control maxlength-textarea " maxlength="150"
+                                        id="item_code" name="item_code" placeholder="Item Code"
+                                        value="<?php echo isset($records['item_code'])?$this->common->getDbValue($records['item_code']):''; ?>"
+                                        required1>
+
+                                </div>
+                                <label class="col-form-label col-lg-1 text-right" for="weight_gms">Weight:</label>
+                                <div class="col-lg-1">
+                                    <input type="text" class="form-control "  
+                                        id="weight_gms" name="weight_gms" placeholder="Weight in Grams"
+                                        value="<?php echo isset($records['weight_gms'])?$this->common->getDbValue($records['weight_gms']):''; ?>"
+                                        required1>
+
                                 </div>
                             </div>
 
@@ -359,7 +374,7 @@
                                 
                             </div>
                             <div class="form-group row">
-                                <label class="control-label col-lg-2" for="sort_order">Specification:</label>
+                                <label class="control-label col-lg-2" for="">Specification:</label>
                                 <div class="col-lg-10">
                                     <?php
                                        // print_r($records['specification']);

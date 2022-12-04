@@ -89,7 +89,7 @@
                 <div class="card  ">
                     <?php if (isset($results) && sizeof($results)>0) { ?>
                     <div class="table-responsive">
-                        <table class="table table-hover datatable-responsive">
+                        <table class="table table-hover datatable-basicwti">
                             <thead>
                                 <tr class="bg-blue ">
                                     <th width="4%">#</th>
@@ -113,12 +113,31 @@
 									$main_cat = $this->common->getOneRow('product_category', "where category_id=" . $value['category_id']);
 									$sub_cat = $this->common->getOneRow('product_category', "where category_id=" . $value['sub_category_id']);									
 									
+
+                                    // $specification2 = (isset($results['specification']) && is_array($results['specification'])) ? $results['specification'] : [];
+
+                                    // $specification = (isset($value['specification']) && !is_array($value['specification']) ) ? json_decode($value['specification'],true) : $specification2;
+
+                                    
+                                    // for($p=1;$p<8;$p++){
+                                    //  $title =   (isset($specification['title'][$p])) ? $specification['title'][$p] : '' ;
+                                    
+                                    //  if(strtolower(trim($title))=="weight"){
+                                    //       $value_gm =   (isset($specification['value'][$p])) ? (float)$specification['value'][$p] : '0.00' ;
+                                    //       $where = "uuid = '" . $value['uuid'] . "'";
+                                    //       $add_in_m['weight_gms'] = $value_gm;
+                                    //      // $update_status = $this->common->updateRecord('product_master', $add_in_m, $where);
+                                    //  }
+                                    // }
+
 								?>
                                 <tr
                                     class="  border-left-3  <?php echo ($status_flag == "Active") ? 'border-left-success' : 'border-left-danger' ?>  tr<?php echo $this->common->getDbValue($value['status_flag']); ?>">
                                     <td valign="top"><?php echo $i?></td>
                                     <td valign="top">
-                                        <strong><?php echo $this->common->getDbValue($value['name']); ?></strong></td>
+                                        <strong><?php echo $this->common->getDbValue($value['name']);
+                                       
+                                        ?></strong></td>
 
                                     <td><?php echo isset($main_cat['name'])?$this->common->getDbValue($main_cat['name']):''; ?>
                                                                             </td>
@@ -177,6 +196,17 @@
                     </div>
                     <?php    
                             }?>
+
+                <?php if(isset($num_row) && $num_row>0){ ?>
+                    <div class="row">
+                        <div class="col-xl-12 text-center  ">
+                            <ul class="pagination-flat justify-content-center twbs-flat pagination pull-right">
+                                <?php echo $this->common->ajaxpagingnation_admin_new($start,$num_row,$maxm,'',$fun_name,$other_para); ?>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <?php } ?>
                 </div>
                 <!-- /basic datatable -->
             </div>
@@ -188,6 +218,90 @@
         <!-- /main content -->
     </div>
     <!-- /page content -->
+    <script>
+    // Setting datatable defaults
+    $.extend($.fn.dataTable.defaults, {
+        autoWidth: false,
+        dom: '<"datatable-header"fBl><"datatable-scroll-wrap"t><"datatable-footer"ip>',
+        language: {
+            search: '<span>Filter:</span> _INPUT_',
+            searchPlaceholder: 'Type to filter...',
+            lengthMenu: '<span>Show:</span> _MENU_',
+            paginate: {
+                'first': 'First',
+                'last': 'Last',
+                'next': $('html').attr('dir') == 'rtl' ? '&larr;' : '&rarr;',
+                'previous': $('html').attr('dir') == 'rtl' ? '&rarr;' : '&larr;'
+            }
+        }
+    });
+
+
+
+    // Initialize
+    $('.dataTables_length select').select2({
+        minimumResultsForSearch: Infinity,
+        dropdownAutoWidth: true,
+        width: 'auto'
+    });
+
+    // Basic datatable
+    var lastIdx = null;
+    var table = $('.datatable-basicwti').DataTable({
+        columnDefs: [{
+            orderable: false,
+            targets: [5,6,7]
+        }],
+        lengthMenu: [
+            [100, 250, 500, -1],
+            [100, 250, 500, 'All'],
+        ],
+        autoWidth: true,
+
+        scrollCollapse: true,
+        "paging": true,
+        buttons: {
+            buttons: [{
+                    extend: 'copyHtml5',
+                    className: 'd-none btn btn-light',
+                    text: '<i class="icon-copy3 mr-2"></i> Copy'
+                },
+                {
+                    extend: 'csvHtml5',
+                    className: 'd-none  btn btn-light',
+                    text: '<i class="icon-file-spreadsheet mr-2"></i> CSV',
+                    fieldSeparator: '\t',
+                    extension: '.tsv'
+                },
+                {
+                    extend: 'print',
+                    className: 'd-none  btn btn-light',
+                    text: '<i class="icon-printer mr-2"></i> Print table',
+                    autoPrint: false
+
+                }
+            ]
+        },
+        "bLengthChange": true, //thought this line could hide the LengthMenu
+        "bInfo": true,
+        "aaSorting": [],
+        "bInfo": true,
+        "bFilter": true,
+        responsive: true,
+    });
+
+
+    $('.datatable-basicwti tbody').on('mouseover', 'td', function() {
+        var colIdx = table.cell(this).index().column;
+
+        if (colIdx !== lastIdx) {
+            $(table.cells().nodes()).removeClass('active');
+            $(table.column(colIdx).nodes()).addClass('active');
+        }
+    }).on('mouseleave', function() {
+        $(table.cells().nodes()).removeClass('active');
+    });
+    </script>
     <Script>
     // Custom bootbox dialog
     $('.bootbox_custom').on('click', function() {
