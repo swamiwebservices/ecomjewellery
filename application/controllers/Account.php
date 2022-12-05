@@ -225,8 +225,8 @@ class Account extends CI_Controller
                 'model' => $product['model'],
                 'option' => $option_data,
                 'quantity' => $product['quantity'],
-                'price' => $product['price'],
-                'total' => $product['total'],
+                'price' => $this->services->format($product['price']),
+                'total' => $this->services->format($product['total']),
                 'slug_name' => $product['slug_name'],
             );
         }
@@ -238,7 +238,7 @@ class Account extends CI_Controller
         foreach ($totals as $total) {
             $data['totals'][] = array(
                 'title' => $total['title'],
-                'text' => $total['value'],
+                'text' =>  $this->services->format($total['value']),
             );
         }
 

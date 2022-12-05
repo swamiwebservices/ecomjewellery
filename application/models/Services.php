@@ -1599,7 +1599,7 @@ class Services extends CI_Model
         } else {
             $status = false;
         }
-
+//$coupon_query_row['shipping']
         if ($status) {
             $coupon_info =  array(
                 'coupon_id' => $coupon_query_row['coupon_id'],
@@ -1607,7 +1607,7 @@ class Services extends CI_Model
                 'name' => $coupon_query_row['name'],
                 'type' => $coupon_query_row['type'],
                 'discount' => $coupon_query_row['discount'],
-                'shipping' => $coupon_query_row['shipping'],
+                'shipping' => 0,
                 'total' => $coupon_query_row['total'],
                 'product' => $product_data,
                 'date_start' => $coupon_query_row['date_start'],

@@ -114,15 +114,17 @@ class Checkout extends CI_Controller
 
         $order_data['company'] = $company = (isset($_POST['company'])) ? $this->input->post('company') : '';
 
-        $order_data['shipping_firstname'] = $shipping_firstname = (isset($_POST['shipping_firstname'])) ? $this->input->post('shipping_firstname') : '';
-        $order_data['shipping_lastname'] = $shipping_lastname = (isset($_POST['shipping_lastname'])) ? $this->input->post('shipping_lastname') : '';
-        $order_data['shipping_company'] = $shipping_company = (isset($_POST['shipping_company'])) ? $this->input->post('shipping_company') : '';
-        $order_data['shipping_address_1'] = $shipping_address_1 = (isset($_POST['shipping_address_1'])) ? $this->input->post('shipping_address_1') : '';
-        $order_data['shipping_address_2'] = $shipping_address_2 = (isset($_POST['shipping_address_2'])) ? $this->input->post('shipping_address_2') : '';
-        $order_data['shipping_country_id'] = $shipping_country_id = (isset($_POST['shipping_country_id'])) ? $this->input->post('shipping_country_id') : '';
-        $order_data['shipping_zone_id'] = $shipping_zone_id = (isset($_POST['shipping_zone_id'])) ? $this->input->post('shipping_zone_id') : '';
-        $order_data['shipping_city'] = $shipping_city = (isset($_POST['shipping_city'])) ? $this->input->post('shipping_city') : '';
-        $order_data['shipping_postcode'] = $shipping_postcode = (isset($_POST['shipping_postcode'])) ? $this->input->post('shipping_postcode') : '';
+        $order_data['shipping_firstname'] = $shipping_firstname = (isset($_POST['shipping_firstname'])) ? $this->input->post('shipping_firstname') : $data['shipping_address']['shipping_firstname'];
+        $order_data['shipping_lastname'] = $shipping_lastname = (isset($_POST['shipping_lastname'])) ? $this->input->post('shipping_lastname') : $data['shipping_address']['shipping_lastname'];
+        $order_data['shipping_company'] = $shipping_company = (isset($_POST['shipping_company'])) ? $this->input->post('shipping_company') : $data['shipping_address']['shipping_company'] ;
+        $order_data['shipping_address_1'] = $shipping_address_1 = (isset($_POST['shipping_address_1'])) ? $this->input->post('shipping_address_1') : $data['shipping_address']['shipping_address_1'];
+        $order_data['shipping_address_2'] = $shipping_address_2 = (isset($_POST['shipping_address_2'])) ? $this->input->post('shipping_address_2') : $data['shipping_address']['shipping_address_2'];
+        $order_data['shipping_country_id'] = $shipping_country_id = (isset($_POST['shipping_country_id'])) ? $this->input->post('shipping_country_id') : $data['shipping_address']['shipping_country_id'];
+        $order_data['shipping_zone_id'] = $shipping_zone_id = (isset($_POST['shipping_zone_id'])) ? $this->input->post('shipping_zone_id') : $data['shipping_address']['shipping_zone_id'];
+        $order_data['shipping_city'] = $shipping_city = (isset($_POST['shipping_city'])) ? $this->input->post('shipping_city') : $data['shipping_address']['shipping_city'];
+        $order_data['shipping_postcode'] = $shipping_postcode = (isset($_POST['shipping_postcode'])) ? $this->input->post('shipping_postcode') : $data['shipping_address']['shipping_postcode'];
+
+        
         $order_data['comment'] = $comment = (isset($_POST['comment'])) ? $this->input->post('comment') : '';
 
         // if($shipping_firstname==""){
@@ -216,22 +218,24 @@ class Checkout extends CI_Controller
 
             $total_data['total'] = $cartSubtotal;
 
-            //of shipping
-            if (!empty($this->session->userdata['shipping_method'])) {
+                   // //of shipping
+             
+                   $this->load->model('extension/shipping/standard_cost');
 
-                //$total['total'] += $this->session->userdata['shipping_method']['cost'];
-                $totals[] = array(
-                    'code' => 'shipping',
-                    'title' => $this->session->userdata['shipping_method']['title'],
-                    'value' => $this->session->userdata['shipping_method']['cost'],
-                    'sort_order' => 3,
-                );
-            }
-            //end of shipping
-            $shipping_method_cost = (isset($this->session->userdata['shipping_method']['cost'])) ? $this->session->userdata['shipping_method']['cost'] : 0;
+                   $shipping_method = $this->standard_cost->getQuote($cartSubtotal, $data['shipping_address']);
+                   $shipping_method_cost = $shipping_method['cost'];
+   
+                   $totals[] = array(
+                       'code' => 'shipping_method',
+                       'class' => '',
+                       'title' => $shipping_method['title'],
+                       'value' => $shipping_method['cost'],
+                       'sort_order' => 2,
+                   );
+   
+                   $total_data['total'] = $cartSubtotal + $shipping_method_cost;
+   
 
-            $total_data['total'] = $cartSubtotal + $shipping_method_cost;
-           
             //coupon
             $coupon_temp = $this->session->userdata('coupon');
             $coupon_info = [];
@@ -269,7 +273,7 @@ class Checkout extends CI_Controller
                     //$total = $sub_total;
                     //end of sub_total
 
-                    $total_data['total'] = $sub_total;
+                    //$total_data['total'] = $sub_total;
 
                     $totals[] = array(
                         'code' => 'coupon',
@@ -277,7 +281,7 @@ class Checkout extends CI_Controller
                         'title' => sprintf('Coupon(%s)', $coupon_temp),
                         'text' => $this->services->format($discount_total),
                         'value' => -$discount_total,
-                        'sort_order' => 2,
+                        'sort_order' => 3,
                     );
 
                     //$total -= $discount_total;
@@ -287,6 +291,9 @@ class Checkout extends CI_Controller
             $order_data['coupon_info'] = $coupon_info;
             //end of coupon
            
+
+     
+
             //total module
             $totals[] = array(
                 'code' => 'total',
@@ -409,6 +416,24 @@ class Checkout extends CI_Controller
         );
 
         $data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+
+        $replace = array(
+            'firstname' => "<strong>" . $payment_address['firstname'],
+            'lastname' => $payment_address['lastname'] . "</strong>",
+            'company' => $payment_address['company'],
+            'address_1' => $payment_address['address_1'],
+            'address_2' => $payment_address['address_2'],
+            'city' => $payment_address['city'],
+            'postcode' => $payment_address['postcode'],
+            'zone' => $payment_address['zone'],
+            'country' => $payment_address['country'],
+            'mobile' => $payment_address['telephone'],
+        );
+
+        $data['shipping_address_text'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
+
+
 
         $where_cond = "  ORDER BY name";
         $data['country_rs'] = $this->common->getAllRow('m_country', $where_cond);

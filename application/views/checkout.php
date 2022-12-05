@@ -84,6 +84,9 @@ $getDomainId = $this->services->getDomainId();
                                 echo (isset($payment_address)) ? $payment_address : ''; ?>
                             </div>
                             <h3>Shipping address</h3>
+                             
+                        <?php //echo $shipping_address_text;
+                        ?>
                             <div id="shipping-new">
                                 <div class="row row-cols-1 row-cols-md-2">
                                     <div class="col mb-3 required">

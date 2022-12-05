@@ -169,7 +169,7 @@ if ($warning) {
                                                             <td colspan="4" class="text-right">
                                                                 <?php echo $total['title']; ?></td>
                                                             <td class="text-right"><?php echo $total['text']; ?></td>
-                                                            <td class="text-right"> &nbsp;</td>
+                                                             
                                                         </tr>
                                                         <?php } ?>
                                                         <?php } ?>
