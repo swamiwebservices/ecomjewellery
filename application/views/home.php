@@ -1,6 +1,21 @@
 <?php
 $domain_id = $this->domain_id;
 ?>
+<?php
+//print_r($home);
+$product_category  = json_decode(file_get_contents('uploads/jsondata/product_category.json'), true);
+$carttotal = (int)$this->services->addtocart();
+//print_r($product_category);
+// $popupdata = [];
+// foreach($home_data['config_home'] as $key => $value){
+//     $popupdata[$value['key_name']] = $value['value'];
+// }
+//print_r($popupdata);
+$page_url = $this->uri->segment(1);
+$session_user_data = $this->session->userdata('front_user_detail');
+//print_r($session_user_data);
+
+?>
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -8,33 +23,49 @@ $domain_id = $this->domain_id;
     <?php $this->load->view('inc_metacss'); ?>
 
     <style>
-        .product_black_section .product_content h3{
-            height: 50px;
-        }
+    .product_black_section .product_content h3 {
+        height: 50px;
+    }
 
     .product_container.categorybottom button {
-    display: block !important;
-    position: absolute;
-    top: 105px;
-    /* right: 0px; */
-    z-index: 99;
-    border: 0;
-    background: inherit;
-    font-size: 23px;
-    background: #FEC210;
-}
-.product_container.categorybottom button.next_arrow {
-    right: 0px;
-}
+        display: block !important;
+        position: absolute;
+        top: 105px;
+        /* right: 0px; */
+        z-index: 99;
+        border: 0;
+        background: inherit;
+        font-size: 23px;
+        background: #FEC210;
+    }
+
+    .product_container.categorybottom button.next_arrow {
+        right: 0px;
+    }
+
+    .texttopbar {
+
+        text-align: center;
+
+        line-height: 18px;
+    }
+
+    #s1 {
+        text-align: right;
+        margin-top: -18px;
+    }
+
+    #s2 {
+        text-align: left;
+        margin-top: -18px;
+    }
     </style>
 </head>
 
 <body>
     <!-- Main Wrapper Start -->
     <div class="home_black_version">
-
         <?php $this->load->view('inc_header_menu'); ?>
-
         <!--slider area start-->
         <?php
     //print_r($wti_banners);
@@ -57,6 +88,7 @@ $domain_id = $this->domain_id;
         </div>
         <?php }?>
         <!--slider area end-->
+
         <section class="banner_section">
         <div class="container">
             <div class="row"><div class="col-12">
@@ -91,8 +123,6 @@ $domain_id = $this->domain_id;
             
         </div>
     </section>
-        
-        
         <!--shipping area start-->
         <div class="shipping_area shipping_black ">
             <div class="container">
@@ -105,8 +135,8 @@ $domain_id = $this->domain_id;
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="single-shipping">
-                            <h3>Free Shipping On Order Over AED500</h3>
-                            <p>Free shipping on all order</p>
+                            <h3>Free Shipping On Order Over AED500 </h3>
+                            <p>Free shipping on all order domestic orders</p>
                         </div>
                     </div>
                 </div>
@@ -114,8 +144,11 @@ $domain_id = $this->domain_id;
         </div>
         <!--shipping area end-->
 
-        <!--product section area start-->
-        <section class="product_section p_section1 product_black_section bottom_two ">
+        
+ 
+
+    <!--product section area start-->
+    <section class="product_section p_section1 product_black_section bottom_two ">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
@@ -468,9 +501,7 @@ $domain_id = $this->domain_id;
         </section>
         <!--product section area end-->
 
-        
 
- 
          
     <!--chose us area start-->
     <div class="choseus_area mt-5">
@@ -522,28 +553,26 @@ $domain_id = $this->domain_id;
     </div>
     <!--chose us area end-->
  
-
-        <?php $this->load->view('inc_footer'); ?>
-        <!--footer area end-->
-
+     <?php $this->load->view('inc_footer'); ?>
+  
 
 
-        <!-- JS ============================================ -->
-        <?php $this->load->view('inc_common_footer_js'); ?>
-        <script>
-        $('.autoplay').slick({
-            dots: false,
-            infinite: true,
-            speed: 500,
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            arrows: true,
-            autoplay: true,
-            autoplaySpeed: 2000,
-            prevArrow: '<button class="prev_arrow"><i class="fa fa-angle-left"></i></button>',
-            nextArrow: '<button class="next_arrow"><i class="fa fa-angle-right"></i></button>',
-        });
-        </script>
+    <!-- JS ============================================ -->
+    <?php $this->load->view('inc_common_footer_js'); ?>
+    <script>
+    $('.autoplay').slick({
+        dots: false,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        arrows: true,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        prevArrow: '<button class="prev_arrow"><i class="fa fa-angle-left"></i></button>',
+        nextArrow: '<button class="next_arrow"><i class="fa fa-angle-right"></i></button>',
+    });
+    </script>
 
 </body>
 

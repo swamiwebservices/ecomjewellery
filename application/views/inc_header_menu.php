@@ -19,19 +19,19 @@ $session_user_data = $this->session->userdata('front_user_detail');
 </div>
 <div class="Offcanvas_menu Offcanvas_two Offcanvas_black2">
     <div class="container">
-        <div class="row">
+        <div class="row align-items-center">
             <div class="col-12">
-                <div class="canvas_open">
+                <!-- <div class="canvas_open">
                     <a href="javascript:void(0)"><i class="ion-navicon"></i></a>
-                </div>
-
+                </div> -->
                 <div class="Offcanvas_menu_wrapper">
                     <div class="canvas_close">
                         <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
                     </div>
                     <div class="welcome_text">
-                        <p>Free Shipping On Order Over AED500</span></p>
+                    <p>Free Shipping On Order Over AED500</span></p>
                     </div>
+
 
                     <div id="menu" class="text-left ">
                         <ul class="offcanvas_main_menu">
@@ -39,66 +39,61 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                 <a href="<?php echo site_url('home');?>" class="text-uppercase"> Home</a>
                             </li>
                             <?php
-                        foreach($product_category as $key => $menuCategory){
-                            //print_r($menuCategory);
-                                if(!empty($menuCategory['sub_category'])){
-                            ?>
+                foreach($product_category as $key => $menuCategory){
+                    //print_r($menuCategory);
+                        if(!empty($menuCategory['sub_category'])){
+                    ?>
                             <li class="menu-item-has-children">
                                 <a href="#" class="text-uppercase"><?php echo $menuCategory['name']?></a>
                                 <ul class="sub-menu">
                                     <?php
-                            foreach($menuCategory['sub_category'] as $key2 => $menuCategory2){
-                            ?>
+                    foreach($menuCategory['sub_category'] as $key2 => $menuCategory2){
+                    ?>
                                     <li><a class="text-uppercase"
                                             href="<?php echo site_url('category/'.$menuCategory2['slug_name'].'/'.$menuCategory['category_id'].'-'.$menuCategory2['category_id'])?>"><?php echo $menuCategory2['name']?></a>
                                     </li>
                                     <?php
-                            }
-                            ?>
+                    }
+                    ?>
                                 </ul>
                             </li>
                             <?php
-                                } else {
-                             ?>
+                        } else {
+                     ?>
                             <!-- <li class="menu-item-has-children">
-                                <a href="<?php echo site_url("contact-us")?>" class="text-uppercase"> Contact Us</a>
-                            </li> -->
+                        <a href="<?php echo site_url("contact-us")?>" class="text-uppercase"> Contact Us</a>
+                    </li> -->
                             <li><a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>"
                                     class="text-uppercase"><?php echo $menuCategory['name']?></a></li>
                             <?php       
-                                }
-                            }
-                            ?>
+                        }
+                    }
+                    ?>
                             <li class="menu-item-has-children">
                                 <?php
-                                    if (isset($session_user_data['customer_id'])) {
-                                    ?>
+                            if (isset($session_user_data['customer_id'])) {
+                            ?>
                                 <a href="<?php echo site_url("account")?>" class="text-uppercase">My Account</a>
                                 <?php    
-                                    } else {
-                                    ?>
-                                <a href="<?php echo site_url("login")?>" class="text-uppercase">Login/register</a>
+                            } else {
+                            ?>
+                                <a href="<?php echo site_url("login")?>"
+                                    class="text-uppercase">Login/register</a>
                                 <?php }?>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="<?php echo site_url("about-us")?>" class="text-uppercase">About Us</a>
+                                <a href="<?php echo site_url("cart")?>" class="text-uppercase">Cart</a>
                             </li>
                             <li class="menu-item-has-children">
-                                <a href="<?php echo site_url("contact-us")?>" class="text-uppercase"> Contact Us</a>
+                                <a href="<?php echo site_url("contact-us")?>" class="text-uppercase"> Contact
+                                    Us</a>
                             </li>
                         </ul>
                     </div>
                     <div class="Offcanvas_footer">
-                   
-                             <span><a href="tel:+971559632581"><i class="fa fa-phone"></i> +971 559632581</a></span>
-                        <span><a href="mail:info@bondbeyond.ae"><i class="fa fa-envelope-o"></i> info@bondbeyond.ae</a></span>
-                        <!-- <ul>
-                            <li class="facebook"><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li class="twitter"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li class="pinterest"><a href="#"><i class="fa fa-pinterest-p"></i></a></li>
-                            <li class="google-plus"><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            <li class="linkedin"><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        </ul> -->
+                        <span><a href="tel:+971559632581"><i class="fa fa-phone"></i> +971 559632581</a></span>
+                        <span><a href="mail:info@bondbeyond.ae"><i class="fa fa-envelope-o"></i>
+                                info@bondbeyond.ae</a></span>
                     </div>
                 </div>
             </div>
@@ -109,91 +104,88 @@ $session_user_data = $this->session->userdata('front_user_detail');
 
 <!--header area start-->
 <header class="header_area header_black black_two">
-
     <!--header top start-->
     <div class="header_top">
         <div class="container-fluid">
-            <div class="row align-items-center">
-                <div class="col-lg-6 col-md-6">
-                    <div class="text-right ">
-                    Free Shipping On Order Over AED500
+            <div class="row">
+                <div class="col-md-12 texttopbar">
+                    <div id="s0">
 
+                        Free Shipping On Order Over AED500
                     </div>
-                </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="top_li text-right">
-                        <ul>
-                            <li><a href="tel:+971559632581"><i class="fa fa-phone"></i>
-                            +971 559632581</a></li>
-                            <li><a href="<?php echo site_url('contact-us');?>"><i class="fa fa-envelope-o"></i> Contact us</a></li>
-                        </ul>
-                    </div>
+                    <div id='s1'><a href="tel:+971559632581"><i class="fa fa-phone"></i>
+                            +971 559632581</a> | <a href="<?php echo site_url('contact-us');?>"><i
+                                class="fa fa-envelope-o"></i> Contact us</a></div>
+                    <div id='s2'> &nbsp;</div>
+
+
                 </div>
             </div>
+
         </div>
     </div>
     <!--header top start-->
+
     <!--header middel start-->
     <div class="header_middel sticky-header">
         <div class="container-fluid">
             <div class="row align-items-center">
-                <div class="col-lg-1 col-md-1 col-4">
+                <div class="col-lg-1 col-md-2 col-sm-4 col-4">
                     <div class="logo">
-                        <a href="<?php echo site_url("home")?>"><img
+                        <a href="<?php echo site_url('home');?>"><img
                                 src="<?php echo base_url('assets/img/logo/logo.png')?>" alt=""></a>
                     </div>
-                    <!-- <div class="logo-text">BONDBEYOND
-                    </div>  -->
                 </div>
-                <div class="col-lg-11 col-md-11 col-sm-12 col-8">
+                <div class="col-lg-11 col-md-10 col-sm-8 col-8">
                     <div class="main_menu_inner" style="text-align:center">
-                        <div class="logo_sticky">
-                            <a href="<?php echo site_url("home")?>"><img
-                                    src="<?php echo base_url('assets/img/logo/logo-3.png')?>" alt=""></a>
-                        </div>
+
                         <div class="main_menu">
                             <nav>
                                 <ul>
-                                    <li><a href="<?php echo site_url('home');?>" class="text-uppercase">Home</a></li>
+                                    <li><a href="<?php echo site_url('home');?>" class="text-uppercase">Home</a>
+                                    </li>
                                     <?php
-                                    foreach($product_category as $key => $menuCategory){
-                                        //print_r($menuCategory);
-                                        if(!empty($menuCategory['sub_category'])){
+                            foreach($product_category as $key => $menuCategory){
+                                //print_r($menuCategory);
+                                if(!empty($menuCategory['sub_category'])){
 
-                                        
-                                        ?>
+                                
+                                ?>
                                     <li>
-                                        <a href="#" class="text-uppercase"><?php echo $menuCategory['name']?></a>
+                                        <a href="#"
+                                            class="text-uppercase"><?php echo $menuCategory['name']?></a>
 
                                         <ul class="sub_menu">
                                             <?php
-                                        foreach($menuCategory['sub_category'] as $key2 => $menuCategory2){
-                                        ?>
+                                foreach($menuCategory['sub_category'] as $key2 => $menuCategory2){
+                                ?>
                                             <li><a class="text-uppercase"
                                                     href="<?php echo site_url('category/'.$menuCategory2['slug_name'].'/'.$menuCategory['category_id'].'-'.$menuCategory2['category_id'])?>"><?php echo $menuCategory2['name']?></a>
                                             </li>
                                             <?php
-                                        }
-                                        ?>
+                                }
+                                ?>
                                         </ul>
                                     </li>
                                     <?php
-                                         } else{
-                                    ?>
+                                 } else{
+                            ?>
                                     <li><a href="<?php echo site_url('category/'.$menuCategory['slug_name'])?>"
                                             class="text-uppercase"><?php echo $menuCategory['name']?></a></li>
                                     <?php        
-                                         } 
-                                        }
-                                        ?>
-                                    <li><a href="<?php echo site_url('contact-us');?>" class="text-uppercase">Contact
+                                 } 
+                                }
+                                ?>
+                                 
+                                    <li><a href="<?php echo site_url('contact-us');?>"
+                                            class="text-uppercase">Contact
                                             Us</a></li>
                                 </ul>
                             </nav>
                         </div>
                     </div>
                     <div class="middel_right">
-                        <div class="search_btn">
+                    <div class="search_btn">
                             <a href="#"><i class="ion-ios-search-strong"></i></a>
                             <div class="dropdown_search">
                                 <form action="<?php echo site_url('product/search')?>" method="get">
@@ -204,34 +196,8 @@ $session_user_data = $this->session->userdata('front_user_detail');
 
                             </div>
                         </div>
-
-                        <!-- <div class="wishlist_btn">
-                            <a href="wishlist.html"><i class="ion-heart"></i></a>
-                        </div> -->
-                        <div class="cart_link">
-                            <a href="#"><i class="ion-android-cart"></i></a>
-                            <span class="cart_quantity" id="top_cart_quantity"><?php echo $carttotal?></span>
-                            <!--mini cart-->
-                            <div class="mini_cart" id="mini_cart">
-                                <div class="cart_close">
-                                    <div class="cart_text">
-                                        <h3>cart</h3>
-                                    </div>
-                                    <div class="mini_cart_close">
-                                        <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12" id="cartitems">
-
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!--mini cart end-->
-                        </div>
                         <div class="box_setting">
-                            <a href="#"><i class="ion-person"></i></a>
+                            <a href="#"><i class="ion-gear-b"></i></a>
                             <div class="dropdown_setting">
                                 <ul>
                                     <?php
@@ -251,7 +217,36 @@ $session_user_data = $this->session->userdata('front_user_detail');
                                     ?>
 
                                 </ul>
+
                             </div>
+                        </div>
+
+                        <div class="cart_link">
+                            <a href="#"><i class="ion-android-cart"></i></a>
+                            <span class="cart_quantity" id="top_cart_quantity"><?php echo $carttotal?></span>
+                            <!--mini cart-->
+                            <div class="mini_cart">
+                                <div class="cart_close">
+                                    <div class="cart_text">
+                                        <h3>cart</h3>
+                                    </div>
+                                    <div class="mini_cart_close">
+                                        <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12" id="cartitems">
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <!--mini cart end-->
+                        </div>
+                        <div class="hemberburg canvas_open">
+                            <a href="javascript:void(0)"><i class="ion-navicon"></i></a>
                         </div>
                     </div>
                 </div>
@@ -259,7 +254,6 @@ $session_user_data = $this->session->userdata('front_user_detail');
         </div>
     </div>
     <!--header middel end-->
-
 
 </header>
 <!--header area end-->

@@ -85,7 +85,7 @@ $domain_id = $this->domain_id;
 <body>
 
 
-
+<div class="home_black_version">
     <?php $this->load->view('inc_header_menu'); ?>
 
 

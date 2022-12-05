@@ -32,7 +32,7 @@ class Bank_transfer extends CI_Controller {
 		$data['text_payment'] = "Your order will not ship until we receive payment.";
 	 
 		 
-		$data['bank'] = $this->configmodal->get('bank_transfer_bank');
+		$data['bank'] = $this->configmodal->getold('bank_transfer_bank');
 		
 		
         $this->db->query("UPDATE `m_order` SET  payment_method = 'Bank Transfer', payment_code = 'bank_transfer'  WHERE order_id = '" . (int)$this->session->userdata('order_id_ki') . "'");
