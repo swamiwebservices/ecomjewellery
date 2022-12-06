@@ -135,5 +135,7 @@ public $m_act = 7;
 		 $this->session->set_userdata($newdata);
 		redirect('payment');
 	}
+
+	
 	 
 }

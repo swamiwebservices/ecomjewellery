@@ -43,6 +43,10 @@
                     </div>
                     <div class="header-elements d-none">
                         <div class="breadcrumb justify-content-center">
+                            
+                            <a href="<?php echo site_url("products/exporttocsv"); ?>" target="_blank" class="breadcrumb-elements-item">
+                                <button type="button" class="btn btn-success btn-sm"><i class="icon-file-excel mr-2"></i> Download</button>
+                            </a>
                             <a href="<?php echo site_url($add_link); ?>" class="breadcrumb-elements-item">
                                 <button type="button" class="btn btn-success btn-sm"><i class="icon-plus2 mr-2"></i> Add
                                     New</button>

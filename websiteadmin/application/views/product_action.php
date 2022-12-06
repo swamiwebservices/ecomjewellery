@@ -530,7 +530,7 @@
     <script>
     var default_domain_flag = 0;
     <?php
-        $sql = "select * from wti_process_cost order by domain ";
+        $sql = "select * from wti_process_cost where default_flag=1 order by domain ";
         $query = $this->db->query($sql);
         $process_costrs = $query->result_array();
         $domain_wise = [];

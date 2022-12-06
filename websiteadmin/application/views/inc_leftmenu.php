@@ -156,6 +156,8 @@ if($user_data['access_ids']!=''){
                         </li>
                         <li class="nav-item"><a href="<?php echo site_url('payment/') ?>" class="nav-link <?php if (isset($sub_activaation_id) && $sub_activaation_id == "1101_5") {echo " active";}?>">Payment Method</a>
                         </li>
+                        <li class="nav-item"><a href="<?php echo site_url('shipping/listall') ?>" class="nav-link <?php if (isset($sub_activaation_id) && $sub_activaation_id == "1101_6") {echo " active";}?>">Shipping</a>
+                        </li>
                        <li class="nav-item"><a href="<?php echo site_url('sitecontrol/maintenancemode') ?>" class="nav-link  <?php if (isset($sub_activaation_id) && $sub_activaation_id == "1101_3") {echo " active";}?>">Maintenance Mode</a>
                         </li>  
                        <!--  <li class="nav-item"><a href="<?php echo site_url('sitecontrol/list_all')?>" class="nav-link <?php if (isset($sub_activaation_id) &&  $sub_activaation_id == "1101_4") {echo " active";}?>"><i class="icon-cog3 " aria-hidden="true"></i>Settings</a></li> -->
