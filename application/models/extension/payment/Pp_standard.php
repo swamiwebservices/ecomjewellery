@@ -32,12 +32,12 @@ class Pp_standard extends CI_Model {
 			'TWD',
 			'THB',
 			'TRY',
-			'RUB'
+			'aaa'
 			
 		);
 
 		if (!in_array(strtoupper('AED'), $currencies)) {
-			$status = false;
+			 $status = false;
 		}
 
 		$method_data = array();
@@ -47,7 +47,7 @@ class Pp_standard extends CI_Model {
 				'code'       => 'pp_standard',
 				'title'      => 'PayPal',
 				'terms'      => '',
-				'sort_order' => 3
+				'sort_order' => $this->services->getold('pp_standard_sort_order')
 			);
 		}
 

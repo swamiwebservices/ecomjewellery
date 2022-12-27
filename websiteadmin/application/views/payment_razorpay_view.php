@@ -91,52 +91,59 @@
                             id="form-bank-transfer" class="form-horizontal">
                             <input type="hidden" name="mode" id="mode" value="edit_content">
                             <input type="hidden" name="mode" id="mode" value="edit_content">
-                            <input type="hidden" name="pp_standard_total" value="1">
-                            <input type="hidden" name="pp_standard_debug" value="0">
-                            <input type="hidden" name="pp_standard_geo_zone_id" value="0">
-                            <input type="hidden" name="pp_standard_order_status_id" value="1">
-                            <input type="hidden" name="pp_standard_transaction" value="1">
+                            <input type="hidden" name="razorpay_total" value="1">
+                            
+                            <input type="hidden" name="razorpay_geo_zone_id" value="0">
+                            <input type="hidden" name="razorpay_order_status_id" value="1">
+                            
 
                             <div class="form-group row">
-                                <label class="col-sm-2 control-label" for="entry-email">E-Mail</label>
+                                <label class="col-sm-2 control-label" for="entry-razorpay_keyId">Key:</label>
                                 <div class="col-sm-10">
-                                    <input type="text" required name="pp_standard_email"
-                                        value="<?php echo isset($records['pp_standard_email']) ? $records['pp_standard_email'] : ''; ?>"
-                                        placeholder="E-Mail" id="entry-email" class="form-control" />
+                                    <input type="text" name="razorpay_keyId" required
+                                        value="<?php echo isset($records['razorpay_keyId']) ? $records['razorpay_keyId'] : ''; ?>"
+                                        class="form-control" />
 
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 control-label" for="input-live-demo"><span data-toggle="tooltip"
-                                        title="Use the live or testing (sandbox) gateway server to process transactions?">Sandbox
-                                        Mode</span></label>
+                                <label class="col-sm-2 control-label" for="entry-razorpay_keySecret">Key Secret:</label>
                                 <div class="col-sm-10">
-                                    <select name="pp_standard_test" id="input-live-demo" class="form-control">
+                                    <input type="text" name="razorpay_keySecret" required
+                                        value="<?php echo isset($records['razorpay_keySecret']) ? $records['razorpay_keySecret'] : ''; ?>"
+                                        class="form-control" />
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row">
+                                <label class="col-sm-2 control-label" for="input-razorpay_test"><span data-toggle="tooltip"
+                                        title="Use the live or testing (sandbox) gateway server to process transactions?">Mode</span></label>
+                                <div class="col-sm-10">
+                                    <select name="razorpay_test" id="input-razorpay_test" class="form-control">
                                         <?php
-					$pp_standard_test =  isset($records['pp_standard_test']) ? $records['pp_standard_test'] : '0';
+					$razorpay_test =  isset($records['razorpay_test']) ? $records['razorpay_test'] : 'demo';
 					?>
-                                        <?php if ($pp_standard_test) { ?>
-                                        <option value="1" selected="selected">Yes</option>
-                                        <option value="0">No</option>
+                                        <?php if ($razorpay_test=='live') { ?>
+                                        <option value="live" selected="selected">live</option>
+                                        <option value="demo">demo</option>
                                         <?php } else { ?>
-                                        <option value="1">Yes</option>
-                                        <option value="0" selected="selected">No</option>
+                                        <option value="live">live</option>
+                                        <option value="demo" selected="selected">demo</option>
                                         <?php } ?>
                                     </select>
                                 </div>
-                            </div>
-                            
-                      
+                            </div> -->
+
                            
-                             
+                           
+                            
                             <div class="form-group row">
                                 <label class="col-sm-2 control-label" for="input-status">Status</label>
                                 <div class="col-sm-10">
-                                    <select name="pp_standard_status" id="input-status" class="form-control">
+                                    <select name="razorpay_status" id="input-status" class="form-control">
                                         <?php
-						$pp_standard_status =  isset($records['pp_standard_status']) ? $records['pp_standard_status'] : '';
+						$razorpay_status =  isset($records['razorpay_status']) ? $records['razorpay_status'] : '';
 					?>
-                                        <?php if ($pp_standard_status) { ?>
+                                        <?php if ($razorpay_status) { ?>
                                         <option value="1" selected="selected">Enabled</option>
                                         <option value="0">Disabled</option>
                                         <?php } else { ?>
@@ -150,12 +157,14 @@
                                 <label class="col-sm-2 control-label" for="input-sort-order">Sort
                                     Order</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="pp_standard_sort_order"
-                                        value="<?php echo isset($records['pp_standard_sort_order']) ? $records['pp_standard_sort_order'] : ''; ?>"
+                                    <input type="text" name="razorpay_sort_order"
+                                        value="<?php echo isset($records['razorpay_sort_order']) ? $records['razorpay_sort_order'] : ''; ?>"
                                         placeholder="Sort Order" id="input-sort-order" class="form-control" />
                                 </div>
                             </div>
-                            
+
+
+
                             <div class="form-group row">
                                 <label class="col-md-2 control-label"> </label>
                                 <div class="col-md-10">

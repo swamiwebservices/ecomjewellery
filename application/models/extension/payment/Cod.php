@@ -7,7 +7,7 @@ class Cod extends CI_Model {
 			'code'       => 'cod',
 			'title'      => 'Cash on delivery',
 			'terms'      => '',
-			'sort_order' => 1,
+			'sort_order' => $this->services->getold('cod_sort_order'),
 			'status' => 1
 		);
 		return $method_data;

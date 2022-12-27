@@ -33,7 +33,7 @@ $('#button-confirm').on('click', function() {
             dataType: 'json',
             data: dataString,
             cache: false,
-            url: '<?php echo site_url('bank_transfer/confirm')?>',
+            url: '<?php echo site_url("bank_transfer/confirm")?>',
             cache: false,
             beforeSend: function() {
                 //$('#button-confirm').button('loading');

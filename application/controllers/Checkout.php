@@ -44,10 +44,6 @@ class Checkout extends CI_Controller
 
         }
 
-        if (empty($this->session->userdata('domain_id'))) {
-            $this->session->set_userdata('domain_id', '1');
-
-        }
         $this->domain_id = $this->services->getDomainId();
 
     }
@@ -62,7 +58,7 @@ class Checkout extends CI_Controller
             redirect("login");
             die();
         }
-       
+
         $customer_info = $this->services->getCustomerInfo();
         $cartinfo = $this->services->getCartinfo();
         $cartSubtotal = $this->services->getCartSubtotal();
@@ -91,13 +87,15 @@ class Checkout extends CI_Controller
             'iso_code_3' => $customer_info['iso_code_3'],
 
         ];
-        
+
         $data['shipping_address']['shipping_firstname'] = $payment_address['firstname'];
         $data['shipping_address']['shipping_lastname'] = $payment_address['lastname'];
         $data['shipping_address']['shipping_company'] = $payment_address['company'];
         $data['shipping_address']['shipping_address_1'] = $payment_address['address_1'];
         $data['shipping_address']['shipping_address_2'] = $payment_address['address_2'];
         $data['shipping_address']['shipping_country_id'] = $payment_address['country_id'];
+        $data['shipping_address']['shipping_country'] = $payment_address['country'];
+
         $data['shipping_address']['shipping_zone_id'] = $payment_address['zone_id'];
         $data['shipping_address']['shipping_city'] = $payment_address['city'];
         $data['shipping_address']['shipping_postcode'] = $payment_address['postcode'];
@@ -105,9 +103,9 @@ class Checkout extends CI_Controller
 
         // add order
 
-        $customer_info = $this->services->getCustomerInfo();
-        $cartinfo = $this->services->getCartinfo();
-        $cartSubtotal = $this->services->getCartSubtotal();
+        // $customer_info = $this->services->getCustomerInfo();
+        // $cartinfo = $this->services->getCartinfo();
+        //$cartSubtotal = $this->services->getCartSubtotal();
 
         $error = "";
         $order_data = array();
@@ -116,15 +114,15 @@ class Checkout extends CI_Controller
 
         $order_data['shipping_firstname'] = $shipping_firstname = (isset($_POST['shipping_firstname'])) ? $this->input->post('shipping_firstname') : $data['shipping_address']['shipping_firstname'];
         $order_data['shipping_lastname'] = $shipping_lastname = (isset($_POST['shipping_lastname'])) ? $this->input->post('shipping_lastname') : $data['shipping_address']['shipping_lastname'];
-        $order_data['shipping_company'] = $shipping_company = (isset($_POST['shipping_company'])) ? $this->input->post('shipping_company') : $data['shipping_address']['shipping_company'] ;
+        $order_data['shipping_company'] = $shipping_company = (isset($_POST['shipping_company'])) ? $this->input->post('shipping_company') : $data['shipping_address']['shipping_company'];
         $order_data['shipping_address_1'] = $shipping_address_1 = (isset($_POST['shipping_address_1'])) ? $this->input->post('shipping_address_1') : $data['shipping_address']['shipping_address_1'];
         $order_data['shipping_address_2'] = $shipping_address_2 = (isset($_POST['shipping_address_2'])) ? $this->input->post('shipping_address_2') : $data['shipping_address']['shipping_address_2'];
         $order_data['shipping_country_id'] = $shipping_country_id = (isset($_POST['shipping_country_id'])) ? $this->input->post('shipping_country_id') : $data['shipping_address']['shipping_country_id'];
         $order_data['shipping_zone_id'] = $shipping_zone_id = (isset($_POST['shipping_zone_id'])) ? $this->input->post('shipping_zone_id') : $data['shipping_address']['shipping_zone_id'];
         $order_data['shipping_city'] = $shipping_city = (isset($_POST['shipping_city'])) ? $this->input->post('shipping_city') : $data['shipping_address']['shipping_city'];
         $order_data['shipping_postcode'] = $shipping_postcode = (isset($_POST['shipping_postcode'])) ? $this->input->post('shipping_postcode') : $data['shipping_address']['shipping_postcode'];
+        $order_data['shipping_country'] = (isset($_POST['shipping_country'])) ? $this->input->post('shipping_country') : $data['shipping_address']['shipping_country'];
 
-        
         $order_data['comment'] = $comment = (isset($_POST['comment'])) ? $this->input->post('comment') : '';
 
         // if($shipping_firstname==""){
@@ -170,6 +168,7 @@ class Checkout extends CI_Controller
             $order_data['payment_address_1'] = $payment_address['address_1'];
             $order_data['payment_address_2'] = $payment_address['address_2'];
             $order_data['payment_country_id'] = $payment_address['country_id'];
+            $order_data['payment_country'] = $payment_address['country'];
             $order_data['payment_zone_id'] = $payment_address['zone_id'];
             $order_data['payment_city'] = $payment_address['city'];
             $order_data['payment_postcode'] = $payment_address['postcode'];
@@ -177,7 +176,7 @@ class Checkout extends CI_Controller
             // $order_data['total'] = $total = (isset($_POST['total'])) ? $this->input->post('total') : '';
 
             $config_order_status_id = $this->config->item("config_order_status_id");
-           
+
             $order_data['order_status_id'] = $config_order_status_id;
             $order_data['total'] = 0;
             $currentCurrency = $this->services->getCurrency();
@@ -190,8 +189,8 @@ class Checkout extends CI_Controller
             //print_r($order_data);exit;
 
             // new code here
-            $cartinfo = $this->services->getCartinfo();
-            $cartSubtotal = $this->services->getCartSubtotal();
+            //   $cartinfo = $this->services->getCartinfo();
+            // $cartSubtotal = $this->services->getCartSubtotal();
             $order_data['cartinfo'] = $cartinfo;
             $order_data['cartSubtotal'] = $cartSubtotal;
 
@@ -218,23 +217,22 @@ class Checkout extends CI_Controller
 
             $total_data['total'] = $cartSubtotal;
 
-                   // //of shipping
-             
-                   $this->load->model('extension/shipping/standard_cost');
+            // //of shipping
 
-                   $shipping_method = $this->standard_cost->getQuote($cartSubtotal, $data['shipping_address']);
-                   $shipping_method_cost = $shipping_method['cost'];
-   
-                   $totals[] = array(
-                       'code' => 'shipping_method',
-                       'class' => '',
-                       'title' => $shipping_method['title'],
-                       'value' => $shipping_method['cost'],
-                       'sort_order' => 2,
-                   );
-   
-                   $total_data['total'] = $cartSubtotal + $shipping_method_cost;
-   
+            $this->load->model('extension/shipping/standard_cost');
+
+            $shipping_method = $this->standard_cost->getQuote($cartSubtotal, $data['shipping_address']);
+            $shipping_method_cost = $shipping_method['cost'];
+
+            $totals[] = array(
+                'code' => 'shipping_method',
+                'class' => '',
+                'title' => $shipping_method['title'],
+                'value' => $shipping_method['cost'],
+                'sort_order' => 2,
+            );
+
+            $total_data['total'] = $cartSubtotal + $shipping_method_cost;
 
             //coupon
             $coupon_temp = $this->session->userdata('coupon');
@@ -290,9 +288,6 @@ class Checkout extends CI_Controller
             }
             $order_data['coupon_info'] = $coupon_info;
             //end of coupon
-           
-
-     
 
             //total module
             $totals[] = array(
@@ -303,7 +298,7 @@ class Checkout extends CI_Controller
                 'sort_order' => 100,
             );
             //end of total module
-           
+
             $sort_order = array();
 
             foreach ($totals as $key => $value) {
@@ -318,7 +313,7 @@ class Checkout extends CI_Controller
             //echo "<pre>";
             //    print_r($totals);
             array_multisort($sort_order, SORT_ASC, $totals);
-           
+
             $data['totals'] = array();
 
             foreach ($totals as $value) {
@@ -328,18 +323,18 @@ class Checkout extends CI_Controller
                     'text' => $this->services->format($value['value']),
                 );
             }
-          //  print_r($totals);
+            //  print_r($totals);
 
             //print_r($total_data) ;
-         
+
             $order_data['totals'] = $totals;
 
             $method_data = array();
-          
-          //  $payment_geteways = $this->config->item("PAYMENT_GETEWAYS");
+
+            //  $payment_geteways = $this->config->item("PAYMENT_GETEWAYS");
             //print_r($payment_geteways);
             $payment_geteways = $this->services->getExtensions('payment');
-
+            //print_r($payment_geteways);
             foreach ($payment_geteways as $result) {
                 if ($this->services->getold($result['code'] . '_status')) {
                     $this->load->model('extension/payment/' . $result['code']);
@@ -353,7 +348,7 @@ class Checkout extends CI_Controller
             }
             //print_r($method_data);
             $sort_order = array();
-            
+
             foreach ($method_data as $key => $value) {
                 $sort_order[$key] = $value['sort_order'];
             }
@@ -378,7 +373,7 @@ class Checkout extends CI_Controller
             }
             $data['code'] = '';
             $order_data['total'] = $total_data['total'];
-           
+
             $order_id = $this->services->addOrder($order_data);
             $order_id_sess = array('order_id_ki' => $order_id);
             $this->session->set_userdata($order_id_sess);
@@ -417,7 +412,6 @@ class Checkout extends CI_Controller
 
         $data['payment_address'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
 
-
         $replace = array(
             'firstname' => "<strong>" . $payment_address['firstname'],
             'lastname' => $payment_address['lastname'] . "</strong>",
@@ -433,28 +427,158 @@ class Checkout extends CI_Controller
 
         $data['shipping_address_text'] = str_replace(array("\r\n", "\r", "\n"), '<br />', preg_replace(array("/\s\s+/", "/\r\r+/", "/\n\n+/"), '<br />', trim(str_replace($find, $replace, $format))));
 
-
-
         $where_cond = "  ORDER BY name";
         $data['country_rs'] = $this->common->getAllRow('m_country', $where_cond);
         // print_r($data['country_rs']);
         $where_cond = "  WHERE country_id='" . $payment_address['country_id'] . "' ORDER BY name";
         $data['state_rs'] = $state_rs = $this->common->getAllRow('m_zone', $where_cond);
-       
+
         $this->load->view("checkout", $data);
 
     }
 
     public function success($uuid = "")
     {
+        $session_user_data = $this->session->userdata('front_user_detail');
+
+        if (!isset($session_user_data['customer_id'])) {
+            $user_uuid_ = isset($_GET['uuid']) ? $_GET['uuid'] : '';
+            $sql = "select * from m_customer where uuid='{$user_uuid_}'";
+            $customer_query = $this->db->query($sql);
+            if ($customer_query->num_rows() > 0) {
+                $result = $customer_query->row_array();
+                $this->session->sess_regenerate(true);
+                $result['password'] = '';
+                $result['user_id'] = $result['customer_id'];
+                //   $this->session->set_userdata(array('front_user_detail' => array()));
+                $ar_session_data['front_user_detail'] = $result;
+                $ar_session_data['front_user_detail']['logged_in'] = true;
+                $ar_session_data['front_user_detail']['password'] = "";
+                $this->session->set_userdata($ar_session_data);
+            }
+        }
         $data['acti_id'] = 0;
-         
+        //  print_r($_POST);
+        // $this->load->view('checkout_success', $data);
+        //  die();
+        $payer_id = isset($_POST['payer_id']) ? $_POST['payer_id'] : '';
+        if ($payer_id != "") {
+            //for paypal_code
+
+            if (isset($_POST['custom'])) {
+                $uuid = $_POST['custom'];
+            } else {
+                $uuid = 0;
+            }
+            $order_info = $this->services->getOrderUUID($uuid);
+
+            if (!empty($order_info)) {
+                $order_id = $order_info['order_id'];
+
+                $this->db->query("UPDATE `m_order` SET  return_payment_status = '" . $_POST['payment_status'] . "', return_payment_txn_id='" . $_POST['txn_id'] . "', return_payment_data='" . serialize($_POST) . "'   WHERE order_id = '" . (int) $order_id . "'");
+
+                $request = 'cmd=_notify-validate';
+
+                foreach ($_POST as $key => $value) {
+                    $request .= '&' . $key . '=' . urlencode(html_entity_decode($value, ENT_QUOTES, 'UTF-8'));
+                }
+
+                if (!$this->services->getold('pp_standard_test')) {
+                    $curl = curl_init('https://www.paypal.com/cgi-bin/webscr');
+                } else {
+                    $curl = curl_init('https://www.sandbox.paypal.com/cgi-bin/webscr');
+                }
+
+                curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_POSTFIELDS, $request);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($curl, CURLOPT_HEADER, false);
+                curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+                curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+                $response = curl_exec($curl);
+
+                if (!$response) {
+                    //    $this->log->write('PP_STANDARD :: CURL failed ' . curl_error($curl) . '(' . curl_errno($curl) . ')');
+                }
+
+                // if ($this->services->getold('pp_standard_debug')) {
+                //     //$this->log->write('PP_STANDARD :: IPN REQUEST: ' . $request);
+                // //    $this->log->write('PP_STANDARD :: IPN RESPONSE: ' . $response);
+                // }
+
+                if ((strcmp($response, 'VERIFIED') == 0 || strcmp($response, 'UNVERIFIED') == 0) && isset($_POST['payment_status'])) {
+
+                    $order_status_id = 1; //$this->services->getold('config_order_status_id');
+
+                    switch ($_POST['payment_status']) {
+
+                        case 'Completed':
+                            $receiver_match = (strtolower($_POST['receiver_email']) == strtolower($this->services->getold('pp_standard_email')));
+
+                            $total_paid_match = ((float) $_POST['mc_gross'] == $this->currencymodal->format($order_info['total'], $order_info['currency_code'], $order_info['currency_value'], false));
+
+                            if ($receiver_match && $total_paid_match) {
+                                $order_status_id = 1;
+                            }
+
+                            if (!$receiver_match) {
+                                //$this->log->write('PP_STANDARD :: RECEIVER EMAIL MISMATCH! ' . strtolower($_POST['receiver_email']));
+                            }
+
+                            if (!$total_paid_match) {
+                                //$this->log->write('PP_STANDARD :: TOTAL PAID MISMATCH! ' . $_POST['mc_gross']);
+                            }
+                            break;
+                        case 'Canceled_Reversal':
+                            $order_status_id = -1;
+                            break;
+                        case 'Denied':
+                            $order_status_id = -1;
+                            break;
+                        case 'Expired':
+                            $order_status_id = -1;
+                            break;
+                        case 'Failed':
+                            $order_status_id = -1;
+                            break;
+                        case 'Pending':
+                            $order_status_id = 1;
+                            break;
+                        case 'Processed':
+                            $order_status_id = -1;
+                            break;
+                        case 'Refunded':
+                            $order_status_id = -1;
+                            break;
+                        case 'Reversed':
+                            $order_status_id = -1;
+                            break;
+                        case 'Voided':
+                            $order_status_id = -1;
+                            break;
+                    }
+                    $this->services->clear();
+                   
+                    $this->services->addOrderHistory($order_id, $order_status_id, '', 1, false);
+                   
+
+                } else {
+                    $this->services->clear();
+                    
+                    $this->services->addOrderHistory($order_id, 1, '', 1, false);
+                }
+
+                curl_close($curl);
+            }
+
+            //end of paypal_code
+        }
         if ($this->session->userdata('order_id_ki') != "") {
 
             $this->services->clear();
             //die("aaaaaaaaaa");
 
-             
             $this->session->unset_userdata('shipping_method');
             $this->session->unset_userdata('shipping_methods');
             $this->session->unset_userdata('payment_method');
@@ -467,10 +591,10 @@ class Checkout extends CI_Controller
             // $this->session->unset_userdata('voucher');
             // $this->session->unset_userdata('vouchers');
             $this->session->unset_userdata('totals');
-             
+
             $this->session->unset_userdata('order_id_ki');
 
-            $array_items = array('shipping_method'=>'','shipping_methods'=>'','payment_method'=>'','payment_methods'=>'','comment'=>'','order_id'=>'','shipping_methods'=>'','coupon'=>'','totals'=>'','shipping_address'=>'','payment_address'=>'','order_id_ki'=>'','warning'=>'','shipping_address'=>'','payment_address'=>'','same_payment_shipping_address'=>'');
+            $array_items = array('shipping_method' => '', 'shipping_methods' => '', 'payment_method' => '', 'payment_methods' => '', 'comment' => '', 'order_id' => '', 'shipping_methods' => '', 'coupon' => '', 'totals' => '', 'shipping_address' => '', 'payment_address' => '', 'order_id_ki' => '', 'warning' => '', 'shipping_address' => '', 'payment_address' => '', 'same_payment_shipping_address' => '');
             $this->session->unset_userdata($array_items);
 
         }
@@ -478,5 +602,12 @@ class Checkout extends CI_Controller
         $data['order_info'] = $this->services->getOrderUUID($uuid);
         $this->load->view('checkout_success', $data);
 
+    }
+
+    public function razorpaysuccess($uuid = "")
+    {
+      
+        $data['order_info'] = $this->services->getOrderUUID($uuid);
+        $this->load->view('checkout_success', $data);
     }
 }

@@ -46,7 +46,7 @@ class Nopage extends CI_Controller
        $data['canonical'] = site_url($param_page);
      
       
-       $admin_mail_id = "swamiwebservices@gmail.com";
+       
        $config_site_mail = array();
        $error_msg = "";
       

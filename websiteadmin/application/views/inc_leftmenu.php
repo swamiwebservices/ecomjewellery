@@ -138,6 +138,7 @@ if($user_data['access_ids']!=''){
                     <a href="#" class="nav-link"><i class="icon-file-text2"></i> <span>CMS</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
                         <li class="nav-item"><a href="<?php echo site_url('cms/banner') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_8"){ echo 'active';}?>">Home Slider</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('cms/homepage') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_18"){ echo 'active';}?>">Home Page</a></li>
                          <li class="nav-item"><a href="<?php echo site_url('cms/aboutus') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_1"){ echo 'active';}?>">About-us</a></li> 
                         <li class="nav-item"><a href="<?php echo site_url('cms/termscondtion') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_2"){ echo 'active';}?>">Terms Condtion</a></li>
                         <li class="nav-item"><a href="<?php echo site_url('cms/privacy') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_3"){ echo 'active';}?>">Privacy</a></li>

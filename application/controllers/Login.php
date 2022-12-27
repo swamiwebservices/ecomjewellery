@@ -170,8 +170,8 @@ class Login extends CI_Controller
             $data['records'] = $data_info;
 
         } else {
-
-            $data['records']['country_id'] = $country_id = '221';
+            $getDefaultCountryId = $this->services->getDefaultCountryId();
+            $data['records']['country_id'] = $country_id = $getDefaultCountryId;
 
         }
 

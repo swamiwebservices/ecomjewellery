@@ -2,7 +2,8 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Bank_transfer extends CI_Controller {
- 
+    public $controller = "bank_transfer";
+    public $domain_id = 1;
 		public function __construct(){
 			parent::__construct();
             $this->load->library('session');
@@ -62,7 +63,7 @@ class Bank_transfer extends CI_Controller {
         
         $order_data['comment'] = $this->input->post('comment');
         
-        
+        $order_data['return_payment_status'] = 'success';
 
         $order_data['payment_method'] = 'Bank Transfer';
         $order_data['payment_code'] = 'bank_transfer';

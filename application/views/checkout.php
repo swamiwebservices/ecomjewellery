@@ -312,6 +312,8 @@ $getDomainId = $this->services->getDomainId();
     <?php $this->load->view('inc_footer'); ?>
     <!-- JS ============================================ -->
     <?php $this->load->view('inc_common_footer_js'); ?>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
     <script>
     $('#input-shipping-country').on('change', function() {
         var element = this;
@@ -357,7 +359,7 @@ $getDomainId = $this->services->getDomainId();
     $('#input-shipping-country').trigger('change');
     </script>
     <script type="text/javascript">
-    $('#button-confirm').on('click', function(e) {
+    $('#button-confirm1').on('click', function(e) {
         // e.preventDefault();
 
         //form-checkout

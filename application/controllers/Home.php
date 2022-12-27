@@ -68,6 +68,11 @@ class Home extends CI_Controller
         //print_r($data['wti_banners']);
         
        // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
+         $data['config_home'] = json_decode(file_get_contents('uploads/jsondata/config_home.json'), true);
+
+        //  print_r($data['config_home']);
+
+       // $data['home'] = json_decode(file_get_contents('uploads/jsondata/homejosn.json'), true);
 
       //  print_r($data['home']);
         $params['type'] = "latestProduct";

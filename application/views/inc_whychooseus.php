@@ -4,7 +4,7 @@
         <div class="row">
            <div class="col-12">
                <div class="chose_title">
-                   <h1>Why chose us?</h1>
+                   <h1>Why Choose us?</h1>
                </div>
            </div>
             <div class="col-lg-4 col-md-6">

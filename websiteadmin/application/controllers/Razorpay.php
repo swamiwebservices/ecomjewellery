@@ -2,13 +2,13 @@
 
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Pp_standard extends CI_Controller
+class Razorpay extends CI_Controller
 {
     public $activaation_id = "120";
     public $sub_activaation_id = "120_2";
-    public $title = "Patment PayPal Payments Standard";
+    public $title = "Razorpay";
     public $tablename = "setting";
-    public $controller = "pp_standard";
+    public $controller = "razorpay";
 
     private $error = array();
     public function __construct()
@@ -48,6 +48,7 @@ class Pp_standard extends CI_Controller
             $newdata = array('success' => 'Success: You have modified payments!');
             $this->session->set_userdata($newdata);
             redirect('payment');
+
         }
 
         $where_cond = "   ORDER BY name asc ";
@@ -64,8 +65,8 @@ class Pp_standard extends CI_Controller
 
             $data['records'][$value['key']] = $value['value'];
         }
-        //print_r($data['records']);
-        $data['sub_heading'] = 'Edit PayPal Payments Standard';
+          //  print_r($data['records']);
+        $data['sub_heading'] = 'Edit Razorpay';
         $this->load->view('payment_' . $this->controller . '_view', $data);
         $this->session->unset_userdata('success');
     }
@@ -77,7 +78,7 @@ class Pp_standard extends CI_Controller
 
     public function getSettingValue($key, $store_id = 0)
     {
-        $query = $this->db->query("SELECT `value` FROM setting WHERE store_id = '0' AND `key` = '" . $this->common->getDbValue($key) . "'");
+        $query = $this->db->query("SELECT `value` FROM `setting` WHERE store_id = '0' AND `key` = '" . $this->common->getDbValue($key) . "'");
 
         if ($query->num_rows) {
             return $query->row['value'];
@@ -90,9 +91,9 @@ class Pp_standard extends CI_Controller
     {
 
         if (!is_array($value)) {
-            $this->db->query("UPDATE setting SET `value` = '" . $this->common->getDbValue($value) . "', serialized = '0'  WHERE `code` = '" . $this->common->getDbValue($code) . "' AND `key` = '" . $this->common->getDbValue($key) . "' AND store_id = '0'");
+            $this->db->query("UPDATE `setting` SET `value` = '" . $this->common->getDbValue($value) . "', serialized = '0'  WHERE `group` = '" . $this->common->getDbValue($code) . "' AND `key` = '" . $this->common->getDbValue($key) . "' AND store_id = '0'");
         } else {
-            $this->db->query("UPDATE setting SET `value` = '" . $this->common->getDbValue(json_encode($value)) . "', serialized = '1' WHERE `code` = '" . $this->common->getDbValue($code) . "' AND `key` = '" . $this->common->getDbValue($key) . "' AND store_id = '0'");
+            $this->db->query("UPDATE `setting SET `value` = '" . $this->common->getDbValue(json_encode($value)) . "', serialized = '1' WHERE `group` = '" . $this->common->getDbValue($code) . "' AND `key` = '" . $this->common->getDbValue($key) . "' AND store_id = '0'");
         }
     }
 }

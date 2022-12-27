@@ -106,24 +106,26 @@ if ($warning) {
 
                         <ul class="nav nav-tabs nav-tabs-bottom">
                             <?php
-                          
+                            $ind=0;
                                            $domain_list = $this->config->item("DOMAINs");
                                            foreach($domain_list as $key => $domain){
                                             $domain_org = $domain;
                                             $domain = str_replace(".","_",$domain);
-                                            
+                                            $ind++;
                                          ?>
                             <li class="nav-item"><a href="#domains<?php echo $key?>"
-                                    class="nav-link <?php echo (isset($key) && $key==1) ? 'active' : '' ?>"
+                                    class="nav-link <?php echo (isset($ind) && $ind==1) ? 'active' : '' ?>"
                                     data-toggle="tab"> <?php echo $domain_org?></a></li>
                             <?php }?>
                         </ul>
                         <div class="tab-content">
                             <?php
                           //  print_r($records);
+                          $ind=0;
                               foreach($domain_list as $key => $domain){
+                                $ind++;
                             ?>
-                            <div class="tab-pane fade  <?php echo  (isset($key) && $key==1) ? ' show active' : '' ?>"
+                            <div class="tab-pane fade  <?php echo  (isset($ind) && $ind==1) ? ' show active' : '' ?>"
                                 id="domains<?php echo $key?>">
 
                                 <form class="form-horizontal" id="blogform1" name="blogform1" method="post"

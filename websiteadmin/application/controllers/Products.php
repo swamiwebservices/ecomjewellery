@@ -229,7 +229,7 @@ class Products extends CI_Controller
                         $add_in_m_price['quantity'] = $_POST['quantity'][$domain_id];
                         //  $add_in_m_price['featured_flag'] = $_POST['featured_flag'][$domain_id];
                         //   $add_in_m_price['home_flag'] = $_POST['home_flag'][$domain_id];
-                        $this->common->updateRecord('product_master_price', $add_in_m_price, $where_price);
+                     //   $this->common->updateRecord('product_master_price', $add_in_m_price, $where_price);
 
                     }
 
@@ -263,7 +263,7 @@ class Products extends CI_Controller
                         $add_in_m_price['quantity'] = $_POST['quantity'][$domain_id];
                         $add_in_m_price['featured_flag'] = $_POST['featured_flag'][$domain_id];
                         $add_in_m_price['home_flag'] = $_POST['home_flag'][$domain_id];
-                        $this->common->insertRecord('product_master_price', $add_in_m_price);
+                     //   $this->common->insertRecord('product_master_price', $add_in_m_price);
 
                     }
 
@@ -430,7 +430,7 @@ class Products extends CI_Controller
                                 $add_in_m_price['mrp'] = ROUND($value['mrp']);
                                 $add_in_m_price['sellprice'] = ROUND($value['sellprice']);
 
-                                $this->common->updateRecord('product_master_price', $add_in_m_price, $where_price);
+                              //  $this->common->updateRecord('product_master_price', $add_in_m_price, $where_price);
 
                             }
 

@@ -196,7 +196,7 @@ $domain_id = $this->domain_id;
                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
                                      //   print_r($price_json);
                                      $price_json = json_decode($value['price_json'],true);
-                                     //   print_r($price_json);
+                                      //  print_r($price_json);
                                        $quantity = $price_json['quantity'][$domain_id];
                                        $mrp = $price_json['mrp'][$domain_id];
                                        $sellprice = $price_json['sellprice'][$domain_id];  

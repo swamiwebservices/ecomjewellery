@@ -3,14 +3,21 @@ $domain_id = $this->domain_id;
 ?>
 <?php
 //print_r($home);
+$popupdata = [];
+foreach($config_home as $key => $value){
+    $popupdata[$value['key_name']] = $value['value'];
+}
+
+$config_section1 =  (isset($popupdata['config_section1'])) ? json_decode($popupdata['config_section1'],true) : array();
+//print_r($config_section1);
+$box1 =  (isset($config_section1['box1'])) ? $config_section1['box1'] : array();
+$box2 =  (isset($config_section1['box2'])) ? $config_section1['box2'] : array();
+ 
+
 $product_category  = json_decode(file_get_contents('uploads/jsondata/product_category.json'), true);
 $carttotal = (int)$this->services->addtocart();
-//print_r($product_category);
-// $popupdata = [];
-// foreach($home_data['config_home'] as $key => $value){
-//     $popupdata[$value['key_name']] = $value['value'];
-// }
-//print_r($popupdata);
+
+
 $page_url = $this->uri->segment(1);
 $session_user_data = $this->session->userdata('front_user_detail');
 //print_r($session_user_data);
@@ -129,14 +136,14 @@ $session_user_data = $this->session->userdata('front_user_detail');
                 <div class="row">
                     <div class="col-lg-6 col-md-6">
                         <div class="single-shipping">
-                           <h3>Quality is our Guarantee!</h3>
-                            <p>100%</p>
+                           <h3><?php  echo (!empty($box1['text1'])) ? base64_decode($box1['text1']) : ' ';?></h3>
+                            <p><?php  echo (!empty($box1['text2'])) ? base64_decode($box1['text2']) : ' ';?></p>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="single-shipping">
-                            <h3>Free Shipping On Order Over AED500 </h3>
-                            <p>Free shipping on all order domestic orders</p>
+                        <h3><?php  echo (!empty($box2['text1'])) ? base64_decode($box2['text1']) : ' ';?></h3>
+                        <p><?php  echo (!empty($box2['text2'])) ? base64_decode($box2['text2']) : ' ';?></p>
                         </div>
                     </div>
                 </div>

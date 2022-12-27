@@ -57,13 +57,13 @@ public $m_act = 7;
   
 		$data['controller'] = $this->controller;
 		 
-		 $payment_list_name = array("cod"=>"Cash On Delivery","bank_transfer"=>"Bank Transfer");
+		 $payment_list_name = array("cod"=>"Cash On Delivery","bank_transfer"=>"Bank Transfer","pp_standard"=>"Paypal Standard","payu"=>"Payu-Money","razorpay"=>"Razorpay");
 		 
 		 $extensions = $this->getInstalled('payment');
 		// $data['extensions'] = $extensions;
 		foreach ($extensions as $key => $value) {
 			if (!is_file($current_dir.'/payment/' . $value . '.php') && !is_file('payment/' . $value . '.php')) {
-				$this->uninstall('payment', $value);
+				//$this->uninstall('payment', $value);
 
 				unset($extensions[$key]);
 			}
@@ -86,9 +86,7 @@ public $m_act = 7;
 					'link'       => $link,
 					'status'     =>  $this->configmodal->get($extension . '_status') ? 'enabled' : 'disabled',
 					'sort_order' => $this->configmodal->get($extension . '_sort_order'),
-					'install'   => site_url('payment/install/payment/'.$extension).'',
-					'uninstall' => site_url('payment/uninstall/payment/'.$extension).'',
-					'installed' => in_array($extension, $extensions),
+					 
 					'edit'      => site_url(''.$extension)
 				);
 			}

@@ -1056,7 +1056,7 @@ class Cms extends CI_Controller
                 $this->db->update('wti_m_address', $add_in);
 
                  
-             //   $this->common->createjson('wti_m_address','',"select * from  wti_m_address c      where  domains='{$domains}'     ",'single');
+                $this->common->createjson('wti_m_address','',"select * from  wti_m_address c      where  domains='{$domains}'     ",'single');
 
                 $this->session->set_flashdata('success', 'Information updated succssfully!');
                 redirect($this->controller . '/address');
@@ -1181,4 +1181,156 @@ class Cms extends CI_Controller
         $this->session->unset_userdata('error');
 
     }
+    public function homepage()
+    {
+
+        $session_user_data = $this->session->userdata('user_data');
+        $error = '';
+        $data['activaation_id'] = 101;
+        $data['sub_activaation_id'] = '101_18';
+        $data['title'] = $this->title;
+        $data['tab'] = $tab = (isset($_GET['tab'])) ? $this->common->mysql_safe_string_descriptive($_GET['tab']) : '1';
+        $data['maxm'] = $maxm = 20000;
+        $data['sub_heading'] = 'Home Page';
+        $fun_name = $this->controller . '/homepage';
+
+        $data['controller'] = $this->controller;
+        $data['fun_name'] = "homepage?tab=" . $tab;
+        $code = 'config_home';
+        if (isset($_POST['mode']) && $_POST['mode'] == 'section1') {
+            $data['tab'] = $tab = (isset($_POST['tab'])) ? $this->common->mysql_safe_string_descriptive($_POST['tab']) : '1';
+            // print_r($_POST);
+            //   print_r($_FILES['config_section1']);
+
+          
+           
+            if ($error == "") {
+                foreach ($_POST as $key => $value) {
+
+                    //   print_r($value);
+
+                    if (is_array($value)) {
+                        foreach ($value as $value_key => $final_value) {
+                            if (!is_array($final_value)) {
+                                $value[$value_key] = base64_encode($final_value);
+
+                                $sql = "delete from wti_m_cms_pages where array_key_name='{$value_key}' and key_name='{$_POST['mode']}'";
+                                $this->db->query($sql);
+                                $add_in = array();
+                                $add_in['group_name'] = $code;
+                                $add_in['key_name'] = $_POST['mode'];
+                                $add_in['array_key_name'] = $value_key;
+                                $add_in['value'] = $this->common->mysql_safe_string_descriptive($final_value);
+
+                                $this->db->insert('wti_m_cms_pages', $add_in);
+
+                            } else {
+                               // $value[$value_key] = base64_encode($final_value);
+                               foreach ($final_value as $value_key2 => $final_value2) {
+                                $value[$value_key][$value_key2] = base64_encode($final_value2);
+                               }
+                                $sql = "delete from wti_m_cms_pages where array_key_name='{$value_key}' and key_name='{$_POST['mode']}'";
+                                $this->db->query($sql);
+                                $add_in = array();
+                                $add_in['serialized'] = 1;
+                                $add_in['group_name'] = $code;
+                                $add_in['key_name'] = $_POST['mode'];
+                                $add_in['array_key_name'] = $value_key;
+                                $add_in['value'] = json_encode($final_value, JSON_HEX_APOS);
+
+                                $this->db->insert('wti_m_cms_pages', $add_in);
+                            }
+                        }
+                    }
+                    
+                    $this->db->query("update`wti_m_setting` SET     `value` = '" . json_encode($value, JSON_HEX_APOS) . "', serialized = '1'  where  `key_name` = '" . $key . "'");
+                }
+
+               // $this->common->createjson('config_home', '',"SELECT * FROM `wti_m_setting` WHERE `group_name` LIKE 'config_home' ORDER BY `group_name` ASC",'multiple','home');
+                $this->common->createjson('config_home', '',"SELECT * FROM `wti_m_setting` WHERE `group_name` LIKE 'config_home' ORDER BY `group_name` ASC",'multiple','self');
+
+                $this->session->set_flashdata('success', 'Information updated succssfully..');
+                redirect($this->controller . '/homepage?tab=' . $tab);
+                die();
+            } else {
+                $newdata = array('error' => $error);
+
+                $this->session->set_flashdata('error', $error);
+            }
+
+        }
+         
+       
+        if (isset($_POST['mode']) && $_POST['mode'] == 'hello_bar') {
+           // $key_name = $this->common->mysql_safe_string_descriptive($_POST['key_name']);
+
+            foreach ($_POST as $key => $value) {
+
+                if (is_array($value)) {
+                    foreach ($value as $value_key => $final_value) {
+                        if (!is_array($final_value)) {
+
+                            $sql = "delete from wti_m_cms_pages where array_key_name='{$value_key}' and key_name='{$_POST['mode']}'";
+                            $this->db->query($sql);
+                            $add_in = array();
+                            $add_in['group_name'] = $code;
+                            $add_in['key_name'] = $_POST['mode'];
+                            $add_in['array_key_name'] = $value_key;
+                            $add_in['value'] = $this->common->mysql_safe_string_descriptive($final_value);
+                            $this->db->insert('wti_m_cms_pages', $add_in);
+                        }
+                    }
+                } else {
+                    $sql = "delete from wti_m_cms_pages where array_key_name='{$key}' and key_name='{$_POST['mode']}'";
+                    $this->db->query($sql);
+                    $add_in = array();
+                    $add_in['group_name'] = $code;
+                    $add_in['key_name'] = $_POST['mode'];
+                    $add_in['array_key_name'] = $key;
+                    $add_in['value'] = $this->common->mysql_safe_string_descriptive($value);
+                    $this->db->insert('wti_m_cms_pages', $add_in);
+                }
+
+                if (!is_array($value)) {
+                      
+                   $this->db->query("update`wti_m_setting` SET    `value` = '" . $value . "' where  `key_name` = '" . $key . "' and group_name='{$code}' ");
+                } else {
+                     
+                    $this->db->query("update`wti_m_setting` SET     `value` = '" . json_encode($value, true) . "', serialized = '1'  where  `key_name` = '" . $key . "'");
+                }
+               
+            }
+
+            $this->common->createjson('config_home', '',"SELECT * FROM `wti_m_setting` WHERE `group_name` LIKE 'config_home' ORDER BY `group_name` ASC",'multiple','self');
+
+            $newdata = array('success' => 'Infomation added successfully!');
+
+            
+            $this->session->set_flashdata('success', 'Information updated succssfully..');
+            redirect($this->controller . '/homepage');
+        }
+
+        $resultdata = array();
+        $data['records'] = array();
+
+        $sql = "select * from  `wti_m_setting` where `group_name`='" . $code . "'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->result_array();
+        }
+        $data['records'] = array();
+
+        foreach ($resultdata as $key => $value) {
+            $data['records'][$value['key_name']] = $value['value'];
+
+        }
+
+        //  print_r($data['records']);
+
+        $this->load->view('cms_homepage', $data);
+        $this->session->unset_userdata('success');
+        $this->session->unset_userdata('warning');
+        $this->session->unset_userdata('error');
+    }
+
 }

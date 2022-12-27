@@ -3,15 +3,22 @@
 $product_category  = json_decode(file_get_contents('uploads/jsondata/product_category.json'), true);
 $carttotal = (int)$this->services->addtocart();
 //print_r($product_category);
-// $popupdata = [];
-// foreach($home_data['config_home'] as $key => $value){
-//     $popupdata[$value['key_name']] = $value['value'];
-// }
+
 //print_r($popupdata);
 $page_url = $this->uri->segment(1);
 $session_user_data = $this->session->userdata('front_user_detail');
 //print_r($session_user_data);
+$wti_m_address1  = json_decode(file_get_contents('uploads/jsondata/wti_m_address.json'), true);
+$wti_m_address = (isset($wti_m_address1[0])) ? $wti_m_address1[0] : [];
+//print_r($wti_m_address);
 
+ $config_home  = json_decode(file_get_contents('uploads/jsondata/config_home.json'), true);
+
+ $popupdata = [];
+ foreach($config_home as $key => $value){
+     $popupdata[$value['key_name']] = $value['value'];
+ }
+ //print_r($wti_m_address);
 ?>
 <!--Offcanvas menu area start-->
 <div class="off_canvars_overlay">
@@ -28,10 +35,13 @@ $session_user_data = $this->session->userdata('front_user_detail');
                     <div class="canvas_close">
                         <a href="javascript:void(0)"><i class="ion-android-close"></i></a>
                     </div>
+                    <?php
+                    if(isset($popupdata['config_hellobar_show']) && $popupdata['config_hellobar_show']==1){
+                    ?>
                     <div class="welcome_text">
-                    <p>Free Shipping On Order Over AED500</span></p>
+                    <p><?php echo (!empty($popupdata['config_hello_bar'])) ? $popupdata['config_hello_bar'] : ''?></span></p>
                     </div>
-
+                        <?php }?>
 
                     <div id="menu" class="text-left ">
                         <ul class="offcanvas_main_menu">
@@ -91,9 +101,9 @@ $session_user_data = $this->session->userdata('front_user_detail');
                         </ul>
                     </div>
                     <div class="Offcanvas_footer">
-                        <span><a href="tel:+971559632581"><i class="fa fa-phone"></i> +971 559632581</a></span>
-                        <span><a href="mail:info@bondbeyond.ae"><i class="fa fa-envelope-o"></i>
-                                info@bondbeyond.ae</a></span>
+                        <span><a href="tel:+971559632581"><i class="fa fa-phone"></i> <?php echo (!empty($wti_m_address['phone1'])) ? $wti_m_address['phone1'] : ''?></span></a></span>
+                        <span><a href="mail:<?php echo (!empty($wti_m_address['email1'])) ? $wti_m_address['email1'] : ''?>"><i class="fa fa-envelope-o"></i>
+                                <?php echo (!empty($wti_m_address['email1'])) ? $wti_m_address['email1'] : ''?></a></span>
                     </div>
                 </div>
             </div>
@@ -109,12 +119,16 @@ $session_user_data = $this->session->userdata('front_user_detail');
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12 texttopbar">
+                <?php
+                    if(isset($popupdata['config_hellobar_show']) && $popupdata['config_hellobar_show']==1){
+                    ?>
                     <div id="s0">
 
-                        Free Shipping On Order Over AED500
+                    <?php echo (!empty($popupdata['config_hello_bar'])) ? $popupdata['config_hello_bar'] : ''?>
                     </div>
-                    <div id='s1'><a href="tel:+971559632581"><i class="fa fa-phone"></i>
-                            +971 559632581</a> | <a href="<?php echo site_url('contact-us');?>"><i
+                    <?php }?>
+                    <div id='s1'><a href="tel:<?php echo (!empty($wti_m_address['phone1'])) ? $wti_m_address['phone1'] : ''?>"><i class="fa fa-phone"></i>
+                    <?php echo (!empty($wti_m_address['phone1'])) ? $wti_m_address['phone1'] : ''?></a> | <a href="<?php echo site_url('contact-us');?>"><i
                                 class="fa fa-envelope-o"></i> Contact us</a></div>
                     <div id='s2'> &nbsp;</div>
 

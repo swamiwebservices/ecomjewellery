@@ -74,7 +74,7 @@ class Cod extends CI_Controller
 
         $order_data['payment_method'] = 'Cash On Delivery';
         $order_data['payment_code'] = 'cod';
-       
+        $order_data['return_payment_status'] = 'success';
         $where_cart = "order_id = '" . $order_id . "' ";
         $this->common->updateRecord('m_order', $order_data, $where_cart);
         

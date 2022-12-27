@@ -150,11 +150,17 @@ class Services extends CI_Model
         $add_in_cust['session_id'] = 91;
         $this->common->insertRecord('wti_sms_register_log', $add_in_cust);
     }
-
+    public function getDefaultCountryId()
+    {
+        $getDomainId = $this->getDomainId();
+        $DEFAULT_COUNTRY_DOMAINs = $this->config->item("DEFAULT_COUNTRY_DOMAINs");
+      
+        return $DEFAULT_COUNTRY_DOMAINs[$getDomainId];
+    }
     public function getDomainId()
     {
         $domain_name = $_SERVER['HTTP_HOST'];
-
+         $domain_name   = str_replace("www.","",$domain_name);
         $domain_list = $this->config->item("DOMAINs");
         $domain_id = array_search($domain_name, $domain_list);
         if (!$domain_id) {
@@ -167,18 +173,39 @@ class Services extends CI_Model
         $date1 = date("Y");
         $date2 = date("Y") + 1;
         $domain_name = $_SERVER['HTTP_HOST'];
+        $domain_name   = str_replace("www.","",$domain_name);
+
         $domain_list = $this->config->item("DOMAINs");
         $domain_id = array_search($domain_name, $domain_list);
         if (!$domain_id) {
             $domain_id = 1;
         }
+        $wti_m_address = array();
+    
+        $sql = "select *  from  `wti_m_address` where `domains`='" . $domain_id . "'  ";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->row_array();
+           
+            $wti_m_address = $resultdata;
+        }
+        $DOMAIN_ADDRESS_FOOTER =   (!empty($wti_m_address['address'])) ? $wti_m_address['address']:'';
+        $DOMAIN_ADDRESS_PHONE =  (isset($wti_m_address['phone1'])) ? $wti_m_address['phone1']:'';
+        $DOMAIN_ADDRESS_EMAIL =  (isset($wti_m_address['email1'])) ? $wti_m_address['email1']:'';
+
         $HTTP_DOMAIN_URL = site_url();
+        $HTTP_DOMAIN_URL_HOME = site_url('home');
         $LOGO_URL = "https://bondbeyond.ae/assets/img/logo/logo.png";
-        $address[1] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondbeyond.ae<br /> Web <a href='http://bondbeyond.ae/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+        
+        $address[1] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: ".$DOMAIN_ADDRESS_FOOTER." <br /> Phone: ".$DOMAIN_ADDRESS_PHONE." | Email: ".$DOMAIN_ADDRESS_EMAIL."<br /> Web <a href='".$HTTP_DOMAIN_URL_HOME."' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
 
-        $address[2] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondforu.com<br /> Web <a href='http://bondforu.com/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+            $LOGO_URL = "https://www.bondforu.com/assets/img/logo/logo.png";
 
-        $address[3] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondbeyond.in<br /> Web <a href='http://bondbeyond.in/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+        $address[2] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: ".$DOMAIN_ADDRESS_FOOTER." <br /> Phone: ".$DOMAIN_ADDRESS_PHONE." | Email:  ".$DOMAIN_ADDRESS_EMAIL."<br /> Web <a href='".$HTTP_DOMAIN_URL_HOME."' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+
+            $LOGO_URL = "https://www.bondforu.com/assets/img/logo/logo.png";
+
+        $address[3] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: ".$DOMAIN_ADDRESS_FOOTER." <br /> Phone: ".$DOMAIN_ADDRESS_PHONE." | Email:  ".$DOMAIN_ADDRESS_EMAIL."<br /> Web <a href='".$HTTP_DOMAIN_URL_HOME."' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
 
         $address_single = $address[$domain_id];
         return $address_single;
@@ -187,8 +214,8 @@ class Services extends CI_Model
     {
 
         $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
-        $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
-        $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
+        $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '1');
+        $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '3');
         $getDomainId = $this->getDomainId();
 
         $currentCurrency = $currencyarr[$getDomainId];
@@ -201,9 +228,9 @@ class Services extends CI_Model
             $getDomainId = $this->getDomainId();
         }
 
-        $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '3');
+        $currencyarr[1] = array('title' => 'AED', 'code' => 'AED', 'symbol_left' => 'AED', 'symbol_right' => '', 'decimal_place' => '0', 'domains' => '1');
         $currencyarr[2] = array('title' => 'USD', 'code' => 'USD', 'symbol_left' => '$', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '2');
-        $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '1');
+        $currencyarr[3] = array('title' => 'INR', 'code' => 'INR', 'symbol_left' => '₹', 'symbol_right' => '', 'decimal_place' => '2', 'domains' => '3');
 
        
 
@@ -242,12 +269,17 @@ class Services extends CI_Model
         $domain = $this->getDomainId();
         //$get_user_session_id = (!empty($this->getId())) ? $this->getId() : $this->get_shopping_session() ;
 
+        if (isset($session_user_data['customer_id'])) {
+            $sql_sub = " user_id = '" . (int) $this->getId() . "'    ";
+        } else {
+            $sql_sub = " shopping_session = '" . $this->get_shopping_session() . "' ";
+        }
         if ($product_id > 0) {
-            $query = $this->db->query("SELECT COUNT('') AS total FROM cart_master WHERE user_id = '" . (int) $this->getId() . "' AND shopping_session = '" . $this->get_shopping_session() . "' AND product_id = '" . (int) $product_id . "'");
+            $query = $this->db->query("SELECT COUNT('') AS total FROM cart_master WHERE ".$sql_sub."   AND product_id = '" . (int) $product_id . "'");
 
             $query_row = $query->row_array();
-
-            if (!$query_row['total']) {
+            $total = $query_row['total'] * 1;
+            if ($total <= 0) {
 
                 $cart_date = time();
 
@@ -255,7 +287,7 @@ class Services extends CI_Model
 
             } else {
 
-                $this->db->query("UPDATE cart_master SET cart_qty = (cart_qty + " . (int) $quantity . ") ,price = '" . $price . "' WHERE   user_id = '" . (int) $this->getId() . "' AND shopping_session = '" . $this->get_shopping_session() . "' AND product_id = '" . (int) $product_id . "'");
+                $this->db->query("UPDATE cart_master SET cart_qty = (cart_qty + " . (int) $quantity . ") ,price = '" . $price . "' WHERE  ".$sql_sub."  AND product_id = '" . (int) $product_id . "'");
 
             }
 
@@ -379,7 +411,7 @@ class Services extends CI_Model
         } catch (UnsatisfiedDependencyException $e) {
             //  echo 'Caught exception: ' . $e->getMessage() . "\n";
         }
-        $order_data['uuid'] = $uuid;
+        
 
         $order_id = (int) $this->session->userdata('order_id_ki');
         $order_query = $this->db->query("select * from `m_order` where order_id = '" . (int) $order_id . "'");
@@ -430,6 +462,8 @@ class Services extends CI_Model
             $order_data['payment_address_1'] = $params['payment_address_1'];
             $order_data['payment_address_2'] = $params['payment_address_2'];
             $order_data['payment_country_id'] = $params['payment_country_id'];
+            $order_data['payment_country'] = $params['payment_country'];
+
             $order_data['payment_zone_id'] = $params['payment_zone_id'];
             $order_data['payment_city'] = $params['payment_city'];
             $order_data['payment_postcode'] = $params['payment_postcode'];
@@ -440,6 +474,7 @@ class Services extends CI_Model
             $order_data['shipping_address_1'] = $params['shipping_address_1'];
             $order_data['shipping_address_2'] = $params['shipping_address_2'];
             $order_data['shipping_country_id'] = $params['shipping_country_id'];
+            $order_data['shipping_country'] = $params['shipping_country'];
             $order_data['shipping_zone_id'] = $params['shipping_zone_id'];
             $order_data['shipping_city'] = $params['shipping_city'];
             $order_data['shipping_postcode'] = $params['shipping_postcode'];
@@ -462,7 +497,7 @@ class Services extends CI_Model
 
         } else {
 
-          
+            $order_data['uuid'] = $uuid;
             $order_data['customer_id'] = $params['customer_id'];
             $order_data['firstname'] = $params['firstname'];
             $order_data['lastname'] = $params['lastname'];
@@ -505,8 +540,20 @@ class Services extends CI_Model
 
             $order_id = $this->common->insertRecord('m_order', $order_data);
 
+            $query_invoice = $this->db->query("SELECT MAX(invoice_no) AS invoice_no FROM `m_order` WHERE invoice_prefix = '" . $params['invoice_prefix'] . "'");
+            $query_invoice_row = $query_invoice->row_array();
+            if ($query_invoice_row['invoice_no']) {
+                $invoice_no = $query_invoice_row['invoice_no'] + 1;
+            } else {
+                $invoice_no = 1;
+            }
+            //$order_info['invoice_no'] = $invoice_no;
+    
+            $this->db->query("UPDATE `m_order` SET invoice_no = '" . (int) $invoice_no . "'  WHERE order_id = '" . (int) $order_id . "'");
+    
         }
 
+      
         // $totals[] = array(
         //     'code' => 'sub_total',
         //     'title' => 'Sub-Total:',
@@ -738,20 +785,21 @@ class Services extends CI_Model
         $order_info = $this->getOrder($order_id);
 
         $status = false;
-        if ($status) {
-            $order_status_id = 1; //pending
-        }
+        $order_status_id = (isset($order_status_id)) ? $order_status_id : 0;
+        // if ($status) {
+        //     $order_status_id = 1; //pending
+        // }
 
-        $query_invoice = $this->db->query("SELECT MAX(invoice_no) AS invoice_no FROM `m_order` WHERE invoice_prefix = '" . $order_info['invoice_prefix'] . "'");
-        $query_invoice_row = $query_invoice->row_array();
-        if ($query_invoice_row['invoice_no']) {
-            $invoice_no = $query_invoice_row['invoice_no'] + 1;
-        } else {
-            $invoice_no = 1;
-        }
-        $order_info['invoice_no'] = $invoice_no;
+        // $query_invoice = $this->db->query("SELECT MAX(invoice_no) AS invoice_no FROM `m_order` WHERE invoice_prefix = '" . $order_info['invoice_prefix'] . "'");
+        // $query_invoice_row = $query_invoice->row_array();
+        // if ($query_invoice_row['invoice_no']) {
+        //     $invoice_no = $query_invoice_row['invoice_no'] + 1;
+        // } else {
+        //     $invoice_no = 1;
+        // }
+        // $order_info['invoice_no'] = $invoice_no;
 
-        $this->db->query("UPDATE `m_order` SET invoice_no = '" . (int) $invoice_no . "'  WHERE order_id = '" . (int) $order_id . "'");
+        // $this->db->query("UPDATE `m_order` SET invoice_no = '" . (int) $invoice_no . "'  WHERE order_id = '" . (int) $order_id . "'");
 
         $this->db->query("INSERT INTO order_history SET order_id = '" . (int) $order_id . "', order_status_id = '" . (int) $order_status_id . "', notify = $notify, comment = '" . $this->common->getDbValue($comment) . "', date_added = NOW()");
 
@@ -1142,6 +1190,7 @@ class Services extends CI_Model
                 'order_id' => $order_query_row['order_id'],
                 'uuid' => $order_query_row['uuid'],
                 'transaction_id' => $order_query_row['transaction_id'],
+                'return_payment_txn_id' => $order_query_row['return_payment_txn_id'],
                 'invoice_no' => $order_query_row['invoice_no'],
                 'invoice_prefix' => $order_query_row['invoice_prefix'],
                 'store_id' => $order_query_row['store_id'],
@@ -1204,7 +1253,7 @@ class Services extends CI_Model
     }
     public function getOrderProducts($order_id)
     {
-        $query = $this->db->query("SELECT op.*, p.main_image,p.slug_name FROM order_product op
+        $query = $this->db->query("SELECT op.*, p.main_image,p.slug_name,p.weight_gms FROM order_product op
 								left join 	product_master p on op.product_id = p.product_id
 							 WHERE order_id = '" . (int) $order_id . "'");
 
@@ -1500,7 +1549,7 @@ class Services extends CI_Model
 
         $session_user_data = $this->session->userdata('front_user_detail');
         //print_r($session_user_data);
-        if (!isset($session_user_data['customer_id'])) {
+        if (isset($session_user_data['customer_id'])) {
             $this->db->query("DELETE FROM cart_master WHERE  user_id = '" . (int) $session_user_data['customer_id'] . "'    ");
         } else {
             $this->db->query("DELETE FROM cart_master WHERE   shopping_session = '" . $this->get_shopping_session() . "'  ");
@@ -1704,4 +1753,6 @@ class Services extends CI_Model
 		return $value;
 
 	}
+
+    
 }

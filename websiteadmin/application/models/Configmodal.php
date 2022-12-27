@@ -10,7 +10,7 @@ class Configmodal extends CI_Model{
 	public function get($key='') {
 		// echo "SELECT * FROM currency where default_flag='1'";
 		
-		$query = $this->db->query("SELECT * FROM `setting` where `key`='".$key."' ");
+		$query = $this->db->query("SELECT * FROM `setting` where   `key`='".$key."' ");
 		
 		if($query->num_rows() > 0){
 			$row = $query->row_array();

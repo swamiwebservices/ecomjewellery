@@ -106,24 +106,10 @@
 
                                             <td class="text-left"><?php echo $extension['status']; ?></td>
                                             <td class="text-right"><?php echo $extension['sort_order']; ?></td>
-                                            <td class="text-right"><?php if ($extension['installed']) { ?>
-                                                <a href="<?php echo $extension['edit']; ?>" data-toggle="tooltip"
+                                            <td class="text-right"> <a href="<?php echo $extension['edit']; ?>" data-toggle="tooltip"
                                                     title="Edit" class="btn btn-primary"><i
                                                         class="icon-pencil7"></i></a>
-                                                <?php } else { ?>
-                                                <button type="button" class="btn btn-primary" disabled="disabled"><i
-                                                        class="icon-pencil7"></i></button>
-                                                <?php } ?>
-                                                <?php if (!$extension['installed']) { ?>
-                                                <!-- <a href="<?php echo $extension['install']; ?>" data-toggle="tooltip"
-                                                    title="Install" class="btn btn-success"><i
-                                                        class="fa fa-plus-circle"></i></a> -->
-                                                <?php } else { ?>
-                                                <!-- <a href="<?php echo $extension['uninstall']; ?>"
-                                                    onClick="return confirm('Are you sure you want to uninstall this payment?');"
-                                                    data-toggle="tooltip" title="Uninstall" class="btn btn-danger"><i
-                                                        class="fa fa-minus-circle"></i></a> -->
-                                                <?php } ?>
+                                                 
                                             </td>
                                         </tr>
                                         <?php } ?>

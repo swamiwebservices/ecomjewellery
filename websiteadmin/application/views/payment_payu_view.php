@@ -91,52 +91,60 @@
                             id="form-bank-transfer" class="form-horizontal">
                             <input type="hidden" name="mode" id="mode" value="edit_content">
                             <input type="hidden" name="mode" id="mode" value="edit_content">
-                            <input type="hidden" name="pp_standard_total" value="1">
-                            <input type="hidden" name="pp_standard_debug" value="0">
-                            <input type="hidden" name="pp_standard_geo_zone_id" value="0">
-                            <input type="hidden" name="pp_standard_order_status_id" value="1">
-                            <input type="hidden" name="pp_standard_transaction" value="1">
+                            <input type="hidden" name="payu_total" value="1">
+                            
+                            <input type="hidden" name="payu_geo_zone_id" value="0">
+                            <input type="hidden" name="payu_order_status_id" value="1">
+                            
 
                             <div class="form-group row">
-                                <label class="col-sm-2 control-label" for="entry-email">E-Mail</label>
+                                <label class="col-sm-2 control-label" for="entry-email">Merchant
+                                    Key:</label>
                                 <div class="col-sm-10">
-                                    <input type="text" required name="pp_standard_email"
-                                        value="<?php echo isset($records['pp_standard_email']) ? $records['pp_standard_email'] : ''; ?>"
-                                        placeholder="E-Mail" id="entry-email" class="form-control" />
+                                    <input type="text" name="payu_merchant" required
+                                        value="<?php echo isset($records['payu_merchant']) ? $records['payu_merchant'] : ''; ?>"
+                                        class="form-control" />
 
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-sm-2 control-label" for="input-live-demo"><span data-toggle="tooltip"
-                                        title="Use the live or testing (sandbox) gateway server to process transactions?">Sandbox
-                                        Mode</span></label>
+                                <label class="col-sm-2 control-label" for="entry-email">Salt:</label>
                                 <div class="col-sm-10">
-                                    <select name="pp_standard_test" id="input-live-demo" class="form-control">
+                                    <input type="text" name="payu_salt" required
+                                        value="<?php echo isset($records['payu_salt']) ? $records['payu_salt'] : ''; ?>"
+                                        class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label" for="input-payu_test"><span data-toggle="tooltip"
+                                        title="Use the live or testing (sandbox) gateway server to process transactions?">Mode</span></label>
+                                <div class="col-sm-10">
+                                    <select name="payu_test" id="input-payu_test" class="form-control">
                                         <?php
-					$pp_standard_test =  isset($records['pp_standard_test']) ? $records['pp_standard_test'] : '0';
+					$payu_test =  isset($records['payu_test']) ? $records['payu_test'] : 'demo';
 					?>
-                                        <?php if ($pp_standard_test) { ?>
-                                        <option value="1" selected="selected">Yes</option>
-                                        <option value="0">No</option>
+                                        <?php if ($payu_test=='live') { ?>
+                                        <option value="live" selected="selected">live</option>
+                                        <option value="demo">demo</option>
                                         <?php } else { ?>
-                                        <option value="1">Yes</option>
-                                        <option value="0" selected="selected">No</option>
+                                        <option value="live">live</option>
+                                        <option value="demo" selected="selected">demo</option>
                                         <?php } ?>
                                     </select>
                                 </div>
                             </div>
-                            
-                      
+
                            
-                             
+                           
+                            
                             <div class="form-group row">
                                 <label class="col-sm-2 control-label" for="input-status">Status</label>
                                 <div class="col-sm-10">
-                                    <select name="pp_standard_status" id="input-status" class="form-control">
+                                    <select name="payu_status" id="input-status" class="form-control">
                                         <?php
-						$pp_standard_status =  isset($records['pp_standard_status']) ? $records['pp_standard_status'] : '';
+						$payu_status =  isset($records['payu_status']) ? $records['payu_status'] : '';
 					?>
-                                        <?php if ($pp_standard_status) { ?>
+                                        <?php if ($payu_status) { ?>
                                         <option value="1" selected="selected">Enabled</option>
                                         <option value="0">Disabled</option>
                                         <?php } else { ?>
@@ -150,12 +158,14 @@
                                 <label class="col-sm-2 control-label" for="input-sort-order">Sort
                                     Order</label>
                                 <div class="col-sm-10">
-                                    <input type="text" name="pp_standard_sort_order"
-                                        value="<?php echo isset($records['pp_standard_sort_order']) ? $records['pp_standard_sort_order'] : ''; ?>"
+                                    <input type="text" name="payu_sort_order"
+                                        value="<?php echo isset($records['payu_sort_order']) ? $records['payu_sort_order'] : ''; ?>"
                                         placeholder="Sort Order" id="input-sort-order" class="form-control" />
                                 </div>
                             </div>
-                            
+
+
+
                             <div class="form-group row">
                                 <label class="col-md-2 control-label"> </label>
                                 <div class="col-md-10">

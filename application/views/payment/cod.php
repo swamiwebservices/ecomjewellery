@@ -8,8 +8,6 @@
 </div>
 <script type="text/javascript"><!--
 $('#button-confirm').on('click', function() {
-	 
-		
 		  //form-checkout
 		  var dataString = $("#form-checkout").serialize();
         var shipping_payment_error = $("#shipping_payment_error").val();
@@ -25,7 +23,7 @@ $('#button-confirm').on('click', function() {
                 dataType: 'json',
                 data: dataString,
                 cache: false,
-                url: '<?php echo site_url('cod/confirm')?>',
+                url: '<?php echo site_url("cod/confirm")?>',
                 cache: false,
                 beforeSend: function() {
                     //$('#button-confirm').button('loading');
