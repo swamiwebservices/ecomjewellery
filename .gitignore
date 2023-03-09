@@ -6,12 +6,8 @@ application/cache/*
 application/config/*
 system/*
 application/resources/*
-!application/cache/<?php echo site_url('home')?>
 
 application/logs/*
-!application/logs/<?php echo site_url('home')?>
-
-!application/*/.htaccess
 
 composer.lock
 
