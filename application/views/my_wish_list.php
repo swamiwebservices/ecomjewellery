@@ -98,11 +98,10 @@ if(sizeof($sel_rs)){
  
 foreach($sel_rs as $det){
     $main_image = (isset($det['main_image']) && $det['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$det['main_image']:base_url().'assets/img/350x350.png';
-    //   print_r($price_json);
-   $price_json = json_decode($det['price_json'],true);
-      $quantity = $price_json['quantity'][$domain_id];
-      $mrp = $price_json['mrp'][$domain_id];
-      $sellprice = $price_json['sellprice'][$domain_id];  
+     
+    $quantity = $det['quantity'];
+    $mrp = $det['mrp'];
+    $sellprice = $det['sellprice'];  
 
 				 
 	

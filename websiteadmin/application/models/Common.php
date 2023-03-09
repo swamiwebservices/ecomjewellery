@@ -1337,7 +1337,22 @@ class Common extends CI_Model
         echo $combo;
 
     }
+    public function stock_status($wti_stock_status = 0)
+    {
+        $sql = "select * from wti_stock_status         ";
+        $query_result = $this->db->query($sql);
+        $results = $query_result->result_array();
 
+        $combo = "<option value=''>Select stock status</option>";
+        foreach ($results as $key => $value) {
+            $sel_flag = '';
+            if ($value['name'] == $wti_stock_status) {$sel_flag = 'selected';}
+            $combo .= "<option value='" . $value['name'] . "' " . $sel_flag . ">" . $value['name']  . "</option>";
+        }
+
+        echo $combo;
+
+    }
     public function ajaxpagingnation_lux_new($page, $num_rows, $per_page, $links = 7, $fun_name = '', $other_para = '')
     {
 

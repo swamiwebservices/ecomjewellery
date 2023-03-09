@@ -35,24 +35,14 @@ class Pages extends CI_Controller
         $this->load->library('email');
         $this->load->helper('url_helper');
         //if session not exist
-        $data['config_maintenance'] = $config_maintenance = (int) $this->common->get('config_maintenance');
-
-        if ($config_maintenance) {
-            redirect("maintenance");
-            exit;
-        }
-
+        $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
+	
+			 if($config_maintenance){
+			 	 redirect("maintenance");
+			 	  exit;
+			 }
     
- 
-        if (empty($this->session->userdata('domain_id'))) {
-            $this->session->set_userdata('domain_id', '1');
-
-        }
-
-        if (empty($this->session->userdata('domain_id'))) {
-            $this->session->set_userdata('domain_id', '1');
-
-        }
+  
         $this->domain_id = $this->services->getDomainId();
 
         $ar_session_data['last_page_visited'] = site_url("account");
@@ -82,10 +72,21 @@ class Pages extends CI_Controller
         $admin_mail_id = "swamiwebservices@gmail.com";
         $config_site_mail = array();
 
-        $error_msg = "";
+        
  
         if (isset($_POST['mode']) && $_POST['mode'] == "formsubmit") {
-            
+            $userCaptcha = (isset($_POST['userCaptcha'])) ? $this->common->mysql_safe_string($_POST['userCaptcha']) : '';
+            $word = $this->session->userdata('captchaWordnew');
+            if (strcmp(strtoupper($userCaptcha), strtoupper($word)) == 0) {
+
+            } else {
+                $text = time();
+                $this->session->set_userdata('captchaWordnew',$text);
+                $this->session->unset_userdata('captchaWordnew');
+                $error_msg .= "Invalid captcha code...";
+
+            }
+
 
             $contact_fname = (isset($_POST['contact_fname'])) ? $this->common->mysql_safe_string($_POST['contact_fname']) : '';
             $contact_subject = (isset($_POST['contact_subject'])) ? $this->common->mysql_safe_string($_POST['contact_subject']) : '';
@@ -124,7 +125,7 @@ class Pages extends CI_Controller
                 $this->db->insert('wti_t_contactus', $add_in);
 
                 $getDomainAddress = $this->services->getDomainAddress();
-                $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
+                $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail'";
                 $query = $this->db->query($sql);
                 if ($query->num_rows() > 0) {
                     $m_setting = $query->result_array();
@@ -167,13 +168,7 @@ class Pages extends CI_Controller
                         $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
                         $mail->addAddress($admin_mail_id, $config_site_mail['config_site_from_name']); // Add a recipient
                         $mail->addReplyTo($contact_email, $contact_name);
-                        /*
-                        $config_alert_emails = $config_site_mail['config_alert_emails'];
-                        $config_alert_emails_exp = explode(",",$config_alert_emails);
-                        foreach($config_alert_emails_exp as $key => $alertemails){
-                        $mail->addCC($alertemails);
-                        }
-                         */
+                       
                         // Attachments
 
                         // Content
@@ -208,7 +203,7 @@ class Pages extends CI_Controller
         $resultdata = array();
         $data['wti_m_address'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_m_address` where `domains`='" . $domains . "'  ";
+        $sql = "select *  from  `wti_m_address`  ";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
@@ -240,7 +235,7 @@ class Pages extends CI_Controller
         $resultdata = array();
         $data['records'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' ";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
@@ -272,7 +267,7 @@ class Pages extends CI_Controller
         $resultdata = array();
         $data['records'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
@@ -296,14 +291,14 @@ class Pages extends CI_Controller
             $param_page = "home";
         }
         $resultdata = array();
-        $section = 'privacy';
+        $section = 'refund';
         
         $data['section'] = $section;
         $domains = $this->services->getDomainId();
         $resultdata = array();
         $data['records'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
@@ -336,7 +331,7 @@ class Pages extends CI_Controller
         $resultdata = array();
         $data['records'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
@@ -367,7 +362,7 @@ class Pages extends CI_Controller
         $resultdata = array();
         $data['records'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
@@ -399,7 +394,7 @@ class Pages extends CI_Controller
         $resultdata = array();
         $data['records'] = array();
         $data['resultdata'] = array();
-        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "' and domains='{$domains}'";
+        $sql = "select *  from  `wti_cms_pages` where `section`='" . $section . "'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();

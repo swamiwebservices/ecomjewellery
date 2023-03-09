@@ -120,10 +120,18 @@ $i = 0;
                                     <?php echo $this->common->getDbValue($value['payment_address_1']); ?><br>
                                     <strong>Country:</strong>
                                     <?php echo $this->common->getDbValue($value['payment_country']); ?><br>
+                                    <?php
+                                    if(!empty($value['payment_zone'])){
+                                    ?>
                                     <strong>State :</strong>
                                     <?php echo $this->common->getDbValue($value['payment_zone']); ?><br>
+                                    <?php }?>
+                                    <?php
+                                    if(!empty($value['payment_postcode'])){
+                                    ?>
                                     <strong>Pin Code:</strong>
                                     <?php echo $this->common->getDbValue($value['payment_postcode']); ?>
+                                    <?php }?>
                                 </td>
 
 
@@ -157,6 +165,12 @@ $i = 0;
                     <?php
 }?>
 
+
+                    <?php
+                    if(isset($num_row)){
+
+                    
+                    ?>
                     <div class="row">
                         <div class="col-xl-12 text-center  ">
                             <ul class="pagination-flat justify-content-center twbs-flat pagination pull-right">
@@ -165,6 +179,7 @@ $i = 0;
                             </ul>
                         </div>
                     </div>
+                    <?php }?>
                 </div>
                 <!-- /basic datatable -->
             </div>

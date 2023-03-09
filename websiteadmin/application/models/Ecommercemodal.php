@@ -360,7 +360,7 @@ return $query->result_array() ;
         $other_para = "?v=l";
         $search_qry = " WHERE o.order_id!=0    and o.order_status_id in ($order_status) ".$condtion;
 // inner join user_master_front um on o.customer_id = um.user_id
-         $sSql = "SELECT o.invoice_prefix, o.order_id, o.uuid,o.transaction_id,o.invoice_no,o.store_id,o.store_name,o.store_url,o.customer_id, o.firstname,o.lastname,email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_zone,o.payment_country,o.payment_country_id,o.payment_zone_id, o.payment_method,o.payment_code,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_city,o.shipping_postcode,o.shipping_country,o.shipping_country_id,o.shipping_zone,o.shipping_zone_id,o.shipping_code ,o.comment ,o.total ,o.order_status_id, o.date_added,  os.name as order_satus_name, IFNULL(ro.rating, 0) as rating 
+          $sSql = "SELECT o.invoice_prefix, o.order_id, o.uuid,o.transaction_id,o.invoice_no,o.store_id,o.store_name,o.store_url,o.customer_id, o.firstname,o.lastname,email,o.telephone,o.payment_company, o.shipping_company, o.payment_firstname,o.payment_lastname,o.payment_address_1,o.payment_postcode,o.payment_zone,o.payment_country,o.payment_country_id,o.payment_zone_id, o.payment_method,o.payment_code,o.shipping_firstname,o.shipping_lastname,o.shipping_address_1,o.shipping_city,o.shipping_postcode,o.shipping_country,o.shipping_country_id,o.shipping_zone,o.shipping_zone_id,o.shipping_code ,o.comment ,o.total ,o.order_status_id, o.date_added,  os.name as order_satus_name, IFNULL(ro.rating, 0) as rating 
         FROM `m_order` o  inner join 	m_order_status os on o.order_status_id = os.order_status_id 
         left join review_order ro on o.order_id = ro.order_id
         $search_qry
@@ -479,13 +479,7 @@ return $query->result_array() ;
     //end of ecom  market place section'
     public function driver_order_recieved_list($order_id=0){
         $result_array = array();
-          $sql = "SELECT od.*, um.user_id, um.uuid, um.first_name, um.last_name, profile_pic, mobile, email FROM `order_driver_assigned`  od 
-                inner join user_master_front um  on od.driver_user_id = um.user_id  where    od.order_id='" . $order_id . "' order by status desc";
-        $query = $this->db->query($sql);
-      
-        if ($query->num_rows() > 0) {
-            $result_array = $query->result_array();
-        }
+         
         return $result_array;
         die();
     }
@@ -597,60 +591,11 @@ return $query->result_array() ;
     }
     public function getCarryBoyList($user_id = 0, $daily_date = "")
     {
-        if ($daily_date == "") {
-            $daily_date = date("Y-m-d");
-        }
-        $arr = [];
-
-        $sql = "SELECT
-            um.user_id,
-            um.uuid,
-            um.first_name,
-            um.last_name,
-            profile_pic,
-            mobile,
-            email,
-            IF(cb.driver_id = $user_id, '1', '0') as favflag
-        FROM
-            user_master_front um
-            inner join carryboy_dailylogs cbd on um.user_id = cbd.carryBoy_id  and  daily_date='" . $daily_date . "'   
-            left join driver_fav_carryboy cb on um.user_id = cb.carryboy_id and cb.driver_id='".$user_id."'
-           
-        WHERE
-              um.user_type = 'CMAN'
-            AND um.status = 'Active' and cbd.driver_id='".$user_id."'
-        order by
-            first_name";
-
-        $query = $this->db->query($sql);
-
-        if ($query->num_rows() > 0) {
-
-            $carryBoyList = $query->result_array();
-            foreach ($carryBoyList as $users) {
-                if ($users['profile_pic'] != '') {
-                    $profile_pic = back_path . "uploads/profile_pics/" . $this->common->mysql_safe_string($users['profile_pic']);
-                } else {
-                    $profile_pic = back_path . "uploads/noimage.png";
-                }
-
-                $usersinfo[] = array(
-                    'carryboy_id' => $users['user_id'],
-                    'uuid' => $users['uuid'],
-                    'first_name' => $users['first_name'],
-                    'last_name' => $users['last_name'],
-                    'mobile' => $users['mobile'],
-                    'email' => $users['email'],
-                    'favflag' => $users['favflag'],
-                    'profile_pic' => $profile_pic,
-                );
-
-            }
-
-            $arr = $usersinfo;
-
-        }
-        return $arr;
+        $result_array = array();
+         
+        return $result_array;
+        die();
+        
     }
     public function getCustomerInfoById_inorder_confirm_temponly($user_id = '')
     {

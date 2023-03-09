@@ -68,51 +68,28 @@ if ($warning) {
                             <h5 class="card-title "><?php echo (isset($sub_heading)) ? $sub_heading : '' ?> </h5>
                         </div>
                         <div class="card-body">
-                        <ul class="nav nav-tabs nav-tabs-bottom">
-                            <?php
-                           $ind=0;
-                                           $domain_list = $this->config->item("DOMAINs");
-                                           foreach($domain_list as $key => $domain){
-                                            $ind++;
-                                            $domain_org = $domain;
-                                            $domain = str_replace(".","_",$domain);
-                                            
-                                         ?>
-                            <li class="nav-item"><a href="#domains<?php echo $key?>"
-                                    class="nav-link <?php echo (isset($ind) && $ind==1) ? 'active' : '' ?>"
-                                    data-toggle="tab"> <?php echo $domain_org?></a></li>
-                            <?php }?>
-                        </ul>
-                        <div class="tab-content">
-                            <?php
-                            $ind=0;
-                              foreach($domain_list as $key => $domain){
-                                $ind++;
-                            ?>
-                            <div class="tab-pane fade  <?php echo  (isset($ind) && $ind==1) ? ' show active' : '' ?>"
-                                id="domains<?php echo $key?>">
-                                <form name="frm-edit" id="frm-edit" action="<?php echo site_url($controller . '/'.$fun_name) ?>" method="post" enctype="multipart/form-data"  >
+                        <form name="frm-edit" id="frm-edit" action="<?php echo site_url($controller . '/'.$fun_name) ?>" method="post" enctype="multipart/form-data"  >
                                 <input type="hidden" name="mode" id="mode" value="submitform">
-                                <input type="hidden" name="section" id="section" value="<?php echo isset($records[$key]['section']) ? $records[$key]['section'] : ''; ?>">
+                                <input type="hidden" name="section" id="section" value="<?php echo isset($records['section']) ? $records['section'] : ''; ?>">
                                 <input type="hidden" name="domains" id="domains"
                                         value="<?php echo isset($key) ? $key : ''; ?>">
                                 <div class="form-group row">
                                     <label class="col-lg-2 col-form-label" for="heading">Name<span class="text-danger">*</span></label>
                                     <div class="col-lg-10">
-                                        <input type="text" class="form-control alhanumeric1 maxlength-textarea" maxlength="200" name="heading" id="heading" value="<?php echo isset($records[$key]['heading']) ? $records[$key]['heading'] : ''; ?>" placeholder="Name">
+                                        <input type="text" class="form-control alhanumeric1 maxlength-textarea" maxlength="200" name="heading" id="heading" value="<?php echo isset($records['heading']) ? $records['heading'] : ''; ?>" placeholder="Name">
                                     </div>
                                 </div>
                               <!--   <div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="detail_mini">Details (mini):</label>
                                     <div class="col-lg-9">
-                                    <textarea rows="2" cols="3" class="form-control " placeholder="Details (mini)" id="detail_mini" name="detail_mini"><?php //echo isset($records[$key]['detail_mini'])?$this->common->getDbValue($records[$key]['detail_mini']):''; ?></textarea>
+                                    <textarea rows="2" cols="3" class="form-control " placeholder="Details (mini)" id="detail_mini" name="detail_mini"><?php //echo isset($records['detail_mini'])?$this->common->getDbValue($records['detail_mini']):''; ?></textarea>
 
                                     </div>
                                 </div> -->
                                 <div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="details">Details :<span class="text-danger">*</span></label>
                                     <div class="col-lg-9">
-                                    <textarea rows="15" cols="3" class="form-control summernote" placeholder="details" id="details" name="details"><?php echo isset($records[$key]['details'])?$this->common->getDbValue($records[$key]['details']):''; ?></textarea>
+                                    <textarea rows="15" cols="3" class="form-control summernote" placeholder="details" id="details" name="details"><?php echo isset($records['details'])?$this->common->getDbValue($records['details']):''; ?></textarea>
 
                                     </div>
                                 </div>
@@ -121,7 +98,7 @@ if ($warning) {
                                 <div class="form-group  hideall   row">
                                 <?php
                                 
-                                      $main_image = (isset($records[$key]['main_image']) && $records[$key]['main_image']!="") ? base_url()."../uploads/cms/".$records[$key]['main_image'] : 'https://via.placeholder.com/140x100'; ;
+                                      $main_image = (isset($records['main_image']) && $records['main_image']!="") ? base_url()."../uploads/cms/".$records['main_image'] : 'https://via.placeholder.com/140x100'; ;
                                     ?>
                                     <label class="col-md-2 control-label">Image</label>
                                     <div class="col-md-10">
@@ -161,9 +138,6 @@ if ($warning) {
                                     </div>
                                 </div>
                             </form>
-                            </div>
-                            <?php }?>
-                        </div>
                             
                         </div>
                     </div>

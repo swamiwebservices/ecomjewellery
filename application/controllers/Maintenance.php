@@ -7,14 +7,18 @@ class Maintenance extends CI_Controller
 {
 
     public function __construct()
-    {		  parent::__construct();
+    {	 parent::__construct();
+          
 		$this->load->library('session');
+		
 		$this->load->model('common');
+		$this->load->model('services');
+	  
 		$this->load->helper('security');
 		$this->load->library('email');
 		$this->load->helper('url_helper');
-		//if session not exist
 	 
+		 
   			 $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
 	
 			if($config_maintenance==0){

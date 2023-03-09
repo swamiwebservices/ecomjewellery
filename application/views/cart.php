@@ -143,13 +143,25 @@ $domain_id = $this->domain_id;
             <?php
                         //print_r($record);
                         if(isset($record['items']) && sizeof($record['items']) > 0){
-
-                        
                         ?>
             <form action="<?php echo site_url("cart/update")?>" method="post">
                 <div class="row">
                     <div class="col-12 ">
+                    <?php
+                    $flag_out_of_stock =0;
+                                foreach($record['items'] as $key => $value){    
+                                    if($value['quantity']==0){
+                                        $flag_out_of_stock =1;
+                                    }
+                                }
+                           if($flag_out_of_stock==1){         
+                    ?>                
+                    <div class="alert alert-danger "><i class="fa-solid fa-circle-exclamation"></i> Products marked with *** are not available in the desired quantity or not in stock!</div>
+                    <?php
 
+                                    }
+
+                ?>
                         <div class="table_desc ">
                             <div class="cart_page table-responsive">
                                 <table class="table1 table-bordered1">
@@ -171,10 +183,8 @@ $domain_id = $this->domain_id;
 
                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
 
-                                     $price_json = json_decode($value['price_json'],true);
-                                    //   print_r($price_json);
-                                      
-                                      $sellprice = $value['price']; 
+                                   
+                                      $sellprice = $value['sellprice']; 
                                       $sellprice_total   = $sellprice * $value['cart_qty'];
                                 ?>
                                         <tr>
@@ -183,8 +193,8 @@ $domain_id = $this->domain_id;
                                                     href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                                                         src="<?php echo $main_image?>" class="cart-image" alt=""></a>
                                             </td>
-                                            <td class="product_name"><a
-                                                    href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?></a>
+                                            <td class="product_name "><a
+                                                    href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><?php echo $value['name']?><?php echo ($value['quantity']==0) ? '<span class="text-danger " > *** </span>' : '' ?></a>
                                             </td>
                                             <td class="product-price"><?php echo $this->services->format($sellprice)?>
                                             </td>
@@ -214,8 +224,8 @@ $domain_id = $this->domain_id;
                                                 </div>
                                             </td>
                                             <td class="product_total">
-                                                <?php $subtotal = (!empty($record['subtotal'])) ? $record['subtotal'] : '0.00';
-                                                echo $this->services->format($subtotal); ?>
+                                                <?php // $subtotal = (!empty($record['subtotal'])) ? $record['subtotal'] : '0.00';
+                                                echo $this->services->format($sellprice_total); ?>
                                             </td>
 
 
@@ -226,6 +236,7 @@ $domain_id = $this->domain_id;
                                     </tbody>
                                 </table>
                             </div>
+                            
                             <div class="cart_submit">
                                 <button type="submit">update cart</button>
                             </div>

@@ -36,14 +36,13 @@ class Sitecontrol extends CI_Controller {
         $data['controller'] = $this->controller;
 		$error = "";
 		$code = 'config_site_mail';
-			
+		 
 		if(isset($_POST['mode']) && $_POST['mode']=='edit_content_sitemail'){
-			 
-				
+			
 				//$this->db->query("DELETE FROM `wti_m_setting` WHERE  `group_name` = '" . $this->common->getDbValue($code) . "'");
 				
  				foreach ($_POST as $key => $value) {
-					$store_id = $_POST['store_id'];
+				 
 					//
 						/* 	if (!is_array($value)) {
 								$this->db->query("INSERT INTO `wti_m_setting` SET  `group_name` = '" . $this->common->getDbValue($code) . "', `key` = '" . $this->common->getDbValue($key) . "', `value` = '" . $this->common->getDbValue($value) . "'");
@@ -52,10 +51,10 @@ class Sitecontrol extends CI_Controller {
 							}
 						*/
 				 	
-						$sql = "select * from wti_m_setting where `group_name` = '" . $this->common->getDbValue($code) . "' and  `key_name` = '" . $this->common->getDbValue($key) . "' and store_id='{$store_id}' ";
+						$sql = "select * from wti_m_setting where `group_name` = '" . $this->common->getDbValue($code) . "' and  `key_name` = '" . $this->common->getDbValue($key) . "'  ";
 						$query_tesmp = $this->db->query($sql);
 						if($query_tesmp->num_rows()>0){
-							$sql = "update wti_m_setting set `value` = '" . $this->common->getDbValue($value) . "' where  `group_name` = '" . $this->common->getDbValue($code) . "' and  `key_name` = '" . $this->common->getDbValue($key) . "' and store_id='{$store_id}'";		
+							$sql = "update wti_m_setting set `value` = '" . $this->common->getDbValue($value) . "' where  `group_name` = '" . $this->common->getDbValue($code) . "' and  `key_name` = '" . $this->common->getDbValue($key) . "' ";		
 							$this->db->query($sql);
 						} else {
 							// if (!is_array($value)) {
@@ -72,7 +71,7 @@ class Sitecontrol extends CI_Controller {
 						  
                 $this->session->set_flashdata('success', 'Infomation updated successfully!');
                 
-					redirect($this->controller.'/sitemail');
+				//	redirect($this->controller.'/sitemail');
 			 
 			
 			
@@ -90,7 +89,7 @@ class Sitecontrol extends CI_Controller {
 	
 		$data_info_temp = [];
 		foreach($resultdata as $key => $dataAddress){
-			$data_info_temp[$dataAddress['store_id']][] = $dataAddress;
+			$data_info_temp[] = $dataAddress;
 
 		}
 		$resultdata = $data_info_temp;
@@ -327,6 +326,104 @@ class Sitecontrol extends CI_Controller {
 			//$this->load->view('include/header');
 			$this->load->view('edit_setting',$data);
 	}
+
+	public function sitelogo(){ 
 	
+		$data['activaation_id'] = 1101;
+		$data['sub_activaation_id'] =  '1101_7';	
+		$data['title'] = 'LOGO ';	
+		$data['sub_heading'] = 'Logo';
+		$session_user_data = $this->session->userdata('user_data');
+		
+		$error = "";
+		$code = 'config_logo';
+			
+		if(isset($_POST['mode']) && $_POST['mode']=='edit_content'){
+			
+			$config_logo_old = $this->common->mysql_safe_string($_POST['config_logo_old']);
+			
+			$config_logo_footer_old = $this->common->mysql_safe_string($_POST['config_logo_footer_old']);
+			
+				
+				$this->db->query("DELETE FROM `wti_m_setting` WHERE  `group_name` = '" . $this->common->getDbValue($code) . "'");
+				
+ 				foreach ($_POST as $key => $value) {
+					//
+					 
+						 	$this->db->query("INSERT INTO `wti_m_setting` SET  `group_name` = '" . $this->common->getDbValue($code) . "', `key_name` = '" . $this->common->getDbValue($key) . "', `value` = '" . $this->common->getDbValue($value) . "'");
+				} 
+				
+				
+			
+			 if($_FILES['main_image']['name']!='') {
+
+							$image_old_path = '../uploads/logo/'.$config_logo_old;
+							if (file_exists($image_old_path)) {
+								@unlink($image_old_path);
+							  }
+
+					 $filename="logo_main";
+					 
+					 $upload=$this->common->UploadImage('main_image', '../uploads/logo/', 0, $height_thumb='', $width_thumb='',$filename);
+
+					 if($upload['uploaded']=='false') {
+							$error = $upload['uploadMsg'];							
+					  } else{
+							$config_logo=$upload['imageFile'];
+							$this->db->query("INSERT INTO `wti_m_setting` SET  `group_name` = '" . $this->common->getDbValue($code) . "', `key_name` = 'config_logo', `value` = '" . $this->common->getDbValue($config_logo) . "'");
+							
+					  }
+			 } else {
+				 $this->db->query("INSERT INTO `wti_m_setting` SET  `group_name` = '" . $this->common->getDbValue($code) . "', `key_name` = 'config_logo', `value` = '" . $this->common->getDbValue($config_logo_old) . "'");
+			 }
+			
+			 if($_FILES['logo_footer']['name']!='') {
+
+				$image_old_path = '../uploads/logo/'.$config_logo_footer_old;
+				if (file_exists($image_old_path)) {
+					@unlink($image_old_path);
+				  }
+				  
+				$filename="logo_footer";
+				
+				$upload=$this->common->UploadImage('logo_footer', '../uploads/logo/', 0, $height_thumb='', $width_thumb='',$filename);
+
+				if($upload['uploaded']=='false') {
+					   $error = $upload['uploadMsg'];							
+				 } else{
+					   $config_logo_footer=$upload['imageFile'];
+					   $this->db->query("INSERT INTO `wti_m_setting` SET  `group_name` = '" . $this->common->getDbValue($code) . "', `key_name` = 'config_logo_footer', `value` = '" . $this->common->getDbValue($config_logo_footer) . "'");
+					  
+				 }
+		} else {
+			$this->db->query("INSERT INTO `wti_m_setting` SET  `group_name` = '" . $this->common->getDbValue($code) . "', `key_name` = 'config_logo_footer', `value` = '" . $this->common->getDbValue($config_logo_footer_old) . "'");
+		}
+				$this->session->set_flashdata('success_msg', 'Information updated succssfully..');
+						  
+			 
+				 redirect($this->controller."/sitelogo");
+			
+			
+			
+		
+		}
+		
+		$resultdata = array();
+		$data['records'] = array();
+				
+		$sql = "select * from  `wti_m_setting` where `group_name`='".$code."'";
+		$query = $this->db->query($sql);
+		 if ($query->num_rows()>0) {
+			$resultdata =    $query->result_array();
+		}
+		$data['records'] = array();
+		//print_r($records);
+	 	foreach($resultdata as $key => $value){
+			$data['records'][$value['key_name']] = $value['value'];
+		}
+		 
+		
+		$this->load->view(  'sitecontrol_sitelogo_view', $data);
+	}
 }
 

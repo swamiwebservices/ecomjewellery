@@ -119,6 +119,7 @@ class Services extends CI_Model
         if (!$domain_id) {
             $domain_id = 1;
         }
+        $domain_id = 1;
         return $domain_id;
     }
     public function getDomainAddress()
@@ -128,25 +129,27 @@ class Services extends CI_Model
         $domain_name = $_SERVER['HTTP_HOST'];
         $domain_name   = str_replace("www.","",$domain_name);
 
-        $domain_list = $this->config->item("DOMAINs");
-        $domain_id = array_search($domain_name, $domain_list);
-        if (!$domain_id) {
-            $domain_id = 1;
-        }
+        // $domain_list = $this->config->item("DOMAINs");
+        // $domain_id = array_search($domain_name, $domain_list);
+        // if (!$domain_id) {
+        //     $domain_id = 1;
+        // }
+        
+        $domain_id = 1;
         $HTTP_DOMAIN_URL = site_url();
         $LOGO_URL = "https://www.bondbeyond.ae/assets/img/logo/logo.png";
 
-        $address[1] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondbeyond.ae<br /> Web <a href='http://bondbeyond.ae/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+        $address = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondbeyond.ae<br /> Web <a href='http://bondbeyond.ae/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
 
-            $LOGO_URL = "https://www.bondforu.com/assets/img/logo/logo.png";
+        // $LOGO_URL = "https://www.bondforu.com/assets/img/logo/logo.png";
 
-        $address[2] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondforu.com<br /> Web <a href='http://bondforu.com/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+        // $address[2] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondforu.com<br /> Web <a href='http://bondforu.com/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
 
-        $LOGO_URL = "https://www.bondforu.com/assets/img/logo/logo.png";
+        // $LOGO_URL = "https://www.bondforu.com/assets/img/logo/logo.png";
 
-        $address[3] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondforu.com<br /> Web <a href='https://www.bondforu.com/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+        // $address[3] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: Shop No.34, AL Kifaf Oasis, Near Burjuman Metro exit2,Karama, Dubai <br /> Phone: +971 42968516 | Email: info@bondforu.com<br /> Web <a href='https://www.bondforu.com/' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
 
-        $address_single = $address[$domain_id];
+        $address_single = $address;
         return $address_single;
     }
     public function getCurrency()

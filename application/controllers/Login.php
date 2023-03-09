@@ -36,21 +36,11 @@ class Login extends CI_Controller
         $this->load->helper('security');
         $this->load->library('email');
         $this->load->helper('url_helper');
-
-        // $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
-
-        // if($config_maintenance){
-        //      redirect("maintenance");
-        //       exit;
-        // }
-        if (empty($this->session->userdata('domain_id'))) {
-            $this->session->set_userdata('domain_id', '1');
-
-        }
-
-        if (empty($this->session->userdata('domain_id'))) {
-            $this->session->set_userdata('domain_id', '1');
-
+        $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
+	
+        if($config_maintenance){
+             redirect("maintenance");
+              exit;
         }
         $this->domain_id = $this->services->getDomainId();
 
@@ -222,7 +212,7 @@ class Login extends CI_Controller
                 //            $this->email->message($content);
                 //            $this->email->send();
                 $getDomainAddress = $this->services->getDomainAddress();
-                $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
+                $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail'";
 
                 $query = $this->db->query($sql);
                 if ($query->num_rows() > 0) {
@@ -286,13 +276,7 @@ class Login extends CI_Controller
                         $mail->setFrom($admin_mail_id, $config_site_mail['config_site_from_name']);
                         $mail->addAddress($contact_email, $contact_name); // Add a recipient
                       //  $mail->addReplyTo($admin_mail_id, $contact_name);
-                        /*
-                        $config_alert_emails = $config_site_mail['config_alert_emails'];
-                        $config_alert_emails_exp = explode(",",$config_alert_emails);
-                        foreach($config_alert_emails_exp as $key => $alertemails){
-                        $mail->addCC($alertemails);
-                        }
-                         */
+                        
                         // Attachments
 
                         // Content

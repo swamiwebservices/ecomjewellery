@@ -166,6 +166,7 @@ class Services extends CI_Model
         if (!$domain_id) {
             $domain_id = 1;
         }
+        $domain_id = 1;
         return $domain_id;
     }
     public function getDomainAddress()
@@ -180,9 +181,10 @@ class Services extends CI_Model
         if (!$domain_id) {
             $domain_id = 1;
         }
+        $domain_id = 1;
         $wti_m_address = array();
     
-        $sql = "select *  from  `wti_m_address` where `domains`='" . $domain_id . "'  ";
+        $sql = "select *  from  `wti_m_address`    ";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             $resultdata = $query->row_array();
@@ -195,19 +197,25 @@ class Services extends CI_Model
 
         $HTTP_DOMAIN_URL = site_url();
         $HTTP_DOMAIN_URL_HOME = site_url('home');
-        $LOGO_URL = "https://bondbeyond.ae/assets/img/logo/logo.png";
+        $LOGO_URL = "";
         
-        $address[1] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: ".$DOMAIN_ADDRESS_FOOTER." <br /> Phone: ".$DOMAIN_ADDRESS_PHONE." | Email: ".$DOMAIN_ADDRESS_EMAIL."<br /> Web <a href='".$HTTP_DOMAIN_URL_HOME."' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
+        $sql = "select * from  `wti_m_setting` where `group_name`='config_logo'";
+        $query = $this->db->query($sql);
+         if ($query->num_rows()>0) {
+            $resultdata =    $query->result_array();
+        }
+        $data['records'] = array();
+        //print_r($records);
+         foreach($resultdata as $key => $value){
+            $data['records'][$value['key_name']] = $value['value'];
+        }
+        $LOGO_URL = (!empty($data['records']['config_logo'])) ? base_url("uploads/logo/".$data['records']['config_logo']) : '';
+        //config_logo
 
-            $LOGO_URL = "https://www.bondforu.com/assets/img/logo/logo.png";
+        $address = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: ".$DOMAIN_ADDRESS_FOOTER." <br /> Phone: ".$DOMAIN_ADDRESS_PHONE." | Email: ".$DOMAIN_ADDRESS_EMAIL."<br /> Web <a href='".$HTTP_DOMAIN_URL_HOME."' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
 
-        $address[2] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: ".$DOMAIN_ADDRESS_FOOTER." <br /> Phone: ".$DOMAIN_ADDRESS_PHONE." | Email:  ".$DOMAIN_ADDRESS_EMAIL."<br /> Web <a href='".$HTTP_DOMAIN_URL_HOME."' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
-
-            $LOGO_URL = "https://www.bondforu.com/assets/img/logo/logo.png";
-
-        $address[3] = array('DOMAIN_ID' => $domain_id, 'LOGO_URL' => $LOGO_URL, 'HTTP_DOMAIN_URL' => $HTTP_DOMAIN_URL, 'DOMAINNAME' => $domain_name, 'DOMAIN_ADDRESS_FOOTER' => "Address: ".$DOMAIN_ADDRESS_FOOTER." <br /> Phone: ".$DOMAIN_ADDRESS_PHONE." | Email:  ".$DOMAIN_ADDRESS_EMAIL."<br /> Web <a href='".$HTTP_DOMAIN_URL_HOME."' target='_blank'>{$domain_name}</a><br /> &copy;  {$date1}- {$date2} - All rights reserved ", 'CONTACTUS_URL' => site_url('contact-us'));
-
-        $address_single = $address[$domain_id];
+         
+        $address_single = $address;
         return $address_single;
     }
     public function getCurrency()
@@ -308,7 +316,7 @@ class Services extends CI_Model
         $query = $this->db->query($sql);
 
         $query_row = $query->row_array();
-        return $query_row['total'];
+        return $query_row['total'] + 0;
 
     }
     public function updatecartqty($cart_id, $quantity)
@@ -341,9 +349,9 @@ class Services extends CI_Model
         $session_user_data = $this->session->userdata('front_user_detail');
 
         if (isset($session_user_data['customer_id'])) {
-            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json,pm.item_code from cart_master cm , product_master pm  where cm.product_id=pm.product_id and user_id = '" . (int) $this->getId() . "'";
+            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name, pm.mrp, pm.sellprice , pm.quantity,pm.item_code from cart_master cm , product_master pm  where cm.product_id=pm.product_id and user_id = '" . (int) $this->getId() . "'";
         } else {
-            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.price_json , pm.item_code from cart_master cm , product_master pm  where cm.product_id=pm.product_id and  shopping_session = '" . $this->get_shopping_session() . "'";
+            $sql = "select cm.* ,pm.slug_name,pm.main_image, pm.name , pm.mrp, pm.sellprice, pm.quantity , pm.item_code from cart_master cm , product_master pm  where cm.product_id=pm.product_id and  shopping_session = '" . $this->get_shopping_session() . "'";
         }
 
         $query = $this->db->query($sql);
@@ -587,8 +595,7 @@ class Services extends CI_Model
         $this->db->query($sql);
 
         foreach ($cartinfo as $key => $product) {
-            $price_json = json_decode($product['price_json'], true);
-            //   print_r($price_json);
+          
 
             $sellprice = $product['price'];
             $sellprice_total = $sellprice * $product['cart_qty'];
@@ -713,7 +720,7 @@ class Services extends CI_Model
             //send mail
 
             $getDomainAddress = $this->services->getDomainAddress();
-            $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
+            $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail'";
 
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
@@ -956,7 +963,7 @@ class Services extends CI_Model
         foreach ($order_product_query->result_array() as $product) {
 
             // Stock subtraction
-            //  $this->db->query("UPDATE product_master SET quantity = (quantity - " . (int) $product['quantity'] . ") WHERE product_id = '" . (int) $product['product_id'] . "' ");
+              $this->db->query("UPDATE product_master SET quantity = (quantity - " . (int) $product['quantity'] . ") WHERE product_id = '" . (int) $product['product_id'] . "' and subtract=1 ");
 
             $data['products'][] = array(
                 'name' => $product['name'],
@@ -982,7 +989,7 @@ class Services extends CI_Model
         }
 
         $getDomainAddress = $this->services->getDomainAddress();
-        $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
+        $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail'";
 
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {

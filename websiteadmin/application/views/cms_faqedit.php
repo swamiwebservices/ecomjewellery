@@ -87,20 +87,9 @@ if ($warning) {
 
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="question_en">Question Eng :</label>
-                                    <div class="col-lg-9"><input type="text" class="form-control " id="question_en" name="question_en" placeholder="Question Eng" value="<?php echo isset($records['question_en'])?$this->common->getDbValue($records['question_en']):''; ?>">
-                                        <!-- <div id="basic-error" class="validation-invalid-label" for="basic">This field is required.</div> -->
-                                    </div>
-                                </div>
+                                
                                
-                                <div class="form-group row">
-                                    <label class="col-form-label col-lg-2" for="answer_en">Answer End :</label>
-                                    <div class="col-lg-9">
-                                    <textarea rows="3" cols="3" class="form-control" placeholder="Answer Eng" id="answer_en" name="answer_en"><?php echo isset($records['answer_en'])?$this->common->getDbValue($records['answer_en']):''; ?></textarea>
-
-                                    </div>
-                                </div>
+                               
                                 <div class="form-group row">
                                     <label class="col-form-label col-lg-2" for="sort_no">Sort No:</label>
                                     <div class="col-lg-9"><input type="text" class="form-control " id="sort_no" name="sort_no" placeholder="Question Eng" value="<?php echo isset($records['sort_no'])?$this->common->getDbValue($records['sort_no']):''; ?>">

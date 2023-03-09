@@ -211,9 +211,7 @@ $getDomainId = $this->services->getDomainId();
                                         
                                          foreach($record['items'] as $key => $value){
                                             $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/'.$value['main_image']:base_url().'assets/img/350x350.png';
-                                            $price_json = json_decode($value['price_json'],true);
-                                           //   print_r($price_json);
-                                             
+                                            
                                              $sellprice = $value['price']; 
                                              $sellprice_total   = $sellprice * $value['cart_qty'];
                                         ?>

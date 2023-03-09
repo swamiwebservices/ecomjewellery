@@ -153,7 +153,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label class="col-sm-2 control-label" for="input-sort-order">Sort
                                     Order</label>
                                 <div class="col-sm-10">
@@ -161,9 +161,11 @@
                                         value="<?php echo isset($records['razorpay_sort_order']) ? $records['razorpay_sort_order'] : ''; ?>"
                                         placeholder="Sort Order" id="input-sort-order" class="form-control" />
                                 </div>
-                            </div>
+                            </div> -->
 
-
+                            <input type="hidden" name="razorpay_sort_order"
+                                        value="<?php echo isset($records['razorpay_sort_order']) ? $records['razorpay_sort_order'] : ''; ?>"
+                                        placeholder="Sort Order" id="input-sort-order" class="form-control" />
 
                             <div class="form-group row">
                                 <label class="col-md-2 control-label"> </label>

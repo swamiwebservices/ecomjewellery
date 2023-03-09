@@ -38,7 +38,7 @@
             <div class="container">
                 <div class="row align-items-center">
 
-                    <div class="col-lg-12 col-md-12">
+                    <div class="col-lg-12 col-md-12 privacy_content">
                     <?php
                         print_r($records);
 

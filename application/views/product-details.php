@@ -47,6 +47,13 @@ $domain_id = $this->domain_id;
     .breadcrum li a {
         text-transform: uppercase !important;
     }
+
+    .single-zoom-thumb {
+    margin-top: 0px !important;
+    }
+    .product-detail-tab{
+        position: relative;
+    }
     </style>
 </head>
 
@@ -82,28 +89,36 @@ $domain_id = $this->domain_id;
 
 
         <?php
-                                  $price_json = json_decode($productdetail['price_json'],true);
-                                  //   print_r($price_json);
-                                    $quantity = $price_json['quantity'][$domain_id];
-                                    $mrp = $price_json['mrp'][$domain_id];
-                                    $sellprice = $price_json['sellprice'][$domain_id];  
-                                    
+                                
+
+                                    $quantity = $productdetail['quantity'];
+                                    $mrp = $productdetail['mrp'];
+                                    $sellprice = $productdetail['sellprice'];  
+
+                                    $stock_status = $productdetail['stock_status'];  
+                                    $stock_status_show = ($quantity<=0) ? $stock_status : '';  
+                                    $random = rand(0,100);
+                                    $stock_status_new = "";
+                                    if ($random % 2 == 0) {
+                                    $stock_status_new = "new";  
+                                    }
                                 ?>
         <!--product details start-->
         <div class="product_details whitebg">
             <div class="container">
                 <div class="row">
                  
-                <div class="col-lg-6 col-md-6">
+                <div class="col-lg-6 col-md-6 text-center">
                     <?php 
                        //print_r($productdetail);
                     ?>
-                   <div class="product-detail-tab">
+                   <div class="product-detail-tab p-4"  id="img-1">
 
-                        <div id="img-1" class="zoomWrapper single-zoom">
+                        <div class="zoomWrapper single-zoom ">
                             <a href="javascript:void(0);">
                                 <img id="zoom1" src="<?php echo base_url()?>uploads/prod_images/<?php echo $productdetail['main_image']?>" data-zoom-image="<?php echo base_url()?>uploads/prod_images/<?php echo $productdetail['main_image']?>" alt="big-1">
                             </a>
+                                
                         </div>
 
                         <div class="single-zoom-thumb">
@@ -136,7 +151,20 @@ $domain_id = $this->domain_id;
                                 }?>
                             </ul>
                         </div>
+                        <div class="product-labels">
+                        <?php
+                          if($stock_status_show!=""){
+                            ?>
+                            <span
+                                class="product-label product-label-30 product-label-diagonal"><b>Out
+                                    Of Stock</b></span>
+                            <?php }?>
+                        
+                        
+                        </div> 
+                        
                     </div>
+                    
                 </div>
                     <div class="col-lg-6 col-md-6">
                         <div class="product_d_right">
@@ -161,7 +189,7 @@ $domain_id = $this->domain_id;
                                 </div> -->
                                 <div class="product_d_meta">
                                     <span>Model: <?php echo $productdetail['item_code']?></span>
-                                    <span>Availability: <?php echo ($quantity>0) ? 'In Stock' : 'Out Of Stock' ?></span>
+                                    <span>Availability: <?php echo ($quantity>0) ? 'In Stock' : $stock_status_show ?></span>
 
                                 </div>
                                 <div class="product_price">
@@ -317,12 +345,18 @@ $domain_id = $this->domain_id;
         
         foreach($latestProduct as $key => $value){
             $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
-            $price_json = json_decode($value['price_json'],true);
-            //   print_r($price_json);
-              $quantity = $price_json['quantity'][$domain_id];
-              $mrp = $price_json['mrp'][$domain_id];
-              $sellprice = $price_json['sellprice'][$domain_id];  
-              
+           
+            $quantity = $value['quantity'];
+            $mrp = $value['mrp'];
+            $sellprice = $value['sellprice'];  
+            
+            $stock_status = $value['stock_status'];  
+            $stock_status_show = ($quantity<=0) ? $stock_status : '';  
+            $random = rand(0,100);
+            $stock_status_new = "";
+            if ($random % 2 == 0) {
+              $stock_status_new = "new";  
+            }
         ?>
     <div class="custom-col-5">
         <div class="single_product">
@@ -330,16 +364,22 @@ $domain_id = $this->domain_id;
                 <a class="primary_img"
                     href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
                         src="<?php echo $main_image?>" alt=""></a>
-                <a class="secondary_img"
-                    href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img
-                        src="<?php echo $main_image?>" alt=""></a>
-                <div class="quick_button">
-                    <!-- <a href="javascript:void(0);" data-bs-toggle="modal"
-                        data-bs-target="#modal_box" data-placement="top"
-                        data-uuid="<?php echo $value['uuid']; ?>"
-                        data-pdata="<?php echo json_encode($value); ?>"
-                        data-original-title="quick view"> quick view</a> -->
-                </div>
+                        <div class="product-labels">
+                                                        <?php
+                                                            if($stock_status_new!=""){
+                                                            ?>
+                                                            <span
+                                                                class="product-label product-label-29 product-label-default"><b>New</b></span>
+                                                                <?php }?>
+                                                            <?php
+                                                            if($stock_status_show!=""){
+                                                            ?>
+                                                            <span
+                                                                class="product-label product-label-30 product-label-diagonal"><b>Out
+                                                                    Of Stock</b></span>
+                                                            <?php }?>
+                                                        </div>
+                
             </div>
             <div class="product_content">
                 <!--  <div class="tag_cate">

@@ -54,4 +54,35 @@ const SITE_URL = "<?php echo base_url()?>";
 div.product_thumb img {
     border-radius: 5px;
 }
+
+.privacy_content h3{
+    padding: 30px 0 10px 0;
+}
+.privacy_content ul {
+    padding-left: 40px;  
+    list-style-type:disc;
+  list-style-position: outside;
+  list-style-image: none;
+
+}
+
+.privacy_content p a:hover {
+    color: #fff;
+}
+
+#cookieNotice{
+  display:none;
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background-color:#fff;
+  width:100%;
+  text-align:center;
+  padding:1rem;
+  z-index:10;
+}
+
+
+ 
 </style>

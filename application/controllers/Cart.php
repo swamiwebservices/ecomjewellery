@@ -34,21 +34,12 @@ class Cart extends CI_Controller
         $this->load->library('email');
         $this->load->helper('url_helper');
 
-        // $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
-
-        // if($config_maintenance){
-        //      redirect("maintenance");
-        //       exit;
-        // }
-        if (empty($this->session->userdata('domain_id'))) {
-            $this->session->set_userdata('domain_id', '1');
-
-        }
-
-        if (empty($this->session->userdata('domain_id'))) {
-            $this->session->set_userdata('domain_id', '1');
-
-        }
+        $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
+	
+			 if($config_maintenance){
+			 	 redirect("maintenance");
+			 	  exit;
+			 }
         $this->domain_id = $this->services->getDomainId();
 
         $ar_session_data['last_page_visited'] = site_url("cart");
@@ -60,7 +51,7 @@ class Cart extends CI_Controller
 
         $cartinfo = $this->services->getCartinfo();
         $cartSubtotal = $this->services->getCartSubtotal();
-        //print_r($cartinfo);
+       // print_r($cartinfo);
 
         // Coupon
         //$coupon = $this->common->mysql_safe_string($_POST['coupon']);
@@ -251,6 +242,22 @@ class Cart extends CI_Controller
             $param_cart = [];
             $cartItems = $this->services->addtocart($param_cart);
         } else {
+           $product_quantity = $productdetail['quantity'];
+
+            if($product_quantity ==0 && $productdetail['allow_buy_zeroqty']==0){
+                $param_cart = [];
+                $cartItems = $this->services->addtocart($param_cart);
+                $json['cartItems'] = $cartItems;
+                
+                $productdetail['name'] = $productdetail['name'];
+        
+                $json['warning'] = sprintf('Warning: Sorry %s Product is Out Of Stock and is not available for buy now!',  $productdetail['name']);
+                $json['productdetail'] = $productdetail;
+                echo json_encode($json);
+                die();
+            }
+
+
             if (isset($_POST['cart_qty']) && ((int) $this->input->post('cart_qty') >= $productdetail['minimum'])) {
                 $cart_qty = (int) $this->input->post('cart_qty');
             } else {
@@ -261,10 +268,12 @@ class Cart extends CI_Controller
                 $cart_qty = $productdetail['quantity'];
             }
 
-            $price_json = json_decode($productdetail['price_json'], true);
-            $quantity = $price_json['quantity'][$domain_id];
-            $mrp = $price_json['mrp'][$domain_id];
-            $sellprice = $price_json['sellprice'][$domain_id];
+          
+
+            $quantity = $productdetail['quantity'];
+            $mrp = $productdetail['mrp'];
+            $sellprice = $productdetail['sellprice'];
+
 
             $param_cart['product_id'] = $product_id;
             $param_cart['quantity'] = $cart_qty;
@@ -273,10 +282,8 @@ class Cart extends CI_Controller
         }
 
         $json['cartItems'] = $cartItems;
-        // print_r($_REQUEST);
-        // $json['redirect'] ='ddd';
-        $pro_slug = "aaa-aa";
-        $productdetail['product_id'] = 10;
+        
+       // $productdetail['product_id'] = 10;
         $productdetail['name'] = $productdetail['name'];
 
         $json['success'] = sprintf('Success: You have added <a href="%s">%s</a> to your <a href="%s">Shopping cart</a>!', site_url('product-detail/' . $productdetail['slug_name'] ), $productdetail['name'], site_url('cart'));

@@ -19,6 +19,19 @@ $wti_m_address = (isset($wti_m_address1[0])) ? $wti_m_address1[0] : [];
      $popupdata[$value['key_name']] = $value['value'];
  }
  //print_r($wti_m_address);
+ $resultdata = array();
+ $data['records'] = array();
+         
+ $sql = "select * from  `wti_m_setting` where `group_name`='config_logo'";
+ $query = $this->db->query($sql);
+  if ($query->num_rows()>0) {
+     $resultdata =    $query->result_array();
+ }
+ $data['records'] = array();
+ //print_r($records);
+  foreach($resultdata as $key => $value){
+     $data['records'][$value['key_name']] = $value['value'];
+ }
 ?>
 <!--Offcanvas menu area start-->
 <div class="off_canvars_overlay">
@@ -147,7 +160,7 @@ $wti_m_address = (isset($wti_m_address1[0])) ? $wti_m_address1[0] : [];
                 <div class="col-lg-1 col-md-2 col-sm-4 col-4">
                     <div class="logo">
                         <a href="<?php echo site_url('home');?>"><img
-                                src="<?php echo base_url('assets/img/logo/logo.png')?>" alt=""></a>
+                                src="<?php echo (!empty($data['records']['config_logo'])) ? base_url("uploads/logo/".$data['records']['config_logo']) : '';?>" alt="Logo"></a>
                     </div>
                 </div>
                 <div class="col-lg-11 col-md-10 col-sm-8 col-8">

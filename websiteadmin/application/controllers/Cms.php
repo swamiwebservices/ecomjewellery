@@ -198,7 +198,7 @@ class Cms extends CI_Controller
         $data['sub_heading'] = 'Banner';
         $fun_name = $this->controller . '/banner';
         
-        $domain_list = $this->config->item("DOMAINs");
+     //   $domain_list = $this->config->item("DOMAINs");
         //print_r($domain_list);
         $data['controller'] = $this->controller;
         $data['fun_name'] = "banner";
@@ -243,7 +243,7 @@ class Cms extends CI_Controller
 
         if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
        
-            $add_in_m['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
+           // $add_in_m['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
 
             $add_in_m['banner_name'] = $banner_name = (isset($_POST['banner_name'])) ? $this->common->mysql_safe_string($_POST['banner_name']) : ''; 
             $add_in_m['banner_text'] = $banner_text = (isset($_POST['banner_text'])) ? $this->common->mysql_safe_string($_POST['banner_text']) : ''; 
@@ -257,7 +257,7 @@ class Cms extends CI_Controller
               //print_r($add_in_m);
            
             if ($banner_name == '') {$error .= "Please enter name  <br>";}
-            if ($domains == '') {$error .= "Please select atleast 1 domain  <br>";}
+           // if ($domains == '') {$error .= "Please select atleast 1 domain  <br>";}
              
             if($error==""){
                 
@@ -378,7 +378,8 @@ class Cms extends CI_Controller
 
         $session_user_data = $this->session->userdata('admin_user_data');
         
-        $data['l_s_act'] = 4;
+        $data['activaation_id'] = 101;
+        $data['sub_activaation_id'] = '101_21';
         
         $data['title'] = 'FAQ';
         $data['sub_heading'] = 'FAq List';
@@ -404,7 +405,8 @@ class Cms extends CI_Controller
 
         $session_user_data = $this->session->userdata('admin_user_data');
         $id = filter_var($id, FILTER_SANITIZE_STRING);
-        $data['l_s_act'] = 3;
+        $data['activaation_id'] = 101;
+        $data['sub_activaation_id'] = '101_21';
         
         $data['title'] = 'CMS ';
         $data['sub_heading'] = 'FAQ Edit';
@@ -418,13 +420,13 @@ class Cms extends CI_Controller
             $add_in['status'] = $status = (isset($_POST['status'])) ? $this->common->mysql_safe_string($_POST['status']) : 'Active';
             $add_in['sort_no'] = $sort_no = (isset($_POST['sort_no'])) ? $this->common->mysql_safe_string($_POST['sort_no']) : '';
             $add_in['question'] = $question = (isset($_POST['question'])) ? $this->common->mysql_safe_string($_POST['question']) : '';
-            $add_in['question_en'] = $question_en = (isset($_POST['question_en'])) ? $this->common->mysql_safe_string($_POST['question_en']) : '';
+             
             if ($question == '') {
                 $error .= "Please enter question<br>";
             }
              
             $add_in['answer'] = $answer = (isset($_POST['answer'])) ? $_POST['answer']: '';
-            $add_in['answer_en'] = $answer_en = (isset($_POST['answer_en'])) ? $_POST['answer_en'] : '';
+           
             if ($answer == '') {
                 $error .= "Please enter answer<br>";
             }
@@ -465,7 +467,8 @@ class Cms extends CI_Controller
 
         $session_user_data = $this->session->userdata('admin_user_data');
        
-        $data['l_s_act'] = 4;
+        $data['activaation_id'] = 101;
+        $data['sub_activaation_id'] = '101_21';
         
         $data['title'] = 'CMS ';
         $data['sub_heading'] = 'FAQ Add';
@@ -517,7 +520,14 @@ class Cms extends CI_Controller
         $this->session->unset_userdata('warning');
         $this->session->unset_userdata('error');
     }
-    
+    public function delete_faq($id = 0){
+        
+        $sql = "delete from cms_faq where id='" . $id . "'  ";
+        $this->db->query($sql);
+
+        $this->session->set_flashdata('success', 'FAQ deleted succssfully!');
+        redirect($this->ctrl_name . "/faq");
+    }  
     public function privacy($id=2)
     {
 
@@ -570,10 +580,10 @@ class Cms extends CI_Controller
                
                 $add_in['date_added'] = date("Y-m-d H:i:s");
 
-                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $sql = "select '' from wti_cms_pages where section='{$section}' "; 
                 $query = $this->db->query($sql);
                 if($query->num_rows()>0){
-                    $this->db->where('domains', $domains);
+                    
                     $this->db->where('section', $section);
                     $this->db->update('wti_cms_pages', $add_in);
                 } else {
@@ -598,7 +608,7 @@ class Cms extends CI_Controller
             $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='privacy' ", 0, 0);
             $data_info_temp = [];
             foreach($data_info as $key => $dataAddress){
-                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+                $data_info_temp = $dataAddress;
 
             }
             $data_info = $data_info_temp;
@@ -636,7 +646,7 @@ class Cms extends CI_Controller
         if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
 
             $add_in = array();
-            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '';
+          //  $add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '';
             $add_in['section'] = $section = (isset($_POST['section'])) ? $this->common->mysql_safe_string($_POST['section']) : '';
           
             $add_in['heading'] = $heading = (isset($_POST['heading'])) ? $this->common->mysql_safe_string($_POST['heading']) : '';
@@ -669,10 +679,10 @@ class Cms extends CI_Controller
             if ($error == '') {
                 $add_in['date_added'] = date("Y-m-d H:i:s");
 
-                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $sql = "select '' from wti_cms_pages where section='{$section}' "; 
                 $query = $this->db->query($sql);
                 if($query->num_rows()>0){
-                    $this->db->where('domains', $domains);
+                    
                     $this->db->where('section', $section);
                     $this->db->update('wti_cms_pages', $add_in);
   
@@ -697,7 +707,7 @@ class Cms extends CI_Controller
             $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='termscondtion' ", 0, 0);
             $data_info_temp = [];
             foreach($data_info as $key => $dataAddress){
-                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+                $data_info_temp = $dataAddress;
 
             }
             $data_info = $data_info_temp;
@@ -768,10 +778,10 @@ class Cms extends CI_Controller
             if ($error == '') {
                 $add_in['date_added'] = date("Y-m-d H:i:s");
 
-                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $sql = "select '' from wti_cms_pages where section='{$section}' "; 
                 $query = $this->db->query($sql);
                 if($query->num_rows()>0){
-                    $this->db->where('domains', $domains);
+                    
                     $this->db->where('section', $section);
                     $this->db->update('wti_cms_pages', $add_in);
   
@@ -795,7 +805,7 @@ class Cms extends CI_Controller
             $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='refund' ", 0, 0);
             $data_info_temp = [];
             foreach($data_info as $key => $dataAddress){
-                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+                $data_info_temp = $dataAddress;
 
             }
             $data_info = $data_info_temp;
@@ -867,10 +877,10 @@ class Cms extends CI_Controller
             if ($error == '') {
                 $add_in['date_added'] = date("Y-m-d H:i:s");
 
-                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $sql = "select '' from wti_cms_pages where section='{$section}' "; 
                 $query = $this->db->query($sql);
                 if($query->num_rows()>0){
-                    $this->db->where('domains', $domains);
+                    
                     $this->db->where('section', $section);
                     $this->db->update('wti_cms_pages', $add_in);
   
@@ -894,7 +904,7 @@ class Cms extends CI_Controller
             $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='shippingpolicy' ", 0, 0);
             $data_info_temp = [];
             foreach($data_info as $key => $dataAddress){
-                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+                $data_info_temp = $dataAddress;
 
             }
             $data_info = $data_info_temp;
@@ -931,7 +941,7 @@ class Cms extends CI_Controller
         if (isset($_POST['mode']) && $_POST['mode'] == "submitform") {
 
             $add_in = array();
-            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '';
+            //$add_in['domains'] = $domains = (isset($_POST['domains'])) ? $this->common->mysql_safe_string($_POST['domains']) : '';
             $add_in['section'] = $section = (isset($_POST['section'])) ? $this->common->mysql_safe_string($_POST['section']) : '';
           
             $add_in['heading'] = $heading = (isset($_POST['heading'])) ? $this->common->mysql_safe_string($_POST['heading']) : '';
@@ -973,10 +983,10 @@ class Cms extends CI_Controller
                
                 $add_in['date_added'] = date("Y-m-d H:i:s");
 
-                $sql = "select '' from wti_cms_pages where domains='{$domains}' and section='{$section}' "; 
+                $sql = "select '' from wti_cms_pages where section='{$section}' "; 
                 $query = $this->db->query($sql);
                 if($query->num_rows()>0){
-                    $this->db->where('domains', $domains);
+                   
                     $this->db->where('section', $section);
                     $this->db->update('wti_cms_pages', $add_in);
   
@@ -996,7 +1006,7 @@ class Cms extends CI_Controller
             $data_info = $this->common->getRecordsLimit('wti_cms_pages', " where section='aboutus' ", 0, 0);
             $data_info_temp = [];
             foreach($data_info as $key => $dataAddress){
-                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+                $data_info_temp = $dataAddress;
 
             }
             $data_info = $data_info_temp;
@@ -1052,11 +1062,11 @@ class Cms extends CI_Controller
             
            
             if ($error == '') {
-                $this->db->where('domains', $domains);
+               // 
                 $this->db->update('wti_m_address', $add_in);
 
                  
-                $this->common->createjson('wti_m_address','',"select * from  wti_m_address c      where  domains='{$domains}'     ",'single');
+                $this->common->createjson('wti_m_address','',"select * from  wti_m_address c",'single');
 
                 $this->session->set_flashdata('success', 'Information updated succssfully!');
                 redirect($this->controller . '/address');
@@ -1070,7 +1080,7 @@ class Cms extends CI_Controller
             $data_info = $this->common->getRecordsLimit('wti_m_address', '', 0, 0);
             $data_info_temp = [];
             foreach($data_info as $key => $dataAddress){
-                $data_info_temp[$dataAddress['domains']] = $dataAddress;
+                $data_info_temp = $dataAddress;
 
             }
             $data_info = $data_info_temp;
@@ -1333,4 +1343,5 @@ class Cms extends CI_Controller
         $this->session->unset_userdata('error');
     }
 
+       
 }

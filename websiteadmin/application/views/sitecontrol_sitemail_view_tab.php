@@ -104,39 +104,16 @@ if ($warning) {
 
                     <div class="card-body">
 
-                        <ul class="nav nav-tabs nav-tabs-bottom">
-                            <?php
-                            $ind=0;
-                                           $domain_list = $this->config->item("DOMAINs");
-                                           foreach($domain_list as $key => $domain){
-                                            $domain_org = $domain;
-                                            $domain = str_replace(".","_",$domain);
-                                            $ind++;
-                                         ?>
-                            <li class="nav-item"><a href="#domains<?php echo $key?>"
-                                    class="nav-link <?php echo (isset($ind) && $ind==1) ? 'active' : '' ?>"
-                                    data-toggle="tab"> <?php echo $domain_org?></a></li>
-                            <?php }?>
-                        </ul>
-                        <div class="tab-content">
-                            <?php
-                          //  print_r($records);
-                          $ind=0;
-                              foreach($domain_list as $key => $domain){
-                                $ind++;
-                            ?>
-                            <div class="tab-pane fade  <?php echo  (isset($ind) && $ind==1) ? ' show active' : '' ?>"
-                                id="domains<?php echo $key?>">
-
-                                <form class="form-horizontal" id="blogform1" name="blogform1" method="post"
+                        
+                    <form class="form-horizontal" id="blogform1" name="blogform1" method="post"
                                     action="<?php echo site_url($controller.'/'.$fun_name)?>"
                                     enctype="multipart/form-data">
                                     <input type="hidden" name="mode" id="mode" value="edit_content_sitemail">
                                     <input type="hidden" name="store_id" id="store_id"
                                         value="<?php echo isset($key) ? $key : ''; ?>">
                                     <?php
-                               //print_r($records[$key]);
-                               foreach($records[$key] as $key2 => $record){
+                              // print_r($records);
+                               foreach($records as $key2 => $record){
                                  
                                 if(isset($record['is_hidden']) && $record['is_hidden']==0){
                                ?>
@@ -164,18 +141,18 @@ if ($warning) {
                                     <?php
                                 }
                             }?>
-
-
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-primary mr-3">Submit <i
-                                                class="icon-paperplane "></i></button>
-
-
-                                    </div>
-                                </form>
+ <div class="form-group row">
+                                <label class="control-label col-lg-2"></label>
+                                <div class="col-lg-9">
+                                    <button type="submit" class="btn bg-blue">Submit <i
+                                            class="icon-paperplane ml-2"></i></button>
+                                     
+                                    </a>
+                                </div>
                             </div>
-                            <?php }?>
-                        </div>
+                                          
+ 
+                                </form>
 
 
 

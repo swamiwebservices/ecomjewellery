@@ -3,6 +3,12 @@
 }
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+
+use Ramsey\Uuid\Exception\UnsatisfiedDependencyException;
+use Ramsey\Uuid\Uuid;
 class Orders extends CI_Controller
 {
     public $db;
@@ -47,7 +53,7 @@ class Orders extends CI_Controller
         $data['maxm'] = $maxm = 100;
 
         if (isset($_GET['page']) && $_GET['page'] != '') {
-            $page = filter_var($_GET['page'], FILTER_SANITIZE_STRING);
+            $page = $this->input->post('page');
 
             $data['page'] = $page;
 
@@ -70,12 +76,12 @@ class Orders extends CI_Controller
         // $limit_qry = " LIMIT ".$start.",".$maxm;
         $sql = "";
         if (isset($_GET['getdate']) && $_GET['getdate'] != '') {
-            $getdate = filter_var($_GET['getdate'], FILTER_SANITIZE_STRING);
+            $getdate = $this->input->post('getdate') ;
             $sql .= "    and o.date_added like '" . $getdate . "%' ";
         }
 
         if (isset($_GET['mod']) && $_GET['mod'] != '') {
-            $mod = filter_var($_GET['mod'], FILTER_SANITIZE_STRING);
+            $mod = $this->input->post('mod');
             $sql .= "    and o.payment_method like '" . $mod . "%' ";
         }
         $data['oderlist'] = $this->ecommercemodal->getOderlist_custom(1, $start, $maxm, 'rows', $sql);
@@ -107,7 +113,7 @@ class Orders extends CI_Controller
         $data['maxm'] = $maxm = 100;
 
         if (isset($_GET['page']) && $_GET['page'] != '') {
-            $page = filter_var($_GET['page'], FILTER_SANITIZE_STRING);
+            $page = $this->input->post('page');
 
             $data['page'] = $page;
 
@@ -130,12 +136,12 @@ class Orders extends CI_Controller
         // $limit_qry = " LIMIT ".$start.",".$maxm;
         $sql = "";
         if (isset($_GET['getdate']) && $_GET['getdate'] != '') {
-            $getdate = filter_var($_GET['getdate'], FILTER_SANITIZE_STRING);
+            $getdate = $this->input->post('getdate');
             $sql .= "    and o.date_added like '" . $getdate . "%' ";
         }
 
         if (isset($_GET['mod']) && $_GET['mod'] != '') {
-            $mod = filter_var($_GET['mod'], FILTER_SANITIZE_STRING);
+            $mod =  $this->input->post('mod');
             $sql .= "    and o.payment_method like '" . $mod . "%' ";
         }
         $data['oderlist'] = $this->ecommercemodal->getOderlist_custom('2,3', $start, $maxm, 'rows', $sql);
@@ -167,7 +173,7 @@ class Orders extends CI_Controller
         $data['maxm'] = $maxm = 100;
 
         if (isset($_GET['page']) && $_GET['page'] != '') {
-            $page = filter_var($_GET['page'], FILTER_SANITIZE_STRING);
+            $page = $this->input->post('page');
 
             $data['page'] = $page;
 
@@ -195,7 +201,7 @@ class Orders extends CI_Controller
         }
 
         if (isset($_GET['mod']) && $_GET['mod'] != '') {
-            $mod = filter_var($_GET['mod'], FILTER_SANITIZE_STRING);
+            $mod =  $this->input->post('mod');
             $sql .= "    and o.payment_method like '" . $mod . "%' ";
         }
         $data['oderlist'] = $this->ecommercemodal->getOderlist_custom('4', $start, $maxm, 'rows', $sql);
@@ -220,14 +226,14 @@ class Orders extends CI_Controller
         $data['sub_activaation_id'] = '22_6';
 
         $data['title'] = 'Order';
-        $data['sub_heading'] = 'Accepted Orders';
+        $data['sub_heading'] = 'New Orders';
         $data['controller'] = $this->ctrl_name;
 
         $data['start'] = 0;
         $data['maxm'] = $maxm = 100;
 
         if (isset($_GET['page']) && $_GET['page'] != '') {
-            $page = filter_var($_GET['page'], FILTER_SANITIZE_STRING);
+            $page = $this->input->post('page');
 
             $data['page'] = $page;
 
@@ -248,30 +254,163 @@ class Orders extends CI_Controller
 
         $data['maxm'] = $maxm;
         // $limit_qry = " LIMIT ".$start.",".$maxm;
-        $sql = "";
-        if (isset($_GET['getdate']) && $_GET['getdate'] != '') {
-            $getdate = filter_var($_GET['getdate'], FILTER_SANITIZE_STRING);
-            $sql .= "    and o.date_added like '" . $getdate . "%' ";
-        }
+       
 
-        if (isset($_GET['mod']) && $_GET['mod'] != '') {
-            $mod = filter_var($_GET['mod'], FILTER_SANITIZE_STRING);
-            $sql .= "    and o.payment_method like '" . $mod . "%' ";
+        
+
+        $sql = "";
+        $date_range = "";
+        $order_status_id_cond = "1,2,3,4";
+        if (isset($_GET['mode']) && $_GET['mode'] == "condtion") {
+            $results = [];
+           
+            $order_status_id = (isset($_GET['order_status_id'])) ? $this->input->get('order_status_id') : '';
+            $payment_method = (isset($_GET['payment_method'])) ? $this->input->get('payment_method'): '';
+            $date_range = (isset($_GET['date_range'])) ? $this->input->get('date_range') : '';
+            $customer = (isset($_GET['customer'])) ? $this->input->get('customer'): '';
+           
+            $order_id = (isset($_GET['order_id'])) ? $this->input->get('order_id') : '';
+
+            if ($date_range != "") {
+                $date_range_exp = explode(" - ", $date_range);
+                //    print_r($date_range_exp);
+                $date_range_exp[0] = $this->common->getDateFormat(trim($date_range_exp[0]), "Y-m-d");
+                $date_range_exp[1] = $this->common->getDateFormat(trim($date_range_exp[1]), "Y-m-d");
+                $sql = " and  (DATE_FORMAT(o.date_added,'%Y-%m-%d')   BETWEEN '" . $date_range_exp[0] . "' AND '" . $date_range_exp[1] . "') ";
+            }
+
+            $data['date_range'] = $date_range;
+            $data['oderlist'] = $this->ecommercemodal->getOderlist_custom($order_status_id_cond, $start, $maxm, 'rows', $sql);
+            $data['num_row'] = $this->ecommercemodal->getOderlist_custom($order_status_id_cond, 0, 0, 'numrows', $sql);
         }
-        $data['oderlist'] = $this->ecommercemodal->getOderlist_custom('1,2,3,4', $start, $maxm, 'rows', $sql);
-        $data['num_row'] = $this->ecommercemodal->getOderlist_custom('1,2,3,4', 0, 0, 'numrows', $sql);
+        else {
+         
+            $data['oderlist'] = $this->ecommercemodal->getOderlist_custom($order_status_id_cond, $start, $maxm, 'rows', $sql);
+            $data['num_row'] = $this->ecommercemodal->getOderlist_custom($order_status_id_cond, 0, 0, 'numrows', $sql);
+        }
+        
+       
 
         $fun_name = $this->ctrl_name . "/allorders";
         $data['other_para'] = "";
-
+        $data['tittle'] = "Order " . $date_range;
         $data['fun_name'] = $fun_name . "?" . $data['other_para'];
 
-        $this->load->view('orders_list', $data);
+        $this->load->view('report_orders_list', $data);
         $this->session->unset_userdata('success');
         $this->session->unset_userdata('warning');
         $this->session->unset_userdata('error');
     }
 
+    public function exporttocsv()
+    {
+        // print_r($_POST);
+        $limit_total = 900000;
+        $xcelfiles = [];
+        $filename = "Orders";
+        $search_qry = "";
+        $date_range = (isset($_GET['date_range'])) ? $this->input->get('date_range') : '';
+       
+        if ($date_range != "") {
+            $date_range_exp = explode(" - ", $date_range);
+            //    print_r($date_range_exp);
+            $date_range_exp[0] = $this->common->getDateFormat(trim($date_range_exp[0]), "Y-m-d");
+            $date_range_exp[1] = $this->common->getDateFormat(trim($date_range_exp[1]), "Y-m-d");
+            $search_qry = " and  (DATE_FORMAT(o.date_added,'%Y-%m-%d')   BETWEEN '" . $date_range_exp[0] . "' AND '" . $date_range_exp[1] . "') ";
+        }
+
+        $sql = "select count('')  as total_data  from    `m_order` o  inner join 	m_order_status os on o.order_status_id = os.order_status_id 
+        left join review_order ro on o.order_id = ro.order_id
+        $search_qry
+        ORDER BY o.order_id DESC  ";
+        $query = $this->db->query($sql);
+        $resultdata = $query->row_array();
+        $total_data = $resultdata['total_data'];
+
+        $noofexcels = $total_data > $limit_total ? ceil($total_data / $limit_total) : 1;
+
+        $headtitle = ['Invoice-No', 'Date Of Order', 'Total-Amount','Customer Name','Email','Phone' , 'Payment Method','Address','Status','Products','Info' ];
+
+        for ($i = 0; $i < $noofexcels; $i++) {
+            $spreadsheet = new Spreadsheet();
+            $spreadsheet->setActiveSheetIndex(0);
+            $activeSheet = $spreadsheet->getActiveSheet();
+            $header = array_keys($headtitle);
+
+            $header = $header[0];
+            $header = $headtitle;
+            $header = array_values($header);
+            $activeSheet->fromArray([$header], null, 'A1');
+
+            $offset = $i == 0 ? $i : $i * $limit_total;
+            $resultsPerPage = $noofexcels > 1 ? $limit_total : $total_data;
+
+            $sql = "select o.order_id,o.store_id, CONCAT ( o.invoice_prefix,o.invoice_no ) as invoiceno,o.date_added, o.total ,CONCAT(o.firstname,' ', o.lastname) as fullname ,email,o.telephone, o.payment_method,CONCAT(o.shipping_firstname,' ',o.shipping_lastname,', ',o.shipping_address_1 ,' , ', o.shipping_city,' , ',o.shipping_postcode ) as shipping_address ,  os.name as order_satus_name   from    `m_order` o  inner join 	m_order_status os on o.order_status_id = os.order_status_id ".$search_qry."
+              ORDER BY o.order_id DESC limit 0, ".$resultsPerPage." ";
+            $query = $this->db->query($sql);
+            $resultdata = $query->result_array();
+            
+            $startCell = 2; //starting from A2
+
+            foreach ($resultdata as $key => $valueData) {
+               
+                 
+               // print_r($valueData);
+                $products = $this->ecommercemodal->getOrderProducts($valueData['order_id']);
+                //print_r($products);
+                $product_str = "";
+                foreach ($products as $product) {
+                    $product_str .= $product['name']." :: ".$product['quantity']." :: ".$product['total']."".PHP_EOL;
+                
+                }
+                $order_total_str = "";
+                $totals = $this->ecommercemodal->getOrderTotals($valueData['order_id']);
+                foreach ($totals as $total) {
+                    $order_total_str .= $total['title'] ." :: ".$total['value']."".PHP_EOL;
+                    
+                }
+                $valueData['product'] = $product_str;
+                $valueData['info'] = $order_total_str;
+
+                unset($valueData['order_id']);
+                unset($valueData['store_id']);
+               // print_r($valueData);
+
+                $value = array_values($valueData);
+               // print_r([$valueData]);
+
+                $activeSheet->fromArray([$value], null, 'A' . $startCell, true);
+                $startCell++;
+
+               
+            }
+            //$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $filename =  'Order-' . $i;
+            $xcelfiles[] = $filename;
+            $writer = new Xlsx($spreadsheet);
+            $writer->save('uploads/' .$filename. '.xlsx');
+        }
+       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');  
+       header('Content-Disposition: attachment; filename=' .$filename. '.xlsx');  
+       $writer->save('php://output');
+        // if(sizeof($xcelfiles) > 0){
+        //     $file_name_download = "Products-".time();
+        //     $zip_file_tmp = "uploads/".$file_name_download. '.zip';
+        //     $zip = new ZipArchive();
+        //     $zip->open($zip_file_tmp, ZipArchive::CREATE);
+        //     foreach ($xcelfiles as $file) {
+        //         $zip->addFile($file . '.xlsx');
+        //     }
+        //     $zip->close();
+        //     foreach ($xcelfiles as $file) {
+        //         @unlink('uploads/' .$file . '.xlsx');
+        //     }
+        //     ob_flush();
+        //     flush();
+        // }
+   
+
+    }
     public function orderdetail($order_uuid = '')
     {
        
@@ -293,7 +432,7 @@ class Orders extends CI_Controller
 
         $order_info = $this->ecommercemodal->getOrder($order_uuid);
         
-        $data['page'] = $page = (isset($_GET['page'])) ? filter_var($_GET['page'], FILTER_SANITIZE_STRING) : '';
+        $data['page'] = $page = (isset($_GET['page'])) ? $this->input->post('page') : '';
 
         if (!sizeof($order_info)) {
             $newdata = array('warning' => 'Please select order');
@@ -350,7 +489,7 @@ class Orders extends CI_Controller
 
                 $getDomainAddress = $this->services->getDomainAddress();
 
-                $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' and store_id='{$getDomainAddress['DOMAIN_ID']}'";
+                $sql = "select * from  `wti_m_setting` where `group_name`='config_site_mail' ";
 
                 $query = $this->db->query($sql);
                 if ($query->num_rows() > 0) {
@@ -510,7 +649,7 @@ class Orders extends CI_Controller
         } */
         $data['order_uuid'] = $order_uuid;
         $data['order_statuses'] = $this->ecommercemodal->getOrderStatusesForOrder();
-        $data['driver_list'] = $this->ecommercemodal->get_ddriver_list();
+        $data['driver_list'] = [];//$this->ecommercemodal->get_ddriver_list();
 
         $data['histories'] = $this->ecommercemodal->getOrderHistories($order_info['order_id']);
         
@@ -555,7 +694,7 @@ class Orders extends CI_Controller
         $data['maxm'] = $maxm = 100;
 
         if (isset($_GET['page']) && $_GET['page'] != '') {
-            $page = filter_var($_GET['page'], FILTER_SANITIZE_STRING);
+            $page = $this->input->post('page');
 
             $data['page'] = $page;
 
@@ -605,7 +744,7 @@ class Orders extends CI_Controller
         $data['maxm'] = $maxm = 100;
 
         if (isset($_GET['page']) && $_GET['page'] != '') {
-            $page = filter_var($_GET['page'], FILTER_SANITIZE_STRING);
+            $page = $this->input->post('page');
 
             $data['page'] = $page;
 
@@ -640,4 +779,7 @@ class Orders extends CI_Controller
         $this->session->unset_userdata('warning');
         $this->session->unset_userdata('error');
     }
+
+ 
+
 }

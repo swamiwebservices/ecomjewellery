@@ -70,6 +70,49 @@ class Products extends CI_Controller
         $resultdata = $query->row_array();
         $data['num_row'] = $resultdata['numrows']; //= $this->common->numRow($this->tablename,$where_cond);
 
+        $data['param_export'] = "productslist";
+        $this->load->view('products_list', $data);
+        $this->session->unset_userdata('success');
+        $this->session->unset_userdata('warning');
+        $this->session->unset_userdata('error');
+    }
+    public function outofstock($start = 0, $otherparam = "")
+    {
+
+        $data['activaation_id'] = 1011;
+        $data['sub_activaation_id'] = '1011_5';
+        $data['title'] = 'Products';
+        $data['start'] = $start;
+        $data['maxm'] = $maxm = 1000;
+        $data['sub_heading'] = 'List';
+        $fun_name = $this->controller . '/outofstock';
+        $data['fun_name'] = $fun_name;
+        $data['add_link'] = $this->controller . '/product_action';
+        $data['edit_link'] = $this->controller . '/product_action';
+
+        $data['controller'] = $this->controller;
+
+        $limit_qry = " LIMIT " . $start . "," . $maxm;
+
+        $data['other_para'] = "";
+
+        $resultdata = array();
+        $sql = "select *  from  product_master b
+		   	where   status_flag!='Deleted' and quantity <=0 ORDER BY sort_order "; // . $limit_qry;
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->result_array();
+        }
+        $data['results'] = $resultdata;
+
+        $sql = "select count('')  as numrows  from product_master b   where    status_flag!='Deleted' ORDER BY sort_order ";
+        $query = $this->db->query($sql);
+        $resultdata = $query->row_array();
+        $data['num_row'] = $resultdata['numrows']; //= $this->common->numRow($this->tablename,$where_cond);
+
+
+        $data['param_export'] = "outofstock";
+
         $this->load->view('products_list', $data);
         $this->session->unset_userdata('success');
         $this->session->unset_userdata('warning');
@@ -106,6 +149,11 @@ class Products extends CI_Controller
             $add_in_m['sub_category_id'] = $m_s_cat[1];
 
             $add_in_m['name'] = $name = (isset($_POST['name'])) ? $this->common->mysql_safe_string($_POST['name']) : '';
+            $add_in_m['subtract'] = $subtract = (isset($_POST['subtract'])) ? $this->common->mysql_safe_string($_POST['subtract']) : '0';
+            $add_in_m['allow_buy_zeroqty'] = $allow_buy_zeroqty = (isset($_POST['allow_buy_zeroqty'])) ? $this->common->mysql_safe_string($_POST['allow_buy_zeroqty']) : '0';
+            
+            $add_in_m['stock_status'] = $stock_status = (isset($_POST['stock_status'])) ? $this->common->mysql_safe_string($_POST['stock_status']) : '';
+
 
             $add_in_m['item_code'] = $item_code = (isset($_POST['item_code'])) ? $this->common->mysql_safe_string($_POST['item_code']) : '';
 
@@ -140,7 +188,7 @@ class Products extends CI_Controller
                 if (isset($_FILES['main_image']['name']) && $_FILES['main_image']['name'] != '') {
                     $image_old_path_only = '../uploads/prod_images/';
                     //  $image_replace_name = $_FILES["main_image"]['name'];
-                    $filename = "prod-" . $this->common->tep_short_name_list($_FILES["main_image"]['name']);
+                    $filename = "prod-".time() . $this->common->tep_short_name_list($_FILES["main_image"]['name']);
 
                     $upload = $this->common->UploadImage('main_image', $image_old_path_only, 0, $height_thumb = '', $width_thumb = '', $filename);
 
@@ -188,24 +236,23 @@ class Products extends CI_Controller
 
             if ($error == '') {
 
-                $price_json['quantity'] = $_POST['quantity'];
-                $price_json['mrp'] = $_POST['mrp'];
-                $price_json['sellprice'] = $_POST['sellprice'];
-                $add_in_m['price_json'] = json_encode($price_json);
-
-                //print_r($price_json);
+              
                 //default domain key id =1
-                $add_in_m['mrp'] = (isset($_POST['mrp'][1])) ? $_POST['mrp'][1] : 0;
-                $add_in_m['sellprice'] = (isset($_POST['sellprice'][1])) ? $_POST['sellprice'][1] : 0;
-                $add_in_m['quantity'] = (isset($_POST['quantity'][1])) ? $_POST['quantity'][1] : 0;
+                // $add_in_m['mrp'] = (isset($_POST['mrp'][1])) ? $_POST['mrp'][1] : 0;
+                // $add_in_m['sellprice'] = (isset($_POST['sellprice'][1])) ? $_POST['sellprice'][1] : 0;
+                // $add_in_m['quantity'] = (isset($_POST['quantity'][1])) ? $_POST['quantity'][1] : 0;
 
-                $add_in_m['domain2_mrp'] = (isset($_POST['mrp'][2])) ? $_POST['mrp'][2] : 0;
-                $add_in_m['domain2_sellprice'] = (isset($_POST['sellprice'][2])) ? $_POST['sellprice'][2] : 0;
-                $add_in_m['domain2_qty'] = (isset($_POST['quantity'][2])) ? $_POST['quantity'][2] : 0;
+                // $add_in_m['domain2_mrp'] = (isset($_POST['mrp'][2])) ? $_POST['mrp'][2] : 0;
+                // $add_in_m['domain2_sellprice'] = (isset($_POST['sellprice'][2])) ? $_POST['sellprice'][2] : 0;
+                // $add_in_m['domain2_qty'] = (isset($_POST['quantity'][2])) ? $_POST['quantity'][2] : 0;
 
-                $add_in_m['domain3_mrp'] = (isset($_POST['mrp'][3])) ? $_POST['mrp'][3] : 0;
-                $add_in_m['domain3_sellprice'] = (isset($_POST['sellprice'][3])) ? $_POST['sellprice'][3] : 0;
-                $add_in_m['domain3_qty'] = (isset($_POST['quantity'][3])) ? $_POST['quantity'][3] : 0;
+                // $add_in_m['domain3_mrp'] = (isset($_POST['mrp'][3])) ? $_POST['mrp'][3] : 0;
+                // $add_in_m['domain3_sellprice'] = (isset($_POST['sellprice'][3])) ? $_POST['sellprice'][3] : 0;
+                // $add_in_m['domain3_qty'] = (isset($_POST['quantity'][3])) ? $_POST['quantity'][3] : 0;
+
+                $add_in_m['mrp'] = (isset($_POST['mrp'])) ? $_POST['mrp'] : 0;
+                $add_in_m['sellprice'] = (isset($_POST['sellprice'])) ? $_POST['sellprice'] : 0;
+                $add_in_m['quantity'] = (isset($_POST['quantity'])) ? $_POST['quantity'] : 0;
 
                 if ($id != "") {
                     if ($name_old != $name) {
@@ -217,21 +264,8 @@ class Products extends CI_Controller
                     $update_status = $this->common->updateRecord('product_master', $add_in_m, $where);
                     $this->session->set_flashdata('success', 'Information updated successfully.');
 
-                    $product_id = $this->common->getSinlgeColumn('product_id', 'product_master', $where);
-                    // print_r($product_id);exit;
-                    foreach ($_POST['quantity'] as $domain_id => $valqty) {
-
-                        $where_price = "product_id='{$product_id}' and domain_id='{$domain_id}' ";
-                        $add_in_m_price['product_id'] = $product_id;
-                        $add_in_m_price['domain_id'] = $domain_id;
-                        $add_in_m_price['mrp'] = $_POST['mrp'][$domain_id];
-                        $add_in_m_price['sellprice'] = $_POST['sellprice'][$domain_id];
-                        $add_in_m_price['quantity'] = $_POST['quantity'][$domain_id];
-                        //  $add_in_m_price['featured_flag'] = $_POST['featured_flag'][$domain_id];
-                        //   $add_in_m_price['home_flag'] = $_POST['home_flag'][$domain_id];
-                     //   $this->common->updateRecord('product_master_price', $add_in_m_price, $where_price);
-
-                    }
+                    //$product_id = $this->common->getSinlgeColumn('product_id', 'product_master', $where);
+                 
 
                     $this->common->createjson('product_master', 'category', "select *    from   product_master   	where    status_flag='Active' order by sort_order asc, name asc ", 'multiple', 'home');
 
@@ -254,18 +288,7 @@ class Products extends CI_Controller
 
                     $product_id = $this->common->insertRecord('product_master', $add_in_m);
 
-                    foreach ($_POST['quantity'] as $domain_id => $valqty) {
-
-                        $add_in_m_price['product_id'] = $product_id;
-                        $add_in_m_price['domain_id'] = $domain_id;
-                        $add_in_m_price['mrp'] = $_POST['mrp'][$domain_id];
-                        $add_in_m_price['sellprice'] = $_POST['sellprice'][$domain_id];
-                        $add_in_m_price['quantity'] = $_POST['quantity'][$domain_id];
-                        $add_in_m_price['featured_flag'] = $_POST['featured_flag'][$domain_id];
-                        $add_in_m_price['home_flag'] = $_POST['home_flag'][$domain_id];
-                     //   $this->common->insertRecord('product_master_price', $add_in_m_price);
-
-                    }
+                   
 
                     $this->session->set_flashdata('success', 'Information added successfully.');
 
@@ -322,7 +345,41 @@ class Products extends CI_Controller
         $this->session->unset_userdata('error');
 
     }
+    public function purchasedproduct($start = 0, $otherparam = "")
+    {
 
+        $data['activaation_id'] = 22;
+        $data['sub_activaation_id'] = '22_7';
+        $data['title'] = 'Products';
+        $data['start'] = $start;
+        $data['maxm'] = $maxm = 1000;
+        $data['sub_heading'] = 'List';
+        $fun_name = $this->controller . '/purchasedproduct';
+        $data['fun_name'] = $fun_name;
+        $data['add_link'] = $this->controller . '/purchasedproduct';
+        $data['edit_link'] = $this->controller . '/purchasedproduct';
+
+        $data['controller'] = $this->controller;
+
+        $limit_qry = " LIMIT " . $start . "," . $maxm;
+
+        $data['other_para'] = "";
+
+        $resultdata = array();
+        $sql = "SELECT op.product_id, SUM(op.quantity) as total_qty, SUM(op.price) as  total_amount , op.price as purchased_price, p.main_image, p.item_code, p.name, p.mrp, p.sellprice FROM `order_product` op LEFT JOIN product_master p ON op.product_id = p.product_id GROUP BY op.product_id "; // . $limit_qry;
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            $resultdata = $query->result_array();
+        }
+        $data['results'] = $resultdata;
+
+        
+        $data['param_export'] = "purchasedproduct";
+        $this->load->view('purchasedproduct', $data);
+        $this->session->unset_userdata('success');
+        $this->session->unset_userdata('warning');
+        $this->session->unset_userdata('error');
+    }
     public function delete_product($id = 0)
     {
         $where_edt = "uuid = '{$id}' ";
@@ -410,32 +467,7 @@ class Products extends CI_Controller
                     $sql = "update product_master set mrp = ROUND(weight_gms * {$price}),sellprice = ROUND(weight_gms * {$price}) where product_group_id='{$id}' ";
                     $this->db->query($sql);
 
-                    $sql = "select * from product_master where product_group_id='{$id}'";
-                    $rs_product = $this->db->query($sql);
-                    if ($rs_product->num_rows() > 0) {
-                        $result_product = $rs_product->result_array();
-                        foreach ($result_product as $key => $value) {
-
-                            $domain_list = $this->config->item("DOMAINs");
-                            foreach ($domain_list as $domain_id => $domain) {
-                                $price_json['quantity'][$domain_id] = 1;
-                                $price_json['mrp'][$domain_id] = round($value['mrp']);
-                                $price_json['sellprice'][$domain_id] = round($value['sellprice']);
-                                $add_in_price['price_json'] = json_encode($price_json);
-                                $where_product = "product_id = '" . $value['product_id'] . "'";
-                                $update_status = $this->common->updateRecord('product_master', $add_in_price, $where_product);
-
-                                $where_price = "product_id='{$value['product_id']}' and domain_id='{$domain_id}' ";
-
-                                $add_in_m_price['mrp'] = ROUND($value['mrp']);
-                                $add_in_m_price['sellprice'] = ROUND($value['sellprice']);
-
-                              //  $this->common->updateRecord('product_master_price', $add_in_m_price, $where_price);
-
-                            }
-
-                        }
-                    }
+                    
 
                     $this->session->set_flashdata('success', 'Information updated successfully.');
 
@@ -779,6 +811,7 @@ class Products extends CI_Controller
     public function exporttocsv()
     {
         // print_r($_POST);
+        $param_export = (isset($_GET['param_export'])) ? $this->common->mysql_safe_string($_GET['param_export']) : '';
         $limit_total = 900000;
         $xcelfiles = [];
         $filename = "product";
@@ -804,12 +837,15 @@ class Products extends CI_Controller
 
             $offset = $i == 0 ? $i : $i * $limit_total;
             $resultsPerPage = $noofexcels > 1 ? $limit_total : $total_data;
-
+            $sql_sub = "";
+            if($param_export=="outofstock"){
+                $sql_sub = " and p.quantity <=0 ";
+            }
             $sql = "select p.product_id , p.name , p.item_code ,p.weight_gms,p.quantity ,  p.description ,pc.name as category_name,psc.name as sub_category_name,   p.mrp , p.sellprice , p.status_flag  , pg.name as product_group_name    from product_master p   
                     left join product_category pc on p.category_id = pc.category_id   
                     left join product_category psc on p.sub_category_id = psc.category_id  
                     left join m_product_group pg on p.product_group_id = pg.id  
-                       where     (p.status_flag!='Deleted')  limit 0, ".$resultsPerPage;
+                       where     (p.status_flag!='Deleted') ".$sql_sub." limit 0, ".$resultsPerPage;
             $query = $this->db->query($sql);
             $resultdata = $query->result_array();
             

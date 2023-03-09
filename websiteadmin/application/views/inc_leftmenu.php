@@ -62,7 +62,7 @@ if($user_data['access_ids']!=''){
                     <!-- <li class="nav-item"><a href="<?php echo site_url('orders/reviewpending') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_4'){ echo 'active';}?>">Review Pending</a></li>
                     <li class="nav-item"><a href="<?php echo site_url('orders/reviewlist') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_5'){ echo 'active';}?>">Review List</a></li> -->
                     <li class="nav-item"><a href="<?php echo site_url('orders/allorders') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_6'){ echo 'active';}?>">All Order</a></li>
-                        
+                    <li class="nav-item"><a href="<?php echo site_url('products/purchasedproduct') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='22_7'){ echo 'active';}?>">Products Purchased</a></li>
                     </ul>
                 </li>
                 <?php } ?>
@@ -118,6 +118,7 @@ if($user_data['access_ids']!=''){
                         <?php }?>
                         <?php if (in_array("35", $permission)){?> 
                         <li class="nav-item"><a href="<?php echo site_url('products') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='1011_2'){ echo 'active';}?>">Products</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('products/outofstock') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='1011_5'){ echo 'active';}?>">Out Of Stock</a></li>
                         <?php }?>
                         <?php if (in_array("34", $permission)){?> 
                         <li class="nav-item"><a href="<?php echo site_url('products/productgroup') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id=='1011_4'){ echo 'active';}?>">Product Group</a></li>
@@ -146,13 +147,16 @@ if($user_data['access_ids']!=''){
                         <li class="nav-item"><a href="<?php echo site_url('cms/shippingpolicy') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_7"){ echo 'active';}?>">Shipping Policy</a></li>
                         <li class="nav-item"><a href="<?php echo site_url('cms/address') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_4"){ echo 'active';}?>">Address</a></li>
                         <li class="nav-item"><a href="<?php echo site_url('cms/metatags') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_5"){ echo 'active';}?>">Meta Tags</a></li>
+                        <li class="nav-item"><a href="<?php echo site_url('cms/faq') ?>" class="nav-link <?php if(isset($sub_activaation_id) && $sub_activaation_id== "101_21"){ echo 'active';}?>">FAQ List</a></li>
                     </ul>
                 </li>
                 <li class="nav-item nav-item-submenu <?php if (isset($activaation_id) && $activaation_id == "1101") {echo " nav-item-expanded nav-item-open";}?>">
                     <a href="#" class="nav-link"><i class=" icon-cog3  "></i> <span>Setting</span></a>
                     <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                      <!--   <li class="nav-item"><a href="<?php echo site_url('sitecontrol/sociallinks') ?>" class="nav-link  <?php if (isset($sub_activaation_id) && $sub_activaation_id == "1101_1") {echo " active";}?>"><i class="icon-share3 "></i>Social Links</a>
-                        </li> -->
+                    <li class="nav-item"><a href="<?php echo site_url('sitecontrol/sitelogo') ?>" class="nav-link  <?php if (isset($sub_activaation_id) && $sub_activaation_id == "1101_7") {echo " active";}?>">Logo</a>
+                        </li>       
+                    <li class="nav-item"><a href="<?php echo site_url('sitecontrol/sociallinks') ?>" class="nav-link  <?php if (isset($sub_activaation_id) && $sub_activaation_id == "1101_1") {echo " active";}?>">Social Links</a>
+                        </li>  
                         <li class="nav-item"><a href="<?php echo site_url('sitecontrol/sitemail') ?>" class="nav-link <?php if (isset($sub_activaation_id) && $sub_activaation_id == "1101_2") {echo " active";}?>">Mail Setting</a>
                         </li>
                         <li class="nav-item"><a href="<?php echo site_url('payment/') ?>" class="nav-link <?php if (isset($sub_activaation_id) && $sub_activaation_id == "1101_5") {echo " active";}?>">Payment Method</a>

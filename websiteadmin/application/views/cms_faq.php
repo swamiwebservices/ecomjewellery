@@ -86,8 +86,8 @@ if (isset($results) && sizeof($results) > 0) {
                         <table class="table table-hover datatable-responsive">
                             <thead>
                                 <tr class="bg-blue ">
-                                <th>Name EN</th>
-                                    <th>Name</th>
+                                <th>Name</th>
+                                   
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
@@ -99,8 +99,8 @@ if (isset($results) && sizeof($results) > 0) {
         $status = $this->common->getDbValue($value['status']);
         ?>
                                 <tr >
-                                <td><?php echo $this->common->getDbValue($value['question_en']); ?></td>
-                                    <td><?php echo $this->common->getDbValue($value['question']); ?></td>
+                                <td><?php echo $this->common->getDbValue($value['question']); ?></td>
+                                  
                                     <td class="text-center"><?php $status = $this->common->getDbValue($value['status']);?>
                                         <?php
 if ($status == "Active") {echo '<span class="badge badge-success">Active</span>';}
@@ -114,7 +114,7 @@ if ($status == "Inactive") {echo '<span class="badge badge-light">Inactive</span
                                     <td class="text-center">
                                         <div class="list-icons">
                                             <a href="<?php echo site_url($controller . '/faqedit/' . $value['id']) ?>" class="list-icons-item text-primary-600" data-popup="tooltip" title="" data-original-title="Edit"><i class="icon-pencil7"></i></a>
-                                            <a href="#" class="list-icons-item text-danger-600 bootbox_custom" data-cbuid="<?php echo $value['id'] ?>" data-popup="tooltip" title="" data-original-title="Delete"><i class="icon-trash"></i></a>
+                                            <a href="#" class="list-icons-item text-danger-600 bootbox_custom" data-uuid="<?php echo $value['id'] ?>" data-popup="tooltip" title="" data-original-title="Delete"><i class="icon-trash"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -141,5 +141,32 @@ if ($status == "Inactive") {echo '<span class="badge badge-light">Inactive</span
         <!-- /page content -->
        
     </body>
+    <script>
+        // Custom bootbox dialog
+        $('.bootbox_custom').on('click', function() {
+            var uuid = $(this).data("uuid") // will return the number 123
+            bootbox.confirm({
+                title: 'Confirm ',
+                message: 'Are you sure you want to delete selected records ?',
+                buttons: {
+                    confirm: {
+                        label: 'Yes',
+                        className: 'btn-success'
+                    },
+                    cancel: {
+                        label: 'Cancel',
+                        className: 'btn-link'
+                    }
+                },
+                callback: function(result) {
+                    if (result) {
 
+                        location.href = "<?php echo site_url($controller . '/delete_faq/') ?>" + uuid;
+
+
+                    }
+                }
+            });
+        });
+        </Script>
 </html>

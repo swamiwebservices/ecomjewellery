@@ -14,21 +14,12 @@ class Privacypolicy extends CI_Controller {
             $this->load->library('email');
             $this->load->helper('url_helper');
     
-            // $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
-    
-            // if($config_maintenance){
-            //      redirect("maintenance");
-            //       exit;
-            // }
-            
-            if (empty($this->session->userdata('domain_id'))) {
-                $this->session->set_userdata('domain_id', '1');
-    
-            }
-            if (empty($this->session->userdata('domain_id'))) {
-                $this->session->set_userdata('domain_id', '1');
-    
-            }
+            $data['config_maintenance'] = $config_maintenance = (int)$this->common->get('config_maintenance');
+	
+			 if($config_maintenance){
+			 	 redirect("maintenance");
+			 	  exit;
+			 }
             $this->domain_id = $this->services->getDomainId();
     
 			 

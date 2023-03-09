@@ -97,11 +97,11 @@ $domain_id = $this->domain_id;
         
                             foreach($latestProduct as $key => $value){
                                 $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
-                                $price_json = json_decode($value['price_json'],true);
-                                //   print_r($price_json);
-                                  $quantity = $price_json['quantity'][$domain_id];
-                                  $mrp = $price_json['mrp'][$domain_id];
-                                  $sellprice = $price_json['sellprice'][$domain_id];  
+                               
+                                $quantity = $value['quantity'];
+                                $mrp = $value['mrp'];
+                                $sellprice = $value['sellprice'];  
+                            
                                   
                             ?>
                                 <div class="Featured_item bottom1">
@@ -194,13 +194,18 @@ $domain_id = $this->domain_id;
                                 <?php
                                 foreach($categoryProduct as $key => $value){
                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
-                                     //   print_r($price_json);
-                                     $price_json = json_decode($value['price_json'],true);
-                                      //  print_r($price_json);
-                                       $quantity = $price_json['quantity'][$domain_id];
-                                       $mrp = $price_json['mrp'][$domain_id];
-                                       $sellprice = $price_json['sellprice'][$domain_id];  
+                                   
+                                    $quantity = $value['quantity'];
+                                    $mrp = $value['mrp'];
+                                    $sellprice = $value['sellprice'];  
                                        
+                                    $stock_status = $value['stock_status'];  
+                                                      $stock_status_show = ($quantity<=0) ? $stock_status : '';  
+                                                      $random = rand(0,100);
+                                                      $stock_status_new = "";
+                                                      if ($random % 2 == 0) {
+                                                        $stock_status_new = "new";  
+                                                    } 
                                      
                                 ?>
                                   <div class="col-lg-4 col-md-4 col-sm-6">
@@ -208,11 +213,20 @@ $domain_id = $this->domain_id;
                                             <div class="product_thumb">
                                              
                                                 <a class="primary_img" href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
-                                                <a class="secondary_img" href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
-                                                <div class="quick_button">
-                                                    <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box"
-                                                        data-placement="top" data-uuid="<?php echo $value['uuid']; ?>"
-                                                        data-pdata="<?php echo json_encode($value); ?>" data-original-title="quick view"> quick view</a> -->
+                                                <div class="product-labels">
+                                                        <?php
+                                                            if($stock_status_new!=""){
+                                                            ?>
+                                                            <span
+                                                                class="product-label product-label-29 product-label-default"><b>New</b></span>
+                                                                <?php }?>
+                                                            <?php
+                                                            if($stock_status_show!=""){
+                                                            ?>
+                                                            <span
+                                                                class="product-label product-label-30 product-label-diagonal"><b>Out
+                                                                    Of Stock</b></span>
+                                                            <?php }?>
                                                 </div>
                                             </div>
                                             <div class="product_content">
@@ -266,11 +280,7 @@ $domain_id = $this->domain_id;
                             <?php
                                 foreach($categoryProduct as $key => $value){
                                     $main_image = (isset($value['main_image']) && $value['main_image']!="" ) ? base_url().'uploads/prod_images/350'.$value['main_image']:base_url().'assets/img/350x350.png';
-                                     //   print_r($price_json);
-                                    $price_json = json_decode($value['price_json'],true);
-                                       $quantity = $price_json['quantity'][$domain_id];
-                                       $mrp = $price_json['mrp'][$domain_id];
-                                       $sellprice = $price_json['sellprice'][$domain_id];  
+                                    
                                        
                                 ?>
                                 <div class="single_product product_list_item">
@@ -278,11 +288,22 @@ $domain_id = $this->domain_id;
                                        <div class="col-lg-4 col-md-5">
                                            <div class="product_thumb">
                                                 <a class="primary_img" href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
-                                                <a class="secondary_img" href="<?php echo site_url('product-detail/'.$value['slug_name']);?>"><img src="<?php echo $main_image?>" alt=""></a>
-                                                <div class="quick_button">
-                                                    <!-- <a href="#" data-bs-toggle="modal" data-bs-target="#modal_box"  data-original-title="quick view" data-uuid="<?php echo $value['uuid']; ?>"
-                                                        data-pdata="<?php echo json_encode($value); ?>"> quick view</a> -->
+                                                <div class="product-labels">
+                                                        <?php
+                                                            if($stock_status_new!=""){
+                                                            ?>
+                                                            <span
+                                                                class="product-label product-label-29 product-label-default"><b>New</b></span>
+                                                                <?php }?>
+                                                            <?php
+                                                            if($stock_status_show!=""){
+                                                            ?>
+                                                            <span
+                                                                class="product-label product-label-30 product-label-diagonal"><b>Out
+                                                                    Of Stock</b></span>
+                                                            <?php }?>
                                                 </div>
+                                                
                                             </div>
                                        </div>
                                        <div class="col-lg-8 col-md-7">

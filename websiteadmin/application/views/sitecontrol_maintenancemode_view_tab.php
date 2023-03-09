@@ -104,29 +104,8 @@ if ($warning) {
 
                     <div class="card-body">
 
-                        <ul class="nav nav-tabs nav-tabs-bottom">
-                            <?php
-                          
-                                           $domain_list = $this->config->item("DOMAINs");
-                                           foreach($domain_list as $key => $domain){
-                                            $domain_org = $domain;
-                                            $domain = str_replace(".","_",$domain);
-                                            
-                                         ?>
-                            <li class="nav-item"><a href="#domains<?php echo $key?>"
-                                    class="nav-link <?php echo (isset($key) && $key==1) ? 'active' : '' ?>"
-                                    data-toggle="tab"> <?php echo $domain_org?></a></li>
-                            <?php }?>
-                        </ul>
-                        <div class="tab-content">
-                            <?php
-                          //  print_r($records);
-                              foreach($domain_list as $key => $domain){
-                            ?>
-                            <div class="tab-pane fade  <?php echo  (isset($key) && $key==1) ? ' show active' : '' ?>"
-                                id="domains<?php echo $key?>">
-
-                                <form class="form-horizontal" id="blogform1" name="blogform1" method="post"
+                         
+                    <form class="form-horizontal" id="blogform1" name="blogform1" method="post"
                                     action="<?php echo site_url($controller.'/'.$fun_name)?>"
                                     enctype="multipart/form-data">
                                     <input type="hidden" name="mode" id="mode" value="maintenancemode">
@@ -167,10 +146,6 @@ if ($warning) {
 
                                     </div>
                                 </form>
-                            </div>
-
-                            <?php }?>
-                        </div>
 
                     </div>
 

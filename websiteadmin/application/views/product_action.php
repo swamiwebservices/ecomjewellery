@@ -216,8 +216,8 @@
                             <input type="hidden" name="uuid" id="uuid"
                                 value="<?php echo isset($records['uuid']) ? $records['uuid'] : ''; ?>">
 
-                                <input type="hidden" name="product_id" id="product_id"
-                value="<?php echo (isset($records['product_id'])) ? $records['product_id'] : ''?>">
+                            <input type="hidden" name="product_id" id="product_id"
+                                value="<?php echo (isset($records['product_id'])) ? $records['product_id'] : ''?>">
 
 
                             <input type="hidden" name="name_title_old" id="name_title_old"
@@ -233,7 +233,8 @@
                                     </select>
 
                                 </div>
-                                <label class="col-form-label col-lg-2 text-right" for="product_group_id">Product Group:</label>
+                                <label class="col-form-label col-lg-2 text-right" for="product_group_id">Product
+                                    Group:</label>
                                 <div class="col-lg-4">
                                     <select class="form-control" name="product_group_id" id="product_group_id" required>
                                         <?php  $this->common->get_product_group((isset($records['product_group_id']))?$records['product_group_id']:'0')?>
@@ -264,8 +265,8 @@
                                 </div>
                                 <label class="col-form-label col-lg-1 text-right" for="weight_gms">Weight:</label>
                                 <div class="col-lg-1">
-                                    <input type="text" class="form-control "  
-                                        id="weight_gms" name="weight_gms" placeholder="Weight in Grams"
+                                    <input type="text" class="form-control " id="weight_gms" name="weight_gms"
+                                        placeholder="Weight in Grams"
                                         value="<?php echo isset($records['weight_gms'])?$this->common->getDbValue($records['weight_gms']):''; ?>"
                                         required1>
 
@@ -330,14 +331,14 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                            <label class="col-md-2 control-label"> Other Image(s):</label>
+                                <label class="col-md-2 control-label"> Other Image(s):</label>
                                 <div class="col-md-10">
-                                <div class="form-group trans-list-para-postcode add-photos-main-section">
-                                    <label><?php echo $this->lang->line('Add Photos');?></label>
-                                    <div class="add-photos-main-section-images">
-                                        <span data-multiupload="1">
-                                            <span data-multiupload-holder></span>
-                                            <?php
+                                    <div class="form-group trans-list-para-postcode add-photos-main-section">
+                                        <label><?php echo $this->lang->line('Add Photos');?></label>
+                                        <div class="add-photos-main-section-images">
+                                            <span data-multiupload="1">
+                                                <span data-multiupload-holder></span>
+                                                <?php
                             //  print_r($consignmentimage_temp);
                                 if(isset($consignmentimage_temp) && sizeof($consignmentimage_temp) > 0) { 
                                     foreach($consignmentimage_temp as $key => $val){
@@ -347,31 +348,31 @@
                                             $folder_path = "../uploads/product_images_temp/";
                                         }
                                 ?>
-                                            <div class="upload-photo"
-                                                id="multiupload_img_1_<?php echo $val['img_id']?>"><span
-                                                    class="upload-close"><a href="javascript:void(0)"
-                                                        onclick="bindRemoveMultiUpload_new('<?php echo $val['img_id']?>')"
-                                                        id="multiupload_img_remove1_<?php echo $val['img_id']?>"><i
-                                                            class="icon-trash "></i></a></span><img
-                                                    src="<?php echo base_url();?><?php echo $folder_path?><?php echo $val['image_name']?>">
-                                            </div>
-                                            <?php    }
+                                                <div class="upload-photo"
+                                                    id="multiupload_img_1_<?php echo $val['img_id']?>"><span
+                                                        class="upload-close"><a href="javascript:void(0)"
+                                                            onclick="bindRemoveMultiUpload_new('<?php echo $val['img_id']?>')"
+                                                            id="multiupload_img_remove1_<?php echo $val['img_id']?>"><i
+                                                                class="icon-trash "></i></a></span><img
+                                                        src="<?php echo base_url();?><?php echo $folder_path?><?php echo $val['image_name']?>">
+                                                </div>
+                                                <?php    }
                                     }
                                 ?>
-                                            <span class="upload-photo">
-                                                <img src="<?php echo base_url();?>global_assets/images/multi-images-main-img.jpg"
-                                                    alt="plus img">
-                                                <input data-multiupload-src class="upload_pic_btn" type="file"
-                                                    multiple="">
-                                                <span data-multiupload-fileinputs></span>
-                                            </span>
+                                                <span class="upload-photo">
+                                                    <img src="<?php echo base_url();?>global_assets/images/multi-images-main-img.jpg"
+                                                        alt="plus img">
+                                                    <input data-multiupload-src class="upload_pic_btn" type="file"
+                                                        multiple="">
+                                                    <span data-multiupload-fileinputs></span>
+                                                </span>
 
-                                        </span>
-                                        <div class="clearfix"></div>
+                                            </span>
+                                            <div class="clearfix"></div>
+                                        </div>
                                     </div>
                                 </div>
-                                </div>
-                                
+
                             </div>
                             <div class="form-group row">
                                 <label class="control-label col-lg-2" for="">Specification:</label>
@@ -423,6 +424,7 @@
                                     </div>
 
                                     <div class="form-check form-check-inline">
+
                                         <label class="form-check-label">
                                             <input type="radio" class="form-check-input-styled-danger" value="Inactive"
                                                 name="status_flag" id="status_flag2"
@@ -438,72 +440,99 @@
                                         <label class="form-check-label">
                                             <input type="checkbox" class="form-check-input-styled-success" value="1"
                                                 name="featured" id="featured"
-                                                <?php if (isset($records['featured']) && $records['featured'] == 1)  {  echo 'checked'; } ?> checked>
+                                                <?php if (isset($records['featured']) && $records['featured'] == 1)  {  echo 'checked'; } ?>>
                                             Featured (Show In home Page)
                                         </label>
                                     </div>
                                 </div>
                             </div>
+                            <fieldset>
+                                <?php
+                                  $quantity = (isset($records['quantity'])) ? $records['quantity'] : 1;
+                                ?>
+                                <legend class="font-weight-bold" style="font-size:16px; padding-left:10px">
+                                    Stock </legend>
+                                <div class="row">
+
+
+                                    <div class="col-md-3 row">
+                                        <label class="col-form-label  col-lg-6" for="quantity">
+                                            Stock Qty:<span class="text-danger">*</span></label>
+                                        <div class="col-lg-6"><input type="number" min=0
+                                                class="form-control numbersOnly" id="quantity" name="quantity"
+                                                placeholder="Item Qty" value="<?php echo $quantity; ?>" required>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <?php
+                                          $subtract = (isset($records['subtract'])) ? $records['subtract'] : '1';
+                                        ?>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input-styled-success" value="1"
+                                                    name="subtract" id="subtract"
+                                                    <?php if ($subtract == 1)  {  echo 'checked'; } ?>>
+                                                Subtract Stock</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="checkbox" class="form-check-input-styled-success" value="1"
+                                                    name="allow_buy_zeroqty" id="allow_buy_zeroqty"
+                                                    <?php if (isset($records['allow_buy_zeroqty']) && $records['allow_buy_zeroqty'] == 1)  {  echo 'checked'; } ?>>
+                                                Allow buy on zero qty
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5 row">
+
+                                        <label class="col-form-label col-md-4 text-right" for="stock_status">Stock Status:</label>
+                                        <div class="col-md-8">
+                                            <select class="form-control" name="stock_status" id="stock_status"
+                                                required>
+                                                <?php  $this->common->stock_status((isset($records['stock_status']))?$records['stock_status']:'')?>
+                                            </select>
+                                            <div class="form-text">Status shown when a product is out of stock</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
 
                             <?php
-                            $price_json = (isset($records['price_json'])) ? json_decode($records['price_json'],true) : ['quantity'=>[],'mrp'=>[],'sellprice'=>[]];
-                            $mrp = $price_json['mrp'];
-                            $sellprice = $price_json['sellprice'];
-                            $quantity = $price_json['quantity'];
-                           // print_r($price_json);
-                            $domain_list = $this->config->item("DOMAINs");
-                            foreach($domain_list as $domain_id => $domain){
-                                $domain_org = $domain;
-                                $domain = str_replace(".","_",$domain);
-                                $records_temp = (isset($price_json[$domain])) ?  $price_json[$domain] : [];
-                              //  print_r($records_temp);
-                                
+                           
+                          
+                            $mrp = (isset($records['mrp'])) ? $records['mrp'] : 1;
+                            $sellprice = (isset($records['sellprice'])) ? $records['sellprice'] : 1;
                             ?>
                             <fieldset>
-                                <legend class="font-weight-bold"
-                                    style="font-size:16px;background-color:<?php echo $this->common->rand_color()?>; color:#ffffff; padding-left:10px">
-                                    <?php echo $domain_org?></legend>
+                                <legend class="font-weight-bold" style="font-size:16px; padding-left:10px">
+                                    Price</legend>
                                 <div class="form-group row">
-                                    <label class="col-form-label  col-lg-1" for="quantity_<?php echo $domain_id?>">Item
-                                        Qty:</label>
-                                    <div class="col-lg-1"><input type="number" min=0 class="form-control numbersOnly"
-                                            id="quantity_<?php echo $domain_id?>"
-                                            name="quantity[<?php echo $domain_id?>]" placeholder="Item Qty"
-                                            value="<?php echo isset($quantity[$domain_id])?$this->common->getDbValue($quantity[$domain_id]):'1'; ?>"
-                                            required>
 
-                                    </div>
 
-                                    <label class="col-form-label col-lg-1 text-right "
-                                        for="mrp_<?php echo $domain_id?>">MRP Price: <span
+                                    <label class="col-form-label col-lg-1 text-right " for="mrp">MRP Price: <span
                                             class="text-danger">*</span></label>
                                     <div class="col-lg-1"><input type="number" min=0
-                                            class="form-control cost mrp mrp_<?php echo $domain_id?>  auto_mrp_<?php echo $domain_id?> numbersOnly1"
-                                            id="mrp<?php echo $domain_id?>" data-domain="<?php echo $domain_id?>"
-                                            name="mrp[<?php echo $domain_id?>]" placeholder="MRP"
-                                            value="<?php echo isset($mrp[$domain_id])?$this->common->getDbValue($mrp[$domain_id]):'0'; ?>"
+                                            class="form-control cost mrp mrp  auto_mrp numbersOnly1" id="mrp"
+                                            data-domain="" name="mrp" placeholder="MRP" value="<?php echo $mrp; ?>"
                                             required>
                                     </div>
-                                    <label class="col-form-label col-lg-1 " for="sellprice_<?php echo $domain?>">Sell
+                                    <label class="col-form-label col-lg-1 " for="sellprice">Sell
                                         Price: <span class="text-danger">*</span></label>
                                     <div class="col-lg-1"><input type="number" min=0
-                                            class="form-control cost sellprice sellprice_<?php echo $domain_id?> auto_sellprice_<?php echo $domain_id?> numbersOnly1"
-                                            id="sellprice_<?php echo $domain?>" data-domain="<?php echo $domain_id?>"
-                                            name="sellprice[<?php echo $domain_id?>]" placeholder="Sell Price"
-                                            value="<?php echo isset($sellprice[$domain_id])?$this->common->getDbValue($sellprice[$domain_id]):'0'; ?>"
-                                            required>
+                                            class="form-control cost sellprice sellprice auto_sellprice numbersOnly1"
+                                            id="sellprice" data-domain="" name="sellprice" placeholder="Sell Price"
+                                            value="<?php echo $sellprice; ?>" required>
                                     </div>
                                     <label class="col-form-label col-lg-1 text-right text-success ">Dicount: </label>
-                                    <label
-                                        class="col-form-label col-lg-1 text-success discount  discount_<?php echo $domain_id?> ">0
+                                    <label class="col-form-label col-lg-1 text-success discount  discount ">0
                                     </label>
                                 </div>
                             </fieldset>
-                            <?php }?>
-                            <!--  <div class="form-group">
-                                        <label>Address:</label>
-                                        <textarea rows="3" cols="3" class="form-control" placeholder="Enter address"></textarea>
-                                    </div> -->
+
+
                             <div class="form-group row">
                                 <label class="col-form-label col-lg-2"></label>
                                 <div class="col-lg-9">
@@ -530,15 +559,15 @@
     <script>
     var default_domain_flag = 0;
     <?php
-        $sql = "select * from wti_process_cost where default_flag=1 order by domain ";
+        $sql = "select * from wti_process_cost where default_flag=1 order by currency ";
         $query = $this->db->query($sql);
         $process_costrs = $query->result_array();
         $domain_wise = [];
         $domain_currency_value = [];
         $default_domain_flag =0;
         foreach($process_costrs as $key => $process_cost){
-            $domain_wise[$process_cost['domain']] = $process_cost['percentage'];
-            $domain_currency_value[$process_cost['domain']] = $process_cost['rate'];
+            $domain_wise[$process_cost['currency']] = $process_cost['percentage'];
+            $domain_currency_value[$process_cost['currency']] = $process_cost['rate'];
             if($process_cost['default_flag']){
                 $default_domain_flag = 1;
             }
@@ -554,23 +583,23 @@
     $(document).ready(function() {
         $(".mrp").keyup(function() {
             const mrp_id = $(this).attr('id');
-            const domain = parseInt($(this).data('domain'));
+            const domain = $(this).data('domain');
             let mrp = parseFloat(this.value);
-            $(".sellprice_" + domain).val(mrp);
-            console.log("domain:",domain);
+            $(".sellprice" + domain).val(mrp);
+            console.log("domain:", domain);
 
-            if (domain == default_domain_flag) {
-                $.each(domain_wise, function(key1, val1) {
-                    val1 = parseFloat(val1);
-                    currency_value = domain_currency_value[key1];
-                    if (key1 != default_domain_flag) {
-                        let other_mrp = Math.round(parseFloat((mrp + (mrp * val1 / 100)) * currency_value ));
-                        $(".auto_mrp_" + key1).val(other_mrp);
-                        $(".auto_sellprice_" + key1).val(other_mrp);
+            // if (domain == default_domain_flag) {
+            //     $.each(domain_wise, function(key1, val1) {
+            //         val1 = parseFloat(val1);
+            //         currency_value = domain_currency_value[key1];
+            //         if (key1 != default_domain_flag) {
+            //             let other_mrp = Math.round(parseFloat((mrp + (mrp * val1 / 100)) * currency_value ));
+            //             $(".auto_mrp" + key1).val(other_mrp);
+            //             $(".auto_sellprice" + key1).val(other_mrp);
 
-                    }
-                });
-            }
+            //         }
+            //     });
+            // }
 
 
         });
@@ -579,7 +608,7 @@
         $(".sellprice").keyup(function() {
             const mrp_id = $(this).attr('id');
             const domain = $(this).data('domain');
-            let mrp = parseFloat($(".mrp_" + domain).val());
+            let mrp = parseFloat($(".mrp" + domain).val());
             let value = parseFloat(this.value);
             if (value >= mrp) {
                 this.value = mrp;
@@ -587,7 +616,7 @@
             }
             let value_disc = Math.round(((mrp - value) / mrp) * 100);
 
-            $(".discount_" + domain).html(value_disc + " %");
+            $(".discount" + domain).html(value_disc + " %");
             // console.log(mrp,value,value_disc);
 
         });

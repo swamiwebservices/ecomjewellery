@@ -94,18 +94,27 @@
                                             <td class="text-left">Payment Method</td>
 
                                             <td class="text-left">Status</td>
-                                            <td class="text-right">Sort Order </td>
+                                            <!-- <td class="text-right">Sort Order </td> -->
                                             <td class="text-right">Action</td>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php if ($extensions) { ?>
-                                        <?php foreach ($extensions as $extension) { ?>
+                                        <?php foreach ($extensions as $extension) {
+                                              $status_flag_sub = $this->common->getDbValue($extension['status']);
+                                            ?>
                                         <tr>
                                             <td class="text-left"><?php echo $extension['name']; ?></td>
 
-                                            <td class="text-left"><?php echo $extension['status']; ?></td>
-                                            <td class="text-right"><?php echo $extension['sort_order']; ?></td>
+                                            <td class="text-left"><?php //echo $extension['status']; ?>
+                                            <?php
+                                        if($status_flag_sub=="enabled"){echo '<span class="badge badge-success">Active</span>';}
+                                        ?>
+                                        <?php
+                                        if($status_flag_sub=="disabled"){echo '<span class="badge badge-danger">Inactive</span>';}
+                                        ?>
+                                        </td>
+                                            <!-- <td class="text-right"><?php echo $extension['sort_order']; ?></td> -->
                                             <td class="text-right"> <a href="<?php echo $extension['edit']; ?>" data-toggle="tooltip"
                                                     title="Edit" class="btn btn-primary"><i
                                                         class="icon-pencil7"></i></a>

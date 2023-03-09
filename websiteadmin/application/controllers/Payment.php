@@ -57,7 +57,7 @@ public $m_act = 7;
   
 		$data['controller'] = $this->controller;
 		 
-		 $payment_list_name = array("cod"=>"Cash On Delivery","bank_transfer"=>"Bank Transfer","pp_standard"=>"Paypal Standard","payu"=>"Payu-Money","razorpay"=>"Razorpay");
+		 $payment_list_name = array("cod"=>"Cash On Delivery","bank_transfer"=>"Bank Transfer","pp_standard"=>"Paypal Standard","payu"=>"Payu-Money","razorpay"=>"Razorpay",'dponetwork'=>"DPO Network");
 		 
 		 $extensions = $this->getInstalled('payment');
 		// $data['extensions'] = $extensions;

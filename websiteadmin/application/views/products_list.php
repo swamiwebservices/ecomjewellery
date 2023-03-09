@@ -44,7 +44,7 @@
                     <div class="header-elements d-none">
                         <div class="breadcrumb justify-content-center">
                             
-                            <a href="<?php echo site_url("products/exporttocsv"); ?>" target="_blank" class="breadcrumb-elements-item">
+                            <a href="<?php echo site_url("products/exporttocsv?param_export=".$param_export); ?>" target="_blank" class="breadcrumb-elements-item">
                                 <button type="button" class="btn btn-success btn-sm"><i class="icon-file-excel mr-2"></i> Download</button>
                             </a>
                             <a href="<?php echo site_url($add_link); ?>" class="breadcrumb-elements-item">
@@ -102,7 +102,8 @@
                                     <th width="20%">Category</th>
                                     <th width="20%">Sub-Cate</th>
                                     <th width="27%">Price</th>
-
+                                    <th width="27%">Sell-Price</th>
+                                    <th width="27%">Qty</th>
                                     <th width="18%">Image</th>
                                     <th width="8%">Status</th>
                                     <th width="8%">Actions</th>
@@ -117,6 +118,10 @@
 									$main_cat = $this->common->getOneRow('product_category', "where category_id=" . $value['category_id']);
 									$sub_cat = $this->common->getOneRow('product_category', "where category_id=" . $value['sub_category_id']);									
 									
+
+                                    $quantity = $value['quantity'];
+                                    $mrp = $value['mrp'];
+                                    $sellprice = $value['sellprice'];  
 
                                     // $specification2 = (isset($results['specification']) && is_array($results['specification'])) ? $results['specification'] : [];
 
@@ -148,12 +153,15 @@
                                     <td><?php echo isset($sub_cat['name'])?$this->common->getDbValue($sub_cat['name']):''; ?>
                                     </td>
                                     <td valign="top">
-                                        <?php
-                                         $domain_list = $this->config->item("DOMAINs");
-                                         foreach($domain_list as $domain_id => $domain){
-                                        ?>
-                                    <?php echo $this->common->getDbValue($domain); ?> : <?php echo isset($value['domain'.$domain_id.'_mrp'])?$this->common->getDbValue($value['domain'.$domain_id.'_mrp']) : $value['mrp']; ?> - <?php echo isset($value['domain'.$domain_id.'_sellprice'])?$this->common->getDbValue($value['domain'.$domain_id.'_sellprice']):$value['sellprice']; ?></br>
-                                    <?php }?>
+                                      <?php echo $mrp?>
+                                    
+                                    </td>
+                                    <td valign="top">
+                                      <?php echo $sellprice?>
+                                    
+                                    </td>
+                                    <td valign="top">
+                                      <?php echo $quantity?>
                                     
                                     </td>
 
@@ -254,7 +262,7 @@
     var table = $('.datatable-basicwti').DataTable({
         columnDefs: [{
             orderable: false,
-            targets: [5,6,7]
+            targets: [7,8,9]
         }],
         lengthMenu: [
             [100, 250, 500, -1],

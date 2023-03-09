@@ -77,7 +77,7 @@ class Coupon extends CI_Controller
         if (isset($_POST['mode']) && $_POST['mode'] == 'edit_content_add' && $this->validateForm(0)) {
             $add_in = array();
 
-            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
+          //  $add_in['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
 
 
 
@@ -226,7 +226,7 @@ class Coupon extends CI_Controller
          
             
             $add_in = array();
-            $add_in['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
+           // $add_in['domains'] = $domains = (isset($_POST['domains'])) ? implode(",",$_POST['domains']) : ""; 
 
 
 

@@ -117,7 +117,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label class="col-sm-2 control-label" for="input-sort-order">Sort
                                     Order</label>
                                 <div class="col-sm-10">
@@ -125,7 +125,10 @@
                                         value="<?php echo isset($records['cod_sort_order']) ? $records['cod_sort_order'] : ''; ?>"
                                         placeholder="Sort Order" id="input-sort-order" class="form-control" />
                                 </div>
-                            </div>
+                            </div> -->
+                            <input type="hidden" name="cod_sort_order"
+                                        value="<?php echo isset($records['cod_sort_order']) ? $records['cod_sort_order'] : ''; ?>"
+                                        placeholder="Sort Order" id="input-sort-order" class="form-control" />
                             <div class="form-group row">
                                 <label class="col-md-2 control-label"> </label>
                                 <div class="col-md-10">
