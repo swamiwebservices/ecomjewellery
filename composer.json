@@ -11,13 +11,14 @@
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
 	"require": {
-		"php": ">=5.3.7",
+		"php": ">=7.4",
 		"ramsey/uuid": "^3.9",
 		"phpmailer/phpmailer": "^6.6",
 		"razorpay/razorpay": "2.*",
 		"razor-informatics/dpo-php": "^0.1.1",
 		"zepson/dpo-laravel": "^1.0",
-		"dipnot/direct-pay-online-php": "^2.1"
+		"dipnot/direct-pay-online-php": "^2.1",
+		"zepson/dpo-php": "^1.0"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
@@ -25,5 +26,10 @@
 	"require-dev": {
 		"mikey179/vfsstream": "1.1.*",
 		"phpunit/phpunit": "4.* || 5.*"
+	},
+	"config": {
+		"platform": {
+			"php": "7.4"
+		}
 	}
 }

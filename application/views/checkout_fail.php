@@ -41,8 +41,6 @@
                     <h1>Your payment has been failured!</h1>
                         <p>Your order has been failured!!</p>
                         
-                          
-                        
                         </p>
                         <p>Please direct any questions you have to the <a
                                 href="<?php echo site_url("contact-us");?>">store owner</a>.</p>
